@@ -4,11 +4,11 @@ import api from '@/api/api'
 import qs from 'qs'
 import axios from '@/utils/http'
 import Storage from 'good-storage'
+import { setToken, clearToken } from '@/utils/common'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: null,
     system: {
       hideSidebar: Storage.get('HideSidebar'),
       miniSidebar: Storage.get('MiniSidebar'),
@@ -17,13 +17,13 @@ export default new Vuex.Store({
   },
   mutations: {
     LOGIN: (state, params) => {
-      state.token = params.data
-      sessionStorage.clear()
-      sessionStorage.setItem('token', state.token)
+      const accessToken = params.data.access_token
+      const refreshToken = params.data.refresh_token
+      clearToken()
+      setToken(accessToken, refreshToken)
     },
     LOGOUT: (state) => {
-      state.token = null
-      sessionStorage.clear()
+      clearToken()
     },
     MINI_SIDEBAR_TOGGLE (state) {
       const miniSidebar = state.system.miniSidebar === 1 ? 0 : 1
@@ -60,7 +60,6 @@ export default new Vuex.Store({
       })
     },
     logout ({ commit }) {
-      console.log('logout')
       commit('LOGOUT')
     }
   },

@@ -16,3 +16,21 @@ export function resetObject (object, defaultVal = {}) {
     }
   }
 }
+
+export function setToken (token, refreshToken) {
+  sessionStorage.setItem('token', token)
+  sessionStorage.setItem('refreshToken', refreshToken)
+}
+
+export function clearToken () {
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('refreshToken')
+}
+
+export function getToken () {
+  return sessionStorage.getItem('token')
+}
+
+export function getRefreshToken () {
+  return sessionStorage.getItem('refreshToken')
+}

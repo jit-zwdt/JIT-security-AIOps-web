@@ -3,6 +3,7 @@ const api = {
   index: '/index',
   regionManager: {
     list: '/regionManager/list'
-  }
+  },
+  refreshToken: '/refreshToken'
 }
 export default api

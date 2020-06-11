@@ -16,6 +16,7 @@
 </template>
 <script>
 import api from '@/api/api'
+import { clearToken } from '@/utils/common'
 export default {
   data () {
     return {
@@ -27,6 +28,7 @@ export default {
   },
   methods: {
     submitClick: function () {
+      clearToken()
       this.$store.dispatch('login', this.loginForm).then((resp) => {
         if (resp.status === 200) {
           if (resp.data.code === 1) {
