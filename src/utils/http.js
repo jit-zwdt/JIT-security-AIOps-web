@@ -4,7 +4,7 @@ import router from '@/router'
 import api from '@/api/api'
 import * as common from '@/utils/common'
 import qs from 'qs'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 // 是否正在刷新的标记
 let isRefreshing = false
 // 重试队列，每一项将是一个待执行的函数形式
@@ -73,22 +73,44 @@ axios.interceptors.response.use(
       store.commit('LOGOUT')
       router.currentRoute.path !== 'login' &&
         router.replace({
-          path: 'login',
-          query: { redirect: router.currentRoute.path }
+          path: '/',
+          query: { redirect: router.currentRoute.fullPath }
         })
     }
     return response
   },
   error => {
     if (error.response) {
-      switch (error.response.status) {
-        case 403:
-          store.commit('LOGOUT')
-          router.currentRoute.path !== 'login' &&
+      if (error.response.status === 404) {
+        MessageBox({
+          message: '系统异常请联系管理员',
+          type: 'error',
+          duration: 3000,
+          callback: action => {
+            router.go(-1)
+          }
+        })
+      } else if (error.response.status === 500) {
+        MessageBox({
+          message: '系统异常请联系管理员',
+          type: 'error',
+          duration: 3000,
+          callback: action => {
+            router.go(-1)
+          }
+        })
+      } else if (error.response.status === 403) {
+        store.commit('LOGOUT')
+        MessageBox({
+          message: '没有访问权限',
+          type: 'error',
+          callback: action => {
             router.replace({
-              path: 'login',
-              query: { redirect: router.currentRoute.path }
+              path: '/',
+              query: { redirect: router.currentRoute.fullPath }
             })
+          }
+        })
       }
     }
     return Promise.reject(error.response.data)

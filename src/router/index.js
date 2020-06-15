@@ -8,7 +8,6 @@ import Layout from '@/views/layout/App.vue'
 import RegionManager from '@/views/regionManager/Index.vue'
 import RegionTree from '@/views/regionManager/Tree.vue'
 Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/',
@@ -44,6 +43,7 @@ const routes = [
     meta: {
       title: '地区应用信息维护'
     },
+    // TODO 三级菜单怎么处理路由
     children: [
       {
         path: 'list',
