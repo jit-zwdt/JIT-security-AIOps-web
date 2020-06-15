@@ -18,25 +18,21 @@
         style="border-color: #222d32"
         :collapse="system.miniSidebar === 1"
       >
-        <template v-for="(menu_v, menu_k) in menu">
+         <template v-for="(menu_v, menu_k) in menu">
           <el-submenu v-if="menu_v.children" :index="menu_k" :key="menu_k">
-            <template slot="title">
-              <i :class="menu_v.icon"></i>
-              <span slot="title">{{ menu_v.name }}</span>
+            <template slot="title"><i :class="menu_v.icon"></i><span>{{menu_v.name}}</span></template>
+            <!-- 二级菜单 -->
+            <template v-for="(menuChildren_v, menuChildren_k) in menu_v.children">
+              <el-submenu v-if="menuChildren_v.children" :index="menuChildren_k" :key="menuChildren_k">
+                  <template slot="title"><i :class="menuChildren_v.icon"></i><span>{{menuChildren_v.name}}</span></template>
+                  <!-- 三级菜单 -->
+                  <el-menu-item v-for="itemChild_Child in menuChildren_v.children" :index="itemChild_Child .path" :key="itemChild_Child.path">
+                  <i :class="itemChild_Child.icon"></i><span slot="title">{{itemChild_Child.name}}</span></el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :index="menuChildren_v.path" :key="menuChildren_k"><i :class="menuChildren_v.icon"></i><span slot="title">{{menuChildren_v.name}}</span></el-menu-item>
             </template>
-            <el-menu-item
-              v-for="(menuChildren_v, menuChildren_k) in menu_v.children"
-              :key="menuChildren_k"
-              :index="menuChildren_v.path"
-            >
-              <i class="is-children fa fa-circle-o"></i>
-              <span slot="title">{{ menuChildren_v.name }}</span>
-            </el-menu-item>
           </el-submenu>
-          <el-menu-item v-else :index="menu_v.path" :key="menu_k">
-            <i :class="menu_v.icon"></i>
-            <span slot="title">{{ menu_v.name }}</span>
-          </el-menu-item>
+          <el-menu-item v-else :index="menu_v.path" :key="menu_k"><i :class="menu_v.icon"></i><span slot="title">{{menu_v.name}}</span></el-menu-item>
         </template>
       </el-menu>
     </div>

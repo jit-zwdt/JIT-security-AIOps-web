@@ -8,6 +8,11 @@ import Layout from '@/views/layout/App.vue'
 import RegionManager from '@/views/regionManager/Index.vue'
 import RegionTree from '@/views/regionManager/Tree.vue'
 Vue.use(VueRouter)
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 const routes = [
   {
     path: '/',
@@ -78,6 +83,10 @@ const routes = [
     meta: {
       requireAuth: true
     }
+  },
+  {
+    path: '*',
+    redirect: '/login'
   }
 ]
 
