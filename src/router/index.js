@@ -7,6 +7,7 @@ import Index from '@/components/Index.vue'
 import Layout from '@/views/layout/App.vue'
 import RegionManager from '@/views/regionManager/Index.vue'
 import RegionTree from '@/views/regionManager/Tree.vue'
+import AssetsManager from '@/views/assetsManager/assetsManager'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -83,6 +84,15 @@ const routes = [
     meta: {
       requireAuth: true
     }
+  },
+  {
+    path: '/assetsManager',
+    name: 'assetsManager',
+    component: Layout,
+    meta: {
+      title: '资产管理'
+    },
+    children: AssetsManager
   },
   {
     path: '*',

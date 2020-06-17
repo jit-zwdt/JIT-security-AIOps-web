@@ -43,9 +43,22 @@ const updateManager = {
     }
   }
 }
-
+const assetsManager = {
+  name: '资产管理',
+  permissionsKey: '',
+  icon: 'fa fa-cubes',
+  children: {
+    hostManager: {
+      name: '资产信息',
+      permissionsKey: '',
+      icon: 'fa fa-cube',
+      path: '/assetsManager/assetsList'
+    }
+  }
+}
 export default {
   home,
   regionManager,
-  updateManager
+  updateManager,
+  assetsManager
 }
