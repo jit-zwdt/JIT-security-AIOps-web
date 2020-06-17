@@ -6,13 +6,19 @@
           <el-input type="text" v-model="assetNameTop" size="small" placeholder="资产名称" clearable ></el-input>
         </el-col>
         <el-date-picker
-          v-model="assetRegisterDateTop"
+          v-model="assetRegisterDateStartTop"
           type="date"
-          placeholder="登记时间"
+          placeholder="开始登记时间"
+          class="datetop">
+        </el-date-picker>
+        <el-date-picker
+          v-model="assetRegisterDateEndTop"
+          type="date"
+          placeholder="结束登记时间"
           class="datetop">
         </el-date-picker>
         <el-button type="primary" size="small" @click="showInfo() == false">查询</el-button>
-        <el-button type="primary" size="small" @click="showClear()">重置</el-button>
+        <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright">
         <el-button type="primary" size="small" @click="showEditDialog = true">新增</el-button>
@@ -23,33 +29,33 @@
       border style="width: 100%"
       :row-style="tableRowStyle"
       :header-cell-style="tableHeaderColor">>
-        <el-table-column label="id" prop="id" width="100" :resizable="false" v-if="show">
+        <el-table-column label="id" prop="id" :resizable="false" v-if="show">
         </el-table-column>
-        <el-table-column label="资产名称" prop="assetName" width="150" :resizable="false">
+        <el-table-column label="资产名称" prop="assetName" min-width="20%" :resizable="false">
         </el-table-column>
-        <el-table-column label="资产类型" prop="assetType" width="100" :resizable="false">
+        <el-table-column label="资产类型" prop="assetType" min-width="10%" :resizable="false">
         </el-table-column>
-        <el-table-column label="资产编号" prop="assetNumber" width="150" :resizable="false">
+        <el-table-column label="资产编号" prop="assetNumber" min-width="15%" :resizable="false">
         </el-table-column>
-        <el-table-column label="资产状态" prop="assetState" width="100" :resizable="false">
+        <el-table-column label="资产状态" prop="assetState" min-width="10%" :resizable="false">
         </el-table-column>
-        <el-table-column label="数量" prop="assetAmount" width="100" :resizable="false">
+        <el-table-column label="数量" prop="assetAmount" min-width="10%" :resizable="false">
         </el-table-column>
-        <el-table-column label="资产所属单位" prop="assetBelongsDept" width="150" :resizable="false">
+        <el-table-column label="资产所属单位" prop="assetBelongsDept" :resizable="false" v-if="show">
         </el-table-column>
-        <el-table-column label="资产所属人" prop="assetBelongsPerson" width="100" :resizable="false">
+        <el-table-column label="资产所属人" prop="assetBelongsPerson" :resizable="false" v-if="show">
         </el-table-column>
-        <el-table-column label="资产登记时间" prop="assetRegisterDate" width="150" :resizable="false">
+        <el-table-column label="资产登记时间" prop="assetRegisterDate" min-width="15%" :resizable="false" :formatter="formatDate">
         </el-table-column>
-        <el-table-column label="登记人" prop="assetRegistrant" width="100" :resizable="false">
+        <el-table-column label="登记人" prop="assetRegistrant" min-width="10%" :resizable="false">
         </el-table-column>
-        <el-table-column label="资产修改时间" prop="assetUpdateDate" width="150" :resizable="false">
+        <el-table-column label="资产修改时间" prop="assetUpdateDate" :resizable="false" v-if="show" :formatter="formatDate">
         </el-table-column>
-        <el-table-column label="资产位置" prop="assetLocation" width="200" :resizable="false">
+        <el-table-column label="资产位置" prop="assetLocation" :resizable="false" v-if="show">
         </el-table-column>
-        <el-table-column label="资产注销时间" prop="assetLogoutDate" width="150" :resizable="false">
+        <el-table-column label="资产注销时间" prop="assetLogoutDate" :resizable="false" :formatter="formatDate" v-if="show">
         </el-table-column>
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="操作" min-width="10%">
           <template slot-scope="scope">
             <el-popconfirm
               title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)"
@@ -71,6 +77,7 @@ import AssetsAdd from '@/views/assetsManager/assetsList/assetsAdd.vue'
 export default {
   data () {
     return {
+      show: false,
       showEditDialog: false,
       tableData: [{
         id: '',
@@ -88,7 +95,8 @@ export default {
         assetLogoutDate: ''
       }],
       assetNameTop: '',
-      assetRegisterDateTop: '',
+      assetRegisterDateStartTop: '',
+      assetRegisterDateEndTop: '',
       serverResource: {
         assetName: '1',
         assetRegisterDate: ''
@@ -118,12 +126,15 @@ export default {
       alert('index：' + index + 'row:' + row.assetName)
     },
     showInfo () {
-      alert(this.assetRegisterDateTop)
-      alert(Format((this.assetRegisterDateTop, 'YYYY-MM-DD HH:mm:ss')))
+      let assetRegisterDateStartTopstr = ''
+      assetRegisterDateStartTopstr = Format(this.assetRegisterDateStartTop, 'YYYY-MM-DD HH:mm:ss')
+      let assetRegisterDateEndTopstr = ''
+      assetRegisterDateEndTopstr = Format(this.assetRegisterDateEndTop, 'YYYY-MM-DD 23:59:59')
       this.axios.post('/assets/findByCondition', {
         param: {
           assetName: this.assetNameTop,
-          assetRegisterDate: this.assetRegisterDateTop
+          assetRegisterStartDate: assetRegisterDateStartTopstr,
+          assetRegisterEndDate: assetRegisterDateEndTopstr
         },
         page: 1,
         size: 10
@@ -131,7 +142,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data.dataList[0])
+            // console.log(json.data.dataList[0])
             this.tableData = json.data.dataList
           }
         }
@@ -139,7 +150,17 @@ export default {
     },
     showClear () {
       this.assetNameTop = ''
-      this.assetRegisterDateTop = ''
+      this.assetRegisterDateStartTop = ''
+      this.assetRegisterDateEndTop = ''
+    },
+    formatDate (row, column) {
+      // 获取单元格数据
+      let data = ''
+      data = row[column.property]
+      if (data == null) {
+        return ''
+      }
+      return Format(data, 'YYYY-MM-DD HH:mm:ss')
     }
   },
   actions: {
