@@ -17,11 +17,11 @@
           placeholder="结束登记时间"
           class="datetop">
         </el-date-picker>
-        <el-button type="primary" size="small" @click="showInfo() == false">查询</el-button>
+        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright">
-        <el-button type="primary" size="small" @click="showEditDialog = true">新增</el-button>
+        <el-button type="primary" size="small" @click="showEditDialog = true" icon="el-icon-edit">新增</el-button>
       </div>
     </ToolBar>
     <el-table
@@ -31,7 +31,10 @@
       :header-cell-style="tableHeaderColor">>
         <el-table-column label="id" prop="id" :resizable="false" v-if="show">
         </el-table-column>
-        <el-table-column label="资产名称" prop="assetName" min-width="20%" :resizable="false">
+        <el-table-column label="资产名称" prop="assetName" min-width="20%">
+          <template slot-scope="scope">
+              <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.assetName}}</el-link>
+          </template>
         </el-table-column>
         <el-table-column label="资产类型" prop="assetType" min-width="10%" :resizable="false">
         </el-table-column>
@@ -63,7 +66,7 @@
               <el-button
                 size="mini"
                 type="danger"
-                slot="reference" >删除</el-button>
+                slot="reference" icon="el-icon-delete"></el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -161,6 +164,10 @@ export default {
         return ''
       }
       return Format(data, 'YYYY-MM-DD HH:mm:ss')
+    },
+    showAssetsInfo (row) {
+      alert(row.assetName)
+      alert(row.id)
     }
   },
   actions: {
