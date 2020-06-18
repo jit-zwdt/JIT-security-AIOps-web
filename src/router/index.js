@@ -27,7 +27,7 @@ const routes = [
   {
     path: '/index',
     component: Layout,
-    name: 'Dashboard',
+    name: '',
     meta: {
       title: '仪表盘'
     },
