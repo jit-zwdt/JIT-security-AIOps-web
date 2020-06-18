@@ -10,3 +10,9 @@ export default [
     }
   }
 ]
+
+export const assets = {
+  assetsManager: {
+    assetsList: '/assetsManager/assetsList'
+  }
+}

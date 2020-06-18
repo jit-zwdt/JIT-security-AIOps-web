@@ -1,4 +1,4 @@
-function format (date, format) {
+export function formatTodate (date, format) {
   if (!date) {
     return ''
   }
@@ -72,4 +72,8 @@ function format (date, format) {
   return format
 }
 
-export default format
+export function compareDate (d1, d2) {
+  let reg = ''
+  reg = new RegExp('-', 'g')
+  return ((new Date(d1.replace(reg, '/'))) > (new Date(d2.replace(reg, '/'))))
+}

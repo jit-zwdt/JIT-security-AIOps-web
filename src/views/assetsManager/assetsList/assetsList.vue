@@ -18,10 +18,10 @@
           class="datetop">
         </el-date-picker>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
-        <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
+        <el-button type="primary" size="small" @click="showClear() == false" icon="el-icon-refresh-left">重置</el-button>
       </div>
       <div class="queryright">
-        <el-button type="primary" size="small" @click="showEditDialog = true" icon="el-icon-edit">新增</el-button>
+        <el-button type="primary" size="small" @click="showAssetsAdd() == true" icon="el-icon-edit">新增</el-button>
       </div>
     </ToolBar>
     <el-table
@@ -66,22 +66,28 @@
               <el-button
                 size="mini"
                 type="danger"
-                slot="reference" icon="el-icon-delete"></el-button>
+                slot="reference" icon="el-icon-delete" circle></el-button>
             </el-popconfirm>
+            <el-button
+                size="mini"
+                type="primary"
+                slot="reference" icon="el-icon-edit-outline" circle @click="confirmupdate(scope.$index, scope.row)"></el-button>
           </template>
         </el-table-column>
     </el-table>
-    <AssetsAdd :showEditDialog="showEditDialog" @close="showEditDialog = false" @success="reloadData"></AssetsAdd>
+    <AssetsAdd :title="'信息'+titleType" :assetform="assetform" :showEditDialog="showEditDialog" @close="showEditDialog = false" @success="reloadData" @error="reloadData"></AssetsAdd>
   </div>
 </template>
 <script>
-import Format from '@/utils/format.js'
+import { Message } from 'element-ui'
+import { formatTodate, compareDate } from '@/utils/format.js'
 import AssetsAdd from '@/views/assetsManager/assetsList/assetsAdd.vue'
 export default {
   data () {
     return {
       show: false,
       showEditDialog: false,
+      titleType: '',
       tableData: [{
         id: '',
         assetName: '',
@@ -103,6 +109,11 @@ export default {
       serverResource: {
         assetName: '1',
         assetRegisterDate: ''
+      },
+      assetform: {
+        id: '',
+        flag: '',
+        buttonflag: false
       }
     }
   },
@@ -124,15 +135,47 @@ export default {
     },
     reloadData () {
       this.showEditDialog = false
+      this.showInfo()
     },
     confirmdelete (index, row) {
-      alert('index：' + index + 'row:' + row.assetName)
+      this.axios.delete('/assets/deleteAssets/' + row.id).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.showInfo()
+          }
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+          this.showInfo()
+        }
+      })
+    },
+    confirmupdate (index, row) {
+      this.showEditDialog = true
+      this.assetform.id = row.id
+      this.assetform.flag = '2' // 1:查看 2：修改 3：新增
+      this.assetform.buttonflag = true
+      this.titleType = '修改'
     },
     showInfo () {
       let assetRegisterDateStartTopstr = ''
-      assetRegisterDateStartTopstr = Format(this.assetRegisterDateStartTop, 'YYYY-MM-DD HH:mm:ss')
+      assetRegisterDateStartTopstr = formatTodate(this.assetRegisterDateStartTop, 'YYYY-MM-DD HH:mm:ss')
       let assetRegisterDateEndTopstr = ''
-      assetRegisterDateEndTopstr = Format(this.assetRegisterDateEndTop, 'YYYY-MM-DD 23:59:59')
+      assetRegisterDateEndTopstr = formatTodate(this.assetRegisterDateEndTop, 'YYYY-MM-DD 23:59:59')
+      if (compareDate(assetRegisterDateStartTopstr, assetRegisterDateEndTopstr)) {
+        Message({
+          message: '开始日期大于结束日期！',
+          type: 'warning'
+        })
+        return
+      }
       this.axios.post('/assets/findByCondition', {
         param: {
           assetName: this.assetNameTop,
@@ -148,6 +191,12 @@ export default {
             // console.log(json.data.dataList[0])
             this.tableData = json.data.dataList
           }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+          this.$emit('error')
         }
       })
     },
@@ -155,6 +204,7 @@ export default {
       this.assetNameTop = ''
       this.assetRegisterDateStartTop = ''
       this.assetRegisterDateEndTop = ''
+      this.titleType = ''
     },
     formatDate (row, column) {
       // 获取单元格数据
@@ -163,11 +213,21 @@ export default {
       if (data == null) {
         return ''
       }
-      return Format(data, 'YYYY-MM-DD HH:mm:ss')
+      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
     },
     showAssetsInfo (row) {
-      alert(row.assetName)
-      alert(row.id)
+      this.showEditDialog = true
+      this.assetform.id = row.id
+      this.assetform.flag = '1' // 1:查看 2：修改 3：新增
+      this.assetform.buttonflag = false
+      this.titleType = '查看'
+    },
+    showAssetsAdd () {
+      this.showEditDialog = true
+      this.assetform.id = ''
+      this.assetform.flag = '3'
+      this.assetform.buttonflag = true
+      this.titleType = '新增'
     }
   },
   actions: {
@@ -192,5 +252,7 @@ export default {
 /deep/.el-input__prefix {
   margin-top: -3px;
 }
-
+/deep/.el-button {
+  margin-left: 10px;
+}
 </style>

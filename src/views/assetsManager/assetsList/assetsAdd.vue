@@ -15,6 +15,7 @@
           class="edit-forms fromadd"
           label-position="right"
           :label-width="labelWidth"
+          :disabled="!assetform.buttonflag"
         >
         <el-row :gutter="40">
           <el-col :span="12">
@@ -120,16 +121,21 @@
         </el-form>
       </ToolBar>
     </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('close')">取 消</el-button>
-      <el-button type="primary" @click="submit">确认</el-button>
+    <div slot="footer" class="dialog-footer" >
+      <el-button @click="closefrom()">取消</el-button>
+      <el-button type="primary" @click="submitOrUpdate" v-if="assetform.buttonflag" >确认</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
 import { resetObject } from '@/utils/common'
+import { formatTodate } from '@/utils/format.js'
 export default {
   props: {
+    assetform: {
+      id: '',
+      flag: ''
+    },
     showEditDialog: Boolean,
     dialogWidth: {
       type: String,
@@ -146,6 +152,8 @@ export default {
   },
   data () {
     return {
+      loading: true,
+      showfooter: true,
       serverListForm: {
         assetName: '',
         assetType: '',
@@ -158,7 +166,8 @@ export default {
         assetRegistrant: '',
         assetUpdateDate: '',
         assetLocation: '',
-        assetLogoutDate: ''
+        assetLogoutDate: '',
+        id: ''
       },
       stateOptions: [{
         value: '0',
@@ -182,16 +191,148 @@ export default {
       }, {
         value: '4',
         label: '云平台'
-      }]
+      }],
+      id: ''
     }
   },
   methods: {
     openDialog () {
+      if (this.assetform.flag === '1') {
+        this.showfooter = false
+      } else {
+        this.showfooter = true
+      }
+      if (this.assetform.flag === '1' || this.assetform.flag === '2') {
+        this.showInfo(this.assetform.id)
+      }
+      setTimeout(this.loadingclose(), 13000)
+    },
+    loadingclose () {
+      this.loading = false
+    },
+    closefrom () {
+      // this.showfooter = true
+      this.clearform()
+      this.$emit('close')
+      this.showInfo()
+    },
+    clearform () {
       resetObject(this.serverListForm)
       this.$refs.serverListForm.resetFields()
     },
+    submitOrUpdate () {
+      if (this.assetform.flag === '3') {
+        this.submit()
+      } else if (this.assetform.flag === '2') {
+        this.update()
+      }
+    },
     submit () {
-      this.assetState = ''
+      var assetRegisterDate = this.serverListForm.assetRegisterDate
+      assetRegisterDate = formatTodate(assetRegisterDate)
+      var assetUpdateDate = this.serverListForm.assetUpdateDate
+      assetUpdateDate = formatTodate(assetUpdateDate)
+      var assetLogoutDate = this.serverListForm.assetLogoutDate
+      assetLogoutDate = formatTodate(assetLogoutDate)
+      const region = {
+        assetName: this.serverListForm.assetName,
+        assetType: this.serverListForm.assetType,
+        assetNumber: this.serverListForm.assetNumber,
+        assetState: this.serverListForm.assetState,
+        assetAmount: this.serverListForm.assetAmount,
+        assetBelongsDept: this.serverListForm.assetBelongsDept,
+        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
+        assetRegisterDate: assetRegisterDate,
+        assetRegistrant: this.serverListForm.assetRegistrant,
+        assetUpdateDate: assetUpdateDate,
+        assetLocation: this.serverListForm.assetLocation,
+        assetLogoutDate: assetLogoutDate
+      }
+      this.axios.post('/assets/addAssets', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+            this.clearform()
+            this.$emit('success')
+            // this.$router.push({ path: '/assetsManager/assetsList' })
+          }
+        } else {
+          this.$message({
+            message: '添加失败',
+            type: 'error'
+          })
+          this.clearform()
+          this.$emit('error')
+        }
+      })
+    },
+    update () {
+      var assetRegisterDate = this.serverListForm.assetRegisterDate
+      assetRegisterDate = formatTodate(assetRegisterDate)
+      var assetUpdateDate = this.serverListForm.assetUpdateDate
+      assetUpdateDate = formatTodate(assetUpdateDate)
+      var assetLogoutDate = this.serverListForm.assetLogoutDate
+      assetLogoutDate = formatTodate(assetLogoutDate)
+      const region = {
+        id: this.assetform.id,
+        assetName: this.serverListForm.assetName,
+        assetType: this.serverListForm.assetType,
+        assetNumber: this.serverListForm.assetNumber,
+        assetState: this.serverListForm.assetState,
+        assetAmount: this.serverListForm.assetAmount,
+        assetBelongsDept: this.serverListForm.assetBelongsDept,
+        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
+        assetRegisterDate: assetRegisterDate,
+        assetRegistrant: this.serverListForm.assetRegistrant,
+        assetUpdateDate: assetUpdateDate,
+        assetLocation: this.serverListForm.assetLocation,
+        assetLogoutDate: assetLogoutDate
+      }
+      this.axios.put('/assets/updateAssets', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.clearform()
+            this.$emit('success')
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+          this.clearform()
+          this.$emit('error')
+        }
+      })
+    },
+    showInfo (assetid) {
+      if (assetid != null && assetid !== '') {
+        this.axios.post('/assets/findById/' + assetid, {
+          id: this.id
+        }).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              // console.log(json.data.dataList[0])
+              this.serverListForm = json.data
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+            this.$emit('error')
+          }
+        })
+      }
     }
   }
 }
