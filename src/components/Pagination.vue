@@ -28,7 +28,7 @@ export default {
   },
   data () {
     return {
-      pageSizes: [10, 20, 50, 100],
+      pageSizes: [15, 30, 50, 100],
       page: {
         page_currentPage: 1,
         page_pageSize: 15
