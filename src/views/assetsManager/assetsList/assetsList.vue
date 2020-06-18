@@ -101,26 +101,14 @@
       @success="reloadData"
       @error="reloadData"
     ></AssetsAdd>
-    <div class="block">
-      <span class="demonstration"></span>
-      <el-pagination
-        :background="false"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :pager-count="5"
-        :page-sizes="[15, 30, 50, 100]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="currentTotal"
-      ></el-pagination>
-    </div>
+    <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
   </div>
 </template>
 <script>
 import { Message } from 'element-ui'
 import { formatTodate, compareDate } from '@/utils/format.js'
 import AssetsAdd from '@/views/assetsManager/assetsList/assetsAdd.vue'
+import Pagination from '@/components/Pagination.vue'
 export default {
   data () {
     return {
@@ -160,7 +148,7 @@ export default {
     }
   },
   created () {
-    this.showInfo('1')
+    this.showInfo()
   },
   methods: {
     // 修改table tr行的背景色
@@ -171,16 +159,6 @@ export default {
       if (rowIndex === 0) {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
-    },
-    handleSizeChange (val) {
-      var pageSize = `${val}`
-      this.pageSize = parseInt(pageSize)
-      this.$nextTick(() =>
-        this.showInfo()
-      )
-    },
-    handleCurrentChange (val) {
-      this.showInfo()
     },
     showUserAuth (params) {
       this.$router.push({ name: 'userCenterAuthlist', query: { id: this.usernane } })
@@ -216,6 +194,11 @@ export default {
       this.assetform.buttonflag = true
       this.titleType = '修改'
     },
+    pageChange (item) {
+      this.currentPage = item.page_currentPage
+      this.pageSize = item.page_pageSize
+      this.showInfo()
+    },
     showInfo (str) {
       let assetRegisterDateStartTopstr = ''
       assetRegisterDateStartTopstr = formatTodate(this.assetRegisterDateStartTop, 'YYYY-MM-DD HH:mm:ss')
@@ -228,17 +211,13 @@ export default {
         })
         return
       }
-      var pageNum = '1'
-      if (str !== '1') {
-        pageNum = parseInt(this.currentPage)
-      }
       this.axios.post('/assets/findByCondition', {
         param: {
           assetName: this.assetNameTop,
           assetRegisterStartDate: assetRegisterDateStartTopstr,
           assetRegisterEndDate: assetRegisterDateEndTopstr
         },
-        page: pageNum,
+        page: this.currentPage,
         size: this.pageSize
       }).then((resp) => {
         if (resp.status === 200) {
@@ -253,7 +232,6 @@ export default {
             message: '查询失败',
             type: 'error'
           })
-          this.$emit('error')
         }
       })
     },
@@ -289,7 +267,7 @@ export default {
   },
   actions: {
   },
-  components: { AssetsAdd }
+  components: { AssetsAdd, Pagination }
 }
 </script>
 <style lang="scss" scoped>
