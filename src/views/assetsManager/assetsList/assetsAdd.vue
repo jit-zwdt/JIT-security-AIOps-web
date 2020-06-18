@@ -16,6 +16,7 @@
           label-position="right"
           :label-width="labelWidth"
           :disabled="!assetform.buttonflag"
+          :rules="rules"
         >
         <el-row :gutter="40">
           <el-col :span="12">
@@ -58,7 +59,7 @@
         <el-row :gutter="40">
           <el-col :span="12">
             <el-form-item label="数量：" prop="assetAmount">
-              <el-input v-model="serverListForm.assetAmount" clearable></el-input>
+              <el-input v-model="serverListForm.assetAmount" oninput="value=value.replace(/[^\d]/g,'')" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -123,7 +124,7 @@
     </div>
     <div slot="footer" class="dialog-footer" >
       <el-button @click="closefrom()">取消</el-button>
-      <el-button type="primary" @click="submitOrUpdate" v-if="assetform.buttonflag" >确认</el-button>
+      <el-button type="primary" @click="submitOrUpdate('serverListForm')" v-if="assetform.buttonflag" >确认</el-button>
     </div>
   </el-dialog>
 </template>
@@ -192,7 +193,30 @@ export default {
         value: '4',
         label: '云平台'
       }],
-      id: ''
+      id: '',
+      rules: {
+        assetName: [
+          { required: true, message: '请输入资产名称' }
+        ],
+        assetNumber: [
+          { required: true, message: '请输入资产编号' }
+        ],
+        assetType: [
+          { required: true, message: '请选择资产类型' }
+        ],
+        assetState: [
+          { required: true, message: '请选择资产状态' }
+        ],
+        assetAmount: [
+          { required: true, message: '请输入资产数量' }
+        ],
+        assetRegistrant: [
+          { required: true, message: '请输入登记人' }
+        ],
+        assetRegisterDate: [
+          { required: true, message: '请选择资产登记时间' }
+        ]
+      }
     }
   },
   methods: {
@@ -220,20 +244,26 @@ export default {
       resetObject(this.serverListForm)
       this.$refs.serverListForm.resetFields()
     },
-    submitOrUpdate () {
-      if (this.assetform.flag === '3') {
-        this.submit()
-      } else if (this.assetform.flag === '2') {
-        this.update()
-      }
+    submitOrUpdate (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.assetform.flag === '3') {
+            this.submit()
+          } else if (this.assetform.flag === '2') {
+            this.update()
+          }
+        } else {
+          return false
+        }
+      })
     },
     submit () {
       var assetRegisterDate = this.serverListForm.assetRegisterDate
-      assetRegisterDate = formatTodate(assetRegisterDate)
+      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
       var assetUpdateDate = this.serverListForm.assetUpdateDate
-      assetUpdateDate = formatTodate(assetUpdateDate)
+      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
       var assetLogoutDate = this.serverListForm.assetLogoutDate
-      assetLogoutDate = formatTodate(assetLogoutDate)
+      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
       const region = {
         assetName: this.serverListForm.assetName,
         assetType: this.serverListForm.assetType,
@@ -272,13 +302,12 @@ export default {
     },
     update () {
       var assetRegisterDate = this.serverListForm.assetRegisterDate
-      assetRegisterDate = formatTodate(assetRegisterDate)
+      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
       var assetUpdateDate = this.serverListForm.assetUpdateDate
-      assetUpdateDate = formatTodate(assetUpdateDate)
+      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
       var assetLogoutDate = this.serverListForm.assetLogoutDate
-      assetLogoutDate = formatTodate(assetLogoutDate)
+      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
       const region = {
-        id: this.assetform.id,
         assetName: this.serverListForm.assetName,
         assetType: this.serverListForm.assetType,
         assetNumber: this.serverListForm.assetNumber,
@@ -292,7 +321,7 @@ export default {
         assetLocation: this.serverListForm.assetLocation,
         assetLogoutDate: assetLogoutDate
       }
-      this.axios.put('/assets/updateAssets', region).then((resp) => {
+      this.axios.put('/assets/updateAssets/' + this.assetform.id, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
