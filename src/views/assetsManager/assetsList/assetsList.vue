@@ -3,79 +3,118 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="12">
-          <el-input type="text" v-model="assetNameTop" size="small" placeholder="资产名称" clearable ></el-input>
+          <el-input type="text" v-model="assetNameTop" size="small" placeholder="资产名称" clearable></el-input>
         </el-col>
         <el-date-picker
           v-model="assetRegisterDateStartTop"
           type="date"
           placeholder="开始登记时间"
-          class="datetop">
-        </el-date-picker>
+          class="datetop"
+        ></el-date-picker>
         <el-date-picker
           v-model="assetRegisterDateEndTop"
           type="date"
           placeholder="结束登记时间"
-          class="datetop">
-        </el-date-picker>
+          class="datetop"
+        ></el-date-picker>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
-        <el-button type="primary" size="small" @click="showClear() == false" icon="el-icon-refresh-left">重置</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          @click="showClear() == false"
+          icon="el-icon-refresh-left"
+        >重置</el-button>
       </div>
       <div class="queryright">
-        <el-button type="primary" size="small" @click="showAssetsAdd() == true" icon="el-icon-edit">新增</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          @click="showAssetsAdd() == true"
+          icon="el-icon-edit"
+        >新增</el-button>
       </div>
     </ToolBar>
     <el-table
       :data="tableData"
-      border style="width: 100%"
+      border
+      style="width: 100%"
       :row-style="tableRowStyle"
-      :header-cell-style="tableHeaderColor">>
-        <el-table-column label="id" prop="id" :resizable="false" v-if="show">
-        </el-table-column>
-        <el-table-column label="资产名称" prop="assetName" min-width="20%">
-          <template slot-scope="scope">
-              <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.assetName}}</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column label="资产类型" prop="assetType" min-width="10%" :resizable="false">
-        </el-table-column>
-        <el-table-column label="资产编号" prop="assetNumber" min-width="15%" :resizable="false">
-        </el-table-column>
-        <el-table-column label="资产状态" prop="assetState" min-width="10%" :resizable="false">
-        </el-table-column>
-        <el-table-column label="数量" prop="assetAmount" min-width="10%" :resizable="false">
-        </el-table-column>
-        <el-table-column label="资产所属单位" prop="assetBelongsDept" :resizable="false" v-if="show">
-        </el-table-column>
-        <el-table-column label="资产所属人" prop="assetBelongsPerson" :resizable="false" v-if="show">
-        </el-table-column>
-        <el-table-column label="资产登记时间" prop="assetRegisterDate" min-width="15%" :resizable="false" :formatter="formatDate">
-        </el-table-column>
-        <el-table-column label="登记人" prop="assetRegistrant" min-width="10%" :resizable="false">
-        </el-table-column>
-        <el-table-column label="资产修改时间" prop="assetUpdateDate" :resizable="false" v-if="show" :formatter="formatDate">
-        </el-table-column>
-        <el-table-column label="资产位置" prop="assetLocation" :resizable="false" v-if="show">
-        </el-table-column>
-        <el-table-column label="资产注销时间" prop="assetLogoutDate" :resizable="false" :formatter="formatDate" v-if="show">
-        </el-table-column>
-        <el-table-column align="center" label="操作" min-width="10%">
-          <template slot-scope="scope">
-            <el-popconfirm
-              title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)"
-            >
-              <el-button
-                size="mini"
-                type="danger"
-                slot="reference" icon="el-icon-delete" circle></el-button>
-            </el-popconfirm>
-            <el-button
-                size="mini"
-                type="primary"
-                slot="reference" icon="el-icon-edit-outline" circle @click="confirmupdate(scope.$index, scope.row)"></el-button>
-          </template>
-        </el-table-column>
+      :header-cell-style="tableHeaderColor"
+    >
+      >
+      <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="资产名称" prop="assetName" min-width="20%">
+        <template slot-scope="scope">
+          <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.assetName}}</el-link>
+        </template>
+      </el-table-column>
+      <el-table-column label="资产类型" prop="assetType" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="资产编号" prop="assetNumber" min-width="15%" :resizable="false"></el-table-column>
+      <el-table-column label="资产状态" prop="assetState" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="数量" prop="assetAmount" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="资产所属单位" prop="assetBelongsDept" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="资产所属人" prop="assetBelongsPerson" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column
+        label="资产登记时间"
+        prop="assetRegisterDate"
+        min-width="15%"
+        :resizable="false"
+        :formatter="formatDate"
+      ></el-table-column>
+      <el-table-column label="登记人" prop="assetRegistrant" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column
+        label="资产修改时间"
+        prop="assetUpdateDate"
+        :resizable="false"
+        v-if="show"
+        :formatter="formatDate"
+      ></el-table-column>
+      <el-table-column label="资产位置" prop="assetLocation" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column
+        label="资产注销时间"
+        prop="assetLogoutDate"
+        :resizable="false"
+        :formatter="formatDate"
+        v-if="show"
+      ></el-table-column>
+      <el-table-column align="center" label="操作" min-width="10%">
+        <template slot-scope="scope">
+          <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
+            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete" circle></el-button>
+          </el-popconfirm>
+          <el-button
+            size="mini"
+            type="primary"
+            slot="reference"
+            icon="el-icon-edit-outline"
+            circle
+            @click="confirmupdate(scope.$index, scope.row)"
+          ></el-button>
+        </template>
+      </el-table-column>
     </el-table>
-    <AssetsAdd :title="'信息'+titleType" :assetform="assetform" :showEditDialog="showEditDialog" @close="showEditDialog = false" @success="reloadData" @error="reloadData"></AssetsAdd>
+    <AssetsAdd
+      :title="'信息'+titleType"
+      :assetform="assetform"
+      :showEditDialog="showEditDialog"
+      @close="showEditDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></AssetsAdd>
+    <div class="block">
+      <span class="demonstration"></span>
+      <el-pagination
+        :background="false"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :pager-count="5"
+        :page-sizes="[15, 30, 50, 100]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="currentTotal"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 <script>
@@ -114,11 +153,14 @@ export default {
         id: '',
         flag: '',
         buttonflag: false
-      }
+      },
+      currentPage: 1,
+      pageSize: 15,
+      currentTotal: 0
     }
   },
   created () {
-    this.showInfo()
+    this.showInfo('1')
   },
   methods: {
     // 修改table tr行的背景色
@@ -129,6 +171,16 @@ export default {
       if (rowIndex === 0) {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
+    },
+    handleSizeChange (val) {
+      var pageSize = `${val}`
+      this.pageSize = parseInt(pageSize)
+      this.$nextTick(() =>
+        this.showInfo()
+      )
+    },
+    handleCurrentChange (val) {
+      this.showInfo()
     },
     showUserAuth (params) {
       this.$router.push({ name: 'userCenterAuthlist', query: { id: this.usernane } })
@@ -164,7 +216,7 @@ export default {
       this.assetform.buttonflag = true
       this.titleType = '修改'
     },
-    showInfo () {
+    showInfo (str) {
       let assetRegisterDateStartTopstr = ''
       assetRegisterDateStartTopstr = formatTodate(this.assetRegisterDateStartTop, 'YYYY-MM-DD HH:mm:ss')
       let assetRegisterDateEndTopstr = ''
@@ -176,20 +228,25 @@ export default {
         })
         return
       }
+      var pageNum = '1'
+      if (str !== '1') {
+        pageNum = parseInt(this.currentPage)
+      }
       this.axios.post('/assets/findByCondition', {
         param: {
           assetName: this.assetNameTop,
           assetRegisterStartDate: assetRegisterDateStartTopstr,
           assetRegisterEndDate: assetRegisterDateEndTopstr
         },
-        page: 1,
-        size: 10
+        page: pageNum,
+        size: this.pageSize
       }).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             // console.log(json.data.dataList[0])
             this.tableData = json.data.dataList
+            this.currentTotal = json.data.totalRow
           }
         } else {
           this.$message({
@@ -237,10 +294,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .queryleft {
-  float:left;
+  float: left;
 }
 .queryright {
-  float:right;
+  float: right;
 }
 .tableHeaderColor {
   font-size: 20;

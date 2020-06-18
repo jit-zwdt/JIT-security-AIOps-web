@@ -258,26 +258,7 @@ export default {
       })
     },
     submit () {
-      var assetRegisterDate = this.serverListForm.assetRegisterDate
-      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetUpdateDate = this.serverListForm.assetUpdateDate
-      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetLogoutDate = this.serverListForm.assetLogoutDate
-      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
-      const region = {
-        assetName: this.serverListForm.assetName,
-        assetType: this.serverListForm.assetType,
-        assetNumber: this.serverListForm.assetNumber,
-        assetState: this.serverListForm.assetState,
-        assetAmount: this.serverListForm.assetAmount,
-        assetBelongsDept: this.serverListForm.assetBelongsDept,
-        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
-        assetRegisterDate: assetRegisterDate,
-        assetRegistrant: this.serverListForm.assetRegistrant,
-        assetUpdateDate: assetUpdateDate,
-        assetLocation: this.serverListForm.assetLocation,
-        assetLogoutDate: assetLogoutDate
-      }
+      const region = this.makeParam()
       this.axios.post('/assets/addAssets', region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -301,26 +282,7 @@ export default {
       })
     },
     update () {
-      var assetRegisterDate = this.serverListForm.assetRegisterDate
-      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetUpdateDate = this.serverListForm.assetUpdateDate
-      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetLogoutDate = this.serverListForm.assetLogoutDate
-      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
-      const region = {
-        assetName: this.serverListForm.assetName,
-        assetType: this.serverListForm.assetType,
-        assetNumber: this.serverListForm.assetNumber,
-        assetState: this.serverListForm.assetState,
-        assetAmount: this.serverListForm.assetAmount,
-        assetBelongsDept: this.serverListForm.assetBelongsDept,
-        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
-        assetRegisterDate: assetRegisterDate,
-        assetRegistrant: this.serverListForm.assetRegistrant,
-        assetUpdateDate: assetUpdateDate,
-        assetLocation: this.serverListForm.assetLocation,
-        assetLogoutDate: assetLogoutDate
-      }
+      const region = this.makeParam()
       this.axios.put('/assets/updateAssets/' + this.assetform.id, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -362,6 +324,29 @@ export default {
           }
         })
       }
+    },
+    makeParam () {
+      var assetRegisterDate = this.serverListForm.assetRegisterDate
+      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
+      var assetUpdateDate = this.serverListForm.assetUpdateDate
+      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
+      var assetLogoutDate = this.serverListForm.assetLogoutDate
+      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
+      const region = {
+        assetName: this.serverListForm.assetName,
+        assetType: this.serverListForm.assetType,
+        assetNumber: this.serverListForm.assetNumber,
+        assetState: this.serverListForm.assetState,
+        assetAmount: this.serverListForm.assetAmount,
+        assetBelongsDept: this.serverListForm.assetBelongsDept,
+        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
+        assetRegisterDate: assetRegisterDate,
+        assetRegistrant: this.serverListForm.assetRegistrant,
+        assetUpdateDate: assetUpdateDate,
+        assetLocation: this.serverListForm.assetLocation,
+        assetLogoutDate: assetLogoutDate
+      }
+      return region
     }
   }
 }
