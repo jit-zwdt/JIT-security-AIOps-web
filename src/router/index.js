@@ -8,6 +8,7 @@ import Layout from '@/views/layout/App.vue'
 import RegionManager from '@/views/regionManager/Index.vue'
 import RegionTree from '@/views/regionManager/Tree.vue'
 import AssetsManager from '@/views/assetsManager/assetsManager'
+import MonitorTemplatesManager from '@/views/monitorTemplatesManager/monitorTemplatesManager'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -93,6 +94,15 @@ const routes = [
       title: '资产管理'
     },
     children: AssetsManager
+  },
+  {
+    path: '/monitorTemplatesManager',
+    name: 'monitorTemplatesManager',
+    component: Layout,
+    meta: {
+      title: '监控模板'
+    },
+    children: MonitorTemplatesManager
   },
   {
     path: '*',
