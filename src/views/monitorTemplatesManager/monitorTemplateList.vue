@@ -16,9 +16,7 @@
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
-      <div class="queryright">
-        <el-button type="primary" size="small" @click="showEditDialog = true" icon="el-icon-edit">新增</el-button>
-      </div>
+      <div class="queryright"></div>
     </ToolBar>
     <el-table
       :data="tableData"
@@ -37,20 +35,11 @@
         :resizable="false"
         :formatter="formatType"
       ></el-table-column>
-      <el-table-column label="帮助描述" prop="help" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="使用模版" prop="userTemplate" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column
-        label="创建时间"
-        prop="gmtCreate"
-        min-width="10%"
-        :resizable="false"
-        :formatter="formatDate"
-      ></el-table-column>
+      <el-table-column label="帮助描述文档" prop="helpDoc" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="使用模版" prop="templates" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="创建时间" prop="gmtCreate" min-width="10%" :resizable="false" :formatter="formatDate"></el-table-column>
       <el-table-column align="center" label="操作" min-width="10%">
         <template slot-scope="scope">
-          <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
-            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete" circle></el-button>
-          </el-popconfirm>
           <el-button
             size="mini"
             type="primary"
@@ -64,7 +53,7 @@
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
     <monitorTemplateAdd
-      :title="'信息'+titleType"
+      :title="titleType"
       :editform="editform"
       :showEditDialog="showEditDialog"
       @close="showEditDialog = false"
@@ -88,7 +77,7 @@ export default {
           id: '',
           name: '',
           type: '',
-          help: '',
+          helpDoc: '',
           userTemplate: ''
         }
       ],
@@ -126,7 +115,6 @@ export default {
       ],
       editform: {
         id: '',
-        flag: '',
         buttonflag: false
       },
       currentPage: 1,
@@ -180,10 +168,9 @@ export default {
     },
     confirmupdate (index, row) {
       this.showEditDialog = true
-      this.editfrom.id = row.id
-      this.editfrom.flag = '2' // 1:查看 2：修改 3：新增
-      this.editfrom.buttonflag = true
-      this.titleType = '修改'
+      this.editform.id = row.id
+      this.editform.buttonflag = true
+      this.titleType = row.name
     },
     pageChange (item) {
       this.currentPage = item.page_currentPage
