@@ -64,9 +64,12 @@
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
     <monitorTemplateAdd
+      :title="'信息'+titleType"
+      :editform="editform"
       :showEditDialog="showEditDialog"
       @close="showEditDialog = false"
       @success="reloadData"
+      @error="reloadData"
     ></monitorTemplateAdd>
   </div>
 </template>
@@ -79,6 +82,7 @@ export default {
     return {
       show: false,
       showEditDialog: false,
+      titleType: '',
       tableData: [
         {
           id: '',
@@ -120,6 +124,11 @@ export default {
           label: '云平台'
         }
       ],
+      editform: {
+        id: '',
+        flag: '',
+        buttonflag: false
+      },
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0
@@ -171,9 +180,9 @@ export default {
     },
     confirmupdate (index, row) {
       this.showEditDialog = true
-      this.assetform.id = row.id
-      this.assetform.flag = '2' // 1:查看 2：修改 3：新增
-      this.assetform.buttonflag = true
+      this.editfrom.id = row.id
+      this.editfrom.flag = '2' // 1:查看 2：修改 3：新增
+      this.editfrom.buttonflag = true
       this.titleType = '修改'
     },
     pageChange (item) {
@@ -184,6 +193,7 @@ export default {
     showClear () {
       this.temp_name = ''
       this.temp_type = ''
+      this.titleType = ''
     },
     formatDate (row, column) {
       let data = ''
