@@ -38,7 +38,7 @@
       ></el-table-column>
       <el-table-column label="帮助描述文档" prop="helpDoc" min-width="10%" :resizable="false">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="？帮助" placement="top">
+          <el-tooltip class="item" effect="dark" content="？帮助" placement="right">
             <el-link type="primary" @click="showTemp(scope.$index, scope.row)">查看</el-link>
           </el-tooltip>
         </template>
