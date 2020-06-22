@@ -21,7 +21,7 @@
           <el-row :gutter="40">
             <el-col :span="100">
               <el-form-item label="监控模版：" prop="templates">
-                <el-select v-model="tempform.templates" placeholder="请选择">
+                <el-select v-model="templates" placeholder="请选择">
                   <el-option
                     v-for="item in templates"
                     :key="item.value"
@@ -71,22 +71,8 @@ export default {
       loading: true,
       showfooter: true,
       tempform: {
-        templates: '',
         id: ''
       },
-      templates: [{
-        value: '1',
-        label: '网络设备'
-      }, {
-        value: '2',
-        label: '通讯设备'
-      }, {
-        value: '3',
-        label: '服务器'
-      }, {
-        value: '4',
-        label: '云平台'
-      }],
       id: '',
       rules: {
         templates: [
@@ -101,7 +87,8 @@ export default {
         boundTemplate: '上海市普陀区金沙江路 1519 弄'
       }, {
         boundTemplate: '上海市普陀区金沙江路 1516 弄'
-      }]
+      }],
+      templates: null
     }
   },
   methods: {
@@ -160,6 +147,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             console.log(json.data)
+            this.templates = json.data
           }
         } else {
           this.$message({
