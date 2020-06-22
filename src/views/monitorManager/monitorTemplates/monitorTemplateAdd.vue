@@ -21,23 +21,25 @@
           <el-row :gutter="40">
             <el-col :span="100">
               <el-form-item label="监控模版：" prop="templates">
-                <el-select v-model="templates" placeholder="请选择">
+                <el-select
+                  v-model="tempform.templates"
+                  placeholder="请选择"
+                  multiple
+                  clearable
+                  filterable
+                  class="selectSize"
+                >
                   <el-option
-                    v-for="item in templates"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="template in templateData"
+                    :key="template.templateid"
+                    :label="template.name"
+                    :value="template.templateid"
                   ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-        <template>
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="boundTemplate" label="已绑定模版" width="350"></el-table-column>
-          </el-table>
-        </template>
       </ToolBar>
     </div>
     <div slot="footer" class="dialog-footer">
@@ -50,7 +52,8 @@
 export default {
   props: {
     editform: {
-      id: ''
+      id: '',
+      templates: ''
     },
     showEditDialog: Boolean,
     dialogWidth: {
@@ -71,32 +74,22 @@ export default {
       loading: true,
       showfooter: true,
       tempform: {
-        id: ''
+        templates: ''
       },
-      id: '',
       rules: {
         templates: [
           { required: true, message: '请选择监控模版' }
         ]
       },
-      tableData: [{
-        boundTemplate: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        boundTemplate: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        boundTemplate: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        boundTemplate: '上海市普陀区金沙江路 1516 弄'
-      }],
-      templates: null
+      templateData: []
     }
   },
   methods: {
     openDialog () {
       this.getTemplates()
+      this.setExitSelect()
     },
     closefrom () {
-      // this.showfooter = true
       this.clearform()
       this.$emit('close')
     },
@@ -113,13 +106,15 @@ export default {
       })
     },
     submit () {
-      const region = this.makeParam()
-      this.axios.post('/assets/addAssets', region).then((resp) => {
+      const param = new URLSearchParams()
+      param.append('id', this.editform.id)
+      param.append('templates', this.tempform.templates)
+      this.axios.post('/monitorTemplates/bindTemplates', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: '修改成功',
               type: 'success'
             })
             this.clearform()
@@ -127,7 +122,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: '修改失败',
             type: 'error'
           })
           this.clearform()
@@ -135,19 +130,12 @@ export default {
         }
       })
     },
-    makeParam () {
-      const region = {
-        assetName: this.tempform.assetName
-      }
-      return region
-    },
     getTemplates () {
       this.axios.post('/monitorTemplates/getTemplates').then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
-            this.templates = json.data
+            this.templateData = json.data
           }
         } else {
           this.$message({
@@ -158,7 +146,17 @@ export default {
           this.$emit('error')
         }
       })
+    },
+    setExitSelect () {
+      if (this.editform.templates !== null && this.editform.templates !== '') {
+        this.tempform.templates = this.editform.templates.split(',')
+      }
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+/deep/.selectSize {
+  width: 600px !important;
+}
+</style>

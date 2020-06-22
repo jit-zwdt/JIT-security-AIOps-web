@@ -161,9 +161,7 @@ export default {
     reloadData () {
       this.showEditDialog = false
       this.showhelpDialog = false
-    },
-    confirmdelete (index, row) {
-      alert('index：' + index + 'row:' + row.assetName)
+      this.showInfo()
     },
     showInfo () {
       this.loading = true
@@ -182,7 +180,7 @@ export default {
           size: this.pageSize,
           orders: [
             {
-              property: 'type',
+              property: 'orderNum',
               direction: 'ASC'
             }
           ]
@@ -201,6 +199,7 @@ export default {
     confirmupdate (index, row) {
       this.showEditDialog = true
       this.editform.id = row.id
+      this.editform.templates = row.templates
       this.editform.buttonflag = true
       this.titleType = row.name
     },
