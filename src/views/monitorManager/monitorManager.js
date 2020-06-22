@@ -1,5 +1,5 @@
 import MonitorTemplateList from '@/views/monitorManager/monitorTemplates/monitorTemplateList.vue'
-import MonitorList from '@/views/monitorManager/monitorview/assetsList.vue'
+import MonitorList from '@/views/monitorManager/monitorview/monitorList.vue'
 
 export default [
   {

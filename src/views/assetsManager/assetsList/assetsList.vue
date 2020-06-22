@@ -42,16 +42,21 @@
       :row-style="tableRowStyle"
       :header-cell-style="tableHeaderColor"
     >
-      >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="资产名称" prop="assetName" min-width="20%">
         <template slot-scope="scope">
           <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.assetName}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="资产类型" prop="assetType" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column
+        label="资产类型"
+        prop="assetType"
+        min-width="10%"
+        :resizable="false"
+        :formatter="assetTypeformatType"
+      ></el-table-column>
       <el-table-column label="资产编号" prop="assetNumber" min-width="15%" :resizable="false"></el-table-column>
-      <el-table-column label="资产状态" prop="assetState" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="资产状态" prop="assetState" min-width="10%" :resizable="false" :formatter="assetStateformatType"></el-table-column>
       <el-table-column label="数量" prop="assetAmount" min-width="10%" :resizable="false"></el-table-column>
       <el-table-column label="资产所属单位" prop="assetBelongsDept" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="资产所属人" prop="assetBelongsPerson" :resizable="false" v-if="show"></el-table-column>
@@ -164,9 +169,6 @@ export default {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
-    showUserAuth (params) {
-      this.$router.push({ name: 'userCenterAuthlist', query: { id: this.usernane } })
-    },
     reloadData () {
       this.showEditDialog = false
       this.showInfo()
@@ -246,6 +248,32 @@ export default {
           })
         }
       })
+    },
+    assetTypeformatType (row, column) {
+      let data = ''
+      data = row[column.property]
+      if (data === '1') {
+        return '网络设备'
+      } else if (data === '2') {
+        return '通讯设备'
+      } else if (data === '3') {
+        return '服务器'
+      } else if (data === '4') {
+        return '云平台'
+      }
+      return ''
+    },
+    assetStateformatType (row, column) {
+      let data = ''
+      data = row[column.property]
+      if (data === '0') {
+        return '未用'
+      } else if (data === '1') {
+        return '在用'
+      } else if (data === '2') {
+        return '禁用'
+      }
+      return ''
     },
     showClear () {
       this.assetNameTop = ''
