@@ -21,6 +21,7 @@
     <el-table
       :data="tableData"
       border
+      v-loading="loading"
       style="width: 100%"
       :row-style="tableRowStyle"
       :header-cell-style="tableHeaderColor"
@@ -44,7 +45,13 @@
         </template>
       </el-table-column>
       <el-table-column label="使用模版" prop="templates" min-width="25%" :resizable="false"></el-table-column>
-      <el-table-column label="创建时间" prop="gmtCreate" min-width="15%" :resizable="false" :formatter="formatDate"></el-table-column>
+      <el-table-column
+        label="创建时间"
+        prop="gmtCreate"
+        min-width="15%"
+        :resizable="false"
+        :formatter="formatDate"
+      ></el-table-column>
       <el-table-column align="center" label="操作" min-width="10%">
         <template slot-scope="scope">
           <el-button
@@ -67,18 +74,14 @@
       @success="reloadData"
       @error="reloadData"
     ></monitorTemplateAdd>
-    <HelpTemplates
-      :helpform="helpform"
-      :showhelpDialog="showhelpDialog"
-    >
-    </HelpTemplates>
+    <HelpTemplates :helpform="helpform" :showhelpDialog="showhelpDialog"></HelpTemplates>
   </div>
 </template>
 <script>
 import { formatTodate } from '@/utils/format.js'
-import monitorTemplateAdd from '@/views/monitorTemplatesManager/monitorTemplateAdd.vue'
+import monitorTemplateAdd from '@/views/monitorManager/monitorTemplates/monitorTemplateAdd.vue'
 import Pagination from '@/components/Pagination.vue'
-import HelpTemplates from '@/views/monitorTemplatesManager/helpTemplates/helpTemplates.vue'
+import HelpTemplates from '@/views/monitorManager/helpTemplates/helpTemplates.vue'
 export default {
   data () {
     return {
@@ -137,7 +140,10 @@ export default {
       helpform: {
         url: '',
         name: ''
-      }
+      },
+      loading: true,
+      tableDataclear: [],
+      setTimeoutster: ''
     }
   },
   created () {
@@ -160,6 +166,12 @@ export default {
       alert('index：' + index + 'row:' + row.assetName)
     },
     showInfo () {
+      this.loading = true
+      this.tableData = this.tableDataclear
+      const _this = this
+      this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
+    },
+    showInfoTimeout () {
       this.axios
         .post('/monitorTemplates/getMonitorTemplates', {
           param: {
@@ -181,6 +193,7 @@ export default {
             if (json.code === 1) {
               this.tableData = json.data.dataList
               this.currentTotal = json.data.totalRow
+              this.loading = false
             }
           }
         })

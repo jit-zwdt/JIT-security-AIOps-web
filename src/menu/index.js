@@ -56,16 +56,22 @@ const assetsManager = {
     }
   }
 }
-const monitorTemplatesManager = {
-  name: '监控模板',
+const monitorManager = {
+  name: '监控',
   permissionsKey: '',
-  icon: 'fa fa-cubes',
+  icon: 'fa el-icon-monitor',
   children: {
+    monitorList: {
+      name: '监控列表',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: '/monitorManager/monitorList'
+    },
     monitorTemplates: {
       name: '监控模板',
       permissionsKey: '',
-      icon: 'fa fa-cube',
-      path: '/monitorTemplatesManager/monitorTemplateList'
+      icon: 'fa el-icon-tickets',
+      path: '/monitorManager/monitorTemplateList'
     }
   }
 }
@@ -74,5 +80,5 @@ export default {
   regionManager,
   updateManager,
   assetsManager,
-  monitorTemplatesManager
+  monitorManager
 }
