@@ -27,7 +27,8 @@
       @sort-change="changeTableSort"
     >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="名称" prop="name" min-width="10%" :resizable="false" :sortable="true"></el-table-column>
+      <el-table-column label="ico" prop="ico" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="名称" prop="name" min-width="25%" :resizable="false" :sortable="true"></el-table-column>
       <el-table-column
         label="类型"
         prop="type"
@@ -35,9 +36,15 @@
         :resizable="false"
         :formatter="formatType"
       ></el-table-column>
-      <el-table-column label="帮助描述文档" prop="helpDoc" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="使用模版" prop="templates" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="创建时间" prop="gmtCreate" min-width="10%" :resizable="false" :formatter="formatDate"></el-table-column>
+      <el-table-column label="帮助描述文档" prop="helpDoc" min-width="10%" :resizable="false">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="？帮助" placement="top">
+            <el-link type="primary" @click="showTemp(scope.$index, scope.row)">查看</el-link>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="使用模版" prop="templates" min-width="25%" :resizable="false"></el-table-column>
+      <el-table-column label="创建时间" prop="gmtCreate" min-width="15%" :resizable="false" :formatter="formatDate"></el-table-column>
       <el-table-column align="center" label="操作" min-width="10%">
         <template slot-scope="scope">
           <el-button
@@ -60,12 +67,18 @@
       @success="reloadData"
       @error="reloadData"
     ></monitorTemplateAdd>
+    <HelpTemplates
+      :helpform="helpform"
+      :showhelpDialog="showhelpDialog"
+    >
+    </HelpTemplates>
   </div>
 </template>
 <script>
 import { formatTodate } from '@/utils/format.js'
 import monitorTemplateAdd from '@/views/monitorTemplatesManager/monitorTemplateAdd.vue'
 import Pagination from '@/components/Pagination.vue'
+import HelpTemplates from '@/views/monitorTemplatesManager/helpTemplates/helpTemplates.vue'
 export default {
   data () {
     return {
@@ -119,7 +132,12 @@ export default {
       },
       currentPage: 1,
       pageSize: 15,
-      currentTotal: 0
+      currentTotal: 0,
+      showhelpDialog: false,
+      helpform: {
+        url: '',
+        name: ''
+      }
     }
   },
   created () {
@@ -136,6 +154,7 @@ export default {
     },
     reloadData () {
       this.showEditDialog = false
+      this.showhelpDialog = false
     },
     confirmdelete (index, row) {
       alert('index：' + index + 'row:' + row.assetName)
@@ -222,10 +241,16 @@ export default {
           (a, b) => a[fieldName] - b[fieldName]
         )
       }
+    },
+    showTemp (index, row) {
+      this.showhelpDialog = true
+      this.helpform.url = row.helpDoc
+      this.helpform.name = row.name
+      this.helpform.imgurl = row.ico
     }
   },
   actions: {},
-  components: { monitorTemplateAdd, Pagination }
+  components: { monitorTemplateAdd, Pagination, HelpTemplates }
 }
 </script>
 <style lang="scss" scoped>

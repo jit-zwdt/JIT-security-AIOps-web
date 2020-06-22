@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <script src="../../jquery/jquery.min.js"></script>
+  <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+  <link href="../../tempHtml/style.css" rel="stylesheet" type="text/css">
+  <title>JIT-security-AIOps</title>
+</head>
+<script language="javascript">
+  function changeToNetUrl() {
+    $('#roleNetUrl').addClass("activetab");
+    $('#roleNetUrl').removeClass("nactivetab");
+    $('#roleText').removeClass("activetab");
+    $('#roleText').addClass("nactivetab");
+  }
+  function changeToText() {
+    $("#roleText").removeClass("nactivetab");
+    $("#roleText").addClass("activetab");
+    $('#roleNetUrl').removeClass("activetab");
+    $('#roleNetUrl').addClass('nactivetab');
+
+  }
+  $().ready(function () {
+    //得到父页面的iframe框架的对象
+    var obj = parent.document.getElementById("mainFrame");
+    //把当前页面内容的高度动态赋给iframe框架的高
+    obj.height = "500px";
+  });
+</script>
+
+<body>
+  <div>
+    <ul class="nav nav-tabs">
+      <li class=""><a id="roleNetUrl" href="#Configuration" data-toggle="tab" aria-expanded="false" class="activetab"
+          onclick="changeToNetUrl();">配置</a></li>
+      <li class=""><a id="roleText" href="#Metrics" data-toggle="tab" aria-expanded="true" class="nactivetab"
+          onclick="changeToText();">指标</a></li>
+    </ul>
+    <div class="tab-content p-a-0 p-t-sm dark-deep-background dark-white-color">
+      <div id="Metrics" class="tab-pane fade">
+        <table class="table-bordered table table-hover  ">
+          <thead>
+            <tr>
+              <th class="dark-main-border">
+                指标名
+              </th>
+              <th class="dark-main-border">
+                单位
+              </th>
+              <th class="dark-main-border">
+                描述
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>事务压缩时间</td>
+              <td></td>
+              <td>MySQL Innodb Compress_time</td>
+            </tr>
+            <tr>
+              <td>每秒提取缓存数据写入硬盘数据量</td>
+              <td>byte</td>
+              <td>MySQL Innodb Data Bytes Fsync per second</td>
+            </tr>
+            <tr>
+              <td>数据每秒读取bytes</td>
+              <td>byte</td>
+              <td>MySQL Innodb Data Bytes Read per second</td>
+            </tr>
+            <tr>
+              <td>数据每秒写入缓存字节</td>
+              <td>byte</td>
+              <td>Innodb数据每秒写入缓存数值</td>
+            </tr>
+            <tr>
+              <td>每秒搜索hash索引数量</td>
+              <td></td>
+              <td>MySQL Innodb hash_seaches number</td>
+            </tr>
+            <tr>
+              <td>日志最后检查点</td>
+              <td>qps</td>
+              <td>MySQL Innodb Last_Checkpoint_At per second</td>
+            </tr>
+            <tr>
+              <td>日志刷新点</td>
+              <td>qps</td>
+              <td>MySQL Innodb Log_Flushed_Up_To per second</td>
+            </tr>
+            <tr>
+              <td>日志序列号码</td>
+              <td>qps</td>
+              <td>Innodb日志序列号码 相当于Innodb自从表空间开始创建直到现在产生日志文件的总字节数</td>
+            </tr>
+            <tr>
+              <td>互斥锁系统等待数量</td>
+              <td></td>
+              <td>MySQL Innodb mutex_os_waits numbes</td>
+            </tr>
+            <tr>
+              <td>互斥锁自旋轮转数量</td>
+              <td></td>
+              <td>MySQL Innodb mutex_spin_rounds numbes</td>
+            </tr>
+            <tr>
+              <td>互斥锁自旋等待数量</td>
+              <td></td>
+              <td>MySQL Innodb mutex_spin_waits numbes</td>
+            </tr>
+            <tr>
+              <td>hash索引使用堆节点缓冲区数量</td>
+              <td></td>
+              <td>MySQL Innodb node_heap_buffers numbes</td>
+            </tr>
+            <tr>
+              <td>每秒搜索non-hash索引数量</td>
+              <td></td>
+              <td>Innodb每秒搜索non-hash索引数量</td>
+            </tr>
+            <tr>
+              <td>打开读视图数量</td>
+              <td></td>
+              <td>MySQL Innodb Open_read_views_inside_innodb number</td>
+            </tr>
+            <tr>
+              <td>内部查询线程队列</td>
+              <td></td>
+              <td>MySQL Innodb queries_in_queue number</td>
+            </tr>
+            <tr>
+              <td>内部查询线程数量</td>
+              <td></td>
+              <td>MySQL Innodb queries_inside_innodb number</td>
+            </tr>
+            <tr>
+              <td>事务锁住的行数</td>
+              <td></td>
+              <td>MySQL Innodb rows_locked number</td>
+            </tr>
+            <tr>
+              <td>事务更改的行数</td>
+              <td></td>
+              <td>MySQL Innodb rows_modified number</td>
+            </tr>
+            <tr>
+              <td>事务提交数量</td>
+              <td></td>
+              <td>MySQL Innodb trx_committing number</td>
+            </tr>
+            <tr>
+              <td>回滚空间中的未清除事务数</td>
+              <td></td>
+              <td>回滚空间中的未清除事务数。随着事务的提交，它的值会增加；随着清除线程的运行，它的值会减小</td>
+            </tr>
+            <tr>
+              <td>事务锁住内存大小</td>
+              <td>byte</td>
+              <td>MySQL Innodb trx_lock_memory number</td>
+            </tr>
+            <tr>
+              <td>事务锁等待数量</td>
+              <td></td>
+              <td>MySQL Innodb trx_lock_wait number</td>
+            </tr>
+            <tr>
+              <td>事务回滚数量</td>
+              <td></td>
+              <td>MySQL Innodb trx_rolling_back number</td>
+            </tr>
+            <tr>
+              <td>事务在执行状态数量</td>
+              <td></td>
+              <td>MySQL Innodb trx_running number</td>
+            </tr>
+            <tr>
+              <td>事务解压缩时间</td>
+              <td></td>
+              <td>MySQL Innodb uncompress_time</td>
+            </tr>
+            <tr>
+              <td>统计binlog日志数量</td>
+              <td></td>
+              <td>MySQL Binlog count</td>
+            </tr>
+            <tr>
+              <td>binlog日志名称</td>
+              <td></td>
+              <td>MYSQL master binlog file</td>
+            </tr>
+            <tr>
+              <td>binlog日志文件序号</td>
+              <td></td>
+              <td>MySQL Binlog number</td>
+            </tr>
+            <tr>
+              <td>inlog日志记录的位置</td>
+              <td>byte</td>
+              <td>mysql binlog position</td>
+            </tr>
+            <tr>
+              <td>binlog日志占用的空间大小</td>
+              <td>byte</td>
+              <td>MySQL Binlog_total_size</td>
+            </tr>
+            <tr>
+              <td>slave状态</td>
+              <td></td>
+              <td>检测MYSQL是否有slave，是则输出1，否则输出0</td>
+            </tr>
+            <tr>
+              <td>运行状态</td>
+              <td></td>
+              <td>0 - MySQL server is down
+                1 - MySQL server is up</td>
+            </tr>
+            <tr>
+              <td>SQL线程执行的上一个时间的位置</td>
+              <td></td>
+              <td>MySQL Exec_Master_Log_Pos</td>
+            </tr>
+            <tr>
+              <td>I/O线程已经读取的位置</td>
+              <td></td>
+              <td>MySQL Read_Master_Log_Pos</td>
+            </tr>
+            <tr>
+              <td>中继日志中SQL线程已读取和执行的位置</td>
+              <td></td>
+              <td>在当前的中继日志中，SQL线程已读取和执行的位置</td>
+            </tr>
+            <tr>
+              <td>本地sql线程和io线程之间的差距时间</td>
+              <td></td>
+              <td>MySQL Slave Seconds_Behind_Master</td>
+            </tr>
+            <tr>
+              <td>I/O线程运行状态</td>
+              <td></td>
+              <td>MySQL Slave_IO_Running</td>
+            </tr>
+            <tr>
+              <td>SQL线程运行状态</td>
+              <td></td>
+              <td>MySQL Slave_SQL_Running</td>
+            </tr>
+            <tr>
+              <td>每秒事务量</td>
+              <td>qps</td>
+              <td>TPS(每秒事务量)
+                TPS = (Com_commit + Com_rollback) / seconds</td>
+            </tr>
+            <tr>
+              <td>每秒从所有客户端接收到的字节数</td>
+              <td>Bps</td>
+              <td>The number of bytes received from all clients.</td>
+            </tr>
+            <tr>
+              <td>每秒发送给所有客户端的字节数</td>
+              <td>Bps</td>
+              <td>The number of bytes sent to all clients.</td>
+            </tr>
+            <tr>
+              <td>每秒begin操作数量</td>
+              <td>qps</td>
+              <td>It requires user parameter mysql.status[*], which is defined in userparameter_mysql.conf.</td>
+            </tr>
+            <tr>
+              <td>每秒提交的总数量</td>
+              <td>qps</td>
+              <td>MySQL Com_commit operations per second</td>
+            </tr>
+            <tr>
+              <td>每秒删除操作总数量</td>
+              <td>qps</td>
+              <td>MySQL Com_delete operations per second</td>
+            </tr>
+            <tr>
+              <td>每秒插入操作的数量</td>
+              <td>qps</td>
+              <td>MySQL Com_insert operations per second</td>
+            </tr>
+            <tr>
+              <td>每秒回滚操作数量</td>
+              <td>qps</td>
+              <td>MySQL Com_rollback operations per second</td>
+            </tr>
+            <tr>
+              <td>每秒查询操作总数量</td>
+              <td>qps</td>
+              <td>MySQL Com_select operations per second</td>
+            </tr>
+            <tr>
+              <td>每秒更新数据总数量</td>
+              <td>qps</td>
+              <td>MySQL Com_update operations per second</td>
+            </tr>
+            <tr>
+              <td>每秒试图连接到服务器的连接数</td>
+              <td>qps</td>
+              <td>MySQL Connections per second</td>
+            </tr>
+            <tr>
+              <td>每秒发送给服务器的查询的个数</td>
+              <td>qps</td>
+              <td>It requires user parameter mysql.status[*], which is defined in userparameter_mysql.conf.</td>
+            </tr>
+            <tr>
+              <td>每秒慢查询</td>
+              <td></td>
+              <td>MySQL Slow_queries</td>
+            </tr>
+            <tr>
+              <td>线程缓存内的线程的数量</td>
+              <td></td>
+              <td>MySQL Threads_cached</td>
+            </tr>
+            <tr>
+              <td>当前打开的连接的数量</td>
+              <td></td>
+              <td>MYSQL Threads_connected</td>
+            </tr>
+            <tr>
+              <td>激活的线程数</td>
+              <td></td>
+              <td>MYSQL Threads_running</td>
+            </tr>
+            <tr>
+              <td>服务器运行时间</td>
+              <td>uptime</td>
+              <td>MySQL uptime</td>
+            </tr>
+            <tr>
+              <td>版本</td>
+              <td></td>
+              <td>MYSQL版本</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="OverView" class="tab-pane  fade  ">
+        <p classs="p-a-5"></p>
+      </div>
+      <div id="Configuration" class="tab-pane fade active show">
+        <p>
+          <em></em>
+        </p>
+
+
+        <ol>
+          <li>登录Mysql数据库，执行以下脚本<br>
+            <pre>&gt; GRANT USAGE,PROCESS,SUPER,REPLICATION CLIENT,REPLICATION SLAVE ON *.* TO 'zbxuser'@'localhost' IDENTIFIED BY 'p@ssw0rd '; #创建授权zbxuser权限并设置密码为'p@ssw0rd'，限制只能localhost登录
+&gt; flush privileges;
+</pre>
+          </li>
+          <li>配置Mysql监控脚本<br>
+            <pre>#vi .my.cnf
+# Zabbix Agent
+[mysql]
+host=localhost
+user=zbxuser
+password=p@ssw0rd
+socket=/usr/local/mysql/mysql.sock
+[mysqladmin]
+host=localhost
+user=zbxuser
+password=p@ssw0rd
+socket=/usr/local/mysql/mysql.sock
+
+在zabbix agent安装目录下创建一个scripts用于存放监控脚本
+# mkdir /usr/local/zabbix/scripts/
+# chown -R zabbix:zabbix /usr/local/zabbix/scripts/
+# cd /usr/local/zabbix/scripts/
+创建Mysql监控innodb脚本
+#vim mysql_innodb_status.sh
+添加以下内容
+#!/bin/bash
+
+#Get InnoDB Row Lock Details and InnoDB Transcation Lock Memory
+#mysql&gt; SELECT SUM(trx_rows_locked) AS rows_locked, SUM(trx_rows_modified) AS rows_modified, SUM(trx_lock_memory_bytes) AS lock_memory FROM information_schema.INNODB_TRX;
+#+-------------+---------------+-------------+
+#| rows_locked | rows_modified | lock_memory |
+#+-------------+---------------+-------------+
+#|        NULL |          NULL |        NULL |
+#+-------------+---------------+-------------+
+#1 row in set (0.00 sec)
+
+#+-------------+---------------+-------------+
+#| rows_locked | rows_modified | lock_memory |
+#+-------------+---------------+-------------+
+#|           0 |             0 |         376 |
+#+-------------+---------------+-------------+
+
+#Get InnoDB Compression Time
+#mysql&gt; SELECT SUM(compress_time) AS compress_time, SUM(uncompress_time) AS uncompress_time FROM information_schema.INNODB_CMP;
+#+---------------+-----------------+
+#| compress_time | uncompress_time |
+#+---------------+-----------------+
+#|             0 |               0 |
+#+---------------+-----------------+
+#1 row in set (0.00 sec)
+
+
+#Get InnoDB Transaction states
+
+#TRX_STATE  Transaction execution state. One of RUNNING, LOCK WAIT, ROLLING BACK or COMMITTING.
+
+#mysql&gt; SELECT LOWER(REPLACE(trx_state, " ", "_")) AS state, count(*) AS cnt from information_schema.INNODB_TRX GROUP BY state;
+#+---------+-----+
+#| state   | cnt |
+#+---------+-----+
+#| running |   1 |
+#+---------+-----+
+#1 row in set (0.00 sec)
+
+
+
+
+
+innodb_metric=$1
+
+case $innodb_metric in
+Innodb_rows_locked)  #事务锁住的行数
+value=$(echo "SELECT SUM(trx_rows_locked) AS rows_locked, SUM(trx_rows_modified) AS rows_modified, SUM(trx_lock_memory_bytes) AS lock_memory FROM information_schema.INNODB_TRX;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N| awk '{print $1}')
+if [ "$value" == "NULL" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_rows_modified) #事务更改的行数
+value=$(echo "SELECT SUM(trx_rows_locked) AS rows_locked, SUM(trx_rows_modified) AS rows_modified, SUM(trx_lock_memory_bytes) AS lock_memory FROM information_schema.INNODB_TRX;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N| awk '{print $2}')
+if [ "$value" == "NULL" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_trx_lock_memory) #事务锁住的内存大小（B）
+value=$(echo "SELECT SUM(trx_rows_locked) AS rows_locked, SUM(trx_rows_modified) AS rows_modified, SUM(trx_lock_memory_bytes) AS lock_memory FROM information_schema.INNODB_TRX;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N| awk '{print $3}')
+if [ "$value" == "NULL" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_compress_time) #事务压缩时间
+value=$(echo "SELECT SUM(compress_time) AS compress_time, SUM(uncompress_time) AS uncompress_time FROM information_schema.INNODB_CMP;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $1}')
+echo $value
+;;
+
+Innodb_uncompress_time) #事务解压时间
+value=$(echo "SELECT SUM(compress_time) AS compress_time, SUM(uncompress_time) AS uncompress_time FROM information_schema.INNODB_CMP;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $2}')
+echo $value
+;;  
+Innodb_trx_running) #事务执行状态数量
+value=$(echo 'SELECT LOWER(REPLACE(trx_state, " ", "_")) AS state, count(*) AS cnt from information_schema.INNODB_TRX GROUP BY state;'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep running|awk '{print $2}')
+if [ "$value" == "" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_trx_lock_wait) #事务锁等待数量
+value=$(echo 'SELECT LOWER(REPLACE(trx_state, " ", "_")) AS state, count(*) AS cnt from information_schema.INNODB_TRX GROUP BY state;'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep lock_wait|awk '{print $2}')
+if [ "$value" == "" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_trx_rolling_back) #事务回滚数量
+value=$(echo 'SELECT LOWER(REPLACE(trx_state, " ", "_")) AS state, count(*) AS cnt from information_schema.INNODB_TRX GROUP BY state;'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep rolling_back|awk '{print $2}')
+if [ "$value" == "" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_trx_committing) #事务提交数量
+value=$(echo 'SELECT LOWER(REPLACE(trx_state, " ", "_")) AS state, count(*) AS cnt from information_schema.INNODB_TRX GROUP BY state;'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep committing|awk '{print $2}')
+if [ "$value" == "" ];then
+echo 0
+else
+echo $value
+fi
+;;
+Innodb_trx_history_list_length) #回滚空间中的未清除事务数。随着事务的提交，它的值会增加；随着清除线程的运行，它的值会减小
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "History list length"|awk '{print $4}'
+;;
+Innodb_last_checkpoint_at)  #最后检查日志点
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "Last checkpoint at"|awk '{print $4}'
+;;
+
+Innodb_log_sequence_number)  #日志序列号码 相当于Innodb自从表空间开始创建直到现在产生日志文件的总字节数
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "Log sequence number"|awk '{print $4}'
+;;
+Innodb_log_flushed_up_to)  #日志刷新点
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "Log flushed up to"|awk '{print $5}'
+;;
+Innodb_open_read_views_inside_innodb) #打开读视图数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "read views open inside InnoDB"|awk '{print $1}'
+;;
+Innodb_queries_inside_innodb)  #Innodb内部查询线程数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "queries inside InnoDB"|awk '{print $1}'
+;;
+Innodb_queries_in_queue)  #Innodb内部查询线程队列
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "queries in queue"|awk '{print $5}'
+;;
+Innodb_hash_seaches)  #每秒搜索hash索引数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "hash searches"|awk '{print $1}'
+;;
+Innodb_non_hash_searches) #每秒搜索non-hash索引
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "non-hash searches/s"|awk '{print $4}'
+;;
+Innodb_node_heap_buffers) #hash索引使用堆节点缓冲区数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "node heap"|awk '{print $8}'
+;;
+Innodb_mutex_os_waits)  #互斥锁系统等待数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "Mutex spin waits"|awk '{print $9}'
+;;
+Innodb_mutex_spin_rounds) #互斥锁自旋轮转数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "Mutex spin waits"|awk '{print $6}'|tr -d ','
+;;
+Innodb_mutex_spin_waits)  #互斥锁自旋等待数量
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "Mutex spin waits"|awk '{print $4}'|tr -d ','
+;;
+Innodb_file_read)  #数据传输读取IO使用
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "avg bytes/read"|awk '{print $1}'
+;;
+Innodb_file_write)  #数据传输写入IO使用
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "avg bytes/read"|awk '{print $6}'
+;;
+Innodb_file_fsync)  #数据传输写入硬盘IO使用
+echo 'show engine innodb status\G'|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|grep "avg bytes/read"|awk '{print $8}'
+;;
+
+*)
+echo "wrong parameter"
+;;
+
+Esac
+
+修改属主属组添加脚本执行权限
+#chmod +x mysql_innodb_status.sh
+#chown zabbix.zabbix mysql_innodb_status.sh
+</pre>
+          </li>
+          <li>配置zabbix_agent.conf文件<br>
+            <pre># vim /usr/local/zabbix/etc/zabbix_agentd.conf
+Include=/usr/local/zabbix/etc/zabbix_agentd.conf.d/*.conf
+UnsafeUserParameters=1
+退出保存配置文件
+#vim /usr/local/zabbix/etc/zabbix_agentd.conf.d/mysql_status.conf
+### MySQL DB Infomation
+UserParameter=mysql.status[*],echo "show global status where Variable_name='$1';"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $$2}'  #查看全局状态
+UserParameter=mysql.variables[*],echo "show global variables where Variable_name='$1';"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $$2}'    #查看全局变量设置
+UserParameter=mysql.ping,mysqladmin --defaults-file=/usr/local/zabbix/etc/.my.cnf ping|grep -c  alive   #检测MYSQL存活
+UserParameter=mysql.version,echo "select version();"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N #获取MYSQL版本
+
+#### MySQL Master Information
+UserParameter=mysql.master.Slave_count,echo "show slave hosts;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|wc -l    #SLAVE状态
+UserParameter=mysql.master.Binlog_file,echo "show master status;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $1}'|awk -F. '{print $1}'  #binlog日志文件名称
+UserParameter=mysql.master.Binlog_number,echo "show master status;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $1}'|awk -F. '{print $2}'    #binlog日志文件序号
+UserParameter=mysql.master.Binlog_position,echo "show master status;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{print $2}'   #binlog日志记录的位置
+UserParameter=mysql.master.Binlog_count,echo "show binary logs;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|wc -l   #binlog日志数量统计
+UserParameter=mysql.master.Binlog_total_size,echo "show binary logs;"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf -N|awk '{sum+=$NF}END{print  sum}'    #binlog日志占用的空间大小
+
+#### MySQL Slave Information
+UserParameter=mysql.slave.Seconds_Behind_Master,echo "show slave status\G"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf|grep "Seconds_Behind_Master"|awk '{print $2}'    #本地sql线程和io线程之间的差距时&gt;
+间！
+UserParameter=mysql.slave.Slave_IO_Running,echo "show slave status\G"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf|grep "Slave_IO_Running"|awk '{print $2}'  #I/O线程是否被启动并成功地连接到主服务器上
+UserParameter=mysql.slave.Slave_SQL_Running,echo "show slave status\G"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf|grep "Slave_SQL_Running"|awk '{print $2}'    #SQL线程是否被启动
+UserParameter=mysql.slave.Relay_Log_Pos,echo "show slave status\G"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf|grep "Relay_Log_Pos"|awk '{print $2}'    #在当前的中继日志中，SQL线程已读取和执行的位置
+UserParameter=mysql.slave.Exec_Master_Log_Pos,echo "show slave status\G"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf|grep "Exec_Master_Log_Pos"|awk '{print $2}'
+UserParameter=mysql.slave.Read_Master_Log_Pos,echo "show slave status\G"|mysql --defaults-file=/usr/local/zabbix/etc/.my.cnf|grep "Read_Master_Log_Pos"|awk '{print $2}'
+
+
+
+#### MySQL InnoDB Information
+#
+UserParameter=mysql.innodb[*],/usr/local/zabbix/scripts/mysql_innodb_status.sh $1
+
+####MySQL MyISAM Information
+#
+保存退出配置
+</pre>
+          </li>
+          <li>重启zabbix_agentd服务<br><code># service zabbix_agentd restart</code></li>
+
+
+        </ol>
+
+        <em> </em>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

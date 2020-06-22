@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <script src="../../jquery/jquery.min.js"></script>
+  <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+  <link href="../../tempHtml/style.css" rel="stylesheet" type="text/css">
+  <title>JIT-security-AIOps</title>
+</head>
+<script language="javascript">
+  function changeToNetUrl() {
+    $('#roleNetUrl').addClass("activetab");
+    $('#roleNetUrl').removeClass("nactivetab");
+    $('#roleText').removeClass("activetab");
+    $('#roleText').addClass("nactivetab");
+  }
+  function changeToText() {
+    $("#roleText").removeClass("nactivetab");
+    $("#roleText").addClass("activetab");
+    $('#roleNetUrl').removeClass("activetab");
+    $('#roleNetUrl').addClass('nactivetab');
+
+  }
+  $().ready(function () {
+    //得到父页面的iframe框架的对象
+    var obj = parent.document.getElementById("mainFrame");
+    //把当前页面内容的高度动态赋给iframe框架的高
+    obj.height = "500px";
+  });
+</script>
+
+<body>
+  <div>
+    <ul class="nav nav-tabs">
+      <li class=""><a id="roleNetUrl" href="#Configuration" data-toggle="tab" aria-expanded="false" class="activetab"
+          onclick="changeToNetUrl();">配置</a></li>
+      <li class=""><a id="roleText" href="#Metrics" data-toggle="tab" aria-expanded="true" class="nactivetab"
+          onclick="changeToText();">指标</a></li>
+    </ul>
+    <div class="tab-content p-a-0 p-t-sm dark-deep-background dark-white-color">
+      <div id="Metrics" class="tab-pane fade">
+        <table class="table-bordered table table-hover  ">
+          <thead>
+            <tr>
+              <th class="dark-main-border">
+                指标名
+              </th>
+              <th class="dark-main-border">
+                单位
+              </th>
+              <th class="dark-main-border">
+                描述
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{#TABLESPACE}表空间当前分配大小</td><td>B</td><td></td></tr><tr><td>{#TABLESPACE}表空间最大可扩展空间</td><td>B</td><td></td></tr><tr><td>{#TABLESPACE}自动扩展开启情况</td><td></td><td></td></tr><tr><td>{#TABLESPACE}的使用百分比</td><td>%</td><td></td></tr><tr><td>{#TABLESPACE}表空间已使用大小</td><td>B</td><td></td></tr><tr><td>表空间（列表）</td><td></td><td></td></tr><tr><td>活跃用户数量</td><td></td><td>oracle数据库排除zabbix监控用户外，活跃的用户数量</td></tr><tr><td>{#TABLESPACE}自动扩展开启情况</td><td></td><td>获取oracle表空间自动扩展开启情况，如果同一个表空间有多个数据文件，那么显示的结果为多个文本值</td></tr><tr><td>{#TABLESPACE}自动扩展最大空间</td><td>GB</td><td></td></tr><tr><td>{#ASMVOLUME} 大小</td><td>GB</td><td>查询oracle asm卷空间大小</td></tr><tr><td>{#ASMVOLUME} 使用大小</td><td>GB</td><td>查询oracle asm卷使用大小</td></tr><tr><td>{#ASMVOLUME} 使用百分比</td><td>%</td><td>查询oracle各个asm卷的使用情况</td></tr><tr><td>事件的总等待时间</td><td></td><td>Buffer busy waits 事件的总等待时间</td></tr><tr><td>检查活跃和开放状态</td><td></td><td>oracle活跃和开放的状态</td></tr><tr><td>归档日志空间使用率</td><td>%</td><td>oracle归档日志使用的百分率，须添加归档日志的存放路径参数</td></tr><tr><td>每秒事务提交数量</td><td></td><td>Oracle/User Commits on {$DATABASE}</td></tr><tr><td>连接审计</td><td></td><td>Oracle/audit connect or disconnect on {$DATABASE}</td></tr><tr><td>所有数据文件大小</td><td>B</td><td>Oracle/Size of all datafiles on {$DATABASE}</td></tr><tr><td>数据库文件并行写等待时间</td><td></td><td>Oracle/dbprllwrite on {$DATABASE}</td></tr><tr><td>数据库文件分散读取等待时间</td><td></td><td>Oracle/dbscattread on {$DATABASE}</td></tr><tr><td>数据库文件顺序读取等待时间</td><td></td><td>oracle数据库文件顺序读取等待时间</td></tr><tr><td>用户数据的大小</td><td>B</td><td>查询oracle用户数据的大小，排除temp</td></tr><tr><td>更新数据文件头信息等待时间</td><td></td><td>oracle更新数据文件头信息等待时间</td></tr><tr><td>死锁数量</td><td></td><td>Oracle/Deadlocks on {$DATABASE}</td></tr><tr><td>事件等待时间</td><td></td><td>Oracle/Directread on {$DATABASE} direct path read</td></tr><tr><td>磁盘排序比值</td><td>%</td><td>oracle 磁盘排序操作和磁盘排序操作数量加上内存排序操作数量的百分比</td></tr><tr><td>队列等待时间</td><td></td><td>Oracle/Enqueue on {$DATABASE}</td></tr><tr><td>快速恢复区域使用情况</td><td>%</td><td>Oracle/fra_use on {$DATABASE}</td></tr><tr><td>空闲缓冲区等待时间</td><td></td><td>Oracle/freebufwaits on {$DATABASE}</td></tr><tr><td>硬解析比值</td><td>%</td><td>Oracle/Hard parse ratio on {$DATABASE}</td></tr><tr><td>快速索引全扫描每秒数量</td><td></td><td>Oracle/Index fast full scans (full) on {$DATABASE}</td></tr><tr><td>已经应用的最新归档日志序号</td><td></td><td>查询oracle归档日志是否被应用，如果被应用这输出归档文件的最新序列号</td></tr><tr><td>查询归档日志是否存在</td><td></td><td>Oracle/Lastarclog on {$DATABASE}</td></tr><tr><td>锁存器空闲等待时间</td><td></td><td>Oracle/Latchfree on {$DATABASE}</td></tr><tr><td>Oracle/共享SQL区的使用率</td><td>%</td><td>共享SQL区的使用率,大于90%以上，小于90告警</td></tr><tr><td>日志文件同步等待时间</td><td></td><td>Oracle/Logfilesync on {$DATABASE}</td></tr><tr><td>连接当前实例的Sessions数量</td><td></td><td>Oracle/Logonscurrent on {$DATABASE}</td></tr><tr><td>日志文件并行写入等待时间</td><td></td><td>查询oracle日志文件等待LGWR 向操作系统请求 I/O 开始直到完成 I/O所需的时间</td></tr><tr><td>日志文件切换完成等待时间</td><td></td><td>查询oracle日志文件切换时，请求LGWR进程，直到日志文件切换完成，所需时间</td></tr><tr><td>每秒从客户端接收到的字节数</td><td>b</td><td>Oracle/Netresv on {$DATABASE}</td></tr><tr><td>从客户端发送和接收消息的总数</td><td></td><td>Oracle/Netroundtrips on {$DATABASE}</td></tr><tr><td>发送到客户端的字节数</td><td></td><td>Oracle/Netsent on {$DATABASE}</td></tr><tr><td>进程最大数量</td><td></td><td>Oracle/Process max number on {$DATABASE}</td></tr><tr><td>进程数量</td><td></td><td>Oracle/Process number on {$DATABASE}</td></tr><tr><td>查询锁数量</td><td></td><td>Oracle/Query Lock on {$DATABASE}</td></tr><tr><td>查询重做日志数量</td><td></td><td>Oracle/Query Redologs on {$DATABASE}</td></tr><tr><td>查询执行回滚操作时使用的存储空间</td><td>MB</td><td>Oracle/Query Rollbacks on {$DATABASE}</td></tr><tr><td>查询Sessions数量</td><td></td><td>Oracle/Query Sessions on {$DATABASE}</td></tr><tr><td>数据库CPU时间比</td><td>%</td><td>数据库 CPU 时间比是用数据库消耗的 CPU 量除以“数据库时间”量 — 数据库在用户级调用（不包括实例后台进程活动）上花费的时间。高值（90%-95% 以上）比较理想并显示较少的等待/瓶颈操作，但由于每个系统各有不同，因此只可将此阈值看作是一个粗略的值。</td></tr><tr><td>数据库等待时间比</td><td>%</td><td>Oracle/Database Wait Time Ratio on {$DATABASE}</td></tr><tr><td>每秒事务数</td><td></td><td>Oracle/User Transaction Per Sec on {$DATABASE}</td></tr><tr><td>查询TEMP表空间的大小</td><td></td><td>Oracle/Query Temp on {$DATABASE}</td></tr><tr><td>缓存读取命中率</td><td>%</td><td>Oracle/Read Cache hit ratio on {$DATABASE}</td></tr><tr><td>每秒redo writes操作数量</td><td></td><td>Oracle/Redo Writes on {$DATABASE}</td></tr><tr><td>Oracle/SGA 命中率</td><td>%</td><td>监控SGA命中率大于90%以上，小于90告警</td></tr><tr><td>ASM 卷</td><td></td><td>获取ASM卷列表的json格式</td></tr><tr><td>表空间（单请求）</td><td></td><td>获取数据库表空间名字列表</td></tr><tr><td>临时表</td><td></td><td>查询临时表空间名字列表</td></tr><tr><td>用户列表</td><td></td><td>查询实例上的用户列表</td></tr><tr><td>{#TABLESPACE} 目前总空间大小</td><td>GB</td><td>获取oracle表空间目前总大小，自动扩展后会增加</td></tr><tr><td>{#TABLESPACE}的使用百分比</td><td>%</td><td>查询Tablespace}的使用百分比，计算的是目前表空间的，表空间自动扩展后会变化</td></tr><tr><td>{#TABLESPACE_TEMP}使用情况</td><td>%</td><td>查询临时表空间使用情况</td></tr><tr><td>{#TABLESPACE}的使用大小</td><td>GB</td><td>获取oracle表空间使用空间大小，以数值形式表现</td></tr><tr><td>每秒表扫描读取的行数</td><td></td><td>Oracle/Table scan rows gotten on {$DATABASE}</td></tr><tr><td>每秒大表的全表扫描次数</td><td></td><td>Oracle/Table scans (long tables) on {$DATABASE}</td></tr><tr><td>实例运行时间</td><td>s</td><td>Oracle/Uptime on {$DATABASE}</td></tr><tr><td>{#DBUSER} 用户状态</td><td></td><td>获取用户状态</td></tr><tr><td>数据库版本</td><td></td><td>Oracle/Version on {$DATABASE}</td></tr></tbody></table></div> <div id="OverView" class="tab-pane  fade  "><p classs="p-a-5"></p></div> <div id="Configuration" class="tab-pane fade active show"><p>
+<em>本监控方式使用了脚本调用SQL语句进行数据收集，部署脚本的主机必须安装oracle客户端，并能够和oracle服务端监听端口通信，安装oracle客户端服务器要安装zabbix agentd进行收集的收集，并传输到zabbix server或者zabbix proxy，无特殊需要默认部署在zabbix server端。</em>
+</p>
+
+
+<ol>
+<li>建立用于监控Oracle数据库的用户<br>
+登录数据库<br>
+<pre>#su – oracle 
+#sqlplus /nolog
+SQL&gt;conn /as sysdba
+</pre>
+创建用户：
+<code>
+<pre>CREATE USER ZABBIX
+IDENTIFIED BY zabbix  
+DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP
+PROFILE DEFAULT
+ACCOUNT UNLOCK;
+</pre>
+</code>
+赋予角色权限：
+<pre>GRANT CONNECT TO ZABBIX;
+GRANT RESOURCE TO ZABBIX;
+ALTER USER ZABBIX DEFAULT ROLE ALL;
+</pre>
+赋予系统权限：
+<pre>GRANT SELECT ANY TABLE TO ZABBIX;
+GRANT CREATE SESSION TO ZABBIX;
+GRANT SELECT ANY DICTIONARY TO ZABBIX;
+GRANT UNLIMITED TABLESPACE TO ZABBIX;
+GRANT SELECT ANY DICTIONARY TO ZABBIX;
+</pre>
+</li>
+<li>如果是11G的数据库版本，还需要执行下面的语句开放ACL的访问控制，否则在监控的过程中有部份内容无法正常显示（例于数据库版本，数据库文件大小等），而且orabbix的日志显示中也会有错误提示。执行：<br>
+<code>
+<pre>exec dbms_network_acl_admin.create_acl(acl =&gt; 'resolve.xml',description =&gt;'resolve acl', principal =&gt;'ZABBIX', is_grant =&gt; true, privilege =&gt;'resolve');
+
+exec dbms_network_acl_admin.assign_acl(acl=&gt; 'resolve.xml', host =&gt;'*');
+
+commit;
+</pre>
+</code>
+</li>
+<li>设置完成后，可以通过以下的语句查看添加的状态，能查到主机名表示正常<br>
+<code>select utl_inaddr.get_host_name('127.0.0.1') from dual;</code>
+<span style="height:2.011cm;width:11.605cm; padding:0; " class="fr60" id="图片_114"><img style="height:2.011cm;width:11.605cm;" alt="" src="data:image/*;base64,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"></span>
+</li>
+<li>运行脚本安装（默认已安装）<br><code>#sh oracle_client_install.sh install</code></li>
+<li>修改oracle client配置文件。<br><code>#vi /opt/oracle/network/admin/tnsnames.ora</code>
+<pre>orcl = #填写任意名称，默认填写实例名
+(DESCRIPTION =
+(ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.1.238)(PORT = 1521))
+#修改为oracle的ip地址和监听端口
+(CONNECT_DATA =
+(SERVER = DEDICATED)
+(SERVICE_NAME = orcl)#oracle数据库名
+(INSTANCE_NAME = orcl)#oracle实例名
+)
+)</pre>
+</li>
+<li>安装python3的模块cx_Oracle
+<pre># tar xf Python-3.5.0.tgz -C /usr/src/
+# cd /usr/src/Python-3.5.0/
+#./configure  --prefix=/usr/local/python3 --enable-shared
+# make &amp;&amp; make install
+# vi /etc/ld.so.conf
+/usr/local/python3/lib
+# ldconfig -v
+# ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+#/usr/local/python3/bin/pip3 install cx_Oracle（联网方式）
+// 无法联网使用安装包方式
+#tar xf cx_Oracle-5.1.2.tar.gz
+#cd cx_Oracle-5.1.2
+#/usr/local/python3/bin/python3  setup.py install
+</pre>
+</li>
+<li>
+Zabbix agentd配置 
+<pre>mv pyora.py /usr/local/zabbix/scripts/
+vi /usr/local/zabbix/etc/zabbix_agentd.conf.d/oracle.conf
+UserParameter=pyora[*],/usr/bin/python3 /usr/local/zabbix/scripts/pyora.py --username ZABBIX --password zabbix --address $3 --database $4 $5 $6 $7 $8
+</pre>
+</li>
+<li>
+测试脚本 <br>
+<code>#/usr/bin/python3 /usr/local/zabbix/scripts/pyora.py --username ZABBIX --password zabbix --address 192.168.1.238 --database orcl show_users</code>
+</li>
+</ol>
+
+<em> </em></div></div>
+  </div>
+</body>
+
+</html>

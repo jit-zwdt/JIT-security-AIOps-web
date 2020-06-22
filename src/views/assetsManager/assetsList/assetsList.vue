@@ -36,6 +36,7 @@
     </ToolBar>
     <el-table
       :data="tableData"
+      v-loading="loading"
       border
       style="width: 100%"
       :row-style="tableRowStyle"
@@ -144,7 +145,8 @@ export default {
       },
       currentPage: 1,
       pageSize: 15,
-      currentTotal: 0
+      currentTotal: 0,
+      loading: true
     }
   },
   created () {
@@ -226,6 +228,7 @@ export default {
             // console.log(json.data.dataList[0])
             this.tableData = json.data.dataList
             this.currentTotal = json.data.totalRow
+            this.loading = false
           }
         } else {
           this.$message({

@@ -153,7 +153,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       showfooter: true,
       serverListForm: {
         assetName: '',
@@ -229,10 +228,6 @@ export default {
       if (this.assetform.flag === '1' || this.assetform.flag === '2') {
         this.showInfo(this.assetform.id)
       }
-      setTimeout(this.loadingclose(), 13000)
-    },
-    loadingclose () {
-      this.loading = false
     },
     closefrom () {
       // this.showfooter = true

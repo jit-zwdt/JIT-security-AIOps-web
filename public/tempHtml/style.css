@@ -1,0 +1,13 @@
+.nav li {
+  background-color:#ffffff ;
+  margin-right: 10px !important;
+}
+.nactivetab{
+  color:#212529 !important;
+}
+.activetab {
+  color:#007bff !important;
+}
+pre {
+  background-color: #eee;
+}
