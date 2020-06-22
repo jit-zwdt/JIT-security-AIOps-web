@@ -243,10 +243,10 @@ export default {
       }
     },
     showTemp (index, row) {
-      this.showhelpDialog = true
       this.helpform.url = row.helpDoc
       this.helpform.name = row.name
       this.helpform.imgurl = row.ico
+      this.showhelpDialog = true
     }
   },
   actions: {},
