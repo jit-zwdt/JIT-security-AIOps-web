@@ -63,7 +63,7 @@ export default {
           iframe.contentWindow.document.write('')
           iframe.contentWindow.document.clear()
         } catch (e) { }
-        this.$parent.$parent.reloadData()
+        this.$parent.$parent.noReloadData()
       }
     }
   },

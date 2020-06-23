@@ -6,7 +6,7 @@
         :background="false"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
+        :current-page="currentPage"
         :pager-count="5"
         :page-sizes="pageSizes"
         :page-size="page.page_pageSize"

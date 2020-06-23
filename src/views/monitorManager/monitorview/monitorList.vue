@@ -26,54 +26,50 @@
           </el-select>
         </el-col>
         <el-col :span="2">
-        <el-select v-model="hostGroup" class="datetop" filterable placeholder="选择分组" clearable>
-          <el-option
-            v-for="item in hostGroupOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+          <el-select v-model="hostGroup" class="datetop" filterable placeholder="选择分组" clearable>
+            <el-option
+              v-for="item in hostGroupOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-col>
         <el-col :span="2">
-        <el-select v-model="hostSubType" class="datetop" filterable placeholder="选择子类型" clearable>
-          <el-option
-            v-for="item in hostSubTypeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+          <el-select v-model="hostSubType" class="datetop" filterable placeholder="选择子类型" clearable>
+            <el-option
+              v-for="item in hostSubTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-col>
         <el-col :span="2">
-        <el-select v-model="enableMonitor" class="datetop" filterable placeholder="是否监控" clearable>
-          <el-option
-            v-for="item in enableMonitorOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+          <el-select
+            v-model="enableMonitor"
+            class="datetop"
+            filterable
+            placeholder="是否监控"
+            clearable
+          >
+            <el-option
+              v-for="item in enableMonitorOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-col>
         <el-col :span="2">
-        <el-select v-model="monitorType" class="datetop" filterable placeholder="监控状态" clearable>
-          <el-option
-            v-for="item in monitorTypeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        </el-col>
-        <el-col :span="2">
-        <el-select v-model="maintainType" class="datetop" filterable placeholder="维护状态" clearable>
-          <el-option
-            v-for="item in maintainTypeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+          <el-select v-model="monitorType" class="datetop" filterable placeholder="监控状态" clearable>
+            <el-option
+              v-for="item in monitorTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-col>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
@@ -102,20 +98,18 @@
     >
       >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="业务名称" prop="hostObjectName" min-width="14%">
+      <el-table-column label="业务名称" prop="objectName" min-width="14%">
         <template slot-scope="scope">
-          <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.hostObjectName}}</el-link>
+          <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.objectName}}</el-link>
         </template>
       </el-table-column>
       <el-table-column label="IP" prop="hostIp" min-width="12%" :resizable="false"></el-table-column>
       <el-table-column label="启用监控" prop="enableMonitor" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="监控状态" prop="monitorType" min-width="14%" :resizable="false"></el-table-column>
-      <el-table-column label="类型" prop="hostType" min-width="6%" :resizable="false"></el-table-column>
-      <el-table-column label="子类型" prop="hostSubType" min-width="6%" :resizable="false"></el-table-column>
-      <el-table-column label="备注" prop="hostRemark" min-width="12%" :resizable="false"></el-table-column>
-      <el-table-column label="分组" prop="hostGroup" min-width="6%" :resizable="false"></el-table-column>
+      <el-table-column label="类型" prop="typeId" min-width="6%" :resizable="false"></el-table-column>
+      <el-table-column label="备注" prop="remark" min-width="12%" :resizable="false"></el-table-column>
+      <el-table-column label="分组" prop="groupId" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>
-      <el-table-column label="维护状态" prop="maintainType" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column align="center" label="操作" min-width="12%">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
@@ -149,7 +143,6 @@ export default {
       hostSubType: '',
       enableMonitor: '',
       monitorType: '',
-      maintainType: '',
       tableData: [{
         id: '',
         objectName: '',
@@ -159,10 +152,9 @@ export default {
         monitorType: '',
         typeId: '',
         hostSubType: '',
-        hostRemark: '',
-        hostGroup: '',
-        hostLabel: '',
-        maintainType: ''
+        remark: '',
+        groupId: '',
+        hostLabel: ''
       }],
       currentPage: 1,
       pageSize: 15,
@@ -221,12 +213,6 @@ export default {
           label: ''
         }
       ],
-      maintainTypeOptions: [
-        {
-          value: '',
-          label: ''
-        }
-      ],
       loading: true,
       tableDataclear: [],
       setTimeoutster: ''
@@ -280,7 +266,7 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.axios.post('/host/findByCondition', {
+      this.axios.post('/host/hostinfo', {
         param: {
           objectName: this.hostObjectName
         },

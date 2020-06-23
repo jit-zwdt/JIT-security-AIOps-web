@@ -163,6 +163,9 @@ export default {
       this.showhelpDialog = false
       this.showInfo()
     },
+    noReloadData () {
+      this.showhelpDialog = false
+    },
     showInfo () {
       this.loading = true
       this.tableData = this.tableDataclear
