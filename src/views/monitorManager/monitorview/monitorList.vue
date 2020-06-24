@@ -106,7 +106,8 @@
       <el-table-column label="IP" prop="hostIp" min-width="12%" :resizable="false"></el-table-column>
       <el-table-column label="启用监控" prop="enableMonitor" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="监控状态" prop="monitorType" min-width="14%" :resizable="false"></el-table-column>
-      <el-table-column label="类型" prop="typeId" min-width="6%" :resizable="false"></el-table-column>
+      <el-table-column label="类型" prop="type" min-width="6%" :resizable="false"></el-table-column>
+      <el-table-column label="子类型" prop="subtype" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="备注" prop="remark" min-width="12%" :resizable="false"></el-table-column>
       <el-table-column label="分组" prop="groupId" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>
@@ -295,7 +296,8 @@ export default {
       this.titleType = ''
     },
     showAssetsAdd () {
-      this.$router.push({ name: 'userCenterAuthlist', query: { id: this.usernane } })
+      // this.$router.push({ name: 'monitorAddList', query: { id: this.hostObjectName } })
+      this.$router.push({ name: 'monitorAddList' })
     }
   },
   actions: {
