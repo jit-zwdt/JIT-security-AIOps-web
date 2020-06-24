@@ -27,576 +27,100 @@
         <el-button @click="backfrom()">返回</el-button>
       </div>
     </ToolBar>
-    <div class="card dark-main-background">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">操作系统</span>
-        </h1>
-        <p class="title-bar-description">
-          <span>agent标识表示需要安装agent客户端, snmp标识表示需支持snmp协议</span>
-        </p>
-      </div>
-      <div class="tempList card-body">
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_HOSTS_LINUX.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                  style="width:100px !important"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">Linux代理模板[主动模式]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              @click="showAssetsAdd()"
-              href="javaScript:void(0)"
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
+    <template>
+      <div class="card dark-main-background" v-for="(items, index) in tableData" v-bind:key="index">
+        <div
+          class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
+        >
+          <h1 class="title-bar-title m-b-sm">
+            <span class="d-ib">{{items.type}}</span>
+          </h1>
+          <div v-if="items.templates.length !== 0">
+            <p class="title-bar-description">
+              <span>agent标识表示需要安装agent客户端, snmp标识表示需支持snmp协议</span>
+            </p>
           </div>
         </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img src="/tempHtml/imge/LW_HOSTS_LINUX.png" alt height="100px" class="card-img" style="width:100px !important"/>
+        <div class="tempList card-body">
+          <div v-if="items.templates.length === 0">
+            <div style="text-align: center; font-size: 14px;">暂无该类型模板，请创建并迁移</div>
+          </div>
+          <div v-else>
+            <div class="card m-r" v-for="(item, index) in items.templates" v-bind:key="index">
+              <div class="card-body p-a-0">
+                <div v-if="item.typeId === '4'">
+                  <div class="pos-r snmp">
+                    <div class="img-container text-center">
+                      <img
+                        :src="item.ico"
+                        alt
+                        height="100px"
+                        class="card-img"
+                        style="width:100px !important"
+                      />
+                    </div>
+                    <p class="text-center p-x-md template-name">{{item.name}}</p>
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="pos-r agent">
+                    <div class="img-container text-center">
+                      <img
+                        :src="item.ico"
+                        alt
+                        height="100px"
+                        class="card-img"
+                        style="width:100px !important"
+                      />
+                    </div>
+                    <p class="text-center p-x-md template-name">{{item.name}}</p>
+                  </div>
+                </div>
               </div>
-              <p class="text-center p-x-md template-name">Linux代理模板[被动模式]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10684&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img src="/tempHtml/imge/LW_HOSTS_WINDOWS.png" alt height="100px" class="card-img" />
+              <div class="card-footer no-border text-center">
+                <a
+                  @click="showTempHelp(item.helpDoc,item.name,item.ico)"
+                  class="el-button w-100 el-button--primary el-button--mini hosts-btn"
+                  style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
+                >
+                  <i class="fa fa-question"></i>
+                  <span>帮助</span>
+                </a>
+                <a
+                  @click="showAssetsAdd(item.id,item.subtypeIds,item.name)"
+                  href="javaScript:void(0)"
+                  class="el-button w-100 el-button--success el-button--mini hosts-btn"
+                  style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
+                >
+                  <i class="fa fa-plus"></i>
+                  <span>创建</span>
+                </a>
               </div>
-              <p class="text-center p-x-md template-name">Windows代理模板[主动模式]</p>
             </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10660&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img src="/tempHtml/imge/LW_HOSTS_WINDOWS.png" alt height="100px" class="card-img" />
-              </div>
-              <p class="text-center p-x-md template-name">Windows代理模板[被动模式]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10685&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
           </div>
         </div>
       </div>
-    </div>
-    <div class="card dark-main-background">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">数据库</span>
-        </h1>
-        <p class="title-bar-description"></p>
-      </div>
-      <div class="tempList card-body">
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_DATABASE_SQLSERVER.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">Microsoft SQL Server模板[默认实例名][通用]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10641&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img src="/tempHtml/imge/LW_DATABASE_MYSQL.png" alt height="100px" class="card-img" />
-              </div>
-              <p class="text-center p-x-md template-name">MySQL数据库模板[适用于Linux][集群]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10642&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_DATABASE_ORACLE.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">Oracle数据库脚本模板[通用]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10640&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card dark-main-background" style="margin-top: 10px;">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">中间件</span>
-        </h1>
-        <p class="title-bar-description"></p>
-      </div>
-      <div class="tempList card-body">
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_MIDDLEWARE_TOMCAT.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">中间件Tomcat 脚本模板[适用于Linux][通用]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10613&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_MIDDLEWARE_WEBLOGIC.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">中间件Weblogic 脚本模板[适用于Linux][通用]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10614&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_MIDDLEWARE_IIS_SERVER.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">中间件IIS模板[通用]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10621&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_MIDDLEWARE_NGINX.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">中间件Nginx模板[适用于Linux][通用]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10643&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card dark-main-background" style="margin-top: 10px;">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">网络设备</span>
-        </h1>
-        <p class="title-bar-description">
-          <span>agent标识表示需要安装agent客户端, snmp标识表示需支持snmp协议</span>
-        </p>
-      </div>
-      <div class="tempList card-body">
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r snmp">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_NETWORKDEVICES_CISCO.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">Cisco路由交换通用模板[9]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10650&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r snmp">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_NETWORKDEVICES_H3C.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">华三路由交换通用模板[25506]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10651&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r snmp">
-              <div class="img-container text-center">
-                <img
-                  src="/tempHtml/imge/LW_NETWORKDEVICES_HUAWEI.png"
-                  alt
-                  height="100px"
-                  class="card-img"
-                />
-              </div>
-              <p class="text-center p-x-md template-name">华为路由交换通用模板[2011]</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10652&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card dark-main-background" style="margin-top: 10px;">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">硬件</span>
-        </h1>
-        <p class="title-bar-description"></p>
-      </div>
-      <div class="tempList card-body">
-        <div style="text-align: center; font-size: 14px;">暂无该类型模板，请创建并迁移</div>
-      </div>
-    </div>
-    <div class="card dark-main-background" style="margin-top: 10px;">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">虚拟化</span>
-        </h1>
-        <p class="title-bar-description"></p>
-      </div>
-      <div class="tempList card-body">
-        <div class="card m-r">
-          <div class="card-body p-a-0">
-            <div class="pos-r agent">
-              <div class="img-container text-center">
-                <img src="/tempHtml/imge/LW_VM_ESXI.png" alt height="100px" class="card-img" />
-              </div>
-              <p class="text-center p-x-md template-name">VM虚拟化esxi模板</p>
-            </div>
-          </div>
-          <div class="card-footer no-border text-center">
-            <a
-              class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-question"></i>
-              <span>帮助</span>
-            </a>
-            <a
-              href="/hosts/create?templateid=10646&amp;asset_hostid=&amp;asset_id="
-              class="el-button w-100 el-button--success el-button--mini hosts-btn"
-              style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
-            >
-              <i class="fa fa-plus"></i>
-              <span>创建</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card dark-main-background" style="margin-top: 10px;">
-      <div
-        class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
-      >
-        <h1 class="title-bar-title m-b-sm">
-          <span class="d-ib">云平台</span>
-        </h1>
-        <p class="title-bar-description"></p>
-      </div>
-      <div class="tempList card-body">
-        <div style="text-align: center; font-size: 14px;">暂无该类型模板，请创建并迁移</div>
-      </div>
-    </div>
+    </template>
+    <HelpTemplates :helpform="helpform" :showhelpDialog="showhelpDialog"></HelpTemplates>
   </div>
 </template>
 <script>
+import HelpTemplates from '@/views/monitorManager/helpTemplates/helpTemplates.vue'
 export default {
   data () {
     return {
       show: false,
       hostObjectName: '',
       hostType: '',
-      serverListForm: {
-        assetName: '',
-        assetType: '',
-        assetNumber: '',
-        assetState: '',
-        assetAmount: '',
-        assetBelongsDept: '',
-        assetBelongsPerson: '',
-        assetRegisterDate: '',
-        assetRegistrant: '',
-        assetUpdateDate: '',
-        assetLocation: '',
-        assetLogoutDate: '',
-        id: ''
+      tableData: {
+        type: '',
+        templates: [{}]
+      },
+      showhelpDialog: false,
+      helpform: {
+        url: '',
+        name: '',
+        imgurl: ''
       },
       hostTypeOptions: [
         {
@@ -655,8 +179,7 @@ export default {
           var json = resp.data
           console.log(json)
           if (json.code === 1) {
-            this.tableData = json.data.dataList
-            this.currentTotal = json.data.totalRow
+            this.tableData = json.data
             this.loading = false
           }
         } else {
@@ -673,16 +196,25 @@ export default {
       this.assetRegisterDateEndTop = ''
       this.titleType = ''
     },
-    showAssetsAdd () {
-      this.$router.push({ name: 'monitorAdd', query: { templateId: '1', templateSubTypeId: '10', templateTypeName: 'Linux代理模板[主动模式]' } })
+    showAssetsAdd (id, subtypeIds, name) {
+      this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateSubTypeId: subtypeIds, templateTypeName: name } })
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层
+    },
+    showTempHelp (url, name, ico) {
+      this.helpform.url = url
+      this.helpform.name = name
+      this.helpform.imgurl = ico
+      this.showhelpDialog = true
+    },
+    noReloadData () {
+      this.showhelpDialog = false
     }
   },
   actions: {
   },
-  components: {}
+  components: { HelpTemplates }
 }
 </script>
 <style lang="scss" scoped>

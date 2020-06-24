@@ -43,29 +43,39 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="" prop="enableMonitor" class="el-form-item-radio">
-            <el-checkbox v-model="serverListForm.enableMonitor">启动监控</el-checkbox>
+          <el-form-item label prop="enableMonitor" class="el-form-item-radio">
+            <el-checkbox v-model="serverListForm.enableMonitor" value="1">启动监控</el-checkbox>
           </el-form-item>
           <el-form-item label="(主)类型" prop="typeId" v-if="show">
             <el-input v-model="serverListForm.typeId" clearable></el-input>
           </el-form-item>
-          <el-form-item label="类型" prop="subtypeId">
-            <el-select v-model="serverListForm.subtypeId" placeholder="请选择">
+          <el-form-item label="(主)类型" prop="subtypeId" v-if="show">
+            <el-input v-model="serverListForm.subtypeId" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="subtypeIds">
+            <el-select v-model="serverListForm.subtypeIds" placeholder="请选择">
               <el-option
                 v-for="item in subtypeIdOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.id"
+                :label="item.type"
+                :value="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="分组" prop="groupId">
-            <el-select v-model="serverListForm.groupId" placeholder="请选择">
+            <el-select
+              v-model="serverListForm.groupId"
+              placeholder="请选择"
+              multiple
+              clearable
+              filterable
+              class="selectSize"
+            >
               <el-option
-                v-for="item in groupIdOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="template in groupIdData"
+                :key="template.value"
+                :label="template.label"
+                :value="template.value"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -97,22 +107,36 @@ export default {
         agentType: '1',
         agentIp: '',
         agentDnsName: '',
+        agentPort: '10050',
         proxyMonitor: '',
         enableMonitor: true,
-        assetRegisterDate: '',
-        assetRegistrant: '',
-        assetUpdateDate: '',
-        assetLocation: '',
-        assetLogoutDate: '',
-        id: ''
+        subtypeId: '',
+        groupId: [],
+        remark: '',
+        label: ''
       },
-      loading: true,
       tableDataclear: [],
       setTimeoutster: '',
       proxyMonitorOptions: [
         {
           value: '0',
           label: '(No Proxy)'
+        }
+      ],
+      subtypeIdOptions: [
+        {
+          id: '',
+          type: ''
+        }
+      ],
+      groupIdData: [
+        {
+          value: '15',
+          label: '主机模板'
+        },
+        {
+          value: '34',
+          label: '数据库模板'
         }
       ]
     }
@@ -125,26 +149,20 @@ export default {
       this.showInfo()
     },
     showInfo (str) {
-      // alert(this.$route.query.templateId)
-      this.loading = true
-      this.tableData = this.tableDataclear
+      this.serverListForm.typeId = this.$route.query.templateId
+      this.serverListForm.subtypeId = this.$route.query.templateSubTypeId
       const _this = this
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.axios.post('/host/hostinfo', {
-        param: {
-          objectName: this.hostObjectName
-        },
-        page: this.currentPage,
-        size: this.pageSize
-      }).then((resp) => {
+      const param = new URLSearchParams()
+      param.append('ids', this.serverListForm.subtypeId)
+      this.axios.post('/monitorType/getJsonTypes', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
+          console.log(json.data)
           if (json.code === 1) {
-            this.tableData = json.data.dataList
-            this.currentTotal = json.data.totalRow
-            this.loading = false
+            this.subtypeIdOptions = json.data
           }
         } else {
           this.$message({
@@ -153,6 +171,63 @@ export default {
           })
         }
       })
+    },
+    submitOrUpdate (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.submit()
+        } else {
+          return false
+        }
+      })
+    },
+    submit () {
+      const region = this.makeParam()
+      this.axios.post('/host/addHost', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+            this.clearform()
+            this.$emit('success')
+            // this.$router.push({ path: '/assetsManager/assetsList' })
+          }
+        } else {
+          this.$message({
+            message: '添加失败',
+            type: 'error'
+          })
+          this.clearform()
+          this.$emit('error')
+        }
+      })
+    },
+    makeParam () {
+      var enableMonitor = this.serverListForm.enableMonitor
+      if (enableMonitor) {
+        enableMonitor = '1'
+      } else {
+        enableMonitor = '0'
+      }
+      const region = {
+        objectName: this.serverListForm.objectName,
+        businessName: this.serverListForm.businessName,
+        agentType: this.serverListForm.agentType,
+        agentIp: this.serverListForm.agentIp,
+        agentDnsName: this.serverListForm.agentDnsName,
+        agentPort: this.serverListForm.agentPort,
+        proxyMonitor: this.serverListForm.proxyMonitor,
+        enableMonitor: enableMonitor,
+        subtypeId: this.serverListForm.subtypeId,
+        groupId: (this.serverListForm.groupId).toString(),
+        remark: this.serverListForm.remark,
+        label: this.serverListForm.label,
+        typeId: this.serverListForm.typeId
+      }
+      return region
     },
     showClear () {
       this.assetNameTop = ''
@@ -177,7 +252,7 @@ export default {
   float: left;
 }
 .queryright {
-  justify-content:flex-end !important;
+  justify-content: flex-end !important;
 }
 .queryCenter {
   text-align: center;
