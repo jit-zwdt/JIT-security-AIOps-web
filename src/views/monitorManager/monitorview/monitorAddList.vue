@@ -582,6 +582,7 @@ export default {
     return {
       show: false,
       hostObjectName: '',
+      hostType: '',
       serverListForm: {
         assetName: '',
         assetType: '',
@@ -646,15 +647,13 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.axios.post('/host/hostinfo', {
-        param: {
-          objectName: this.hostObjectName
-        },
-        page: this.currentPage,
-        size: this.pageSize
-      }).then((resp) => {
+      const param = new URLSearchParams()
+      param.append('keyword', this.hostObjectName)
+      param.append('type', this.hostType)
+      this.axios.post('/monitorTemplates/getTemplates', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
+          console.log(json)
           if (json.code === 1) {
             this.tableData = json.data.dataList
             this.currentTotal = json.data.totalRow
