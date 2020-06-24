@@ -6,12 +6,7 @@
           <el-input type="text" v-model="temp_name" size="small" placeholder="模版名称" clearable></el-input>
         </el-col>
         <el-select v-model="temp_type" class="datetop" filterable placeholder="请选择模版类型" clearable>
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+          <el-option v-for="item in types" :key="item.id" :label="item.type" :value="item.id"></el-option>
         </el-select>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
@@ -32,7 +27,7 @@
       <el-table-column label="名称" prop="name" min-width="25%" :resizable="false" :sortable="true"></el-table-column>
       <el-table-column
         label="类型"
-        prop="type"
+        prop="typeId"
         min-width="15%"
         :resizable="false"
         :formatter="formatType"
@@ -99,36 +94,7 @@ export default {
       ],
       temp_name: '',
       temp_type: '',
-      options: [
-        {
-          value: '1',
-          label: '操作系统'
-        },
-        {
-          value: '2',
-          label: '数据库'
-        },
-        {
-          value: '3',
-          label: '中间件'
-        },
-        {
-          value: '4',
-          label: '网络设备'
-        },
-        {
-          value: '5',
-          label: '硬件'
-        },
-        {
-          value: '6',
-          label: '虚拟化'
-        },
-        {
-          value: '7',
-          label: '云平台'
-        }
-      ],
+      types: [],
       editform: {
         id: '',
         buttonflag: false
@@ -147,6 +113,7 @@ export default {
     }
   },
   created () {
+    this.getTypes()
     this.showInfo()
   },
   methods: {
@@ -227,22 +194,11 @@ export default {
     formatType (row, column) {
       let data = ''
       data = row[column.property]
-      if (data === '1') {
-        return '操作系统'
-      } else if (data === '2') {
-        return '数据库'
-      } else if (data === '3') {
-        return '中间件'
-      } else if (data === '4') {
-        return '网络设备'
-      } else if (data === '5') {
-        return '硬件'
-      } else if (data === '6') {
-        return '虚拟化'
-      } else if (data === '7') {
-        return '云平台'
+      for (var i = 0; i < this.types.length; i++) {
+        if (this.types[i].id === data) {
+          return this.types[i].type
+        }
       }
-      return ''
     },
     changeTableSort (column) {
       var fieldName = column.prop
@@ -262,6 +218,21 @@ export default {
       this.helpform.name = row.name
       this.helpform.imgurl = row.ico
       this.showhelpDialog = true
+    },
+    getTypes () {
+      this.axios.post('/monitorType/getMonitorTypes').then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.types = json.data
+          }
+        } else {
+          this.$message({
+            message: '获取类型信息失败',
+            type: 'error'
+          })
+        }
+      })
     }
   },
   actions: {},
