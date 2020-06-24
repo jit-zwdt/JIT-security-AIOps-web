@@ -92,13 +92,13 @@ export default {
     return {
       show: false,
       serverListForm: {
-        assetName: '',
-        assetType: '',
-        assetNumber: '',
-        assetState: '',
-        assetAmount: '',
-        assetBelongsDept: '',
-        assetBelongsPerson: '',
+        objectName: '',
+        businessName: '',
+        agentType: '1',
+        agentIp: '',
+        agentDnsName: '',
+        proxyMonitor: '',
+        enableMonitor: true,
         assetRegisterDate: '',
         assetRegistrant: '',
         assetUpdateDate: '',
@@ -108,7 +108,13 @@ export default {
       },
       loading: true,
       tableDataclear: [],
-      setTimeoutster: ''
+      setTimeoutster: '',
+      proxyMonitorOptions: [
+        {
+          value: '0',
+          label: '(No Proxy)'
+        }
+      ]
     }
   },
   created () {
