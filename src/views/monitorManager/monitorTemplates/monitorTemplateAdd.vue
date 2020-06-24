@@ -131,7 +131,7 @@ export default {
       })
     },
     getTemplates () {
-      this.axios.post('/monitorTemplates/getTemplates').then((resp) => {
+      this.axios.post('/monitorTemplates/getZabbixTemplates').then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
