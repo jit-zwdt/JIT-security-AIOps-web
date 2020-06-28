@@ -20,18 +20,130 @@
           <el-form-item label="业务名称" prop="businessName">
             <el-input v-model="serverListForm.businessName" clearable></el-input>
           </el-form-item>
-          <el-form-item label="AGENT选用类型" prop="agentType" class="el-form-item-radio">
+          <el-form-item
+            label="AGENT选用类型"
+            prop="agentType"
+            class="el-form-item-radio"
+            v-if="agentShow"
+          >
             <el-radio v-model="serverListForm.agentType" label="1">使用IP</el-radio>
             <el-radio v-model="serverListForm.agentType" label="2">使用DNS</el-radio>
           </el-form-item>
-          <el-form-item label="IP" prop="agentIp">
+          <el-form-item label="IP" prop="agentIp" v-if="agentShow">
             <el-input v-model="serverListForm.agentIp" clearable></el-input>
           </el-form-item>
-          <el-form-item label="DNS名称" prop="agentDnsName">
-            <el-input v-model="serverListForm.agentDnsName" clearable></el-input>
+          <el-form-item label="DNS名称" prop="agentDnsName" v-if="agentShow">
+            <el-input v-model="serverListForm.agentDnsName" clearable placeholder="域名"></el-input>
           </el-form-item>
-          <el-form-item label="端口" prop="agentPort">
+          <el-form-item label="端口" prop="agentPort" v-if="agentShow">
             <el-input v-model="serverListForm.agentPort" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="主机宏" prop="mssql_macro" v-if="sqlserverShow">
+            <div>
+              <el-input v-model="serverListForm.mssqlMacroInstance" clearable>
+                <template slot="prepend">实例名</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.mssqlMacroOdbc" clearable>
+                <template slot="prepend">ODBC源名称</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.mssqlMacroUsername" clearable>
+                <template slot="prepend">用户名</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.mssqlMacroPassword" clearable show-password>
+                <template slot="prepend">密码</template>
+              </el-input>
+            </div>
+          </el-form-item>
+          <el-form-item label="主机宏" prop="oracle_macro" v-if="oracleShow">
+            <div>
+              <el-input v-model="serverListForm.oracleMacroIp" clearable>
+                <template slot="prepend">oracle所在主机IP</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.oracleMacroAsm" clearable>
+                <template slot="prepend">ASM卷名</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.oracleMacroDbname" clearable>
+                <template slot="prepend">数据库名</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.oracleMacroUsername" clearable>
+                <template slot="prepend">用户名</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.oracleMacroPassword" clearable show-password>
+                <template slot="prepend">密码</template>
+              </el-input>
+            </div>
+          </el-form-item>
+          <el-form-item label="JMX选用类型" prop="jmxType" class="el-form-item-radio" v-if="jmxShow">
+            <el-radio v-model="serverListForm.jmxType" label="1">使用IP</el-radio>
+            <el-radio v-model="serverListForm.jmxType" label="2">使用DNS</el-radio>
+          </el-form-item>
+          <el-form-item label="JMXIP" prop="jmxIp" v-if="jmxShow">
+            <el-input v-model="serverListForm.jmxIp" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="DNS名称" prop="jmxDnsName" v-if="jmxShow">
+            <el-input v-model="serverListForm.jmxDnsName" clearable placeholder="域名"></el-input>
+          </el-form-item>
+          <el-form-item label="JMX 端口" prop="jmxPort" v-if="jmxShow">
+            <el-input v-model="serverListForm.jmxPort" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="主机宏" prop="jmxMacro" v-if="jmxShow">
+            <el-input v-model="serverListForm.jmxMacro" clearable>
+              <template slot="prepend">JMX路径</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="SNMP选用类型" prop="snmpType" class="el-form-item-radio" v-if="snmpShow">
+            <el-radio v-model="serverListForm.snmpType" label="1">使用IP</el-radio>
+            <el-radio v-model="serverListForm.snmpType" label="2">使用DNS</el-radio>
+          </el-form-item>
+          <el-form-item label="SNMP IP" prop="snmpIp" v-if="snmpShow">
+            <el-input v-model="serverListForm.snmpIp" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="DNS名称" prop="snmpDnsName" v-if="snmpShow">
+            <el-input v-model="serverListForm.snmpDnsName" clearable placeholder="域名"></el-input>
+          </el-form-item>
+          <el-form-item label="SNMP 端口" prop="snmpPort" v-if="snmpShow">
+            <el-input v-model="serverListForm.snmpPort" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="主机宏" prop="snmpMacro" v-if="snmpShow">
+            <el-input v-model="serverListForm.snmpMacro" clearable>
+              <template slot="prepend">SNMP团体名</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="主机宏" prop="vm_macro" v-if="vmShow">
+            <div>
+              <el-input v-model="serverListForm.vmMacroCpuFrequency" clearable>
+                <template slot="prepend">CPU单核频率</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.vmMacroSdkLink" clearable>
+                <template slot="prepend">SDK链接</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.vmMacroUsername" clearable>
+                <template slot="prepend">用户名</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.vmMacroPassword" clearable show-password>
+                <template slot="prepend">密码</template>
+              </el-input>
+            </div>
           </el-form-item>
           <el-form-item label="通过Proxy监控" prop="proxyMonitor">
             <el-select v-model="serverListForm.proxyMonitor" placeholder="请选择">
@@ -46,10 +158,10 @@
           <el-form-item label prop="enableMonitor" class="el-form-item-radio">
             <el-checkbox v-model="serverListForm.enableMonitor" value="1">启动监控</el-checkbox>
           </el-form-item>
-          <el-form-item label="(主)类型" prop="typeId" v-if="show">
+          <el-form-item label="(主)模板表ID" prop="typeId" v-if="show">
             <el-input v-model="serverListForm.typeId" clearable></el-input>
           </el-form-item>
-          <el-form-item label="(主)类型" prop="subtypeId" v-if="show">
+          <el-form-item label="(子)类型" prop="subtypeId" v-if="show">
             <el-input v-model="serverListForm.subtypeId" clearable></el-input>
           </el-form-item>
           <el-form-item label="类型" prop="subtypeIds">
@@ -82,7 +194,7 @@
           <el-form-item label="备注" prop="remark">
             <el-input v-model="serverListForm.remark" clearable></el-input>
           </el-form-item>
-          <el-form-item label="标签" prop="label">
+          <el-form-item label="标签" prop="label" v-if="show">
             <el-input v-model="serverListForm.label" clearable></el-input>
           </el-form-item>
         </el-form>
@@ -101,6 +213,12 @@ export default {
   data () {
     return {
       show: false,
+      sqlserverShow: false,
+      oracleShow: false,
+      jmxShow: false,
+      snmpShow: false,
+      agentShow: true,
+      vmShow: false,
       serverListForm: {
         objectName: '',
         businessName: '',
@@ -113,7 +231,30 @@ export default {
         subtypeId: '',
         groupId: [],
         remark: '',
-        label: ''
+        label: '',
+        mssqlMacroInstance: 'MSSQLSERVER',
+        mssqlMacroOdbc: '',
+        mssqlMacroPassword: '',
+        mssqlMacroUsername: '',
+        oracleMacroIp: '',
+        oracleMacroAsm: '',
+        oracleMacroDbname: 'orcl',
+        oracleMacroPassword: '',
+        oracleMacroUsername: '',
+        jmxType: '1',
+        jmxIp: '',
+        jmxDnsName: '',
+        jmxPort: '12345',
+        jmxMacro: '',
+        snmpType: '1',
+        snmpIp: '',
+        snmpDnsName: '',
+        snmpPort: '161',
+        snmpMacro: '',
+        vmMacroCpuFrequency: '2666000000',
+        vmMacroPassword: '',
+        vmMacroSdkLink: 'https://',
+        vmMacroUsername: ''
       },
       tableDataclear: [],
       setTimeoutster: '',
@@ -142,6 +283,27 @@ export default {
     }
   },
   created () {
+    this.serverListForm.typeId = this.$route.query.templateId
+    var templateId = this.$route.query.templateId
+    this.serverListForm.subtypeId = this.$route.query.templateSubTypeId
+    var templateSubTypeId = this.$route.query.templateSubTypeId
+    if (templateSubTypeId === '10') {
+      this.sqlserverShow = true
+    } else if (templateSubTypeId === '12') {
+      this.oracleShow = true
+    } else if (templateSubTypeId === '13') {
+      this.serverListForm.jmxMacro = 'path'
+      this.jmxShow = true
+    } else if (templateSubTypeId === '14') {
+      this.serverListForm.jmxMacro = 'context'
+      this.jmxShow = true
+    } else if (templateSubTypeId === '25') {
+      this.vmShow = true
+    }
+    if (templateId === '12' || templateId === '13' || templateId === '14') {
+      this.agentShow = false
+      this.snmpShow = true
+    }
     this.showInfo()
   },
   methods: {
@@ -149,8 +311,6 @@ export default {
       this.showInfo()
     },
     showInfo (str) {
-      this.serverListForm.typeId = this.$route.query.templateId
-      this.serverListForm.subtypeId = this.$route.query.templateSubTypeId
       const _this = this
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
@@ -192,8 +352,7 @@ export default {
               type: 'success'
             })
             this.clearform()
-            this.$emit('success')
-            // this.$router.push({ path: '/assetsManager/assetsList' })
+            this.$router.push({ name: 'monitorList' })
           }
         } else {
           this.$message({
@@ -201,7 +360,6 @@ export default {
             type: 'error'
           })
           this.clearform()
-          this.$emit('error')
         }
       })
     },
@@ -229,14 +387,19 @@ export default {
       }
       return region
     },
-    showClear () {
-      this.assetNameTop = ''
-      this.assetRegisterDateStartTop = ''
-      this.assetRegisterDateEndTop = ''
-      this.titleType = ''
-    },
-    showAssetsAdd () {
-      alert(1)
+    clearform () {
+      this.serverListForm.objectName = ''
+      this.serverListForm.businessName = ''
+      this.serverListForm.agentType = '1'
+      this.serverListForm.agentIp = ''
+      this.serverListForm.agentDnsName = ''
+      this.serverListForm.agentPort = '10050'
+      this.serverListForm.proxyMonitor = ''
+      this.serverListForm.enableMonitor = true
+      this.serverListForm.subtypeId = ''
+      this.serverListForm.groupId = []
+      this.serverListForm.remark = ''
+      this.serverListForm.label = ''
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层
@@ -285,5 +448,18 @@ export default {
 }
 /deep/ .el-form-item-radio {
   text-align: left !important;
+}
+.spanwidth {
+  width: 12%;
+  background-color: #eee;
+  border: 1px solid #e0e0e0;
+  height: 40px;
+}
+.inputwidth {
+  width: 88%;
+  float: right;
+}
+/deep/.inputcolor input {
+  background-color: rgb(232, 240, 254) !important;
 }
 </style>
