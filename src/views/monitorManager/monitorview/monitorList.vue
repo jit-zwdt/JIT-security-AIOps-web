@@ -122,7 +122,7 @@
       <el-table-column label="备注" prop="remark" min-width="12%" :resizable="false"></el-table-column>
       <el-table-column label="分组" prop="groupId" min-width="6%" :resizable="false"></el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
-      <el-table-column align="center" label="操作" min-width="12%">
+      <el-table-column align="center" label="操作" min-width="10%">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete" circle></el-button>
