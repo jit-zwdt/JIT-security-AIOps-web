@@ -233,10 +233,10 @@ export default {
       serverListForm: {
         objectName: '',
         businessName: '',
-        agentType: '1',
+        agentType: '',
         agentIp: '',
         agentDnsName: '',
-        agentPort: '10050',
+        agentPort: '',
         proxyMonitor: '',
         enableMonitor: true,
         subtypeId: '',
@@ -245,28 +245,28 @@ export default {
         groupId: [],
         remark: '',
         label: '',
-        mssqlMacroInstance: 'MSSQLSERVER',
+        mssqlMacroInstance: '',
         mssqlMacroOdbc: '',
         mssqlMacroPassword: '',
         mssqlMacroUsername: '',
         oracleMacroIp: '',
         oracleMacroAsm: '',
-        oracleMacroDbname: 'orcl',
+        oracleMacroDbname: '',
         oracleMacroPassword: '',
         oracleMacroUsername: '',
-        jmxType: '1',
+        jmxType: '',
         jmxIp: '',
         jmxDnsName: '',
-        jmxPort: '12345',
+        jmxPort: '',
         jmxMacro: '',
-        snmpType: '1',
+        snmpType: '',
         snmpIp: '',
         snmpDnsName: '',
-        snmpPort: '161',
+        snmpPort: '',
         snmpMacro: '',
-        vmMacroCpuFrequency: '2666000000',
+        vmMacroCpuFrequency: '',
         vmMacroPassword: '',
-        vmMacroSdkLink: 'https://',
+        vmMacroSdkLink: '',
         vmMacroUsername: '',
         assetsId: ''
       },
@@ -376,20 +376,31 @@ export default {
     var templateSubTypeId = this.$route.query.templateSubTypeId
     if (templateSubTypeId === '10') {
       this.sqlserverShow = true
+      this.serverListForm.mssqlMacroInstance = 'MSSQLSERVER'
     } else if (templateSubTypeId === '12') {
       this.oracleShow = true
+      this.serverListForm.oracleMacroDbname = 'orcl'
     } else if (templateSubTypeId === '13') {
       this.serverListForm.jmxMacro = 'path'
       this.jmxShow = true
+      this.serverListForm.jmxType = '1'
+      this.serverListForm.jmxPort = '12345'
     } else if (templateSubTypeId === '14') {
       this.serverListForm.jmxMacro = 'context'
       this.jmxShow = true
     } else if (templateSubTypeId === '25') {
       this.vmShow = true
+      this.serverListForm.vmMacroCpuFrequency = '2666000000'
+      this.serverListForm.vmMacroSdkLink = 'https://'
     }
     if (templateId === '12' || templateId === '13' || templateId === '14') {
       this.agentShow = false
       this.snmpShow = true
+      this.serverListForm.snmpType = '1'
+      this.serverListForm.snmpPort = '161'
+    } else {
+      this.serverListForm.agentType = '1'
+      this.serverListForm.agentPort = '10050'
     }
     this.showInfo()
   },
