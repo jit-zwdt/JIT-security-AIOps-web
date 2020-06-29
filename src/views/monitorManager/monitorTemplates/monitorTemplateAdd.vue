@@ -28,6 +28,8 @@
                   clearable
                   filterable
                   class="selectSize"
+                  @visible-change="setSelectedVal"
+                  @change="checkItem"
                 >
                   <el-option
                     v-for="template in templateData"
@@ -81,7 +83,8 @@ export default {
           { required: true, message: '请选择监控模版' }
         ]
       },
-      templateData: []
+      templateData: [],
+      tempTemplates: ''
     }
   },
   methods: {
@@ -151,6 +154,34 @@ export default {
       if (this.editform.templates !== null && this.editform.templates !== '') {
         this.tempform.templates = this.editform.templates.split(',')
       }
+    },
+    checkItem (value) {
+      const param = new URLSearchParams()
+      param.append('templates', value)
+      this.axios.post('/monitorTemplates/checkItems', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            if (json.data === 'success') {
+              this.tempTemplates = value
+            } else {
+              this.tempform.templates = this.tempTemplates
+              this.$message({
+                message: json.data,
+                type: 'error'
+              })
+            }
+          }
+        } else {
+          this.$message({
+            message: '获取模版信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    setSelectedVal (value) {
+      this.tempTemplates = this.tempform.templates
     }
   }
 }
