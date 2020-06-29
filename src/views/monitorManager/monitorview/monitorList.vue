@@ -11,17 +11,16 @@
             clearable
           ></el-input>
         </el-col>
-        <el-checkbox v-model="radioHostIp">精选IP</el-checkbox>
         <el-col :span="3">
           <el-input type="text" v-model="hostIp" size="small" placeholder="IP" clearable></el-input>
         </el-col>
         <el-col :span="2">
-          <el-select v-model="hostType" class="datetop" filterable placeholder="选择类型" clearable>
+          <el-select v-model="hostType" class="datetop" filterable placeholder="选择类型" @change="current_hostType" clearable>
             <el-option
               v-for="item in hostTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.type"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -36,12 +35,12 @@
           </el-select>
         </el-col>
         <el-col :span="2">
-          <el-select v-model="hostSubType" class="datetop" filterable placeholder="选择子类型" clearable>
+          <el-select v-model="hostSubType" class="datetop" filterable placeholder="选择子类型" @change="current_hostSubType" clearable>
             <el-option
               v-for="item in hostSubTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.type"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -51,6 +50,7 @@
             class="datetop"
             filterable
             placeholder="是否监控"
+            @change="current_enableMonitor"
             clearable
           >
             <el-option
@@ -61,7 +61,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="2">
+        <!--<el-col :span="2">
           <el-select v-model="monitorType" class="datetop" filterable placeholder="监控状态" clearable>
             <el-option
               v-for="item in monitorTypeOptions"
@@ -70,7 +70,7 @@
               :value="item.value"
             ></el-option>
           </el-select>
-        </el-col>
+        </el-col>-->
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
           type="primary"
@@ -104,7 +104,16 @@
         </template>
       </el-table-column>
       <el-table-column label="IP" prop="hostIp" min-width="12%" :resizable="false"></el-table-column>
-      <el-table-column label="启用监控" prop="enableMonitor" min-width="6%" :resizable="false"></el-table-column>
+      <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
+        <template slot-scope="scope">
+          <el-switch
+                  v-model="scope.row.enableMonitor"
+                  active-value="1"
+                  inactive-value="0"
+                  active-color="#13ce66"
+                  @change="change_enableMonitor(scope.row)"/>
+        </template>
+      </el-table-column>
       <el-table-column label="监控状态" prop="monitorType" min-width="14%" :resizable="false"></el-table-column>
       <el-table-column label="类型" prop="type" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="子类型" prop="subtype" min-width="6%" :resizable="false"></el-table-column>
@@ -132,6 +141,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
+import qs from 'qs'
 export default {
   data () {
     return {
@@ -160,52 +170,22 @@ export default {
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
-      hostTypeOptions: [
-        {
-          value: '1',
-          label: '操作系统'
-        },
-        {
-          value: '2',
-          label: '数据库'
-        },
-        {
-          value: '3',
-          label: '中间件'
-        },
-        {
-          value: '4',
-          label: '网络设备'
-        },
-        {
-          value: '5',
-          label: '硬件'
-        },
-        {
-          value: '6',
-          label: '虚拟化'
-        },
-        {
-          value: '7',
-          label: '云平台'
-        }
-      ],
+      hostTypeOptions: [],
       hostGroupOptions: [
         {
           value: '',
           label: ''
         }
       ],
-      hostSubTypeOptions: [
-        {
-          value: '',
-          label: ''
-        }
-      ],
+      hostSubTypeOptions: [],
       enableMonitorOptions: [
         {
-          value: '',
-          label: ''
+          value: '0',
+          label: '未监控'
+        },
+        {
+          value: '1',
+          label: '已监控'
         }
       ],
       monitorTypeOptions: [
@@ -216,10 +196,15 @@ export default {
       ],
       loading: true,
       tableDataclear: [],
-      setTimeoutster: ''
+      setTimeoutster: '',
+      currentHostType: '',
+      currentHostSubType: '',
+      currentEnableMonitor: ''
     }
   },
   created () {
+    this.getTypes()
+    this.getSubTypes()
     this.showInfo()
   },
   methods: {
@@ -244,15 +229,19 @@ export default {
               message: '删除成功',
               type: 'success'
             })
-            this.showInfo()
+          } else {
+            this.$message({
+              message: '删除失败',
+              type: 'error'
+            })
           }
         } else {
           this.$message({
             message: '删除失败',
             type: 'error'
           })
-          this.showInfo()
         }
+        this.showInfo()
       })
     },
     pageChange (item) {
@@ -269,7 +258,11 @@ export default {
     showInfoTimeout (str) {
       this.axios.post('/host/hostinfo', {
         param: {
-          objectName: this.hostObjectName
+          hostObjectName: this.hostObjectName,
+          hostIp: this.hostIp,
+          typeId: this.currentHostType,
+          subtypeId: this.currentHostSubType,
+          enableMonitor: this.currentEnableMonitor
         },
         page: this.currentPage,
         size: this.pageSize
@@ -298,6 +291,71 @@ export default {
     showAssetsAdd () {
       // this.$router.push({ name: 'monitorAddList', query: { id: this.hostObjectName } })
       this.$router.push({ name: 'monitorAddList' })
+    },
+    getTypes () {
+      this.axios.post('/monitorType/getMonitorTypes').then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.hostTypeOptions = json.data
+          }
+        } else {
+          this.$message({
+            message: '获取类型信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    getSubTypes () {
+      this.axios.post('/monitorType/getMonitorSubTypes').then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.hostSubTypeOptions = json.data
+          }
+        } else {
+          this.$message({
+            message: '获取类型信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    current_hostType (selVal) {
+      this.currentHostType = selVal
+    },
+    current_hostSubType (selVal) {
+      this.currentHostSubType = selVal
+    },
+    current_enableMonitor (selVal) {
+      this.currentEnableMonitor = selVal
+    },
+    change_enableMonitor (rowData) {
+      this.axios.put('/host/updateHostEnableMonitor/' + rowData.id, qs.stringify({
+        enableMonitor: rowData.enableMonitor
+      })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+        }
+        this.showInfo()
+      })
     }
   },
   actions: {
@@ -313,7 +371,7 @@ export default {
   float: right;
 }
 .tableHeaderColor {
-  font-size: 20;
+  font-size: 20px;
 }
 .datetop /deep/ input {
   height: 32px !important;
