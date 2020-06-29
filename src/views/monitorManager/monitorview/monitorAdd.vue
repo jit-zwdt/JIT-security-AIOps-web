@@ -186,9 +186,9 @@
             >
               <el-option
                 v-for="template in groupIdData"
-                :key="template.value"
-                :label="template.label"
-                :value="template.value"
+                :key="template.groupid"
+                :label="template.name"
+                :value="template.groupid"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -286,12 +286,8 @@ export default {
       ],
       groupIdData: [
         {
-          value: '15',
-          label: '主机模板'
-        },
-        {
-          value: '34',
-          label: '数据库模板'
+          groupid: '',
+          name: ''
         }
       ],
       assetOptions: [],
@@ -301,11 +297,14 @@ export default {
         children: 'items'
       },
       editFormRules: {
-        objectName: [{
-          required: true, // 默认是否显示校验
-          message: '请输入对象名称',
-          trigger: 'blur'
-        }],
+        objectName: [
+          {
+            required: true, // 默认是否显示校验
+            message: '请输入对象名称',
+            trigger: 'blur'
+          },
+          { pattern: /^(\w){1,100}$/, message: '只能输入字母、数字、下划线' }
+        ],
         businessName: [{
           required: true,
           message: '请输入业务名称',
@@ -321,11 +320,14 @@ export default {
           message: '请选择分组',
           trigger: 'blur'
         }],
-        agentIp: [{
-          required: true,
-          message: '请输入IP',
-          trigger: 'blur'
-        }],
+        agentIp: [
+          {
+            required: true,
+            message: '请输入IP',
+            trigger: 'blur'
+          },
+          { pattern: /((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))/, message: '请输入正确IP' }
+        ],
         agentDnsName: [{
           required: true,
           message: '请输入DNS',
@@ -385,6 +387,7 @@ export default {
       this.jmxShow = true
       this.serverListForm.jmxType = '1'
       this.serverListForm.jmxPort = '12345'
+      this.editFormRules.jmxDnsName[0].required = false
     } else if (templateSubTypeId === '14') {
       this.serverListForm.jmxMacro = 'context'
       this.jmxShow = true
@@ -398,7 +401,9 @@ export default {
       this.snmpShow = true
       this.serverListForm.snmpType = '1'
       this.serverListForm.snmpPort = '161'
+      this.editFormRules.snmpDnsName[0].required = false
     } else {
+      this.editFormRules.agentDnsName[0].required = false
       this.serverListForm.agentType = '1'
       this.serverListForm.agentPort = '10050'
     }
@@ -415,6 +420,23 @@ export default {
     showInfoTimeout () {
       this.getSubtypeIdOptions()
       this.getAssetInfo()
+      this.groupIdDataInfo()
+    },
+    groupIdDataInfo () {
+      this.axios.post('/hostGroup/getZabbixHostGroup').then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          // console.log(json.data)
+          if (json.code === 1) {
+            this.groupIdData = json.data
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
     },
     getSubtypeIdOptions () {
       const param = new URLSearchParams()
@@ -438,7 +460,7 @@ export default {
       this.axios.post('/assets/findByConditionInfo').then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          console.log(json.data)
+          // console.log(json.data)
           if (json.code === 1) {
             this.assetOptions = json.data
           }
@@ -449,6 +471,11 @@ export default {
           })
         }
       })
+    },
+    validateIPAddress (value) {
+      if (value && !(/((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))/).test(value)) {
+        // callback(new Error('IP地址不规范'))
+      }
     },
     submitOrUpdate (formName) {
       this.checkform()
@@ -569,42 +596,7 @@ export default {
       return region
     },
     clearform () {
-      this.serverListForm.objectName = ''
-      this.serverListForm.businessName = ''
-      this.serverListForm.agentType = '1'
-      this.serverListForm.agentIp = ''
-      this.serverListForm.agentDnsName = ''
-      this.serverListForm.agentPort = '10050'
-      this.serverListForm.proxyMonitor = ''
-      this.serverListForm.enableMonitor = true
-      this.serverListForm.subtypeId = ''
-      this.serverListForm.groupId = []
-      this.serverListForm.remark = ''
-      this.serverListForm.label = ''
-      this.mssqlMacroInstance = 'MSSQLSERVER'
-      this.mssqlMacroOdbc = ''
-      this.mssqlMacroPassword = ''
-      this.mssqlMacroUsername = ''
-      this.oracleMacroIp = ''
-      this.oracleMacroAsm = ''
-      this.oracleMacroDbname = 'orcl'
-      this.oracleMacroPassword = ''
-      this.oracleMacroUsername = ''
-      this.jmxType = '1'
-      this.jmxIp = ''
-      this.jmxDnsName = ''
-      this.jmxPort = '12345'
-      this.jmxMacro = ''
-      this.snmpType = '1'
-      this.snmpIp = ''
-      this.snmpDnsName = ''
-      this.snmpPort = '161'
-      this.snmpMacro = ''
-      this.vmMacroCpuFrequency = '2666000000'
-      this.vmMacroPassword = ''
-      this.vmMacroSdkLink = 'https://'
-      this.vmMacroUsername = ''
-      this.serverListForm.assetsId = ''
+      this.$refs.serverListForm.resetFields()
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层
