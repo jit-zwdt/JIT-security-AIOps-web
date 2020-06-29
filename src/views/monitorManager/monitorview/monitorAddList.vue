@@ -177,7 +177,7 @@ export default {
       this.axios.post('/monitorTemplates/getTemplates', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          console.log(json)
+          // console.log(json)
           if (json.code === 1) {
             this.tableData = json.data
             this.loading = false
