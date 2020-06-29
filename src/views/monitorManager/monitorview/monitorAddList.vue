@@ -87,7 +87,7 @@
                   <span>帮助</span>
                 </a>
                 <a
-                  @click="showAssetsAdd(item.id,item.subtypeIds,item.name)"
+                  @click="showAssetsAdd(item.id,item.typeId,item.subtypeIds,item.name)"
                   href="javaScript:void(0)"
                   class="el-button w-100 el-button--success el-button--mini hosts-btn"
                   style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
@@ -196,8 +196,8 @@ export default {
       this.assetRegisterDateEndTop = ''
       this.titleType = ''
     },
-    showAssetsAdd (id, subtypeIds, name) {
-      this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateSubTypeId: subtypeIds, templateTypeName: name } })
+    showAssetsAdd (id, typeId, subtypeIds, name) {
+      this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name } })
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层

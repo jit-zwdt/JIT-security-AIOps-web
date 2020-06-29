@@ -165,6 +165,9 @@
           <el-form-item label="(主)类型" prop="typeId" v-if="show">
             <el-input v-model="serverListForm.typeId" clearable></el-input>
           </el-form-item>
+          <el-form-item label="(子)类型" prop="subtypeIds" v-if="show">
+            <el-input v-model="serverListForm.subtypeIds" clearable></el-input>
+          </el-form-item>
           <el-form-item label="类型" prop="subtypeId">
             <el-select v-model="serverListForm.subtypeId" placeholder="请选择">
               <el-option
@@ -240,6 +243,7 @@ export default {
         proxyMonitor: '',
         enableMonitor: true,
         subtypeId: '',
+        subtypeIds: '',
         templatesId: '',
         typeId: '',
         groupId: [],
@@ -374,7 +378,8 @@ export default {
   created () {
     this.serverListForm.templatesId = this.$route.query.templateId
     var templateId = this.$route.query.templateId
-    this.serverListForm.typeId = this.$route.query.templateSubTypeId
+    this.serverListForm.typeId = this.$route.query.templateTypeId
+    this.serverListForm.subtypeIds = this.$route.query.templateSubTypeId
     var templateSubTypeId = this.$route.query.templateSubTypeId
     if (templateSubTypeId === '10') {
       this.sqlserverShow = true
@@ -440,7 +445,7 @@ export default {
     },
     getSubtypeIdOptions () {
       const param = new URLSearchParams()
-      param.append('ids', this.serverListForm.typeId)
+      param.append('ids', this.serverListForm.subtypeIds)
       this.axios.post('/monitorType/getJsonTypes', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
