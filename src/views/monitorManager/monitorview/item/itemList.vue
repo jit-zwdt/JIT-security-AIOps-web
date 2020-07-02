@@ -62,7 +62,7 @@
               :active-value="0"
               :inactive-value="1"
               active-color="#13ce66"
-              @change="change_enableMonitor(scope.row)"
+              @change="change_enableMonitor(scope.$index, scope.row)"
             />
           </template>
         </el-table-column>
@@ -183,7 +183,7 @@ export default {
       this.nameTop = ''
       this.enableItemTop = ''
     },
-    change_enableMonitor (rowData) {
+    change_enableMonitor (index, rowData) {
       this.axios.put('/item/updateItemStatus/' + rowData.itemid, qs.stringify({
         status: rowData.status
       })).then((resp) => {
@@ -199,12 +199,31 @@ export default {
               message: '修改失败',
               type: 'error'
             })
+            this.checkStatusUpdateInfo(rowData.itemid, rowData.status)
           }
         } else {
           this.$message({
             message: '修改失败',
             type: 'error'
           })
+          this.checkStatusUpdateInfo(rowData.itemid, rowData.status)
+        }
+      }).catch(error => {
+        alert('服务器异常')
+        console.log(error)
+      })
+    },
+    checkStatusUpdateInfo (itemid, status) {
+      this.tableData.forEach(element => {
+        if (element.itemid === itemid) {
+          switch (status) {
+            case 0:
+              element.status = 1
+              break
+            case 1:
+              element.status = 0
+              break
+          }
         }
       })
     },
