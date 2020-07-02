@@ -83,6 +83,7 @@
   </el-dialog>
 </template>
 <script>
+import qs from 'qs'
 export default {
   props: {
     showEditform: {
@@ -167,6 +168,7 @@ export default {
           if (json.code === 1) {
             console.log(json.data)
             this.tableData = json.data
+            this.currentPage = 1
           }
         } else {
           this.$message({
@@ -182,7 +184,29 @@ export default {
       this.enableItemTop = ''
     },
     change_enableMonitor (rowData) {
-      // enableMonitor: rowData.enableMonitor
+      this.axios.put('/item/updateItemStatus/' + rowData.itemid, qs.stringify({
+        status: rowData.status
+      })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+        }
+      })
     },
     handleSizeChange (val) {
       this.currentPage = 1
