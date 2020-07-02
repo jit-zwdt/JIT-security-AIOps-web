@@ -179,14 +179,31 @@
             circle
             @click="confirmupdate(scope.$index, scope.row)"
           ></el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            slot="reference"
+            icon="el-icon-s-grid"
+            circle
+            @click="confirmItemList(scope.$index, scope.row)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
+    <ItemList
+      :title="'【对象名称】'+titleType"
+      :showEditform="showEditform"
+      :showEditDialog="showEditDialog"
+      @close="showEditDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></ItemList>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
+import ItemList from '@/views/monitorManager/monitorview/item/itemList.vue'
 import qs from 'qs'
 export default {
   data () {
@@ -244,7 +261,12 @@ export default {
       currentEnableMonitor: '',
       currentHostGroup: '',
       monitorTypeItems: [],
-      timer: ''
+      timer: '',
+      showEditDialog: false,
+      showEditform: {
+        hostid: ''
+      },
+      titleType: ''
     }
   },
   created () {
@@ -526,6 +548,14 @@ export default {
         }
         this.showInfo()
       })
+    },
+    confirmItemList (index, row) {
+      this.showEditDialog = true
+      this.showEditform.hostid = row.hostid
+      this.titleType = row.objectName
+    },
+    noReloadData () {
+      this.showEditDialog = false
     }
   },
   mounted () {
@@ -540,7 +570,7 @@ export default {
   destroyed () {
     clearInterval(this.timer)
   },
-  components: { Pagination }
+  components: { Pagination, ItemList }
 }
 </script>
 <style lang="scss" scoped>
