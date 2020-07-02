@@ -6,7 +6,7 @@
     :visible.sync="showEditDialog"
     :before-close="handleclosebind"
     :show-close="true"
-    :close-on-click-modal="true"
+    :close-on-click-modal="false"
   >
     <div>
       <ToolBar>
@@ -45,7 +45,7 @@
         </div>
       </ToolBar>
       <el-table
-        :data="tableData"
+        :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         v-loading="loading"
         border
         style="width: 100%"
@@ -53,9 +53,9 @@
         :header-cell-style="tableHeaderColor"
       >
         <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
-        <el-table-column label="监控项名称" prop="name" min-width="20%"></el-table-column>
-        <el-table-column label="采集间隔" prop="delay" min-width="20%"></el-table-column>
-        <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
+        <el-table-column label="监控项名称" prop="name" min-width="70%"></el-table-column>
+        <el-table-column label="采集间隔" prop="delay" min-width="15%"></el-table-column>
+        <el-table-column align="center" label="启用监控" min-width="15%" :resizable="false">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
@@ -67,6 +67,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="block" style="margin-top:15px;">
+        <el-pagination
+          align="center"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 30, 50, 100]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableData.length"
+        ></el-pagination>
+      </div>
     </div>
   </el-dialog>
 </template>
@@ -109,9 +121,9 @@ export default {
         value: '1',
         label: '停用'
       }],
-      currentPage: 1,
-      pageSize: 15,
-      currentTotal: 0,
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 10, // 每页的数据条数
       loading: true,
       tableDataclear: [],
       setTimeoutster: '',
@@ -124,6 +136,7 @@ export default {
   },
   methods: {
     openDialog () {
+      this.pageSize = 10
       this.showClear()
       this.showInfo()
     },
@@ -170,6 +183,13 @@ export default {
     },
     change_enableMonitor (rowData) {
       // enableMonitor: rowData.enableMonitor
+    },
+    handleSizeChange (val) {
+      this.currentPage = 1
+      this.pageSize = val
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
     }
   },
   actions: {
@@ -199,5 +219,11 @@ export default {
 }
 .toolbar > div:last-child {
   justify-content: flex-start;
+}
+/deep/.el-table {
+  z-index: 1;
+  max-height: 550px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 </style>

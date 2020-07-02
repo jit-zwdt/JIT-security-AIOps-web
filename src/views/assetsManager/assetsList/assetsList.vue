@@ -330,4 +330,14 @@ export default {
 /deep/.el-button {
   margin-left: 10px;
 }
+/deep/.el-table {
+  max-height: 740px;
+  overflow: hidden;
+  overflow-y: hidden;
+}
+/deep/.el-table__body-wrapper {
+  max-height: 685px;
+  overflow: hidden;
+  overflow-y: auto;
+}
 </style>
