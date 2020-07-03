@@ -197,7 +197,7 @@ export default {
       this.titleType = ''
     },
     showAssetsAdd (id, typeId, subtypeIds, name) {
-      this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name } })
+      this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name, id: '', groupIds: '' } })
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层

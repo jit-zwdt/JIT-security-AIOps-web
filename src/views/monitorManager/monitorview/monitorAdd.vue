@@ -157,7 +157,10 @@
             </el-select>
           </el-form-item>
           <el-form-item label prop="enableMonitor" class="el-form-item-radio">
-            <el-checkbox v-model="serverListForm.enableMonitor" value="1">启动监控</el-checkbox>
+            <el-checkbox
+              v-model="serverListForm.enableMonitor"
+              :formatter="formatEnableMonitor(serverListForm.enableMonitor)"
+            >启动监控</el-checkbox>
           </el-form-item>
           <el-form-item label="模板表ID" prop="templatesId" v-if="show">
             <el-input v-model="serverListForm.templatesId" clearable></el-input>
@@ -272,7 +275,8 @@ export default {
         vmMacroPassword: '',
         vmMacroSdkLink: '',
         vmMacroUsername: '',
-        assetsId: ''
+        assetsId: '',
+        hostId: ''
       },
       tableDataclear: [],
       setTimeoutster: '',
@@ -426,6 +430,35 @@ export default {
       this.getSubtypeIdOptions()
       this.getAssetInfo()
       this.groupIdDataInfo()
+      var id = this.$route.query.id
+      if (id !== null && id !== '') {
+        this.showform(id)
+      }
+    },
+    showform (id) {
+      this.axios.post('/host/findById/' + id).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.serverListForm = json.data
+            var groupIds = this.$route.query.groupIds
+            groupIds = groupIds.split(',')
+            this.serverListForm.groupId = groupIds
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+            this.$router.push({ name: 'monitorList' })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+          this.$router.push({ name: 'monitorList' })
+        }
+      })
     },
     groupIdDataInfo () {
       this.axios.post('/hostGroup/getZabbixHostGroup').then((resp) => {
@@ -477,6 +510,14 @@ export default {
         }
       })
     },
+    formatEnableMonitor (str) {
+      if (str === '1') {
+        this.serverListForm.enableMonitor = true
+      } else if (str === '0') {
+        this.serverListForm.enableMonitor = false
+      }
+      return ''
+    },
     validateIPAddress (value) {
       if (value && !(/((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))/).test(value)) {
         // callback(new Error('IP地址不规范'))
@@ -486,7 +527,12 @@ export default {
       this.checkform()
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.submit()
+          var id = this.$route.query.id
+          if (id !== null && id !== '') {
+            this.update(id)
+          } else {
+            this.submit()
+          }
         } else {
           return false
         }
@@ -516,6 +562,32 @@ export default {
             type: 'error'
           })
           this.clearform()
+        }
+      })
+    },
+    update (id) {
+      const region = this.makeParam()
+      this.axios.put('/host/updateHost/' + id, region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.clearform()
+            this.$router.push({ name: 'monitorList' })
+          } else {
+            this.$message({
+              message: '修改失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
         }
       })
     },
@@ -550,8 +622,10 @@ export default {
       }
     },
     makeParam () {
-      var assetsId = (this.serverListForm.assetsId).toString()
-      assetsId = assetsId.split(',')[1]
+      var assetsId = this.serverListForm.assetsId
+      if (assetsId != null && (assetsId).toString().split(',').length > 1) {
+        assetsId = (assetsId).toString().split(',')[1]
+      }
       var enableMonitor = this.serverListForm.enableMonitor
       if (enableMonitor) {
         enableMonitor = '1'
@@ -596,7 +670,8 @@ export default {
         vmMacroPassword: this.serverListForm.vmMacroPassword,
         vmMacroSdkLink: this.serverListForm.vmMacroSdkLink,
         vmMacroUsername: this.serverListForm.vmMacroUsername,
-        assetsId: assetsId
+        assetsId: assetsId,
+        hostId: this.serverListForm.hostId
       }
       return region
     },

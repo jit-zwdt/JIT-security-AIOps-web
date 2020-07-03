@@ -119,6 +119,7 @@
     >
       >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="templatesId" prop="templatesId" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="zabbix中主机的Hostid" prop="hostid" v-if="show"></el-table-column>
       <el-table-column label="主机名称" prop="objectName" min-width="12%">
         <template slot-scope="scope">
@@ -240,13 +241,16 @@ export default {
         snmpIp: '',
         enableMonitor: '',
         monitorType: '',
-        typeId: '',
-        hostSubType: '',
+        type: '',
+        subtype: '',
         remark: '',
         groupId: '',
         hostLabel: '',
         businessName: '',
-        hostid: ''
+        hostid: '',
+        templatesId: '',
+        typeId: '',
+        subtypeId: ''
       }],
       currentPage: 1,
       pageSize: 15,
@@ -580,6 +584,9 @@ export default {
     noReloadData () {
       this.showEditDialog = false
       this.showTriggerDialog = false
+    },
+    confirmupdate (index, row) {
+      this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId } })
     }
   },
   mounted () {
