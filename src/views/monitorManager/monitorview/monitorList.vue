@@ -120,12 +120,12 @@
       >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="zabbix中主机的Hostid" prop="hostid" v-if="show"></el-table-column>
-      <el-table-column label="主机名称" prop="objectName" min-width="14%">
+      <el-table-column label="主机名称" prop="objectName" min-width="12%">
         <template slot-scope="scope">
           <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.objectName}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="业务名称" prop="businessName" min-width="14%"></el-table-column>
+      <el-table-column label="业务名称" prop="businessName" min-width="12%"></el-table-column>
       <el-table-column label="IP" prop="hostIp" min-width="12%" :resizable="false"></el-table-column>
       <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
         <template slot-scope="scope">
@@ -166,7 +166,7 @@
         </template>
       </el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
-      <el-table-column align="center" label="操作" min-width="10%">
+      <el-table-column align="center" label="操作" min-width="14%">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete" circle></el-button>
@@ -187,6 +187,14 @@
             circle
             @click="confirmItemList(scope.$index, scope.row)"
           ></el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            slot="reference"
+            icon="el-icon-share"
+            circle
+            @click="confirmTriggerList(scope.$index, scope.row)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -198,12 +206,21 @@
       @success="reloadData"
       @error="reloadData"
     ></ItemList>
+    <TriggerList
+      :title="'【对象名称】'+titleType"
+      :showEditform="showEditform"
+      :showEditDialog="showTriggerDialog"
+      @close="showTriggerDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></TriggerList>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
 import ItemList from '@/views/monitorManager/monitorview/item/itemList.vue'
+import TriggerList from '@/views/monitorManager/monitorview/trigger/triggerList.vue'
 import qs from 'qs'
 export default {
   data () {
@@ -263,6 +280,7 @@ export default {
       monitorTypeItems: [],
       timer: '',
       showEditDialog: false,
+      showTriggerDialog: false,
       showEditform: {
         hostid: ''
       },
@@ -554,8 +572,14 @@ export default {
       this.showEditform.hostid = row.hostid
       this.titleType = row.objectName
     },
+    confirmTriggerList (index, row) {
+      this.showTriggerDialog = true
+      this.showEditform.hostid = row.hostid
+      this.titleType = row.objectName
+    },
     noReloadData () {
       this.showEditDialog = false
+      this.showTriggerDialog = false
     }
   },
   mounted () {
@@ -570,7 +594,7 @@ export default {
   destroyed () {
     clearInterval(this.timer)
   },
-  components: { Pagination, ItemList }
+  components: { Pagination, ItemList, TriggerList }
 }
 </script>
 <style lang="scss" scoped>
