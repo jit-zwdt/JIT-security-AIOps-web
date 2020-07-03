@@ -91,7 +91,8 @@ const routes = [
     name: 'assetsManager',
     component: Layout,
     meta: {
-      title: '资产管理'
+      title: '资产管理',
+      requireAuth: true
     },
     children: AssetsManager
   },
@@ -100,7 +101,8 @@ const routes = [
     name: 'monitorManager',
     component: Layout,
     meta: {
-      title: '监控'
+      title: '监控',
+      requireAuth: true
     },
     children: MonitorManager
   },

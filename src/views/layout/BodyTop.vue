@@ -21,8 +21,7 @@
                 v-for="item in GlobalCfg.systemNavType"
                 :key="item.value"
                 @click="$store.commit('NAV_TYPE_TOGGLE', item.value)"
-                >{{ item.label }}</el-button
-              >
+              >{{ item.label }}</el-button>
             </el-button-group>
           </div>
         </el-dropdown-menu>
@@ -68,7 +67,7 @@ export default {
     },
     screenFullToggle () {
       ScreenFull.toggle()
-        .then(() => {})
+        .then(() => { })
         .catch(() => {
           this.$message({
             message: '你的浏览器不支持全屏！',
@@ -76,7 +75,13 @@ export default {
           })
         })
     },
-    logout () {}
+    logout () {
+      this.$store.commit('LOGOUT')
+      this.$router.replace({
+        path: '/',
+        query: { redirect: this.$router.currentRoute.fullPath }
+      })
+    }
   },
   computed: mapState(['system'])
 }
