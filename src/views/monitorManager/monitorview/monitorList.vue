@@ -292,12 +292,25 @@ export default {
     }
   },
   created () {
+    this.initParams()
     this.getTypes()
     this.getSubTypes()
     this.getGroups()
     this.showInfo()
   },
   methods: {
+    initParams () {
+      var typeId = this.$route.query.typeId
+      var groupId = this.$route.query.groupId
+      if (typeId != null && typeof (typeId) !== 'undefined' && typeId !== '') {
+        this.hostType = typeId
+        this.currentHostType = typeId
+      }
+      if (groupId != null && typeof (groupId) !== 'undefined' && groupId !== '') {
+        this.hostGroup = groupId
+        this.currentHostGroup = groupId
+      }
+    },
     // 修改table tr行的背景色
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
     },

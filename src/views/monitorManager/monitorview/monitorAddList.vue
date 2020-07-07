@@ -158,9 +158,16 @@ export default {
     }
   },
   created () {
+    this.initParams()
     this.showInfo()
   },
   methods: {
+    initParams () {
+      var typeId = this.$route.query.typeId
+      if (typeId != null && typeof (typeId) !== 'undefined' && typeId !== '') {
+        this.hostType = typeId
+      }
+    },
     reloadData () {
       this.showInfo()
     },
