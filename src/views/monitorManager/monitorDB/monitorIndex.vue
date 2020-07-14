@@ -70,9 +70,27 @@
                   <el-button style="float: right; padding: 0px; margin-left: 5px;" type="text" @click="refreshCard()"><i class="el-icon-refresh" style="font-size: 18px;color: #cccccc;font-weight: 400;"></i></el-button>
                   <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">2020-07-6 14:13:41</span>
                 </div>
-                <div v-for="o in 4" :key="o" class="grid-content-panel-content">
-                  {{'列表内容 ' + o }}
-                </div>
+                <el-table
+                        :data="mysqlTop5"
+                        style="width: 100%">
+                  <el-table-column
+                          prop="hostName"
+                          label="主机"
+                          width="180">
+                  </el-table-column>
+                  <el-table-column
+                          prop="clock"
+                          label="最近检查记录"
+                          width="180">
+                  </el-table-column>
+                  <el-table-column
+                          prop="value"
+                          label="最新数据">
+                    <template slot-scope="scope">
+                      {{ scope.row.value }} qps
+                    </template>
+                  </el-table-column>
+                </el-table>
               </el-card>
             </el-col>
             <el-col :span="12">
@@ -99,7 +117,23 @@ export default {
   data () {
     return {
       groupName: '',
-      hostGroupOptions: []
+      hostGroupOptions: [],
+      mysqlTop5: [{
+        hostName: 'mysql本地开发测试',
+        itemId: '36260',
+        itemName: 'MySQL: Command Select per second',
+        hostId: '10407',
+        clock: '2020-07-14 16:04:11',
+        value: '9.1936'
+      },
+      {
+        hostName: 'MySQL172_16_15_10',
+        itemId: '36212',
+        itemName: 'MySQL: Command Select per second',
+        hostId: '10392',
+        clock: '2020-07-14 16:04:23',
+        value: '9.0242'
+      }]
     }
   },
   created () {
