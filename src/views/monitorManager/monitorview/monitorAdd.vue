@@ -124,6 +124,24 @@
               <template slot="prepend">SNMP团体名</template>
             </el-input>
           </el-form-item>
+          <el-form-item label="IPMI选用类型" prop="ipmiType" class="el-form-item-radio" v-if="ipmiShow">
+            <el-radio v-model="serverListForm.ipmiType" label="1">使用IP</el-radio>
+            <el-radio v-model="serverListForm.ipmiType" label="2">使用DNS</el-radio>
+          </el-form-item>
+          <el-form-item label="IPMI IP" prop="ipmiIp" v-if="ipmiShow">
+            <el-input v-model="serverListForm.ipmiIp" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="DNS名称" prop="ipmiDnsName" v-if="ipmiShow">
+            <el-input v-model="serverListForm.ipmiDnsName" clearable placeholder="域名"></el-input>
+          </el-form-item>
+          <el-form-item label="IPMI 端口" prop="ipmiPort" v-if="ipmiShow">
+            <el-input v-model="serverListForm.ipmiPort" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="主机宏" prop="ipmiMacro" v-if="ipmiShow">
+            <el-input v-model="serverListForm.ipmiMacro" clearable>
+              <template slot="prepend">IPMI</template>
+            </el-input>
+          </el-form-item>
           <el-form-item label="主机宏" prop="vm_macro" v-if="vmShow">
             <div>
               <el-input v-model="serverListForm.vmMacroCpuFrequency" clearable>
@@ -271,6 +289,11 @@ export default {
         snmpDnsName: '',
         snmpPort: '',
         snmpMacro: '',
+        ipmiType: '',
+        ipmiIp: '',
+        ipmiDnsName: '',
+        ipmiPort: '',
+        ipmiMacro: '',
         vmMacroCpuFrequency: '',
         vmMacroPassword: '',
         vmMacroSdkLink: '',
@@ -375,6 +398,21 @@ export default {
           required: true,
           message: '请输入端口',
           trigger: 'blur'
+        }],
+        ipmiIp: [{
+          required: true,
+          message: '请输入IP',
+          trigger: 'blur'
+        }],
+        ipmiDnsName: [{
+          required: true,
+          message: '请输入DNS',
+          trigger: 'blur'
+        }],
+        ipmiPort: [{
+          required: true,
+          message: '请输入端口',
+          trigger: 'blur'
         }]
       }
     }
@@ -405,12 +443,18 @@ export default {
       this.serverListForm.vmMacroCpuFrequency = '2666000000'
       this.serverListForm.vmMacroSdkLink = 'https://'
     }
-    if (templateId === '12' || templateId === '13' || templateId === '14') {
+    if (templateId === '12' || templateId === '13' || templateId === '14' || templateId === '16' || templateId === '17') {
       this.agentShow = false
       this.snmpShow = true
       this.serverListForm.snmpType = '1'
       this.serverListForm.snmpPort = '161'
       this.editFormRules.snmpDnsName[0].required = false
+      if (templateId === '16' || templateId === '17') {
+        this.ipmiShow = true
+        this.serverListForm.ipmiType = '1'
+        this.serverListForm.ipmiPort = '623'
+        this.editFormRules.ipmiDnsName[0].required = false
+      }
     } else {
       this.editFormRules.agentDnsName[0].required = false
       this.serverListForm.agentType = '1'
@@ -594,13 +638,22 @@ export default {
     checkform () {
       var templateId = this.$route.query.templateId
       var templateSubTypeId = this.$route.query.templateSubTypeId
-      if (templateId === '12' || templateId === '13' || templateId === '14') {
+      if (templateId === '12' || templateId === '13' || templateId === '14' || templateId === '16' || templateId === '17') {
         if (this.serverListForm.snmpType === '1') {
           this.editFormRules.snmpIp[0].required = true
           this.editFormRules.snmpDnsName[0].required = false
         } else {
           this.editFormRules.snmpIp[0].required = false
           this.editFormRules.snmpDnsName[0].required = true
+        }
+        if (templateId === '16' || templateId === '17') {
+          if (this.serverListForm.ipmiType === '1') {
+            this.editFormRules.ipmiIp[0].required = true
+            this.editFormRules.ipmiDnsName[0].required = false
+          } else {
+            this.editFormRules.ipmiIp[0].required = false
+            this.editFormRules.ipmiDnsName[0].required = true
+          }
         }
       } else {
         if (this.serverListForm.agentType === '1') {
@@ -666,6 +719,11 @@ export default {
         snmpDnsName: this.serverListForm.snmpDnsName,
         snmpPort: this.serverListForm.snmpPort,
         snmpMacro: this.serverListForm.snmpMacro,
+        ipmiType: this.serverListForm.ipmiType,
+        ipmiIp: this.serverListForm.ipmiIp,
+        ipmiDnsName: this.serverListForm.ipmiDnsName,
+        ipmiPort: this.serverListForm.ipmiPort,
+        ipmiMacro: this.serverListForm.ipmiMacro,
         vmMacroCpuFrequency: this.serverListForm.vmMacroCpuFrequency,
         vmMacroPassword: this.serverListForm.vmMacroPassword,
         vmMacroSdkLink: this.serverListForm.vmMacroSdkLink,

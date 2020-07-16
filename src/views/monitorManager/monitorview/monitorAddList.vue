@@ -142,7 +142,8 @@ export default {
         {
           value: '5',
           label: '硬件'
-        },
+        }
+        /* ,
         {
           value: '6',
           label: '虚拟化'
@@ -150,7 +151,7 @@ export default {
         {
           value: '7',
           label: '云平台'
-        }
+        } */
       ],
       loading: true,
       tableDataclear: [],
