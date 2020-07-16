@@ -536,6 +536,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
+            console.log(json.data)
             this.monitorTypeItems = json.data
           }
         } else {

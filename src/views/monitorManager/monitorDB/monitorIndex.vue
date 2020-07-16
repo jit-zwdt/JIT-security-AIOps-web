@@ -9,9 +9,13 @@
             </el-input>
           </div>
           <i class="el-icon-s-fold"></i>
-          <span class="titlez"> {{this.$route.meta.title}}分组</span>
+          <span class="titlez">{{this.$route.meta.title}}分组</span>
           <ul>
-            <li v-for="item in hostGroupOptions" @click="gotoList(item.groupid)" :key="item.groupid">{{item.name}}</li>
+            <li
+              v-for="item in hostGroupOptions"
+              @click="gotoList(item.groupid)"
+              :key="item.groupid"
+            >{{item.name}}</li>
           </ul>
         </div>
       </el-col>
@@ -21,18 +25,8 @@
             <el-col :span="24">
               <div class="grid-content-top">
                 <span class="pull-left">{{this.$route.meta.title}}</span>
-                <el-button
-                        type="primary"
-                        size="small"
-                        @click="gotoList()"
-                        icon="el-icon-s-grid"
-                >列表</el-button>
-                <el-button
-                    type="success"
-                    size="small"
-                    @click="gotoAdd()"
-                    icon="el-icon-edit"
-                >添加</el-button>
+                <el-button type="primary" size="small" @click="gotoList()" icon="el-icon-s-grid">列表</el-button>
+                <el-button type="success" size="small" @click="gotoAdd()" icon="el-icon-edit">添加</el-button>
               </div>
             </el-col>
           </el-row>
@@ -41,24 +35,88 @@
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
                   <span>异常账号</span>
-                  <el-button style="float: right; padding: 0px; margin-left: 5px;" type="text" @click="refreshCard()"><i class="el-icon-refresh" style="font-size: 18px;color: #cccccc;font-weight: 400;"></i></el-button>
-                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">2020-07-6 14:13:41</span>
+                  <el-button
+                    style="float: right; padding: 0px; margin-left: 5px;"
+                    type="text"
+                    @click="refreshCard('1')"
+                  >
+                    <i
+                      class="el-icon-refresh"
+                      style="font-size: 18px;color: #979899;font-weight: 400;"
+                    ></i>
+                  </el-button>
+                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">
+                    <i
+                      class="fa fa-clock-o"
+                      style="margin-right: 5px; margin-left: 5px; cursor: pointer;"
+                    ></i>
+                    {{currentTime}}
+                  </span>
                 </div>
-                <div v-for="o in 4" :key="o" class="grid-content-panel-content">
-                  {{'列表内容 ' + o }}
-                </div>
+                <el-table
+                  :data="exceptionTop5"
+                  :show-header="false"
+                  v-loading="exceptionloading"
+                  style="width: 100%"
+                >
+                  <el-table-column width="530">
+                    <template slot-scope="scope">
+                      <el-link
+                        type="primary"
+                        @click="showhostIdInfo(scope.row)"
+                      >{{scope.row.hostName}}</el-link>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
+                  <el-table-column prop="value">
+                    <template slot-scope="scope">{{ scope.row.value }} qps</template>
+                  </el-table-column>
+                  <el-table-column prop="hostId" v-if="show"></el-table-column>
+                </el-table>
               </el-card>
             </el-col>
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>ORACLE 表空间 Top5</span>
-                  <el-button style="float: right; padding: 0px; margin-left: 5px;" type="text" @click="refreshCard()"><i class="el-icon-refresh" style="font-size: 18px;color: #cccccc;font-weight: 400;"></i></el-button>
-                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">2020-07-6 14:13:41</span>
+                  <span>ORACLE Sessions数量 Top5</span>
+                  <el-button
+                    style="float: right; padding: 0px; margin-left: 5px;"
+                    type="text"
+                    @click="refreshCard('2')"
+                  >
+                    <i
+                      class="el-icon-refresh"
+                      style="font-size: 18px;color: #979899;font-weight: 400;"
+                    ></i>
+                  </el-button>
+                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">
+                    <i
+                      class="fa fa-clock-o"
+                      style="margin-right: 5px; margin-left: 5px; cursor: pointer;"
+                    ></i>
+                    {{currentTime}}
+                  </span>
                 </div>
-                <div v-for="o in 4" :key="o" class="grid-content-panel-content">
-                  {{'列表内容 ' + o }}
-                </div>
+                <el-table
+                  :data="oracleTop5"
+                  :show-header="false"
+                  v-loading="oracleloading"
+                  style="width: 100%"
+                >
+                  <el-table-column width="530">
+                    <template slot-scope="scope">
+                      <el-link
+                        type="primary"
+                        @click="showhostIdInfo(scope.row)"
+                      >{{scope.row.hostName}}</el-link>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
+                  <el-table-column prop="value">
+                    <template slot-scope="scope">{{ scope.row.value }} </template>
+                  </el-table-column>
+                  <el-table-column prop="hostId" v-if="show"></el-table-column>
+                </el-table>
               </el-card>
             </el-col>
           </el-row>
@@ -67,42 +125,88 @@
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
                   <span>MYSQL 每秒查询数 Top5</span>
-                  <el-button style="float: right; padding: 0px; margin-left: 5px;" type="text" @click="refreshCard()"><i class="el-icon-refresh" style="font-size: 18px;color: #cccccc;font-weight: 400;"></i></el-button>
-                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">2020-07-6 14:13:41</span>
+                  <el-button
+                    style="float: right; padding: 0px; margin-left: 5px;"
+                    type="text"
+                    @click="refreshCard('3')"
+                  >
+                    <i
+                      class="el-icon-refresh"
+                      style="font-size: 18px;color: #979899;font-weight: 400;"
+                    ></i>
+                  </el-button>
+                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">
+                    <i
+                      class="fa fa-clock-o"
+                      style="margin-right: 5px; margin-left: 5px; cursor: pointer;"
+                    ></i>
+                    {{currentTime}}
+                  </span>
                 </div>
                 <el-table
-                        :data="mysqlTop5"
-                        style="width: 100%">
-                  <el-table-column
-                          prop="hostName"
-                          label="主机"
-                          width="180">
-                  </el-table-column>
-                  <el-table-column
-                          prop="clock"
-                          label="最近检查记录"
-                          width="180">
-                  </el-table-column>
-                  <el-table-column
-                          prop="value"
-                          label="最新数据">
+                  :data="mysqlTop5"
+                  :show-header="false"
+                  v-loading="mysqlloading"
+                  style="width: 100%"
+                >
+                  <el-table-column width="530">
                     <template slot-scope="scope">
-                      {{ scope.row.value }} qps
+                      <el-link
+                        type="primary"
+                        @click="showhostIdInfo(scope.row)"
+                      >{{scope.row.hostName}}</el-link>
                     </template>
                   </el-table-column>
+                  <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
+                  <el-table-column prop="value">
+                    <template slot-scope="scope">{{ scope.row.value }} qps</template>
+                  </el-table-column>
+                  <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
               </el-card>
             </el-col>
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>SQL SERVER 用户连接数 Top5</span>
-                  <el-button style="float: right; padding: 0px; margin-left: 5px;" type="text" @click="refreshCard()"><i class="el-icon-refresh" style="font-size: 18px;color: #cccccc;font-weight: 400;"></i></el-button>
-                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">2020-07-6 14:13:41</span>
+                  <span>MYSQL 用户连接数 Top5</span>
+                  <el-button
+                    style="float: right; padding: 0px; margin-left: 5px;"
+                    type="text"
+                    @click="refreshCard('4')"
+                  >
+                    <i
+                      class="el-icon-refresh"
+                      style="font-size: 18px;color: #979899;font-weight: 400;"
+                    ></i>
+                  </el-button>
+                  <span style="float: right;font-size: 14px;color: #cccccc;font-weight: normal;">
+                    <i
+                      class="fa fa-clock-o"
+                      style="margin-right: 5px; margin-left: 5px; cursor: pointer;"
+                    ></i>
+                    {{currentTime}}
+                  </span>
                 </div>
-                <div v-for="o in 4" :key="o" class="grid-content-panel-content">
-                  {{'列表内容 ' + o }}
-                </div>
+                <el-table
+                  :data="sqlserverTop5"
+                  :show-header="false"
+                  v-loading="sqlserverloading"
+                  style="width: 100%"
+                >
+                  <el-table-column width="530">
+                    <template slot-scope="scope">
+                      <el-link
+                        type="primary"
+                        @click="showhostIdInfo(scope.row)"
+                      >{{scope.row.hostName}}</el-link>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
+                  <el-table-column prop="value">
+                    <template slot-scope="scope">{{ scope.row.value }} </template>
+                  </el-table-column>
+                  <el-table-column prop="hostId" v-if="show"></el-table-column>
+                </el-table>
               </el-card>
             </el-col>
           </el-row>
@@ -116,31 +220,42 @@ import qs from 'qs'
 export default {
   data () {
     return {
+      mysqlloading: true,
+      exceptionloading: true,
+      sqlserverloading: true,
+      oracleloading: true,
+      timer: '',
+      show: false,
       groupName: '',
       hostGroupOptions: [],
-      mysqlTop5: [{
-        hostName: 'mysql本地开发测试',
-        itemId: '36260',
-        itemName: 'MySQL: Command Select per second',
-        hostId: '10407',
-        clock: '2020-07-14 16:04:11',
-        value: '9.1936'
-      },
-      {
-        hostName: 'MySQL172_16_15_10',
-        itemId: '36212',
-        itemName: 'MySQL: Command Select per second',
-        hostId: '10392',
-        clock: '2020-07-14 16:04:23',
-        value: '9.0242'
-      }]
+      mysqlTop5: [],
+      exceptionTop5: [],
+      sqlserverTop5: [],
+      oracleTop5: [],
+      currentTime: '' // 获取当前时间
     }
   },
   created () {
     this.groupName = ''
     this.getGroups()
+    this.getMySqlTop5ByItem()
+    this.getExceptionTop5ByItem()
+    this.getOracleTop5ByItem()
+    this.getSqlserverTop5ByItem()
+    this.currentTimefunction()
+  },
+  beforeDestroy () {
+    if (this.timer) {
+      clearInterval(this.timer) // 在Vue实例销毁前，清除我们的定时器
+    }
   },
   methods: {
+    currentTimefunction () {
+      this.timer = setInterval(this.getDate, 500)
+    },
+    getDate () {
+      this.currentTime = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+    },
     getGroups () {
       this.axios.post('/host/getZabbixHostGroupByHostType', qs.stringify({
         typeId: this.$route.meta.typeId,
@@ -162,6 +277,107 @@ export default {
     gotoAdd () {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.$route.meta.typeId } })
     },
+    getMySqlTop5ByItem () {
+      this.mysqlloading = true
+      const param = {
+        typeId: this.$route.meta.typeId,
+        subtypeId: '11',
+        itemKey: 'mysql.com_select.rate',
+        valueType: '0'
+      }
+      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.mysqlTop5 = json.data
+            this.mysqlloading = false
+          } else {
+            this.mysqlloading = false
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    getExceptionTop5ByItem () {
+      this.exceptionloading = true
+      const param = {
+        typeId: this.$route.meta.typeId
+      }
+      this.axios.post('/host/getTop5ByTrigger', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.exceptionTop5 = json.data
+            this.exceptionloading = false
+          } else {
+            this.exceptionloading = false
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    getOracleTop5ByItem () {
+      this.oracleloading = true
+      const param = {
+        typeId: this.$route.meta.typeId,
+        subtypeId: '12',
+        itemKey: 'session_active',
+        valueType: '3'
+      }
+      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.oracleTop5 = json.data
+            this.oracleloading = false
+          } else {
+            this.oracleloading = false
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    getSqlserverTop5ByItem () {
+      this.sqlserverloading = true
+      const param = {
+        typeId: this.$route.meta.typeId,
+        subtypeId: '11',
+        itemKey: 'mysql.threads_connected',
+        valueType: '3'
+      }
+      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.sqlserverTop5 = json.data
+            this.sqlserverloading = false
+          } else {
+            this.sqlserverloading = false
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
     gotoList (groupId) {
       this.$router.push({
         name: 'monitorList',
@@ -171,8 +387,16 @@ export default {
         }
       })
     },
-    refreshCard () {
-      console.log('refreshCard')
+    refreshCard (str) {
+      if (str === '1') {
+        this.getExceptionTop5ByItem()
+      } else if (str === '2') {
+        this.getOracleTop5ByItem()
+      } else if (str === '3') {
+        this.getMySqlTop5ByItem()
+      } else if (str === '4') {
+        this.getSqlserverTop5ByItem()
+      }
     }
   },
   mounted () {
@@ -183,68 +407,68 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .el-row {
-    margin-bottom: 15px;
-    &:last-child {
-      margin-bottom: 0;
-    }
+.el-row {
+  margin-bottom: 15px;
+  &:last-child {
+    margin-bottom: 0;
   }
-  .el-col {
-  }
-  .grid-left {
-    min-height: 800px;
-    background: #ffffff;
-    padding: 5px 8px;
-    font-size: 20px;
-    color: #606266;
-  }
-  .grid-left ul {
-    list-style-type: none;
-    padding-left: 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  .grid-left ul li {
-    cursor: pointer;
-  }
-  .grid-left .titlez {
-    font-size: 16px;
-    font-weight: 400;
-  }
-  .grid-content {
-    min-height: 800px;
-    font-size: 20px;
-  }
-  .grid-content .grid-content-top {
-    height: 50px;
-    line-height: 40px;
-    padding-left: 18px;
-    padding-right: 8px;
-    font-size: 20px;
-    background: #ffffff;
-    text-align: right;
-    color: #606266;
-  }
-  .grid-content .pull-left {
-    height: 50px;
-    line-height: 50px;
-    font-size: 16px;
-    font-weight: 400;
-    float: left !important;
-  }
-  .grid-content-panel {
-    height: 360px;
-    padding: 5px 8px;
-    font-size: 20px;
-    background: #ffffff;
-    color: #606266;
-  }
-  .grid-content-panel-head {
-    font-size: 16px;
-    font-weight: 400;
-  }
-  .grid-content-panel-content {
-    font-size: 16px;
-    background: #ffffff;
-  }
+}
+.el-col {
+}
+.grid-left {
+  min-height: 800px;
+  background: #ffffff;
+  padding: 5px 8px;
+  font-size: 20px;
+  color: #606266;
+}
+.grid-left ul {
+  list-style-type: none;
+  padding-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.grid-left ul li {
+  cursor: pointer;
+}
+.grid-left .titlez {
+  font-size: 16px;
+  font-weight: 400;
+}
+.grid-content {
+  min-height: 800px;
+  font-size: 20px;
+}
+.grid-content .grid-content-top {
+  height: 50px;
+  line-height: 40px;
+  padding-left: 18px;
+  padding-right: 8px;
+  font-size: 20px;
+  background: #ffffff;
+  text-align: right;
+  color: #606266;
+}
+.grid-content .pull-left {
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  font-weight: 400;
+  float: left !important;
+}
+.grid-content-panel {
+  height: 360px;
+  padding: 5px 8px;
+  font-size: 20px;
+  background: #ffffff;
+  color: #606266;
+}
+.grid-content-panel-head {
+  font-size: 16px;
+  font-weight: 400;
+}
+.grid-content-panel-content {
+  font-size: 16px;
+  background: #ffffff;
+}
 </style>
