@@ -277,6 +277,9 @@ export default {
     gotoAdd () {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.$route.meta.typeId } })
     },
+    showhostIdInfo (row) {
+      this.$router.push({ name: 'monitorPossessionInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+    },
     getmemoryTop5ByItem () {
       this.memoryloading = true
       const param = {
