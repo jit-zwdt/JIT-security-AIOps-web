@@ -284,10 +284,11 @@ export default {
       this.memoryloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'vm.memory.size[pused]',
-        valueType: '0'
+        itemKey: '3',
+        valueType: '0',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -332,10 +333,11 @@ export default {
       this.cpuRateloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'system.cpu.util[,system]',
-        valueType: '0'
+        itemKey: '2',
+        valueType: '0',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

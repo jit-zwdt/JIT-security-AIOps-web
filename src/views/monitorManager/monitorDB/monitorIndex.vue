@@ -282,10 +282,11 @@ export default {
       const param = {
         typeId: this.$route.meta.typeId,
         subtypeId: '11',
-        itemKey: 'mysql.com_select.rate',
-        valueType: '0'
+        itemKey: '3',
+        valueType: '0',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -331,10 +332,11 @@ export default {
       const param = {
         typeId: this.$route.meta.typeId,
         subtypeId: '12',
-        itemKey: 'session_active',
-        valueType: '3'
+        itemKey: '2',
+        valueType: '3',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -357,10 +359,11 @@ export default {
       const param = {
         typeId: this.$route.meta.typeId,
         subtypeId: '11',
-        itemKey: 'mysql.threads_connected',
-        valueType: '3'
+        itemKey: '4',
+        valueType: '3',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
