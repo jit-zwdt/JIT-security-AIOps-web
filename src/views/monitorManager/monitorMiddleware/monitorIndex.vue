@@ -286,10 +286,11 @@ export default {
       this.memoryloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'jmx["java.lang:type=MemoryPool,name=Code Cache",Usage.used]',
-        valueType: '3'
+        itemKey: '3',
+        valueType: '3',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -334,10 +335,11 @@ export default {
       this.threadloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'jmx["java.lang:type=Threading",ThreadCount]',
-        valueType: '3'
+        itemKey: '2',
+        valueType: '3',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -359,10 +361,11 @@ export default {
       this.requestNumloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'jmx["Catalina:name=http-9999,type=GlobalRequestProcessor",requestCount]',
-        valueType: '0'
+        itemKey: '4',
+        valueType: '0',
+        method: 'top5ByItem'
       }
-      this.axios.post('/host/getTop5ByItem', param).then((resp) => {
+      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
