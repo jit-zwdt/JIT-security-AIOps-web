@@ -139,7 +139,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="监控状态" prop="monitorType" min-width="14%" :resizable="false">
+      <el-table-column label="监控状态" prop="monitorType" min-width="15%" :resizable="false">
         <template slot-scope="scope">
           <el-tag
             v-for="item in makeMonitorTypeItems(scope.row)"

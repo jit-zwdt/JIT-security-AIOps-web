@@ -278,13 +278,14 @@ export default {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.$route.meta.typeId } })
     },
     showhostIdInfo (row) {
-      this.$router.push({ name: 'monitorPossessionInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+      this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
     getmemoryTop5ByItem () {
       this.memoryloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'vm.memory.size[pused]'
+        itemKey: 'vm.memory.size[pused]',
+        valueType: '0'
       }
       this.axios.post('/host/getTop5ByItem', param).then((resp) => {
         if (resp.status === 200) {
@@ -331,7 +332,8 @@ export default {
       this.cpuRateloading = true
       const param = {
         typeId: this.$route.meta.typeId,
-        itemKey: 'system.cpu.util[,system]'
+        itemKey: 'system.cpu.util[,system]',
+        valueType: '0'
       }
       this.axios.post('/host/getTop5ByItem', param).then((resp) => {
         if (resp.status === 200) {

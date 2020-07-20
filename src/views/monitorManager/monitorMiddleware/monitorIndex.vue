@@ -113,7 +113,7 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ scope.row.value }} </template>
+                    <template slot-scope="scope">{{ scope.row.value }}</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -159,7 +159,9 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ Math.round(scope.row.value/1024/1024*100)/100 }} MB</template>
+                    <template
+                      slot-scope="scope"
+                    >{{ Math.round(scope.row.value/1024/1024*100)/100 }} MB</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -203,7 +205,7 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ scope.row.value }} </template>
+                    <template slot-scope="scope">{{ scope.row.value }}</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -276,6 +278,9 @@ export default {
     },
     gotoAdd () {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.$route.meta.typeId } })
+    },
+    showhostIdInfo (row) {
+      this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
     getmemoryTop5ByItem () {
       this.memoryloading = true

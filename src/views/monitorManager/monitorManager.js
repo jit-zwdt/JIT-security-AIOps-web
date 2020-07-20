@@ -7,7 +7,7 @@ import MonitorNetworkIndex from '@/views/monitorManager/monitorNetwork/monitorIn
 import MonitorDBIndex from '@/views/monitorManager/monitorDB/monitorIndex.vue'
 import MonitorSystemIndex from '@/views/monitorManager/monitorSystem/monitorIndex.vue'
 import MonitorMiddlewareIndex from '@/views/monitorManager/monitorMiddleware/monitorIndex.vue'
-import MonitorPossessionInfo from '@/views/monitorManager/monitorPossessionInfo/monitorPossessionInfo.vue'
+import MonitorPossessionJmxInfo from '@/views/monitorManager/monitorPossessionInfo/monitorPossessionJmxInfo.vue'
 
 export default [
   {
@@ -87,9 +87,9 @@ export default [
     }
   },
   {
-    path: 'monitorPossessionInfo',
-    name: 'monitorPossessionInfo',
-    component: MonitorPossessionInfo,
+    path: 'monitorPossessionJmxInfo',
+    name: 'monitorPossessionJmxInfo',
+    component: MonitorPossessionJmxInfo,
     meta: {
       title: '主机监控项所拥有信息'
     }
