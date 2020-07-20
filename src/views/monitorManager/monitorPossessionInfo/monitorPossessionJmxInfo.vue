@@ -419,8 +419,5 @@ export default {
 /deep/.el-tabs__item {
   width: 50%;
 }
-/deep/.is-active {
-  // background-color: rgba(12, 160, 241, 0.1) !important border;
-}
 a:hover { background-color:#c5c5c5; }
 </style>

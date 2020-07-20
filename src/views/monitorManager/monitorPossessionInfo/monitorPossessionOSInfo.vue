@@ -92,7 +92,7 @@
                     <th class="darkmainborderth">版本</th>
                     <td class="darkmainbordertd" colspan="5">{{this.tomcatVersion}}</td>
                   </tr>
-                </table> -->
+                </table>-->
               </div>
             </div>
           </div>
@@ -419,8 +419,7 @@ export default {
 /deep/.el-tabs__item {
   width: 50%;
 }
-/deep/.is-active {
-  // background-color: rgba(12, 160, 241, 0.1) !important border;
+a:hover {
+  background-color: #c5c5c5;
 }
-a:hover { background-color:#c5c5c5; }
 </style>
