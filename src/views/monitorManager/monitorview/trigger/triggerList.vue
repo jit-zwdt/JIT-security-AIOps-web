@@ -53,8 +53,8 @@
         :header-cell-style="tableHeaderColor"
       >
         <el-table-column label="triggerid" prop="triggerid" :resizable="false" v-if="show"></el-table-column>
-        <el-table-column label="触发器名称" prop="description" min-width="85%"></el-table-column>
-        <el-table-column align="center" label="启用监控" min-width="15%" :resizable="false">
+        <el-table-column label="触发器名称" prop="description" min-width="67%"></el-table-column>
+        <el-table-column align="center" label="启用监控" min-width="10%" :resizable="false">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
@@ -63,6 +63,26 @@
               active-color="#13ce66"
               @change="change_enableMonitor(scope.$index, scope.row)"
             />
+          </template>
+        </el-table-column>
+        <el-table-column label="严重性" min-width="30%">
+          <template slot-scope="scope">
+            <div>
+              <el-radio-group
+                v-model="scope.row.priority"
+                size="small"
+                @change="change_priority(scope.row)"
+                @mouseover.native="default_priority(scope.row)"
+                ref="radiogroup"
+              >
+                <!-- <el-radio-button label="0">未分类</el-radio-button> -->
+                <el-radio-button label="1">信息</el-radio-button>
+                <el-radio-button label="2">警告</el-radio-button>
+                <el-radio-button label="3">一般严重</el-radio-button>
+                <el-radio-button label="4">严重</el-radio-button>
+                <el-radio-button label="5">灾难</el-radio-button>
+              </el-radio-group>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -91,7 +111,7 @@ export default {
     showEditDialog: Boolean,
     dialogWidth: {
       type: String,
-      default: '800px'
+      default: '1200px'
     },
     title: {
       type: String,
@@ -104,6 +124,7 @@ export default {
   },
   data () {
     return {
+      priority: '',
       show: false,
       titleType: '',
       tableData: [{
@@ -130,7 +151,15 @@ export default {
         this.nameTop = ''
         this.enableItemTop = ''
         this.$parent.$parent.noReloadData()
-      }
+      },
+      priorityMap: new Map([
+        [0, '未分类'],
+        [1, '信息'],
+        [2, '警告'],
+        [3, '一般严重'],
+        [4, '严重'],
+        [5, '灾难']
+      ])
     }
   },
   methods: {
@@ -230,6 +259,48 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
+    },
+    change_priority (rowData) {
+      this.$confirm('确定将严重性由【' + this.priorityMap.get(parseInt(this.priority)) + '】改为【' + this.priorityMap.get(parseInt(rowData.priority)) + '】?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.put('/trigger/updateTriggerPriority/' + rowData.triggerid, qs.stringify({
+          priority: rowData.priority
+        })).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '修改失败',
+                type: 'error'
+              })
+              rowData.priority = this.priority
+            }
+          } else {
+            this.$message({
+              message: '修改失败',
+              type: 'error'
+            })
+            rowData.priority = this.priority
+          }
+        }).catch(error => {
+          alert('服务器异常')
+          rowData.priority = this.priority
+          console.log(error)
+        })
+      }).catch(() => {
+        rowData.priority = this.priority
+      })
+    },
+    default_priority (rowData) {
+      this.priority = rowData.priority
     }
   },
   actions: {
