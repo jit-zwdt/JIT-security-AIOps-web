@@ -123,7 +123,7 @@
       <el-table-column label="zabbix中主机的Hostid" prop="hostid" v-if="show"></el-table-column>
       <el-table-column label="主机名称" prop="objectName" min-width="12%">
         <template slot-scope="scope">
-          <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.objectName}}</el-link>
+          <el-link type="primary" @click="showPossessionInfo(scope.row)">{{scope.row.objectName}}</el-link>
         </template>
       </el-table-column>
       <el-table-column label="业务名称" prop="businessName" min-width="12%"></el-table-column>
@@ -601,6 +601,9 @@ export default {
     },
     confirmupdate (index, row) {
       this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId } })
+    },
+    showPossessionInfo (row) {
+      this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName } })
     }
   },
   mounted () {
