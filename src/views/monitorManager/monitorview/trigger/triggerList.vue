@@ -73,7 +73,6 @@
                 size="small"
                 @change="change_priority(scope.row)"
                 @mouseover.native="default_priority(scope.row)"
-                ref="radiogroup"
               >
                 <!-- <el-radio-button label="0">未分类</el-radio-button> -->
                 <el-radio-button label="1">信息</el-radio-button>
