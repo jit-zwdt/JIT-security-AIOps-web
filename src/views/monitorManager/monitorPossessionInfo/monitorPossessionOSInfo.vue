@@ -225,6 +225,8 @@ export default {
             } else {
               this.tomcatVersion = json.data[0].lastvalue
             }
+          } else {
+            this.tomcatVersion = '获取失败'
           }
         } else {
           this.$message({
