@@ -43,24 +43,36 @@
         </div>
       </div>
     </template>
-    <el-tabs type="border-card" style="margin-top:5px">
-      <el-tab-pane label="概况">
+    <el-tabs type="border-card" style="margin-top:5px" v-model="activeName" id="pieEcharts">
+      <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
-          <div class="card dark-main-background">
+          <div
+            class="card dark-main-background queryleft"
+            style="width:32.5%;margin-left:10px"
+            v-for="(items, index) in itemstableData"
+            v-bind:key="index"
+          >
             <div
               class="title-bar card-header dark-main-background dark-white-color"
-              style="height:40px"
+              style="height:40px;width:100%"
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>当前线程数</span>
+                  <span>{{formatitemName(items.itemName)}}</span>
                 </p>
               </div>
               <div class="queryright" style="margin-top:-5px !important;height:40px">
                 <el-button
                   style="float: right; padding: 0px; margin-left: 5px;"
                   type="text"
-                  @click="refreshCard('3')"
+                  @click="removeItems(items)"
+                >
+                  <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
+                </el-button>
+                <el-button
+                  style="float: right; padding: 0px; margin-left: 5px;"
+                  type="text"
+                  @click="refreshItems(items,index)"
                 >
                   <i
                     class="el-icon-refresh"
@@ -70,54 +82,100 @@
               </div>
             </div>
             <div class="tempList card-body">
-              <div>
-                <!-- <table class="dark-main-background" style="width:100%;margin-top:-5px">
-                  <tr style="height:40px">
-                    <th class="darkmainborderth">名称</th>
-                    <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
-                    <th class="darkmainborderth">监控状态</th>
-                    <td class="darkmainbordertd">
-                      <span
-                        class="label label-danger"
-                        data-toggle="tooltip"
-                        ata-placement="bottom"
-                        v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
-                        :title="makeMonitorTypeTitle()"
-                      >{{this.monitorTypeValue}}</span>
-                    </td>
-                    <th class="darkmainborderth">ip地址</th>
-                    <td class="darkmainbordertd">{{this.serverForm.jmxIp}}</td>
-                  </tr>
-                  <tr style="height:40px">
-                    <th class="darkmainborderth">版本</th>
-                    <td class="darkmainbordertd" colspan="5">{{this.tomcatVersion}}</td>
-                  </tr>
-                </table> -->
-              </div>
+              <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
             </div>
           </div>
-        </template>
-        <div class="dark-main-background" style="width:33.33%">
-          <a
-            href="javascript:void(0);"
-            id
-            class="card card-body dark-main-background"
-            style="height:300px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+          <div
+            class="dark-main-background queryleft"
+            style="width:32.5%;margin-left:10px;margin-top:0px"
           >
-            <div class="fa fa-plus" style="font-size: 75px;">
-              <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
+            <a
+              href="javascript:void(0);"
+              @click="addItems()"
+              class="card card-body dark-main-background"
+              style="height:392px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+            >
+              <div class="fa fa-plus" style="font-size: 75px;">
+                <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
+              </div>
+            </a>
+          </div>
+        </template>
+      </el-tab-pane>
+      <el-tab-pane label="指标列表" name="second" :key="'second'">
+        <div>
+          <ToolBar>
+            <div class="queryleft" style="width:100%">
+              <el-col :span="6">
+                <el-input type="text" v-model="nameTop" size="small" placeholder="名称" clearable></el-input>
+              </el-col>
+              <el-button
+                type="primary"
+                size="small"
+                @click="showInfo() == false"
+                icon="el-icon-search"
+              >查询</el-button>
+              <el-button
+                type="primary"
+                size="small"
+                @click="showClear() == false"
+                icon="el-icon-refresh-left"
+              >重置</el-button>
             </div>
-          </a>
+          </ToolBar>
+          <el-table
+            :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            v-loading="loading"
+            border
+            style="width: 100%"
+            :row-style="tableRowStyle"
+            :header-cell-style="tableHeaderColor"
+          >
+            <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
+            <el-table-column label="监控项名称" prop="name" min-width="70%"></el-table-column>
+            <el-table-column label="应用集" prop="delay" min-width="15%" v-if="show"></el-table-column>
+            <el-table-column label="间隔" prop="delay" min-width="15%"></el-table-column>
+            <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
+              <template slot-scope="scope">
+                <el-popconfirm
+                  title="是否添加指标到概况？"
+                  @onConfirm="confirmSaveTrend(scope.$index, scope.row)"
+                >
+                  <el-button
+                    size="mini"
+                    type="primary"
+                    slot="reference"
+                    icon="fa fa-external-link"
+                    circle
+                    v-if="checkbtn(scope.$index, scope.row)"
+                  ></el-button>
+                </el-popconfirm>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="block" style="margin-top:15px;">
+            <el-pagination
+              align="center"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 30, 50, 100]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableData.length"
+            ></el-pagination>
+          </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="指标列表">配置管理</el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
+import { timesMethod } from '@/utils/formatDate.js'
 export default {
   data () {
     return {
+      itemsloading: this.$loading(),
       show: false,
       serverForm: {
         objectName: '',
@@ -169,17 +227,49 @@ export default {
       monitorTypeValue: '',
       monitorTypeTitle: '',
       spanChangeColor: '',
-      spanredChangeColor: ''
+      spanredChangeColor: '',
+      tableData: [{
+        itemid: '',
+        name: '',
+        delay: '',
+        status: ''
+      }],
+      nameTop: '',
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 10, // 每页的数据条数
+      loading: true,
+      tableDataclear: [],
+      setTimeoutster: '',
+      setTimeoutItems: '',
+      handleclosebind () {
+        this.nameTop = ''
+        this.$parent.$parent.noReloadData()
+      },
+      itemstableData: [],
+      activeName: 'first'
     }
   },
   created () {
     this.showInfo()
     this.getTomcatVersion()
     this.getMonitorTypeItems()
+    this.getShowData()
   },
   methods: {
+    // 修改table tr行的背景色
+    tableRowStyle ({ row, column, rowIndex, columnIndex }) {
+    },
+    // 修改table header的背景色
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
+      }
+    },
     reloadData () {
+      this.pageSize = 10
       this.showInfo()
+      this.findHostIdinfo()
     },
     showInfo (str) {
       this.loading = true
@@ -188,6 +278,27 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
+      const region = {
+        hostids: [this.$route.query.hostId],
+        name: this.nameTop
+      }
+      this.axios.post('/item/getItemInfoList', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.tableData = json.data
+            this.currentPage = 1
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+        this.loading = false
+      })
+    },
+    findHostIdinfo () {
       this.axios.post('/host/findHostIdinfo/' + this.$route.query.hostId).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -235,6 +346,7 @@ export default {
       })
     },
     showClear () {
+      this.nameTop = ''
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层
@@ -276,7 +388,207 @@ export default {
           })
         }
       })
+    },
+    drawLine () {
+    },
+    handleSizeChange (val) {
+      this.currentPage = 1
+      this.pageSize = val
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+    },
+    getShowData () {
+      this.axios.post('/trend/findHostDetailItems/' + this.$route.query.hostId).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.itemstableData = json.data
+            // json.data.forEach(element => {
+            //   this.getItemsData(element.itemid)
+            // })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    getID (index) {
+      return 'charts-demo-' + index
+    },
+    getItemsData (itemid, index) {
+      var starttime = timesMethod.fun_date(-3)
+      var timefrom = timesMethod.getDatestamp(starttime)
+      var endtime = timesMethod.fun_date(3)
+      var timetill = timesMethod.getDatestamp(endtime)
+      const region = {
+        itemids: [itemid],
+        timefrom: timefrom,
+        timetill: timetill
+      }
+      const returndataclock = []
+      const returndataavg = []
+      this.axios.post('/trend/getItemInfoList', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            json.data.forEach(element => {
+              var clock = timesMethod.getTimestamp(element.clock)
+              returndataclock.push(clock)
+              returndataavg.push(element.value_avg)
+            })
+            // 基于准备好的dom，初始化echarts实例
+            const pieCharts = document.getElementById('charts-demo-' + index)
+            var pieEcharts = document.getElementById('pieEcharts')
+            pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+            const myChart = this.$echarts.init(pieCharts)
+            // 绘制图表
+            myChart.setOption({
+              xAxis: {
+                type: 'category',
+                data: returndataclock,
+                // 设置字体倾斜
+                axisLabel: {
+                  interval: 0,
+                  rotate: 45, // 倾斜度-90至90默认为0
+                  margin: 2,
+                  textStyle: {
+                    fontWeight: 'bolder',
+                    color: '#000000',
+                    fontSize: '7'
+                  }
+                }
+              },
+              yAxis: {
+                type: 'value'
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              series: [{
+                data: returndataavg,
+                type: 'line'
+              }]
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+        this.itemsloading.close()
+        this.setTimeoutItems = ''
+      })
+    },
+    checkbtn (index, row) {
+      if (row.value_type === 1 || row.value_type === 2 || row.value_type === 4) {
+        return false
+      } else {
+        return true
+      }
+    },
+    confirmSaveTrend (index, row) {
+      const region = {
+        hostId: row.hostid,
+        itemId: row.itemid
+      }
+      this.axios.post('/trend/checkHostDetailItem', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (!json.data) {
+            this.saveTrend(row)
+          } else {
+            this.$message({
+              message: '添加失败【已经存在！】',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    saveTrend (row) {
+      const region = {
+        hostId: row.hostid,
+        itemId: row.itemid,
+        itemName: row.name
+      }
+      this.axios.post('/trend/addHostDetailItem', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+            this.getShowData()
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    addItems () {
+      this.activeName = 'second'
+    },
+    removeItems (str) {
+      this.$confirm('确定删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.delete('/trend/deleteHostDetailItem/' + str.id).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.getShowData()
+              this.activeName = 'first'
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          }
+        })
+      })
+    },
+    refreshItems (items, index) {
+      if (this.setTimeoutItems === '') {
+        const _this = this
+        this.openloading(index)
+        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(items.itemId, index) }, 300)
+      }
+    },
+    openloading (index) {
+      this.itemsloading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.3)',
+        target: document.querySelector('#charts-demo-' + index) // 指定区域
+      })
+    },
+    formatitemName (name) {
+      if (name !== null && name !== '' && name.length > 50) {
+        name = name.substring(0, 50) + '...'
+      }
+      return name
     }
+  },
+  mounted () {
+    this.drawLine()
   },
   actions: {
   },
@@ -419,5 +731,11 @@ export default {
 /deep/.el-tabs__item {
   width: 50%;
 }
-a:hover { background-color:#c5c5c5; }
+a:hover {
+  background-color: #c5c5c5;
+}
+.echart {
+  width: 100%;
+  height: 300px;
+}
 </style>

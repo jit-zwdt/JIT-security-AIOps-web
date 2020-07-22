@@ -12,6 +12,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/style.scss'
 import Config from '@/config/app'
 import ToolBar from '@/components/ToolBar.vue'
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)
 Vue.prototype.axios = axios
