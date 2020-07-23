@@ -58,7 +58,7 @@
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>{{formatitemName(items.itemName)}}</span>
+                  <span>{{formatitemName(items.itemName)}}{{items.itemId}}</span>
                 </p>
               </div>
               <div class="queryright" style="margin-top:-5px !important;height:40px">
@@ -133,7 +133,7 @@
           >
             <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
             <el-table-column label="监控项名称" prop="name" min-width="70%"></el-table-column>
-            <el-table-column label="应用集" prop="delay" min-width="15%" v-if="show"></el-table-column>
+            <el-table-column label="应用集" prop="value_type" min-width="15%"></el-table-column>
             <el-table-column label="间隔" prop="delay" min-width="15%"></el-table-column>
             <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
               <template slot-scope="scope">
@@ -147,7 +147,7 @@
                     slot="reference"
                     icon="fa fa-external-link"
                     circle
-                    v-if="checkbtn(scope.$index, scope.row)"
+                    :style="{ display: checkbtn(scope.$index, scope.row) }"
                   ></el-button>
                 </el-popconfirm>
               </template>
@@ -175,7 +175,7 @@ import { timesMethod } from '@/utils/formatDate.js'
 export default {
   data () {
     return {
-      itemsloading: this.$loading(),
+      itemsloading: '',
       show: false,
       serverForm: {
         objectName: '',
@@ -473,6 +473,40 @@ export default {
                 type: 'line'
               }]
             })
+          } else {
+            // 基于准备好的dom，初始化echarts实例
+            const pieCharts = document.getElementById('charts-demo-' + index)
+            var pieEcharts2 = document.getElementById('pieEcharts')
+            pieCharts.style.width = pieEcharts2.clientWidth / 3 - 70 + 'px'
+            const myChart = this.$echarts.init(pieCharts)
+            // 绘制图表
+            myChart.setOption({
+              xAxis: {
+                type: 'category',
+                data: '',
+                // 设置字体倾斜
+                axisLabel: {
+                  interval: 0,
+                  rotate: 45, // 倾斜度-90至90默认为0
+                  margin: 2,
+                  textStyle: {
+                    fontWeight: 'bolder',
+                    color: '#000000',
+                    fontSize: '7'
+                  }
+                }
+              },
+              yAxis: {
+                type: 'value'
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              series: [{
+                data: '',
+                type: 'line'
+              }]
+            })
           }
         } else {
           this.$message({
@@ -480,15 +514,17 @@ export default {
             type: 'error'
           })
         }
-        this.itemsloading.close()
+        if (this.itemsloading !== '') {
+          this.itemsloading.close()
+        }
         this.setTimeoutItems = ''
       })
     },
     checkbtn (index, row) {
       if (row.value_type === 1 || row.value_type === 2 || row.value_type === 4) {
-        return false
+        return 'none'
       } else {
-        return true
+        return ''
       }
     },
     confirmSaveTrend (index, row) {
