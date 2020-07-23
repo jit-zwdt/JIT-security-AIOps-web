@@ -99,10 +99,43 @@ const monitorManager = {
     }
   }
 }
+
+const alertManager = {
+  name: '告警管理',
+  permissionsKey: '',
+  icon: 'fa el-icon-monitor',
+  children: {
+    alertDefine: {
+      name: '告警定义',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: ''
+    },
+    alertType: {
+      name: '告警通知方式',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: '/alertManager/alertType'
+    },
+    alertTemplate: {
+      name: '告警通知模版',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: ''
+    },
+    queryAlert: {
+      name: '统一告警查询',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: ''
+    }
+  }
+}
 export default {
   home,
   // regionManager,
   // updateManager,
   assetsManager,
-  monitorManager
+  monitorManager,
+  alertManager
 }

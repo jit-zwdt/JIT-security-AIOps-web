@@ -9,6 +9,7 @@ import RegionManager from '@/views/regionManager/Index.vue'
 import RegionTree from '@/views/regionManager/Tree.vue'
 import AssetsManager from '@/views/assetsManager/assetsManager'
 import MonitorManager from '@/views/monitorManager/monitorManager'
+import AlertManager from '@/views/alertManager/alertManager'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -105,6 +106,16 @@ const routes = [
       requireAuth: true
     },
     children: MonitorManager
+  },
+  {
+    path: '/alertManager',
+    name: 'alertManager',
+    component: Layout,
+    meta: {
+      title: '告警管理',
+      requireAuth: true
+    },
+    children: AlertManager
   },
   {
     path: '*',
