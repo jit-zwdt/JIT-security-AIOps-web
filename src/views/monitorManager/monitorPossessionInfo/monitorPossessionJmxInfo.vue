@@ -254,6 +254,7 @@ export default {
     this.showInfo()
     this.getTomcatVersion()
     this.getMonitorTypeItems()
+    this.findHostIdinfo()
     this.getShowData()
   },
   methods: {
