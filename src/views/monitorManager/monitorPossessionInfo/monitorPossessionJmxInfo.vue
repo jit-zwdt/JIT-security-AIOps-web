@@ -58,7 +58,7 @@
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>{{formatitemName(items.itemName)}}{{items.itemId}}</span>
+                  <span>{{formatitemName(items.itemName)}}</span>
                 </p>
               </div>
               <div class="queryright" style="margin-top:-5px !important;height:40px">
