@@ -26,6 +26,44 @@ const timesMethod = {
     date2.setDate(date1.getDate() + num)
     var time2 = date2.getFullYear() + '-' + (date2.getMonth() + 1) + '-' + date2.getDate()
     return time2
+  },
+  formattedTime: function (seconds) {
+    // 把秒数转化成"天-时-分-秒"或者"时-分-秒"的形式
+    seconds = parseInt(seconds)
+    var s = seconds % 60
+    var minutes = parseInt(seconds / 60)
+    var m = minutes % 60
+    var hours = parseInt(minutes / 60)
+    var h = hours % 24
+    var d = parseInt(hours / 24)
+
+    if (d > 0) {
+      return d + '天' + h + '小时' + m + '分' + s + '秒'
+    } else {
+      return h + '小时' + m + '分' + s + '秒'
+    }
+  },
+  getConvertTime: function (value) {
+    var theTime = parseInt(value)// 秒
+    var middle = 0// 分
+    var hour = 0// 小时
+
+    if (theTime > 60) {
+      middle = parseInt(theTime / 60)
+      theTime = parseInt(theTime % 60)
+      if (middle > 60) {
+        hour = parseInt(middle / 60)
+        middle = parseInt(middle % 60)
+      }
+    }
+    var result = '' + parseInt(theTime) + '秒'
+    if (middle > 0) {
+      result = '' + parseInt(middle) + '分' + result
+    }
+    if (hour > 0) {
+      result = '' + parseInt(hour) + '小时' + result
+    }
+    return result
   }
 }
 export {

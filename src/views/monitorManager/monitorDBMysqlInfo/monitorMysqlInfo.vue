@@ -3,8 +3,8 @@
     <template>
       <div class="card dark-main-background">
         <div
-          class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:40px"
+                class="title-bar card-header dark-main-background dark-white-color"
+                style="margin-top:-10px !important;height:40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
@@ -24,102 +24,97 @@
                 <th class="darkmainborderth">监控状态</th>
                 <td class="darkmainbordertd">
                   <span
-                    class="label label-danger"
-                    data-toggle="tooltip"
-                    ata-placement="bottom"
-                    v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
-                    :title="makeMonitorTypeTitle()"
+                          class="label label-danger"
+                          data-toggle="tooltip"
+                          ata-placement="bottom"
+                          v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
+                          :title="makeMonitorTypeTitle()"
                   >{{this.monitorTypeValue}}</span>
                 </td>
-                <th class="darkmainborderth">ip地址</th>
-                <td class="darkmainbordertd">{{this.serverForm.agentIp}}</td>
+                <th class="darkmainborderth">所属主机</th>
+                <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
               </tr>
               <tr style="height:40px">
-                <th class="darkmainborderth">操作系统</th>
-                <td class="darkmainbordertd" colspan="5">{{this.operateSystem}}</td>
                 <th class="darkmainborderth">运行时间</th>
-                <td class="darkmainbordertd" colspan="5">{{this.runTime}}</td>
+                <td class="darkmainbordertd">{{runTime}}</td>
+                <th class="darkmainborderth">版本</th>
+                <td class="darkmainbordertd">{{this.tomcatVersion}}</td>
+                <th class="darkmainborderth">启动监控</th>
+                <td class="darkmainbordertd">
+                    <el-switch
+                            v-model="serverForm.enableMonitor"
+                            active-value="1"
+                            inactive-value="0"
+                            active-color="#13ce66"
+                            @change="change_enableMonitor()"
+                    />
+                </td>
               </tr>
             </table>
           </div>
         </div>
       </div>
     </template>
-    <el-tabs type="border-card" style="margin-top:5px">
-      <el-tab-pane label="概况" name="first" :key="first">
+    <el-tabs type="border-card" style="margin-top:5px" v-model="activeName" id="pieEcharts">
+      <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
           <div
-            class="card dark-main-background queryleft"
-            style="width:32.5%;margin-left:10px"
-            v-for="(items, index) in itemstableData"
-            v-bind:key="index"
+                  class="card dark-main-background queryleft"
+                  style="width:32.5%;margin-left:10px"
+                  v-for="(items, index) in itemstableData"
+                  v-bind:key="index"
           >
             <div
-              class="title-bar card-header dark-main-background dark-white-color"
-              style="height:40px; width:100%"
+                    class="title-bar card-header dark-main-background dark-white-color"
+                    style="height:40px;width:100%"
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>CPU</span>
+                  <span>{{formatitemName(items.itemName)}}</span>
                 </p>
               </div>
               <div class="queryright" style="margin-top:-5px !important;height:40px">
                 <el-button
-                  style="float: right; padding: 0px; margin-left: 5px;"
-                  type="text"
-                  @click="refreshCard('3')"
+                        style="float: right; padding: 0px; margin-left: 5px;"
+                        type="text"
+                        @click="removeItems(items)"
+                >
+                  <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
+                </el-button>
+                <el-button
+                        style="float: right; padding: 0px; margin-left: 5px;"
+                        type="text"
+                        @click="refreshItems(items,index)"
                 >
                   <i
-                    class="el-icon-refresh"
-                    style="font-size: 18px;color: #979899;font-weight: 400;"
+                          class="el-icon-refresh"
+                          style="font-size: 18px;color: #979899;font-weight: 400;"
                   ></i>
                 </el-button>
               </div>
             </div>
             <div class="tempList card-body">
-              <div>
-                <v-chart :options="echartOption"></v-chart>
-                <!-- <table class="dark-main-background" style="width:100%;margin-top:-5px">
-                  <tr style="height:40px">
-                    <th class="darkmainborderth">名称</th>
-                    <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
-                    <th class="darkmainborderth">监控状态</th>
-                    <td class="darkmainbordertd">
-                      <span
-                        class="label label-danger"
-                        data-toggle="tooltip"
-                        ata-placement="bottom"
-                        v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
-                        :title="makeMonitorTypeTitle()"
-                      >{{this.monitorTypeValue}}</span>
-                    </td>
-                    <th class="darkmainborderth">ip地址</th>
-                    <td class="darkmainbordertd">{{this.serverForm.jmxIp}}</td>
-                  </tr>
-                  <tr style="height:40px">
-                    <th class="darkmainborderth">版本</th>
-                    <td class="darkmainbordertd" colspan="5">{{this.tomcatVersion}}</td>
-                  </tr>
-                </table>-->
-
-              </div>
+              <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
             </div>
           </div>
-        </template>
-        <div class="dark-main-background" style="width:33.33%">
-          <a
-            href="javascript:void(0);"
-            id
-            class="card card-body dark-main-background"
-            style="height:300px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+          <div
+                  class="dark-main-background queryleft"
+                  style="width:32.5%;margin-left:10px;margin-top:0px"
           >
-            <div class="fa fa-plus" style="font-size: 75px;">
-              <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
-            </div>
-          </a>
-        </div>
+            <a
+                    href="javascript:void(0);"
+                    @click="addItems()"
+                    class="card card-body dark-main-background"
+                    style="height:392px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+            >
+              <div class="fa fa-plus" style="font-size: 75px;">
+                <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
+              </div>
+            </a>
+          </div>
+        </template>
       </el-tab-pane>
-      <el-tab-pane label="指标列表" name="second" :key="second">
+      <el-tab-pane label="指标列表" name="second" :key="'second'">
         <div>
           <ToolBar>
             <div class="queryleft" style="width:100%">
@@ -141,12 +136,12 @@
             </div>
           </ToolBar>
           <el-table
-            :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            v-loading="loading"
-            border
-            style="width: 100%"
-            :row-style="tableRowStyle"
-            :header-cell-style="tableHeaderColor"
+                  :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                  v-loading="loading"
+                  border
+                  style="width: 100%"
+                  :row-style="tableRowStyle"
+                  :header-cell-style="tableHeaderColor"
           >
             <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
             <el-table-column label="监控项名称" prop="name" min-width="70%"></el-table-column>
@@ -170,6 +165,18 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block" style="margin-top:15px;">
+            <el-pagination
+                    align="center"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 30, 50, 100]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableData.length"
+            ></el-pagination>
+          </div>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -177,18 +184,21 @@
 </template>
 <script>
 import { timesMethod } from '@/utils/formatDate.js'
+import qs from 'qs'
 export default {
   data () {
     return {
+      itemsloading: '',
       show: false,
       serverForm: {
+        id: '',
         objectName: '',
         businessName: '',
         agentIp: '',
         agentDnsName: '',
         agentPort: '',
         proxyMonitor: '',
-        enableMonitor: true,
+        enableMonitor: '',
         subtypeId: '',
         subtypeIds: '',
         templatesId: '',
@@ -227,8 +237,9 @@ export default {
         assetsId: '',
         hostId: ''
       },
+      tomcatVersion: '',
+      switchValue: 1,
       runTime: '',
-      operateSystem: '',
       monitorTypeValue: '',
       monitorTypeTitle: '',
       spanChangeColor: '',
@@ -252,29 +263,16 @@ export default {
         this.$parent.$parent.noReloadData()
       },
       itemstableData: [],
-      activeName: 'first',
-      echartOption: {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line'
-        }]
-      }
+      activeName: 'first'
     }
   },
   created () {
     this.showInfo()
-    this.getOperateSystem()
-    this.getRunTime()
+    this.getTomcatVersion()
     this.getMonitorTypeItems()
     this.findHostIdinfo()
     this.getShowData()
+    this.getRunTime()
   },
   methods: {
     // 修改table tr行的背景色
@@ -285,6 +283,34 @@ export default {
       if (rowIndex === 0) {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
+    },
+    change_enableMonitor () {
+      console.log(this.$route.query.hostId)
+      console.log(this.serverForm.enableMonitor)
+      this.axios.put('/host/updateHostEnableMonitor/' + this.serverForm.id, qs.stringify({
+        enableMonitor: this.serverForm.enableMonitor
+      })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+        }
+        this.showInfo()
+      })
     },
     reloadData () {
       this.pageSize = 10
@@ -341,20 +367,20 @@ export default {
     makeMonitorTypeTitle () {
       return this.monitorTypeTitle
     },
-    getOperateSystem () {
+    getTomcatVersion () {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: 'system.uname'
+        key_: 'mysql.version["{$MYSQL.HOST}","{$MYSQL.PORT}"]'
       }
       this.axios.post('/item/getItemInfoList', region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             if (json.data[0].lastvalue === '') {
-              this.operateSystem = '获取失败'
+              this.tomcatVersion = '获取失败'
             } else {
-              this.operateSystem = json.data[0].lastvalue
+              this.tomcatVersion = json.data[0].lastvalue
             }
           }
         } else {
@@ -369,16 +395,17 @@ export default {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: 'system.uptime'
+        key_: 'mysql.uptime'
       }
       this.axios.post('/item/getItemInfoList', region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             if (json.data[0].lastvalue === '') {
-              this.runTime = '运行时间获取失败'
+              this.runTime = '获取失败'
             } else {
-              this.runTime = timesMethod.formattedTime(json.data[0].lastvalue)
+              var second = json.data[0].lastvalue
+              this.runTime = timesMethod.getConvertTime(second)
             }
           }
         } else {
@@ -398,15 +425,16 @@ export default {
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {
         var monitorTypeValue = ''
-        if (element.jmx_available === 0) {
+        console.log(element)
+        if (element.available === 0) {
           monitorTypeValue = '未检测'
           this.spanChangeColor = false
           this.spanredChangeColor = false
-        } else if (element.jmx_available === 1) {
+        } else if (element.available === 1) {
           monitorTypeValue = '正常'
           this.spanChangeColor = true
           this.spanredChangeColor = false
-        } else if (element.jmx_available === 2) {
+        } else if (element.available === 2) {
           monitorTypeValue = '异常'
           this.spanChangeColor = false
           this.spanredChangeColor = true
@@ -464,9 +492,9 @@ export default {
       return 'charts-demo-' + index
     },
     getItemsData (itemid, index) {
-      var starttime = timesMethod.fun_date(-3)
+      var starttime = timesMethod.fun_date(0)
       var timefrom = timesMethod.getDatestamp(starttime)
-      var endtime = timesMethod.fun_date(3)
+      var endtime = timesMethod.fun_date(1)
       var timetill = timesMethod.getDatestamp(endtime)
       const region = {
         itemids: [itemid],
@@ -667,148 +695,155 @@ export default {
       return name
     }
   },
+  mounted () {
+    this.drawLine()
+  },
   actions: {
   },
   components: {}
 }
 </script>
 <style lang="scss" scoped>
-.queryleft {
-  float: left;
-}
-.queryright {
-  float: right;
-}
-.toolbar > div:last-child {
-  justify-content: flex-start;
-}
-.datetop /deep/ input {
-  height: 32px !important;
-  margin-top: 1px !important;
-}
-/deep/.el-input__prefix {
-  margin-top: -3px;
-}
-/deep/.el-button {
-  margin-left: 10px;
-}
-.tempList .card {
-  float: left;
-  overflow: hidden;
-  border: 1px solid #ddd;
-  box-shadow: none;
-  background-color: #fff;
-}
-.tempList .img-container {
-  height: 110px;
-  width: 100%;
-  background: #fff;
-}
-.tempList p {
-  width: 200px;
-}
-.title-bar-title {
-  font-size: 24px;
-  margin-top: 0px;
-  line-height: 24px;
-}
-.title-bar-description {
-  margin-bottom: 0px;
-  margin-top: -5px;
-}
-.dark-main-background {
-  margin-top: 10px;
-}
-.card-header {
-  background-color: #fff;
-}
-.card-footer {
-  background-color: #fff;
-  padding: 0px 15px 5px 25px;
-}
-.no-border {
-  border: none;
-}
-.agent:before {
-  content: 'Agent';
-  font-family: sans-serif;
-  font-size: 13px;
-  background: #ef6c00;
-  color: #fff;
-  /*text-transform: uppercase;*/
-  font-weight: bold;
-  text-align: center;
-  display: block;
-  width: 6.5em;
-  position: absolute;
-  padding: 3px;
-  top: 0.76em;
-  left: -1.8em;
-  -ms-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.snmp:before {
-  content: 'snmp';
-  font-family: sans-serif;
-  font-size: 13px;
-  background: #ef6c00;
-  color: #fff;
-  /*text-transform: uppercase;*/
-  font-weight: bold;
-  text-align: center;
-  display: block;
-  width: 6.5em;
-  position: absolute;
-  padding: 3px;
-  top: 0.76em;
-  left: -1.8em;
-  -ms-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.card-footer .hosts-btn {
-  width: 90px !important;
-}
-// .tempList {
-//   height: 240px;
-// }
-.tempList .m-r {
-  height: 220px;
-}
-.img-container img {
-  width: 100% !important;
-}
-.m-r {
-  margin-right: 10px !important;
-}
-.text-center a {
-  margin-right: 10px !important;
-}
-.darkmainbordertd {
-  min-width: 200px;
-  border: 0px;
-  text-align: left;
-  padding: 5px 20px;
-  vertical-align: middle;
-}
-.darkmainborderth {
-  border: 0px;
-  vertical-align: middle;
-}
-.changeColor {
-  color: green;
-}
-.redchangeColor {
-  color: red;
-}
-/deep/.el-tabs__nav {
-  width: 100%;
-}
-/deep/.el-tabs__item {
-  width: 50%;
-}
-a:hover {
-  background-color: #c5c5c5;
-}
+  .queryleft {
+    float: left;
+  }
+  .queryright {
+    float: right;
+  }
+  .toolbar > div:last-child {
+    justify-content: flex-start;
+  }
+  .datetop /deep/ input {
+    height: 32px !important;
+    margin-top: 1px !important;
+  }
+  /deep/.el-input__prefix {
+    margin-top: -3px;
+  }
+  /deep/.el-button {
+    margin-left: 10px;
+  }
+  .tempList .card {
+    float: left;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    background-color: #fff;
+  }
+  .tempList .img-container {
+    height: 110px;
+    width: 100%;
+    background: #fff;
+  }
+  .tempList p {
+    width: 200px;
+  }
+  .title-bar-title {
+    font-size: 24px;
+    margin-top: 0px;
+    line-height: 24px;
+  }
+  .title-bar-description {
+    margin-bottom: 0px;
+    margin-top: -5px;
+  }
+  .dark-main-background {
+    margin-top: 10px;
+  }
+  .card-header {
+    background-color: #fff;
+  }
+  .card-footer {
+    background-color: #fff;
+    padding: 0px 15px 5px 25px;
+  }
+  .no-border {
+    border: none;
+  }
+  .agent:before {
+    content: 'Agent';
+    font-family: sans-serif;
+    font-size: 13px;
+    background: #ef6c00;
+    color: #fff;
+    /*text-transform: uppercase;*/
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    width: 6.5em;
+    position: absolute;
+    padding: 3px;
+    top: 0.76em;
+    left: -1.8em;
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  .snmp:before {
+    content: 'snmp';
+    font-family: sans-serif;
+    font-size: 13px;
+    background: #ef6c00;
+    color: #fff;
+    /*text-transform: uppercase;*/
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    width: 6.5em;
+    position: absolute;
+    padding: 3px;
+    top: 0.76em;
+    left: -1.8em;
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  .card-footer .hosts-btn {
+    width: 90px !important;
+  }
+  // .tempList {
+  //   height: 240px;
+  // }
+  .tempList .m-r {
+    height: 220px;
+  }
+  .img-container img {
+    width: 100% !important;
+  }
+  .m-r {
+    margin-right: 10px !important;
+  }
+  .text-center a {
+    margin-right: 10px !important;
+  }
+  .darkmainbordertd {
+    min-width: 200px;
+    border: 0px;
+    text-align: left;
+    padding: 5px 20px;
+    vertical-align: middle;
+  }
+  .darkmainborderth {
+    border: 0px;
+    vertical-align: middle;
+  }
+  .changeColor {
+    color: green;
+  }
+  .redchangeColor {
+    color: red;
+  }
+  /deep/.el-tabs__nav {
+    width: 100%;
+  }
+  /deep/.el-tabs__item {
+    width: 50%;
+  }
+  a:hover {
+    background-color: #c5c5c5;
+  }
+  .echart {
+    width: 100%;
+    height: 300px;
+  }
 </style>

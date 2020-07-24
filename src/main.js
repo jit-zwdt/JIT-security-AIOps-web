@@ -21,6 +21,7 @@ Vue.use(ElementUI)
 Vue.use(ToolBar)
 Vue.prototype.GlobalCfg = Config
 Vue.component('ToolBar', ToolBar)
+
 router.beforeResolve((to, from, next) => {
   if (to.name) {
     NProgress.start()

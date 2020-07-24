@@ -9,6 +9,8 @@ import MonitorSystemIndex from '@/views/monitorManager/monitorSystem/monitorInde
 import MonitorMiddlewareIndex from '@/views/monitorManager/monitorMiddleware/monitorIndex.vue'
 import MonitorPossessionJmxInfo from '@/views/monitorManager/monitorPossessionInfo/monitorPossessionJmxInfo.vue'
 import MonitorPossessionOSInfo from '@/views/monitorManager/monitorPossessionInfo/monitorPossessionOSInfo.vue'
+import MonitorMysqlInfo from '@/views/monitorManager/monitorDBMysqlInfo/monitorMysqlInfo.vue'
+import MonitorOracleInfo from '@/views/monitorManager/monitorDBOracleInfo/monitorOracleInfo.vue'
 
 export default [
   {
@@ -35,6 +37,22 @@ export default [
     meta: {
       title: '数据库',
       typeId: '2'
+    }
+  },
+  {
+    path: 'monitorMysqlInfo',
+    name: 'monitorMysqlInfo',
+    component: MonitorMysqlInfo,
+    meta: {
+      title: '数据库Mysql详细信息'
+    }
+  },
+  {
+    path: 'monitorOracleInfo',
+    name: 'monitorOracleInfo',
+    component: MonitorOracleInfo,
+    meta: {
+      title: '数据库Oracle详细信息'
     }
   },
   {

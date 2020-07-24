@@ -107,7 +107,7 @@
                     <template slot-scope="scope">
                       <el-link
                         type="primary"
-                        @click="showhostIdInfo(scope.row)"
+                        @click="showOracleInfo(scope.row)"
                       >{{scope.row.hostName}}</el-link>
                     </template>
                   </el-table-column>
@@ -255,6 +255,12 @@ export default {
     },
     getDate () {
       this.currentTime = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+    },
+    showhostIdInfo (row) {
+      this.$router.push({ name: 'monitorMysqlInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+    },
+    showOracleInfo (row) {
+      this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
     getGroups () {
       this.axios.post('/host/getZabbixHostGroupByHostType', qs.stringify({
