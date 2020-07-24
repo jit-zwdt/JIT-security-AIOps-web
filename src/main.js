@@ -12,8 +12,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/style.scss'
 import Config from '@/config/app'
 import ToolBar from '@/components/ToolBar.vue'
-import echarts from 'echarts'
-Vue.prototype.$echarts = echarts
+import ECharts from 'vue-echarts/components/ECharts.vue'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
+
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)
 Vue.prototype.axios = axios
@@ -21,6 +23,8 @@ Vue.use(ElementUI)
 Vue.use(ToolBar)
 Vue.prototype.GlobalCfg = Config
 Vue.component('ToolBar', ToolBar)
+Vue.component('v-chart', ECharts)
+
 router.beforeResolve((to, from, next) => {
   if (to.name) {
     NProgress.start()

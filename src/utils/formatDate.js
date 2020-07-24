@@ -26,6 +26,22 @@ const timesMethod = {
     date2.setDate(date1.getDate() + num)
     var time2 = date2.getFullYear() + '-' + (date2.getMonth() + 1) + '-' + date2.getDate()
     return time2
+  },
+  formattedTime: function (seconds) {
+    // 把秒数转化成"天-时-分-秒"或者"时-分-秒"的形式
+    seconds = parseInt(seconds)
+    var s = seconds % 60
+    var minutes = parseInt(seconds / 60)
+    var m = minutes % 60
+    var hours = parseInt(minutes / 60)
+    var h = hours % 24
+    var d = parseInt(hours / 24)
+
+    if (d > 0) {
+      return d + '天' + h + '小时' + m + '分' + s + '秒'
+    } else {
+      return h + '小时' + m + '分' + s + '秒'
+    }
   }
 }
 export {

@@ -23,14 +23,8 @@ const home = {
 // }
 // const updateManager = {
 //   name: '版本升级管理',
-//   permissionsKey: '',
-//   icon: 'fa fa-bomb',
-//   children: {
-//     versionPub: {
-//       name: '版本发布',
-//       path: '/versionPub',
-//       permissionsKey: ''
-//     },
+//   permissionsKey: '',CPU使用的百分比
+//     },CPU使用的百分比
 //     versionHistory: {
 //       name: '版本回溯',
 //       path: '/versionHistory',
