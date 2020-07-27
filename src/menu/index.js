@@ -103,7 +103,7 @@ const alertManager = {
       name: '告警定义',
       permissionsKey: '',
       icon: 'fa el-icon-s-operation',
-      path: ''
+      path: '/alertManager/alertDefine'
     },
     alertType: {
       name: '告警通知方式',

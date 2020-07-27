@@ -2,6 +2,7 @@ import AlertDefine from '@/views/alertManager/alertDefine/alertDefine.vue'
 import AlertType from '@/views/alertManager/alertType/alertType.vue'
 import AlertTemplate from '@/views/alertManager/alertTemplate/alertTemplate.vue'
 import QueryAlert from '@/views/alertManager/queryAlert/queryAlert.vue'
+import AlertDefineAdd from '@/views/alertManager/alertDefine/alertDefineAdd.vue'
 
 export default [
   {
@@ -10,6 +11,14 @@ export default [
     component: AlertDefine,
     meta: {
       title: '告警定义'
+    }
+  },
+  {
+    path: 'alertDefineAdd',
+    name: 'alertDefineAdd',
+    component: AlertDefineAdd,
+    meta: {
+      title: '告警定义添加'
     }
   },
   {

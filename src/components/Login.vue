@@ -71,7 +71,8 @@ export default {
     background: #4373a5;
     display: flex;
     align-items: center;
-    background: url('~@/assets/img/6148878611245495.jpeg') center center no-repeat;
+    background: url('~@/assets/img/login.gif') center center no-repeat;
+    background-size:100% 100%;
 }
 .login-page {
     -webkit-border-radius: 5px;

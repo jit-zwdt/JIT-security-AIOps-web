@@ -254,6 +254,7 @@ export default {
       snmpShow: false,
       agentShow: true,
       vmShow: false,
+      ipmiShow: false,
       serverListForm: {
         objectName: '',
         businessName: '',
