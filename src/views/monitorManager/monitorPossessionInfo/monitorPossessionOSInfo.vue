@@ -45,79 +45,64 @@
         </div>
       </div>
     </template>
-    <el-tabs type="border-card" style="margin-top:5px">
-      <el-tab-pane label="概况" name="first" :key="first">
+    <el-tabs type="border-card" style="margin-top:5px" v-model="activeName" id="pieEcharts">
+      <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
           <div
-            class="card dark-main-background queryleft"
-            style="width:32.5%;margin-left:10px"
-            v-for="(items, index) in itemstableData"
-            v-bind:key="index"
+                  class="card dark-main-background queryleft"
+                  style="width:32.5%;margin-left:10px"
+                  v-for="(items, index) in itemstableData"
+                  v-bind:key="index"
           >
             <div
-              class="title-bar card-header dark-main-background dark-white-color"
-              style="height:40px; width:100%"
+                    class="title-bar card-header dark-main-background dark-white-color"
+                    style="height:40px;width:100%"
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>CPU</span>
+                  <span>{{formatitemName(items.itemName)}}</span>
                 </p>
               </div>
               <div class="queryright" style="margin-top:-5px !important;height:40px">
                 <el-button
-                  style="float: right; padding: 0px; margin-left: 5px;"
-                  type="text"
-                  @click="refreshCard('3')"
+                        style="float: right; padding: 0px; margin-left: 5px;"
+                        type="text"
+                        @click="removeItems(items)"
+                >
+                  <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
+                </el-button>
+                <el-button
+                        style="float: right; padding: 0px; margin-left: 5px;"
+                        type="text"
+                        @click="refreshItems(items,index)"
                 >
                   <i
-                    class="el-icon-refresh"
-                    style="font-size: 18px;color: #979899;font-weight: 400;"
+                          class="el-icon-refresh"
+                          style="font-size: 18px;color: #979899;font-weight: 400;"
                   ></i>
                 </el-button>
               </div>
             </div>
             <div class="tempList card-body">
-              <div>
-                <v-chart :options="echartOption"></v-chart>
-                <!-- <table class="dark-main-background" style="width:100%;margin-top:-5px">
-                  <tr style="height:40px">
-                    <th class="darkmainborderth">名称</th>
-                    <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
-                    <th class="darkmainborderth">监控状态</th>
-                    <td class="darkmainbordertd">
-                      <span
-                        class="label label-danger"
-                        data-toggle="tooltip"
-                        ata-placement="bottom"
-                        v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
-                        :title="makeMonitorTypeTitle()"
-                      >{{this.monitorTypeValue}}</span>
-                    </td>
-                    <th class="darkmainborderth">ip地址</th>
-                    <td class="darkmainbordertd">{{this.serverForm.jmxIp}}</td>
-                  </tr>
-                  <tr style="height:40px">
-                    <th class="darkmainborderth">版本</th>
-                    <td class="darkmainbordertd" colspan="5">{{this.tomcatVersion}}</td>
-                  </tr>
-                </table>-->
-
-              </div>
+              <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
             </div>
           </div>
-        </template>
-        <div class="dark-main-background" style="width:33.33%">
-          <a
-            href="javascript:void(0);"
-            id
-            class="card card-body dark-main-background"
-            style="height:300px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+          <div
+                  class="dark-main-background queryleft"
+                  style="width:32.5%;margin-left:10px;margin-top:0px"
           >
-            <div class="fa fa-plus" style="font-size: 75px;">
-              <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
-            </div>
-          </a>
-        </div>
+            <a
+                    href="javascript:void(0);"
+                    @click="addItems()"
+                    class="card card-body dark-main-background"
+                    style="height:392px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+            >
+              <div class="fa fa-plus" style="font-size: 75px;">
+                <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
+              </div>
+            </a>
+          </div>
+        </template>
       </el-tab-pane>
       <el-tab-pane label="指标列表" name="second" :key="second">
         <div>
@@ -342,10 +327,11 @@ export default {
       return this.monitorTypeTitle
     },
     getOperateSystem () {
+      var systemName = this.$route.query.hostName
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: 'system.uname'
+        key_: systemName.startsWith('Window') ? 'system.uname' : 'linux.name.version'
       }
       this.axios.post('/item/getItemInfoList', region).then((resp) => {
         if (resp.status === 200) {
@@ -398,20 +384,20 @@ export default {
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {
         var monitorTypeValue = ''
-        if (element.jmx_available === 0) {
+        if (element.available === 0) {
           monitorTypeValue = '未检测'
           this.spanChangeColor = false
           this.spanredChangeColor = false
-        } else if (element.jmx_available === 1) {
+        } else if (element.available === 1) {
           monitorTypeValue = '正常'
           this.spanChangeColor = true
           this.spanredChangeColor = false
-        } else if (element.jmx_available === 2) {
+        } else if (element.available === 2) {
           monitorTypeValue = '异常'
           this.spanChangeColor = false
           this.spanredChangeColor = true
         }
-        this.monitorTypeTitle = element.jmx_error
+        this.monitorTypeTitle = element.error
         this.monitorTypeValue = monitorTypeValue
       })
     },
@@ -810,5 +796,9 @@ export default {
 }
 a:hover {
   background-color: #c5c5c5;
+}
+.echart {
+  width: 100%;
+  height: 300px;
 }
 </style>
