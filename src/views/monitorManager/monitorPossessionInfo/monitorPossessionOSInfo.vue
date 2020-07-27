@@ -104,7 +104,7 @@
           </div>
         </template>
       </el-tab-pane>
-      <el-tab-pane label="指标列表" name="second" :key="second">
+      <el-tab-pane label="指标列表" name="second" :key="'second'">
         <div>
           <ToolBar>
             <div class="queryleft" style="width:100%">
@@ -544,9 +544,9 @@ export default {
             type: 'error'
           })
         }
-        if (this.itemsloading !== '') {
-          this.itemsloading.close()
-        }
+        // if (this.itemsloading !== '') {
+        //   this.itemsloading.close()
+        // }
         this.setTimeoutItems = ''
       })
     },
