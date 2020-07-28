@@ -57,7 +57,7 @@
                   v-model="serverForm.recovery_mode"
                   size="small"
                   class="formqueryleft"
-                  @change="changeHandler"
+                  @change="changeRecoveryMode"
                 >
                   <el-radio-button label="0">表达式</el-radio-button>
                   <el-radio-button label="1">恢复表达式</el-radio-button>
@@ -81,6 +81,7 @@
                   v-model="serverForm.correlation_mode"
                   size="small"
                   class="formqueryleft"
+                  @change="changeCorrelationMode"
                 >
                   <el-radio-button label="0">所有问题</el-radio-button>
                   <el-radio-button label="1">所有问题如果标签值匹配</el-radio-button>
@@ -111,9 +112,100 @@
             </el-form>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="标记">4444</el-tab-pane>
-        <el-tab-pane label="依赖关系">5555</el-tab-pane>
+        <el-tab-pane label="标记">
+          <div class="queryCenter">
+            <el-form
+              :model="markForm"
+              ref="markForm"
+              class="edit-forms fromadd"
+              label-position="right"
+              label-width="150px"
+            >
+              <el-form-item label prop="tags">
+                <el-radio-group
+                  v-model="markForm.tags"
+                  size="small"
+                  class="formqueryleft"
+                  @change="changeMark"
+                >
+                  <el-radio-button label="0">Trigger tags</el-radio-button>
+                  <el-radio-button label="1">Inherited and trigger tags</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label prop="tagstableData" style="margin-top:-40px">
+                <el-table
+                  :data="tagstableData"
+                  style="width: 100%"
+                  min-height="40"
+                  class="tablebox"
+                >
+                  <el-table-column prop="name" label="名称" width="380px">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.name" clearable placeholder="标记"></el-input>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="num" label="值" width="380px">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.num" clearable placeholder="值"></el-input>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="动作" width="75px">
+                    <template slot-scope="scope">
+                      <el-button @click="deleteRow(scope.$index)" type="text" size="small">移除</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <div class="queryleft" style="margin-left:10px">
+                  <el-button @click="addRow()" type="text" size="small">添加</el-button>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="依赖关系">
+          <div class="queryCenter">
+            <el-form
+              :model="relyForm"
+              ref="relyForm"
+              class="edit-forms fromadd"
+              label-position="right"
+              label-width="150px"
+            >
+              <el-form-item label prop="relytableData" style="margin-top:-25px">
+                <el-table
+                  :data="relytableData"
+                  style="width: 100%"
+                  min-height="40"
+                  class="tablebox"
+                >
+                  <el-table-column prop="name" label="名称" width="760px"></el-table-column>
+                  <el-table-column label="动作" width="75px">
+                    <template slot-scope="scope">
+                      <el-button @click="relydeleteRow(scope.$index)" type="text" size="small">移除</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <div class="queryleft" style="margin-left:10px">
+                  <el-button @click="relyaddRow()" type="text" size="small">添加</el-button>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-tab-pane>
       </el-tabs>
+    </template>
+    <template>
+      <div class="card dark-main-background">
+        <div
+          class="title-bar card-header dark-main-background dark-white-color"
+          style="margin-top:-10px !important;height:55px"
+        >
+          <div class="queryCenter" style="margin-top:-5px !important;height:40px">
+            <el-button @click="addfrom()" type="primary" size="medium">添加</el-button>
+            <el-button @click="backfrom()" size="medium">取消</el-button>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -132,6 +224,18 @@ export default {
         manual_close: false,
         status: true
       },
+      markForm: {
+        tags: '0'
+      },
+      relyForm: {},
+      tagstableData: [
+        {
+          name: '',
+          num: ''
+        }
+      ],
+      tableDataclear: [],
+      relytableData: [],
       editFormRules: {
         description: [{
           required: true,
@@ -141,6 +245,16 @@ export default {
         expression: [{
           required: true,
           message: '请输入表达式',
+          trigger: 'blur'
+        }],
+        recovery_expression: [{
+          required: true,
+          message: '请输入恢复表达式',
+          trigger: 'blur'
+        }],
+        correlation_tag: [{
+          required: true,
+          message: '请输入匹配标记',
           trigger: 'blur'
         }]
       }
@@ -155,33 +269,63 @@ export default {
     },
     showInfo (str) {
       this.loading = true
-      this.tableData = this.tableDataclear
+      this.tagstableData = this.tableDataclear
       const _this = this
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      const region = {
-        hostids: [this.$route.query.hostId],
-        name: this.nameTop
-      }
-      this.axios.post('/item/getItemInfoList', region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.tableData = json.data
-            this.currentPage = 1
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-        this.loading = false
-      })
+      // const region = {
+      //   hostids: [this.$route.query.hostId],
+      //   name: this.nameTop
+      // }
+      // this.axios.post('/item/getItemInfoList', region).then((resp) => {
+      //   if (resp.status === 200) {
+      //     var json = resp.data
+      //     if (json.code === 1) {
+      //       this.tableData = json.data
+      //       this.currentPage = 1
+      //     }
+      //   } else {
+      //     this.$message({
+      //       message: '查询失败',
+      //       type: 'error'
+      //     })
+      //   }
+      //   this.loading = false
+      // })
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层
+    },
+    changeRecoveryMode (value) {
+      if (value === '1') {
+        this.showexpression = true
+      } else {
+        this.showexpression = false
+      }
+    },
+    changeCorrelationMode (value) {
+      if (value === '1') {
+        this.showtag = true
+      } else {
+        this.showtag = false
+      }
+    },
+    changeMark (value) {
+    },
+    deleteRow (index) {
+      var th = this
+      th.tagstableData.splice(index, 1)
+    },
+    addRow () {
+      this.tagstableData.push({ name: '', num: '' })
+    },
+    relydeleteRow (index) {
+      var th = this
+      th.relytableData.splice(index, 1)
+    },
+    relyaddRow () {
+      this.relytableData.push({ name: '' })
     }
   },
   actions: {
@@ -226,5 +370,18 @@ export default {
 }
 .formqueryleft {
   float: left;
+}
+/deep/.el-table__header tr th {
+  border: none !important;
+  height: 20px;
+}
+/deep/ .el-table__body tr td {
+  border: none !important;
+}
+/deep/ .el-table__body-wrapper {
+  border: none !important;
+}
+/deep/ .el-table__header-wrapper {
+  height: 40px;
 }
 </style>
