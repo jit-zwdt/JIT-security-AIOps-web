@@ -155,6 +155,18 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block" style="margin-top:15px;">
+            <el-pagination
+                    align="center"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 30, 50, 100]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableData.length"
+            ></el-pagination>
+          </div>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -165,6 +177,7 @@ import { timesMethod } from '@/utils/formatDate.js'
 export default {
   data () {
     return {
+      itemsloading: '',
       show: false,
       serverForm: {
         objectName: '',
@@ -544,9 +557,9 @@ export default {
             type: 'error'
           })
         }
-        // if (this.itemsloading !== '') {
-        //   this.itemsloading.close()
-        // }
+        if (this.itemsloading !== '') {
+          this.itemsloading.close()
+        }
         this.setTimeoutItems = ''
       })
     },
