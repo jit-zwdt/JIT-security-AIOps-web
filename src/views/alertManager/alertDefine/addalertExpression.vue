@@ -1,39 +1,121 @@
 <template>
   <el-dialog
-  @opened="openDialog"
-  :width="dialogWidth"
-  :title="条件"
-  :visible.sync="addalertExpressionDialog"
-  :show-close="false"
-  :close-on-click-modal="false"
+    @opened="openDialog"
+    :width="dialogWidth"
+    :title="title"
+    :visible.sync="addalertExpressionDialog"
+    :before-close="handleclosebind"
+    :show-close="true"
+    :close-on-click-modal="false"
   >
     <div>
       <ToolBar>
+        <el-form
+          :model="serverForm"
+          ref="serverForm"
+          class="edit-forms fromadd"
+          label-position="right"
+          :label-width="labelWidth"
+          :rules="rules"
+        >
+          <el-row>
+            <el-col>
+              <el-form-item label="监控项" prop="name">
+                <div class="queryleft" style="width:90%">
+                  <el-input v-model="serverForm.name" clearable></el-input>
+                </div>
+                <div class="queryleft" style="width:5%;margin-left:10px">
+                  <el-button @click="chooseItems()" type="text" size="small">选择</el-button>
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="功能" prop="function">
+                <el-select
+                  v-model="functionvalue"
+                  class="selectfunction"
+                  filterable
+                  placeholder="请选择"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in functionvalueStatus"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="最后一个 (T)" prop="last">
+                <div class="queryleft" style="width:40%">
+                  <el-input v-model="serverForm.last" clearable></el-input>
+                </div>
+                <div class="queryleft" style="width:5%;margin-left:10px">计数</div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="间隔(秒)" prop="interval">
+                <div class="queryleft" style="width:40%">
+                  <el-input v-model="serverForm.interval" clearable></el-input>
+                </div>
+                <div class="queryleft" style="width:5%;margin-left:10px">时间</div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="结果" prop="result">
+                <div class="queryleft" style="width:15%">
+                  <el-select v-model="resultvalue" filterable placeholder="请选择" clearable>
+                    <el-option
+                      v-for="item in resultStatus"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </div>
+                <div class="queryleft" style="width:40%;margin-left:10px">
+                  <el-input v-model="serverForm.result" clearable></el-input>
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
       </ToolBar>
     </div>
-    <div slot="footer" class="dialog-footer" >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="closefrom()">取消</el-button>
-      <el-button type="primary" @click="submitOrUpdate('serverListForm')" v-if="assetform.buttonflag" >确认</el-button>
+      <el-button type="primary" @click="submitOrUpdate('serverListForm')">插入</el-button>
     </div>
+    <ChooseItems
+      :chooseItemsDialog="chooseItemsDialog"
+      @close="chooseItemsDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></ChooseItems>
   </el-dialog>
 </template>
 <script>
-import { resetObject } from '@/utils/common'
-import { formatTodate } from '@/utils/format.js'
+import ChooseItems from '@/views/alertManager/alertDefine/chooseItems.vue'
 export default {
   props: {
-    assetform: {
-      id: '',
-      flag: ''
-    },
-    showEditDialog: Boolean,
+    addalertExpressionDialog: Boolean,
     dialogWidth: {
       type: String,
       default: '800px'
     },
     title: {
       type: String,
-      default: '信息添加'
+      default: '条件'
     },
     labelWidth: {
       type: String,
@@ -42,196 +124,76 @@ export default {
   },
   data () {
     return {
-      showfooter: true,
-      serverListForm: {
-        assetName: '',
-        assetType: '',
-        assetNumber: '',
-        assetState: '',
-        assetAmount: '',
-        assetBelongsDept: '',
-        assetBelongsPerson: '',
-        assetRegisterDate: '',
-        assetRegistrant: '',
-        assetUpdateDate: '',
-        assetLocation: '',
-        assetLogoutDate: '',
-        id: ''
+      chooseItemsDialog: false,
+      functionvalue: '0',
+      resultvalue: '=',
+      serverForm: {
+        name: '',
+        function: ''
       },
-      stateOptions: [{
+      functionvalueStatus: [{
         value: '0',
-        label: '未用'
+        label: 'last() - 最后（最近）的 T 值'
       }, {
         value: '1',
-        label: '在用'
-      }, {
-        value: '2',
-        label: '禁用'
+        label: 'max() - 周期 T 内的最大值'
       }],
-      typeOptions: [{
-        value: '1',
-        label: '网络设备'
+      resultStatus: [{
+        value: '=',
+        label: '='
       }, {
-        value: '2',
-        label: '通讯设备'
-      }, {
-        value: '3',
-        label: '服务器'
-      }, {
-        value: '4',
-        label: '云平台'
+        value: '<>',
+        label: '<>'
       }],
-      id: '',
       rules: {
-        assetName: [
-          { required: true, message: '请输入资产名称' }
-        ],
-        assetNumber: [
-          { required: true, message: '请输入资产编号' }
-        ],
-        assetType: [
-          { required: true, message: '请选择资产类型' }
-        ],
-        assetState: [
-          { required: true, message: '请选择资产状态' }
-        ],
-        assetAmount: [
-          { required: true, message: '请输入资产数量' }
-        ],
-        assetRegistrant: [
-          { required: true, message: '请输入登记人' }
-        ],
-        assetRegisterDate: [
-          { required: true, message: '请选择资产登记时间' }
-        ]
+        name: [{
+          required: true,
+          message: '请输入监控项',
+          trigger: 'blur'
+        }]
+      },
+      handleclosebind () {
+        this.$parent.$parent.noReloadData()
       }
     }
   },
   methods: {
     openDialog () {
-      if (this.assetform.flag === '1') {
-        this.showfooter = false
-      } else {
-        this.showfooter = true
-      }
-      if (this.assetform.flag === '1' || this.assetform.flag === '2') {
-        this.showInfo(this.assetform.id)
-      }
     },
     closefrom () {
       // this.showfooter = true
       this.clearform()
       this.$emit('close')
-      this.showInfo()
     },
     clearform () {
-      resetObject(this.serverListForm)
-      this.$refs.serverListForm.resetFields()
-    },
-    submitOrUpdate (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (this.assetform.flag === '3') {
-            this.submit()
-          } else if (this.assetform.flag === '2') {
-            this.update()
-          }
-        } else {
-          return false
-        }
-      })
+      // resetObject(this.serverListForm)
+      // this.$refs.serverListForm.resetFields()
     },
     submit () {
-      const region = this.makeParam()
-      this.axios.post('/assets/addAssets', region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '添加成功',
-              type: 'success'
-            })
-            this.clearform()
-            this.$emit('success')
-            // this.$router.push({ path: '/assetsManager/assetsList' })
-          }
-        } else {
-          this.$message({
-            message: '添加失败',
-            type: 'error'
-          })
-          this.clearform()
-          this.$emit('error')
-        }
-      })
     },
-    update () {
-      const region = this.makeParam()
-      this.axios.put('/assets/updateAssets/' + this.assetform.id, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            })
-            this.clearform()
-            this.$emit('success')
-          }
-        } else {
-          this.$message({
-            message: '修改失败',
-            type: 'error'
-          })
-          this.clearform()
-          this.$emit('error')
-        }
-      })
+    showInfo () {
     },
-    showInfo (assetid) {
-      if (assetid != null && assetid !== '') {
-        this.axios.post('/assets/findById/' + assetid, {
-          id: this.id
-        }).then((resp) => {
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              // console.log(json.data.dataList[0])
-              this.serverListForm = json.data
-            }
-          } else {
-            this.$message({
-              message: '查询失败',
-              type: 'error'
-            })
-            this.$emit('error')
-          }
-        })
-      }
+    reloadData () {
+      // this.showInfo()
     },
-    makeParam () {
-      var assetRegisterDate = this.serverListForm.assetRegisterDate
-      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetUpdateDate = this.serverListForm.assetUpdateDate
-      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetLogoutDate = this.serverListForm.assetLogoutDate
-      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
-      const region = {
-        assetName: this.serverListForm.assetName,
-        assetType: this.serverListForm.assetType,
-        assetNumber: this.serverListForm.assetNumber,
-        assetState: this.serverListForm.assetState,
-        assetAmount: this.serverListForm.assetAmount,
-        assetBelongsDept: this.serverListForm.assetBelongsDept,
-        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
-        assetRegisterDate: assetRegisterDate,
-        assetRegistrant: this.serverListForm.assetRegistrant,
-        assetUpdateDate: assetUpdateDate,
-        assetLocation: this.serverListForm.assetLocation,
-        assetLogoutDate: assetLogoutDate
-      }
-      return region
+    chooseItems () {
+      this.chooseItemsDialog = true
     }
-  }
+  },
+  components: { ChooseItems }
 }
 </script>
+<style lang="scss" scoped>
+.fromadd {
+  width: 100%;
+}
+.queryleft {
+  float: left;
+}
+.queryright {
+  float: right;
+}
+.selectfunction {
+  width: 100%;
+}
+</style>

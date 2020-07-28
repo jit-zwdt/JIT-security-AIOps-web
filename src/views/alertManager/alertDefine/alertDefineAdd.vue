@@ -342,6 +342,9 @@ export default {
     },
     addExpression () {
       this.addalertExpressionDialog = true
+    },
+    noReloadData () {
+      this.addalertExpressionDialog = false
     }
   },
   actions: {
