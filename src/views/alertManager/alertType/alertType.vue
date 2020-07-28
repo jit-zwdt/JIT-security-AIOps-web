@@ -16,7 +16,14 @@
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
-      <div class="queryright"></div>
+      <div class="queryright">
+        <el-button
+          type="primary"
+          size="small"
+          icon="el-icon-plus"
+          @click="showMediaTypeAdd()== true"
+        >新增</el-button>
+      </div>
     </ToolBar>
     <el-table
       :data="tableData"
@@ -27,24 +34,36 @@
       :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="mediatypeid" prop="mediatypeid" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="名称" prop="name" min-width="40%" :resizable="false" :sortable="true"></el-table-column>
+      <el-table-column label="名称" prop="name" min-width="60%" :resizable="false"></el-table-column>
       <el-table-column
         label="类型"
         prop="type"
-        min-width="15%"
+        min-width="10%"
         :resizable="false"
         :formatter="formatType"
       ></el-table-column>
-      <el-table-column label="状态" prop="status" min-width="15%" :resizable="false"></el-table-column>
+      <el-table-column label="状态" min-width="10%" :resizable="false">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.status"
+            :active-value="0"
+            :inactive-value="1"
+            active-color="#13ce66"
+            @change="change_status(scope.row)"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="用于动作中" prop="actionUsed" min-width="15%" :resizable="false"></el-table-column>
       <el-table-column align="center" label="操作" min-width="15%">
         <template slot-scope="scope">
+          <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
+            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete"></el-button>
+          </el-popconfirm>
           <el-button
             size="mini"
             type="primary"
             slot="reference"
             icon="el-icon-edit-outline"
-            circle
             @click="confirmupdate(scope.$index, scope.row)"
           ></el-button>
         </template>
@@ -56,6 +75,7 @@
 export default {
   data () {
     return {
+      showEditDialog: false,
       name: '',
       statusSelect: '',
       statusList: [{
@@ -81,12 +101,7 @@ export default {
       }
     },
     reloadData () {
-      this.showEditDialog = false
-      this.showhelpDialog = false
       this.showInfo()
-    },
-    noReloadData () {
-      this.showhelpDialog = false
     },
     showInfo () {
       this.loading = true
@@ -104,7 +119,6 @@ export default {
         .then(resp => {
           if (resp.status === 200) {
             var json = resp.data
-            console.log(json)
             if (json.code === 1) {
               this.tableData = json.data
               this.loading = false
@@ -113,7 +127,7 @@ export default {
         })
     },
     showClear () {
-      this.description = ''
+      this.name = ''
       this.statusSelect = ''
     },
     formatType (row, column) {
@@ -129,6 +143,36 @@ export default {
       } else if (t === 4) {
         return 'Webhook'
       }
+    },
+    change_status (rowData) {
+      const param = new URLSearchParams()
+      param.append('mediatypeid', rowData.mediatypeid)
+      param.append('status', rowData.status)
+      this.axios.put('/mediaType/updateStatus', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+        }
+        this.showInfo()
+      })
+    },
+    showMediaTypeAdd () {
+      this.$router.push({ name: 'alertTypeAdd' })
     }
   },
   actions: {}
