@@ -50,7 +50,12 @@
                 <!--0 - (default 默认) not classified; 未分类；1 - information; 信息；2 - warning; 警告；3 - average; 一般严重；4 - high; 严重；5 - disaster. 灾难。 -->
               </el-form-item>
               <el-form-item label="表达式" prop="expression">
-                <el-input type="textarea" v-model="serverForm.expression" clearable></el-input>
+                <div class="queryleft" style="width:95%">
+                  <el-input type="textarea" v-model="serverForm.expression" clearable></el-input>
+                </div>
+                <div class="queryright" style="width:5%">
+                  <el-button @click="addExpression()" type="text" size="small">添加</el-button>
+                </div>
               </el-form-item>
               <el-form-item label="事件成功迭代" prop="recovery_mode">
                 <el-radio-group
@@ -207,15 +212,23 @@
         </div>
       </div>
     </template>
+    <AddalertExpression
+      :addalertExpressionDialog="addalertExpressionDialog"
+      @close="addalertExpressionDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></AddalertExpression>
   </div>
 </template>
 <script>
+import AddalertExpression from '@/views/alertManager/alertDefine/addalertExpression.vue'
 export default {
   data () {
     return {
       show: false,
       showexpression: false,
       showtag: false,
+      addalertExpressionDialog: false,
       serverForm: {
         priority: '0',
         recovery_mode: '0',
@@ -265,7 +278,7 @@ export default {
   },
   methods: {
     reloadData () {
-      this.showInfo()
+      // this.showInfo()
     },
     showInfo (str) {
       this.loading = true
@@ -326,11 +339,14 @@ export default {
     },
     relyaddRow () {
       this.relytableData.push({ name: '' })
+    },
+    addExpression () {
+      this.addalertExpressionDialog = true
     }
   },
   actions: {
   },
-  components: {}
+  components: { AddalertExpression }
 }
 </script>
 <style lang="scss" scoped>

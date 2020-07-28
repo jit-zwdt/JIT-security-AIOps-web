@@ -125,11 +125,39 @@ const alertManager = {
     }
   }
 }
+
+const malfunctionSolve = {
+  name: '故障解决',
+  permissionsKey: '',
+  icon: 'fa el-icon-monitor',
+  children: {
+    alertDefine: {
+      name: '故障认领',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: '/malfunctionSolve/malfunctionSolveClaim'
+    },
+    alertType: {
+      name: '故障处理登记',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: '/malfunctionSolve/malfunctionDisposeRegister'
+    },
+    alertTemplate: {
+      name: '故障解决统计报表',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: '/malfunctionSolve/malfunctionStatisticalStatement'
+    }
+  }
+}
+
 export default {
   home,
   // regionManager,
   // updateManager,
   assetsManager,
   monitorManager,
-  alertManager
+  alertManager,
+  malfunctionSolve
 }

@@ -10,6 +10,8 @@ import RegionTree from '@/views/regionManager/Tree.vue'
 import AssetsManager from '@/views/assetsManager/assetsManager'
 import MonitorManager from '@/views/monitorManager/monitorManager'
 import AlertManager from '@/views/alertManager/alertManager'
+import MalfunctionSolve from '@/views/malfunctionSolve/malfunctionSolve'
+
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -116,6 +118,16 @@ const routes = [
       requireAuth: true
     },
     children: AlertManager
+  },
+  {
+    path: '/malfunctionSolve',
+    name: 'malfunctionSolve',
+    component: Layout,
+    meta: {
+      title: '故障解决',
+      requireAuth: true
+    },
+    children: MalfunctionSolve
   },
   {
     path: '*',
