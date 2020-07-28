@@ -78,14 +78,14 @@
               <el-form-item
                 label="SSL验证对端"
                 prop="smtpVerifyPeer"
-                v-if="mediaTypeForm.smtpSecurity != '0'"
+                v-if="mediaTypeForm.smtpSecurity != '0' && showSMTP"
               >
                 <el-checkbox v-model="mediaTypeForm.smtpVerifyPeer" class="formqueryleft"></el-checkbox>
               </el-form-item>
               <el-form-item
                 label="SSL验证主机"
                 prop="smtpVerifyHost"
-                v-if="mediaTypeForm.smtpSecurity != '0'"
+                v-if="mediaTypeForm.smtpSecurity != '0' && showSMTP"
               >
                 <el-checkbox v-model="mediaTypeForm.smtpVerifyHost" class="formqueryleft"></el-checkbox>
               </el-form-item>
@@ -135,20 +135,96 @@
                 <el-input v-model="mediaTypeForm.execPath" clearable></el-input>
               </el-form-item>
               <el-form-item label="脚本参数" prop="execParams" v-if="showScript">
-                <template>
-                  <el-table :data="tableData" style="width: 100%" border>
-                    <el-table-column prop="execParam" label="参数" width="200"></el-table-column>
-                    <el-table-column fixed="right" label="操作" width="120">
-                      <template slot-scope="scope">
-                        <el-button
-                          @click.native.prevent="deleteRow(scope.$index, tableData)"
-                          type="text"
-                          size="small"
-                        >移除</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </template>
+                <el-table
+                  :data="mediaTypeForm.execParamsTable"
+                  style="width: 100%"
+                  min-height="40"
+                  border
+                  class="tablebox"
+                >
+                  <el-table-column prop="param" label="参数" style="width: auto;">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.param" clearable></el-input>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作" width="50px">
+                    <template slot-scope="scope">
+                      <el-button @click="deleteRow(scope.$index)" type="text" size="small">移除</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <div class="queryleft" style="margin-left:10px">
+                  <el-button @click="addRow()" type="text" size="small">添加</el-button>
+                </div>
+              </el-form-item>
+              <!-- Webhook -->
+              <el-form-item label="参数" prop="mediaTypeParams" v-if="showWebhook">
+                <el-table
+                  :data="mediaTypeForm.mediaTypeParamsTable"
+                  style="width: 100%"
+                  min-height="40"
+                  border
+                  class="tablebox"
+                >
+                  <el-table-column prop="name" label="名称" style="width: auto;">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.name" clearable></el-input>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="value" label="值" style="width: auto;">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.value" clearable></el-input>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作" width="50px">
+                    <template slot-scope="scope">
+                      <el-button
+                        @click="deleteMediaTypeParamRow(scope.$index)"
+                        type="text"
+                        size="small"
+                      >移除</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <div class="queryleft" style="margin-left:10px">
+                  <el-button @click="addMediaTypeParamRow()" type="text" size="small">添加</el-button>
+                </div>
+              </el-form-item>
+              <el-form-item label="脚本" prop="script" v-if="showWebhook">
+                <el-input
+                  type="textarea"
+                  v-model="mediaTypeForm.script"
+                  clearable
+                  :rows="5"
+                  placeholder="return value"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="超时" prop="timeout" v-if="showWebhook">
+                <el-input v-model="mediaTypeForm.timeout" clearable></el-input>
+              </el-form-item>
+              <el-form-item label="Process tags" prop="processTags" v-if="showWebhook">
+                <el-checkbox v-model="mediaTypeForm.processTags" class="formqueryleft"></el-checkbox>
+              </el-form-item>
+              <el-form-item
+                label="Include event menu entry"
+                prop="showEventMenu"
+                v-if="showWebhook"
+              >
+                <el-checkbox v-model="mediaTypeForm.showEventMenu" class="formqueryleft"></el-checkbox>
+              </el-form-item>
+              <el-form-item label="Menu entry name" prop="eventMenuName" v-if="showWebhook">
+                <el-input
+                  v-model="mediaTypeForm.eventMenuName"
+                  clearable
+                  :disabled="!mediaTypeForm.showEventMenu"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="Menu entry URL" prop="eventMenuUrl" v-if="showWebhook">
+                <el-input
+                  v-model="mediaTypeForm.eventMenuUrl"
+                  clearable
+                  :disabled="!mediaTypeForm.showEventMenu"
+                ></el-input>
               </el-form-item>
 
               <el-form-item label="描述" prop="description">
@@ -160,8 +236,62 @@
             </el-form>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="选项">4444</el-tab-pane>
+        <el-tab-pane label="选项">
+          <div class="queryCenter">
+            <el-form
+              :model="optionForm"
+              ref="optionForm"
+              class="edit-forms fromadd"
+              label-position="right"
+              label-width="150px"
+            >
+              <el-form-item label="并发会话" prop="maxsessions">
+                <el-row>
+                  <el-col :span="5">
+                    <el-radio-group
+                      v-model="optionForm.maxsessions"
+                      size="small"
+                      class="formqueryleft"
+                      @change="changeMaxsessions"
+                    >
+                      <el-radio-button label="1">壹</el-radio-button>
+                      <el-radio-button label="0">无限</el-radio-button>
+                      <el-radio-button label="2">习惯</el-radio-button>
+                    </el-radio-group>
+                  </el-col>
+                  <el-col :span="2">
+                    <el-input
+                      v-model="maxsessionsVal"
+                      clearable
+                      size="small"
+                      v-if="optionForm.maxsessions === '2'"
+                    ></el-input>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+              <el-form-item label="尝试次数" prop="maxattempts">
+                <el-input v-model="optionForm.maxattempts" clearable></el-input>
+              </el-form-item>
+              <el-form-item label="尝试间隔" prop="attemptInterval">
+                <el-input v-model="optionForm.attemptInterval" clearable></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-tab-pane>
       </el-tabs>
+    </template>
+    <template>
+      <div class="card dark-main-background">
+        <div
+          class="title-bar card-header dark-main-background dark-white-color"
+          style="margin-top:-10px !important;height:55px"
+        >
+          <div class="queryCenter" style="margin-top:-5px !important;height:40px">
+            <el-button @click="addfrom()" type="primary" size="medium">添加</el-button>
+            <el-button @click="backfrom()" size="medium">取消</el-button>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -183,7 +313,36 @@ export default {
         smtpAuthentication: '0',
         contentType: '0',
         gsmModem: '/dev/ttyS0',
-        status: true
+        status: true,
+        timeout: '30s',
+        execParamsTable: [
+          {
+            param: ''
+          }
+        ],
+        mediaTypeParamsTable: [
+          {
+            name: 'URL',
+            value: ''
+          },
+          {
+            name: 'To',
+            value: '{ALERT.SENDTO}'
+          },
+          {
+            name: 'Subject',
+            value: '{ALERT.SUBJECT}'
+          },
+          {
+            name: 'Message',
+            value: '{ALERT.MESSAGE}'
+          }
+        ]
+      },
+      optionForm: {
+        maxsessions: '1',
+        maxattempts: '3',
+        attemptInterval: '10s'
       },
       options: [{
         value: '0',
@@ -195,12 +354,11 @@ export default {
         value: '2',
         label: '短信'
       }, {
-        value: '3',
-        label: 'Jabber'
-      }, {
         value: '4',
         label: 'Webhook'
-      }]
+      }
+        // ,{  value: '3', label: 'Jabber' }
+      ]
     }
   },
   created () {
@@ -216,6 +374,7 @@ export default {
       this.showSMTP = false
       this.showSMS = false
       this.showScript = false
+      this.showWebhook = false
       if (val === '0') { // email
         this.showSMTP = true
       } else if (val === '1') { // script
@@ -225,22 +384,22 @@ export default {
       } else if (val === '3') { // Jabber
 
       } else if (val === '4') { // Webhook
-
+        this.showWebhook = true
       }
     },
-    changeRecoveryMode (value) {
-      if (value === '1') {
-        this.showexpression = true
-      } else {
-        this.showexpression = false
-      }
+    deleteRow (index) {
+      var th = this
+      th.mediaTypeForm.execParamsTable.splice(index, 1)
     },
-    changeCorrelationMode (value) {
-      if (value === '1') {
-        this.showtag = true
-      } else {
-        this.showtag = false
-      }
+    addRow () {
+      this.mediaTypeForm.execParamsTable.push({ parma: '' })
+    },
+    deleteMediaTypeParamRow (index) {
+      var th = this
+      th.mediaTypeForm.mediaTypeParamsTable.splice(index, 1)
+    },
+    addMediaTypeParamRow () {
+      this.mediaTypeForm.mediaTypeParamsTable.push({ name: '', value: '' })
     }
   },
   actions: {
