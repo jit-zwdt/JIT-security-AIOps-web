@@ -34,7 +34,6 @@
         :row-style="tableRowStyle"
         :header-cell-style="tableHeaderColor"
     >
-      <el-table-column label="mediatypeid" prop="mediatypeid" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="名称" prop="name" min-width="60%" :resizable="false"></el-table-column>
       <el-table-column
           label="类型"
@@ -182,6 +181,26 @@ export default {
     },
     showMediaTypeAdd () {
       this.$router.push({ name: 'alertTypeAdd' })
+    },
+    confirmdelete (index, row) {
+      this.axios.delete('/mediaType/deleteMediaType/' + row.mediatypeid).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.showInfo()
+          }
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+          this.showInfo()
+        }
+      })
     }
   },
   actions: {}
