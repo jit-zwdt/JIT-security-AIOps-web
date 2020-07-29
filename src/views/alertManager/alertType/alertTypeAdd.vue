@@ -3,8 +3,8 @@
     <template>
       <div class="card dark-main-background">
         <div
-          class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:40px"
+            class="title-bar card-header dark-main-background dark-white-color"
+            style="margin-top:-10px !important;height:40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
@@ -22,12 +22,12 @@
         <el-tab-pane label="告警类型">
           <div class="queryCenter">
             <el-form
-              :model="mediaTypeForm"
-              ref="mediaTypeForm"
-              class="edit-forms fromadd"
-              label-position="right"
-              label-width="150px"
-              :rules="editFormRules"
+                :model="mediaTypeForm"
+                ref="mediaTypeForm"
+                class="edit-forms fromadd"
+                label-position="right"
+                label-width="150px"
+                :rules="mediaTypeFormRules"
             >
               <el-form-item label="MediaTypeID" prop="mediatypeid" v-if="show">
                 <el-input v-model="mediaTypeForm.triggerid" clearable></el-input>
@@ -37,16 +37,16 @@
               </el-form-item>
               <el-form-item label="类型" prop="type">
                 <el-select
-                  v-model="mediaTypeForm.type"
-                  placeholder="请选择"
-                  @change="changeType"
-                  class="formqueryleft"
+                    v-model="mediaTypeForm.type"
+                    placeholder="请选择"
+                    @change="changeType"
+                    class="formqueryleft"
                 >
                   <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -65,65 +65,65 @@
               </el-form-item>
               <el-form-item label="安全链接" prop="smtpSecurity" v-if="showSMTP">
                 <el-radio-group
-                  v-model="mediaTypeForm.smtpSecurity"
-                  size="small"
-                  class="formqueryleft"
-                  @change="changeSmtpSecurity"
+                    v-model="mediaTypeForm.smtpSecurity"
+                    size="small"
+                    class="formqueryleft"
+                    @change="changeSmtpSecurity"
                 >
-                  <el-radio-button label="0">无</el-radio-button>
-                  <el-radio-button label="1">STARTTLS(纯文本通信协议扩展)</el-radio-button>
-                  <el-radio-button label="2">SSL/TLS</el-radio-button>
+                  <el-radio-button label=0>无</el-radio-button>
+                  <el-radio-button label=1>STARTTLS(纯文本通信协议扩展)</el-radio-button>
+                  <el-radio-button label=2>SSL/TLS</el-radio-button>
                 </el-radio-group>
               </el-form-item>
               <el-form-item
-                label="SSL验证对端"
-                prop="smtpVerifyPeer"
-                v-if="mediaTypeForm.smtpSecurity != '0' && showSMTP"
+                  label="SSL验证对端"
+                  prop="smtpVerifyPeer"
+                  v-if="mediaTypeForm.smtpSecurity != 0 && showSMTP"
               >
                 <el-checkbox v-model="mediaTypeForm.smtpVerifyPeer" class="formqueryleft"></el-checkbox>
               </el-form-item>
               <el-form-item
-                label="SSL验证主机"
-                prop="smtpVerifyHost"
-                v-if="mediaTypeForm.smtpSecurity != '0' && showSMTP"
+                  label="SSL验证主机"
+                  prop="smtpVerifyHost"
+                  v-if="mediaTypeForm.smtpSecurity != 0 && showSMTP"
               >
                 <el-checkbox v-model="mediaTypeForm.smtpVerifyHost" class="formqueryleft"></el-checkbox>
               </el-form-item>
 
               <el-form-item label="认证" prop="smtpAuthentication" v-if="showSMTP">
                 <el-radio-group
-                  v-model="mediaTypeForm.smtpAuthentication"
-                  size="small"
-                  class="formqueryleft"
+                    v-model="mediaTypeForm.smtpAuthentication"
+                    size="small"
+                    class="formqueryleft"
                 >
-                  <el-radio-button label="0">无</el-radio-button>
-                  <el-radio-button label="1">用户名和密码</el-radio-button>
+                  <el-radio-button label=0>无</el-radio-button>
+                  <el-radio-button label=1>用户名和密码</el-radio-button>
                 </el-radio-group>
               </el-form-item>
               <el-form-item
-                label="用户名称"
-                prop="username"
-                v-if="mediaTypeForm.smtpAuthentication === '1'"
+                  label="用户名称"
+                  prop="username"
+                  v-if="mediaTypeForm.smtpAuthentication === '1'"
               >
                 <el-input v-model="mediaTypeForm.username" clearable></el-input>
               </el-form-item>
               <el-form-item
-                label="密码"
-                prop="passwd"
-                v-if="mediaTypeForm.smtpAuthentication === '1'"
+                  label="密码"
+                  prop="passwd"
+                  v-if="mediaTypeForm.smtpAuthentication === '1'"
               >
                 <el-input v-model="mediaTypeForm.passwd" clearable></el-input>
               </el-form-item>
 
               <el-form-item label="Message format" prop="contentType" v-if="showSMTP">
                 <el-radio-group
-                  v-model="mediaTypeForm.contentType"
-                  size="small"
-                  class="formqueryleft"
-                  @change="changeContentType"
+                    v-model="mediaTypeForm.contentType"
+                    size="small"
+                    class="formqueryleft"
+                    @change="changeContentType"
                 >
-                  <el-radio-button label="0">文本</el-radio-button>
-                  <el-radio-button label="1">HTML</el-radio-button>
+                  <el-radio-button label=1>HTML</el-radio-button>
+                  <el-radio-button label=0>文本</el-radio-button>
                 </el-radio-group>
               </el-form-item>
               <!-- sms -->
@@ -136,11 +136,11 @@
               </el-form-item>
               <el-form-item label="脚本参数" prop="execParams" v-if="showScript">
                 <el-table
-                  :data="mediaTypeForm.execParamsTable"
-                  style="width: 100%"
-                  min-height="40"
-                  border
-                  class="tablebox"
+                    :data="mediaTypeForm.execParamsTable"
+                    style="width: 100%"
+                    min-height="40"
+                    border
+                    class="tablebox"
                 >
                   <el-table-column prop="param" label="参数" style="width: auto;">
                     <template slot-scope="scope">
@@ -160,11 +160,11 @@
               <!-- Webhook -->
               <el-form-item label="参数" prop="mediaTypeParams" v-if="showWebhook">
                 <el-table
-                  :data="mediaTypeForm.mediaTypeParamsTable"
-                  style="width: 100%"
-                  min-height="40"
-                  border
-                  class="tablebox"
+                    :data="mediaTypeForm.mediaTypeParamsTable"
+                    style="width: 100%"
+                    min-height="40"
+                    border
+                    class="tablebox"
                 >
                   <el-table-column prop="name" label="名称" style="width: auto;">
                     <template slot-scope="scope">
@@ -179,10 +179,11 @@
                   <el-table-column label="操作" width="50px">
                     <template slot-scope="scope">
                       <el-button
-                        @click="deleteMediaTypeParamRow(scope.$index)"
-                        type="text"
-                        size="small"
-                      >移除</el-button>
+                          @click="deleteMediaTypeParamRow(scope.$index)"
+                          type="text"
+                          size="small"
+                      >移除
+                      </el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -192,11 +193,11 @@
               </el-form-item>
               <el-form-item label="脚本" prop="script" v-if="showWebhook">
                 <el-input
-                  type="textarea"
-                  v-model="mediaTypeForm.script"
-                  clearable
-                  :rows="5"
-                  placeholder="return value"
+                    type="textarea"
+                    v-model="mediaTypeForm.script"
+                    clearable
+                    :rows="5"
+                    placeholder="return value"
                 ></el-input>
               </el-form-item>
               <el-form-item label="超时" prop="timeout" v-if="showWebhook">
@@ -206,24 +207,24 @@
                 <el-checkbox v-model="mediaTypeForm.processTags" class="formqueryleft"></el-checkbox>
               </el-form-item>
               <el-form-item
-                label="Include event menu entry"
-                prop="showEventMenu"
-                v-if="showWebhook"
+                  label="Include event menu entry"
+                  prop="showEventMenu"
+                  v-if="showWebhook"
               >
                 <el-checkbox v-model="mediaTypeForm.showEventMenu" class="formqueryleft"></el-checkbox>
               </el-form-item>
               <el-form-item label="Menu entry name" prop="eventMenuName" v-if="showWebhook">
                 <el-input
-                  v-model="mediaTypeForm.eventMenuName"
-                  clearable
-                  :disabled="!mediaTypeForm.showEventMenu"
+                    v-model="mediaTypeForm.eventMenuName"
+                    clearable
+                    :disabled="!mediaTypeForm.showEventMenu"
                 ></el-input>
               </el-form-item>
               <el-form-item label="Menu entry URL" prop="eventMenuUrl" v-if="showWebhook">
                 <el-input
-                  v-model="mediaTypeForm.eventMenuUrl"
-                  clearable
-                  :disabled="!mediaTypeForm.showEventMenu"
+                    v-model="mediaTypeForm.eventMenuUrl"
+                    clearable
+                    :disabled="!mediaTypeForm.showEventMenu"
                 ></el-input>
               </el-form-item>
 
@@ -239,20 +240,21 @@
         <el-tab-pane label="选项">
           <div class="queryCenter">
             <el-form
-              :model="optionForm"
-              ref="optionForm"
-              class="edit-forms fromadd"
-              label-position="right"
-              label-width="150px"
+                :model="optionForm"
+                ref="optionForm"
+                class="edit-forms fromadd"
+                label-position="right"
+                label-width="150px"
+                :rules="optionFormRules"
             >
               <el-form-item label="并发会话" prop="maxsessions">
                 <el-row>
                   <el-col :span="5">
                     <el-radio-group
-                      v-model="optionForm.maxsessions"
-                      size="small"
-                      class="formqueryleft"
-                      @change="changeMaxsessions"
+                        v-model="optionForm.maxsessions"
+                        size="small"
+                        class="formqueryleft"
+                        @change="changeMaxsessions"
                     >
                       <el-radio-button label="1">壹</el-radio-button>
                       <el-radio-button label="0">无限</el-radio-button>
@@ -261,10 +263,10 @@
                   </el-col>
                   <el-col :span="2">
                     <el-input
-                      v-model="maxsessionsVal"
-                      clearable
-                      size="small"
-                      v-if="optionForm.maxsessions === '2'"
+                        v-model="maxsessionsVal"
+                        clearable
+                        size="small"
+                        v-if="optionForm.maxsessions === '2'"
                     ></el-input>
                   </el-col>
                 </el-row>
@@ -283,11 +285,11 @@
     <template>
       <div class="card dark-main-background">
         <div
-          class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:55px"
+            class="title-bar card-header dark-main-background dark-white-color"
+            style="margin-top:-10px !important;height:55px"
         >
           <div class="queryCenter" style="margin-top:-5px !important;height:40px">
-            <el-button @click="addfrom()" type="primary" size="medium">添加</el-button>
+            <el-button @click="submitOrUpdate('mediaTypeForm','optionForm')" type="primary" size="medium">添加</el-button>
             <el-button @click="backfrom()" size="medium">取消</el-button>
           </div>
         </div>
@@ -296,6 +298,8 @@
   </div>
 </template>
 <script>
+import { resetObject } from '@/utils/common'
+
 export default {
   data () {
     return {
@@ -304,15 +308,17 @@ export default {
       showSMTP: true,
       isShow: false,
       mediaTypeForm: {
-        type: '0',
+        name: '',
+        type: 0,
         smtpServer: 'mail.example.com',
         smtpPort: '25',
         smtpHelo: 'example.com',
         smtpEmail: 'zabbix@example.com',
-        smtpSecurity: '0',
-        smtpAuthentication: '0',
-        contentType: '0',
+        smtpSecurity: 0,
+        smtpAuthentication: 0,
+        contentType: 1,
         gsmModem: '/dev/ttyS0',
+        description: '',
         status: true,
         timeout: '30s',
         execParamsTable: [
@@ -345,20 +351,56 @@ export default {
         attemptInterval: '10s'
       },
       options: [{
-        value: '0',
+        value: 0,
         label: '电子邮件'
       }, {
-        value: '1',
+        value: 1,
         label: '脚本'
       }, {
-        value: '2',
+        value: 2,
         label: '短信'
       }, {
-        value: '4',
+        value: 4,
         label: 'Webhook'
       }
-        // ,{  value: '3', label: 'Jabber' }
-      ]
+        // ,{  value: 3, label: 'Jabber' }
+      ],
+      mediaTypeFormRules: {
+        name: [
+          { required: true, message: '请输入名称' }
+        ],
+        smtpServer: [
+          { required: true, message: '请输入SMTP服务器地址' }
+        ],
+        smtpHelo: [
+          { required: true, message: '请输入SMTP HELO' }
+        ],
+        smtpEmail: [
+          { required: true, message: '请输入SMTP邮箱地址' }
+        ],
+        gsmModem: [
+          { required: true, message: '请输入GSM 调制解调器地址' }
+        ],
+        execPath: [
+          { required: true, message: '请输入脚本名称' }
+        ],
+        script: [
+          { required: true, message: '请编写脚本' }
+        ] /* eventMenuName: [
+          { required: true, message: '请输入Menu entry name' }
+        ],
+        eventMenuUrl: [
+          { required: true, message: '请输入Menu entry URL' }
+        ] */
+      },
+      optionFormRules: {
+        maxattempts: [
+          { required: true, message: '请输入尝试次数' }
+        ],
+        attemptInterval: [
+          { required: true, message: '请输入尝试间隔' }
+        ]
+      }
     }
   },
   created () {
@@ -400,49 +442,150 @@ export default {
     },
     addMediaTypeParamRow () {
       this.mediaTypeForm.mediaTypeParamsTable.push({ name: '', value: '' })
+    },
+    submitOrUpdate (formName, formName2) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$refs[formName2].validate((valid) => {
+            if (valid) {
+              this.submit()
+            } else {
+              return false
+            }
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    makeParam () {
+      const region = {
+        name: this.mediaTypeForm.name,
+        type: this.mediaTypeForm.type,
+        smtpServer: this.mediaTypeForm.smtpServer,
+        smtpPort: this.mediaTypeForm.smtpPort,
+        smtpHelo: this.mediaTypeForm.smtpHelo,
+        smtpEmail: this.mediaTypeForm.smtpEmail,
+        smtpSecurity: this.mediaTypeForm.smtpSecurity,
+        smtpVerifyPeer: this.mediaTypeForm.smtpVerifyPeer,
+        smtpVerifyHost: this.mediaTypeForm.smtpVerifyHost,
+        smtpAuthentication: this.mediaTypeForm.smtpAuthentication,
+        username: this.mediaTypeForm.username,
+        passwd: this.mediaTypeForm.passwd,
+        contentType: this.mediaTypeForm.contentType,
+        description: this.mediaTypeForm.description,
+        status: this.mediaTypeForm.status,
+        maxattempts: this.optionForm.maxattempts,
+        maxsessions: this.optionForm.maxsessions,
+        attemptInterval: this.optionForm.attemptInterval
+      }
+      console.log(region)
+      return region
+    },
+    submit () {
+      const region = this.makeParam()
+      this.axios.post('/mediaType/addMediaType', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+            this.clearform()
+            this.$emit('success')
+            this.$router.push({ name: 'alertType' })
+          }
+        } else {
+          this.$message({
+            message: '添加失败',
+            type: 'error'
+          })
+          this.clearform()
+          this.$emit('error')
+        }
+      })
+    },
+    update () {
+      const region = this.makeParam()
+      this.axios.put('/assets/updateAssets/' + this.assetform.id, region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.clearform()
+            this.$emit('success')
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+          this.clearform()
+          this.$emit('error')
+        }
+      })
+    },
+    clearform () {
+      resetObject(this.mediaTypeForm)
+      resetObject(this.optionForm)
+      this.$refs.mediaTypeForm.resetFields()
+      this.$refs.optionForm.resetFields()
     }
   },
-  actions: {
-  },
+  actions: {},
   components: {}
 }
 </script>
 <style lang="scss" scoped>
-.queryleft {
-  float: left;
-}
-.queryright {
-  float: right;
-}
-.title-bar-description {
-  margin-bottom: 0px;
-  margin-top: -5px;
-}
-/deep/.el-input__prefix {
-  margin-top: -3px;
-}
-.dark-main-background {
-  margin-top: 10px;
-}
-.card-header {
-  background-color: #fff;
-}
-/deep/.el-tabs__nav {
-  width: 100%;
-}
-.fromadd {
-  width: 60%;
-}
-.fromadd .el-form-item {
-  text-align: center;
-}
-.queryCenter {
-  text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.formqueryleft {
-  float: left;
-}
+  .queryleft {
+    float: left;
+  }
+
+  .queryright {
+    float: right;
+  }
+
+  .title-bar-description {
+    margin-bottom: 0px;
+    margin-top: -5px;
+  }
+
+  /deep/ .el-input__prefix {
+    margin-top: -3px;
+  }
+
+  .dark-main-background {
+    margin-top: 10px;
+  }
+
+  .card-header {
+    background-color: #fff;
+  }
+
+  /deep/ .el-tabs__nav {
+    width: 100%;
+  }
+
+  .fromadd {
+    width: 60%;
+  }
+
+  .fromadd .el-form-item {
+    text-align: center;
+  }
+
+  .queryCenter {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .formqueryleft {
+    float: left;
+  }
 </style>
