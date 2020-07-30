@@ -64,7 +64,7 @@
               type="primary"
               slot="reference"
               icon="el-icon-edit-outline"
-              @click="confirmupdate(scope.$index, scope.row)"
+              @click="mediaTypeUpdate(scope.$index, scope.row)"
           ></el-button>
         </template>
       </el-table-column>
@@ -180,7 +180,7 @@ export default {
       })
     },
     showMediaTypeAdd () {
-      this.$router.push({ name: 'alertTypeAdd' })
+      this.$router.push({ name: 'alertTypeAdd', query: { mediatypeid: '-1' } })
     },
     confirmdelete (index, row) {
       this.axios.delete('/mediaType/deleteMediaType/' + row.mediatypeid).then((resp) => {
@@ -201,6 +201,9 @@ export default {
           this.showInfo()
         }
       })
+    },
+    mediaTypeUpdate (index, row) {
+      this.$router.push({ name: 'alertTypeAdd', query: { mediatypeid: row.mediatypeid } })
     }
   },
   actions: {}

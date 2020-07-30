@@ -41,6 +41,7 @@
                     placeholder="请选择"
                     @change="changeType"
                     class="formqueryleft"
+                    v-bind:disabled="disabledType"
                 >
                   <el-option
                       v-for="item in options"
@@ -103,14 +104,14 @@
               <el-form-item
                   label="用户名称"
                   prop="username"
-                  v-if="mediaTypeForm.smtpAuthentication === '1'"
+                  v-if="mediaTypeForm.smtpAuthentication === 1"
               >
                 <el-input v-model="mediaTypeForm.username" clearable></el-input>
               </el-form-item>
               <el-form-item
                   label="密码"
                   prop="passwd"
-                  v-if="mediaTypeForm.smtpAuthentication === '1'"
+                  v-if="mediaTypeForm.smtpAuthentication === 1"
               >
                 <el-input v-model="mediaTypeForm.passwd" clearable></el-input>
               </el-form-item>
@@ -289,7 +290,8 @@
             style="margin-top:-10px !important;height:55px"
         >
           <div class="queryCenter" style="margin-top:-5px !important;height:40px">
-            <el-button @click="submitOrUpdate('mediaTypeForm','optionForm')" type="primary" size="medium">添加</el-button>
+            <el-button @click="update('mediaTypeForm','optionForm')" type="primary" size="medium" v-if="this.mediatypeid !== '-1' ">更新</el-button>
+            <el-button @click="submit('mediaTypeForm','optionForm')" type="primary" size="medium" v-if="this.mediatypeid === '-1' ">添加</el-button>
             <el-button @click="backfrom()" size="medium">取消</el-button>
           </div>
         </div>
@@ -303,9 +305,14 @@ import { resetObject } from '@/utils/common'
 export default {
   data () {
     return {
+      mediatypeid: '',
+      disabledType: false,
       show: false,
       showexpression: false,
       showSMTP: true,
+      showSMS: false,
+      showScript: false,
+      showWebhook: false,
       isShow: false,
       mediaTypeForm: {
         name: '',
@@ -400,11 +407,19 @@ export default {
         attemptInterval: [
           { required: true, message: '请输入尝试间隔' }
         ]
-      }
+      },
+      changeSmtpSecurity: {},
+      changeContentType: {},
+      changeMaxsessions: {},
+      change: {},
+      checkFrom: false
     }
   },
   created () {
-    // this.showInfo()
+    this.mediatypeid = this.$route.query.mediatypeid
+  },
+  mounted () {
+    this.showInfo(this.mediatypeid)
   },
   methods: {
     reloadData () {
@@ -443,21 +458,6 @@ export default {
     addMediaTypeParamRow () {
       this.mediaTypeForm.mediaTypeParamsTable.push({ name: '', value: '' })
     },
-    submitOrUpdate (formName, formName2) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$refs[formName2].validate((valid) => {
-            if (valid) {
-              this.submit()
-            } else {
-              return false
-            }
-          })
-        } else {
-          return false
-        }
-      })
-    },
     makeParam () {
       const region = {
         name: this.mediaTypeForm.name,
@@ -479,53 +479,79 @@ export default {
         maxsessions: this.optionForm.maxsessions,
         attemptInterval: this.optionForm.attemptInterval
       }
-      console.log(region)
       return region
     },
-    submit () {
-      const region = this.makeParam()
-      this.axios.post('/mediaType/addMediaType', region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '添加成功',
-              type: 'success'
-            })
-            this.clearform()
-            this.$emit('success')
-            this.$router.push({ name: 'alertType' })
-          }
-        } else {
-          this.$message({
-            message: '添加失败',
-            type: 'error'
+    submit (formName, formName2) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$refs[formName2].validate((valid) => {
+            if (valid) {
+              const region = this.makeParam()
+              this.axios.post('/mediaType/addMediaType', region).then((resp) => {
+                if (resp.status === 200) {
+                  var json = resp.data
+                  if (json.code === 1) {
+                    this.$message({
+                      message: '添加成功',
+                      type: 'success'
+                    })
+                    this.clearform()
+                    this.$emit('success')
+                    this.$router.push({ name: 'alertType' })
+                  }
+                } else {
+                  this.$message({
+                    message: '添加失败',
+                    type: 'error'
+                  })
+                  this.clearform()
+                  this.$emit('error')
+                  this.$router.push({ name: 'alertType' })
+                }
+              })
+            } else {
+              return false
+            }
           })
-          this.clearform()
-          this.$emit('error')
+        } else {
+          return false
         }
       })
     },
-    update () {
-      const region = this.makeParam()
-      this.axios.put('/assets/updateAssets/' + this.assetform.id, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            })
-            this.clearform()
-            this.$emit('success')
-          }
-        } else {
-          this.$message({
-            message: '修改失败',
-            type: 'error'
+    update (formName, formName2) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$refs[formName2].validate((valid) => {
+            if (valid) {
+              const region = this.makeParam()
+              this.axios.put('/mediaType/updateMediaType/' + this.mediatypeid, region).then((resp) => {
+                if (resp.status === 200) {
+                  var json = resp.data
+                  if (json.code === 1) {
+                    this.$message({
+                      message: '修改成功',
+                      type: 'success'
+                    })
+                    this.clearform()
+                    this.$emit('success')
+                    this.$router.push({ name: 'alertType' })
+                  } else {
+                    this.$message({
+                      message: '修改失败',
+                      type: 'error'
+                    })
+                    this.clearform()
+                    this.$emit('error')
+                    this.$router.push({ name: 'alertType' })
+                  }
+                }
+              })
+            } else {
+              return false
+            }
           })
-          this.clearform()
-          this.$emit('error')
+        } else {
+          return false
         }
       })
     },
@@ -534,6 +560,43 @@ export default {
       resetObject(this.optionForm)
       this.$refs.mediaTypeForm.resetFields()
       this.$refs.optionForm.resetFields()
+    },
+    showInfo (mediatypeid) {
+      if (mediatypeid != null && mediatypeid !== '') {
+        this.axios.post('/mediaType/findByMediaTypeId/' + mediatypeid).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              var jsonData = json.data
+              this.disabledType = true
+              this.mediaTypeForm.name = jsonData.name
+              this.mediaTypeForm.type = jsonData.type
+              this.mediaTypeForm.smtpServer = jsonData.smtp_server
+              this.mediaTypeForm.smtpPort = jsonData.smtp_port
+              this.mediaTypeForm.smtpHelo = jsonData.smtp_helo
+              this.mediaTypeForm.smtpEmail = jsonData.smtp_email
+              this.mediaTypeForm.smtpSecurity = jsonData.smtp_security
+              this.mediaTypeForm.smtpVerifyPeer = jsonData.smtp_verify_peer !== 0
+              this.mediaTypeForm.smtpVerifyHost = jsonData.smtp_verify_host !== 0
+              this.mediaTypeForm.smtpAuthentication = jsonData.smtp_authentication
+              this.mediaTypeForm.username = jsonData.username
+              this.mediaTypeForm.passwd = jsonData.passwd
+              this.mediaTypeForm.contentType = jsonData.content_type
+              this.mediaTypeForm.description = jsonData.description
+              this.mediaTypeForm.status = jsonData.status !== 1
+              this.optionForm.maxattempts = jsonData.maxattempts
+              this.optionForm.maxsessions = jsonData.maxsessions
+              this.optionForm.attemptInterval = jsonData.attempt_interval
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+            this.$emit('error')
+          }
+        })
+      }
     }
   },
   actions: {},
