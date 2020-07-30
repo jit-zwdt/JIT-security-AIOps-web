@@ -36,7 +36,7 @@ export default {
               message: '登录成功',
               type: 'success'
             })
-            this.$router.replace({ path: api.assetsManager.assetsList })
+            this.$router.replace({ path: api.index })
           } else {
             alert('用户名或密码错误')
             this.clearinfo()

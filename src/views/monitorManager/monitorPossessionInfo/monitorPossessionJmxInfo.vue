@@ -57,7 +57,7 @@
               style="height:40px;width:100%"
             >
               <div class="queryleft">
-                <p class="title-bar-description" style>
+                <p class="title-bar-description">
                   <span>{{formatitemName(items.itemName)}}</span>
                 </p>
               </div>

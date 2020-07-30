@@ -12,6 +12,7 @@
     "bootstrap": "^4.4.1",
     "core-js": "^3.4.4",
     "echarts": "^4.8.0",
+    "echarts-liquidfill": "^2.0.6",
     "element-ui": "^2.13.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
