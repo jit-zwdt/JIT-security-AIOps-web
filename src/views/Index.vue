@@ -414,7 +414,7 @@
                   </div>
                   <div style="width:80%;float:left">
                     <el-progress
-                      :percentage="2"
+                      :percentage="5"
                       :format="progressformat"
                       color="#28FF28"
                       class="padding-2"
@@ -427,12 +427,6 @@
                     ></el-progress>
                     <el-progress
                       :percentage="1"
-                      :format="progressformat"
-                      color="#28FF28"
-                      class="padding-2"
-                    ></el-progress>
-                    <el-progress
-                      :percentage="7"
                       :format="progressformat"
                       color="#28FF28"
                       class="padding-2"
@@ -582,7 +576,7 @@ export default {
       } else if (str === '2') {
         this.$router.push({ name: 'monitorAddList' })
       } else if (str === '3') {
-        // this.$router.push({ name: 'monitorMiddlewareIndex' })
+        this.$router.push({ name: 'alertInquire' })
       } else if (str === '4') {
         this.$router.push({ name: 'malfunctionSolveClaim' })
       }
