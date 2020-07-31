@@ -104,6 +104,47 @@
               <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
             </div>
           </div>
+          <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+          <div
+                  class="card dark-main-background queryleft"
+                  style="width:32.5%;margin-left:10px"
+                  v-for="(items, index1) in graphstableData"
+                  v-bind:key="index1"
+          >
+            <div
+                    class="title-bar card-header dark-main-background dark-white-color"
+                    style="height:40px;width:100%"
+            >
+              <div class="queryleft">
+                <p class="title-bar-description" style>
+                  <span>{{formatitemName(items.graphName)}}</span>
+                </p>
+              </div>
+              <div class="queryright" style="margin-top:-5px !important;height:40px">
+                <el-button
+                        style="float: right; padding: 0px; margin-left: 5px;"
+                        type="text"
+                        @click="removeGraphs(items)"
+                >
+                  <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
+                </el-button>
+                <el-button
+                        style="float: right; padding: 0px; margin-left: 5px;"
+                        type="text"
+                        @click="refreshItems(items,index)"
+                >
+                  <i
+                          class="el-icon-refresh"
+                          style="font-size: 18px;color: #979899;font-weight: 400;"
+                  ></i>
+                </el-button>
+              </div>
+            </div>
+            <div class="tempList card-body">
+              <div :id="getGraphID(index1)" class="echart" :onchange="getGraphsData(items.graphId,items.graphName, index1)"></div>
+            </div>
+          </div>
+          <!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
           <div class="dark-main-background queryleft card-width-top">
             <a
               href="javascript:void(0);"
@@ -179,6 +220,268 @@
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
               :total="tableData.length"
+            ></el-pagination>
+          </div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="图形" name="third" :key="'third'">
+        <div>
+          <ToolBar>
+            <div class="queryleft" style="width:100%">
+              <el-col :span="6">
+                <el-input type="text" v-model="nameTop" size="small" placeholder="名称" clearable></el-input>
+              </el-col>
+              <el-button
+                      type="primary"
+                      size="small"
+                      @click="showInfo() == false"
+                      icon="el-icon-search"
+              >查询</el-button>
+              <el-button
+                      type="primary"
+                      size="small"
+                      @click="showClear() == false"
+                      icon="el-icon-refresh-left"
+              >重置</el-button>
+              <div style="margin-left: 58%">
+                <el-popover
+                        placement="left"
+                        width="1900"
+                        trigger="click"
+                        ref="gPopover"
+                >
+                  <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="名称">
+                      <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="宽">
+                      <el-input v-model="form.width"></el-input>
+                    </el-form-item>
+                    <el-form-item label="高">
+                      <el-input v-model="form.height"></el-input>
+                    </el-form-item>
+                    <el-form-item label="图形类型">
+                      <el-select v-model="form.graphtype">
+                        <el-option v-for="item in graphtypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="查看图例">
+                      <el-checkbox true-label="1" false-label="0" v-model="form.show_legend">查看图例</el-checkbox>
+                    </el-form-item>
+                    <el-form-item label="查看工作时间">
+                      <el-checkbox true-label="1" false-label="0" v-model="form.show_work_period">查看图例</el-checkbox>
+                    </el-form-item>
+                    <!--<el-form-item label="查看触发器">-->
+                    <!--<el-checkbox v-model="form.show_legend">查看图例</el-checkbox>-->
+                    <!--</el-form-item>-->
+                    <el-form-item label="百分比线(左)">
+                      <el-checkbox v-model="leftOption"></el-checkbox>
+                      <el-input v-model="form.percent_left" v-if="leftOption === true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="百分比线(右)">
+                      <el-checkbox v-model="rightOption"></el-checkbox>
+                      <el-input v-model="form.percent_right" v-if="rightOption === true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="纵轴最小值">
+                      <el-select v-model="form.ymin_type">
+                        <el-option v-for="item in yOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="纵轴最大值">
+                      <el-select v-model="form.ymax_type">
+                        <el-option v-for="item in yOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="监控项">
+                      <div>
+                        <el-table
+                                :data="form.gitems"
+                                style="width: 100%">
+                          <el-table-column
+                                  label="监控项id"
+                                  width="180"
+                                  prop="itemid"
+                                  v-if="show">
+                          </el-table-column>
+                          <el-table-column
+                                  prop="name"
+                                  label="名称"
+                                  width="210"
+                                  show-overflow-tooltip>
+                          </el-table-column>
+                          <el-table-column
+                                  label="功能"
+                                  width="180">
+                            <template slot-scope="scope" >
+                              <el-form-item  :prop="'gitems.' + scope.$index + '.calc_fnc'">
+                                <el-select v-model="scope.row.calc_fnc">
+                                  <el-option v-for="item in fncOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                </el-select>
+                              </el-form-item>
+                            </template>
+                          </el-table-column>
+                          <el-table-column
+                                  label="绘图风格"
+                                  width="180">
+                            <template slot-scope="scope" >
+                              <el-form-item  :prop="'gitems.' + scope.$index + '.drawtype'">
+                                <el-select v-model="scope.row.drawtype">
+                                  <el-option v-for="item in drawTypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                </el-select>
+                              </el-form-item>
+                            </template>
+                          </el-table-column>
+                          <el-table-column
+                                  label="纵轴Y线"
+                                  width="180">
+                            <template slot-scope="scope" >
+                              <el-form-item  :prop="'gitems.' + scope.$index + '.yaxisside'">
+                                <el-select v-model="scope.row.yaxisside">
+                                  <el-option v-for="item in yAxisOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                </el-select>
+                              </el-form-item>
+                            </template>
+                          </el-table-column>
+                          <el-table-column
+                                  label="颜色"
+                                  width="180">
+                            <template slot-scope="scope" >
+                              <el-form-item  :prop="'gitems.' + scope.$index + '.color'">
+                                <el-color-picker  v-model="scope.row.color"></el-color-picker>
+                              </el-form-item>
+                            </template>
+                          </el-table-column>
+                          <el-table-column
+                                  label="操作"
+                                  width="180">
+                            <template slot-scope="scope">
+                              <el-button
+                                      size="mini"
+                                      type="danger"
+                                      icon="el-icon-delete"
+                                      @click="handleDelete(scope.$index, scope.row)">
+                                移除
+                              </el-button>
+                            </template>
+                          </el-table-column>
+                        </el-table>
+                      </div>
+                      <el-popover
+                              placement="left"
+                              width="1000"
+                              trigger="click"
+                              ref="gList"
+                      >
+                        <el-table
+                                :data="forShowData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                                v-loading="loading"
+                                border
+                                style="width: 100%"
+                                :row-style="tableRowStyle"
+                                :header-cell-style="tableHeaderColor"
+                                ref="multipleTable"
+                                tooltip-effect="dark"
+                                @selection-change="handleSelectionChange">
+                          <el-table-column
+                                  type="selection"
+                                  width="55"
+                                  :reserve-selection="true">
+                          </el-table-column>
+                          <el-table-column
+                                  prop="name"
+                                  label="名称"
+                                  show-overflow-tooltip>
+                          </el-table-column>
+                          <el-table-column
+                                  prop="key_"
+                                  label="键值"
+                                  show-overflow-tooltip>
+                          </el-table-column>
+                          <el-table-column
+                                  prop="type"
+                                  label="类型"
+                                  width="120">
+                          </el-table-column>
+                          <el-table-column
+                                  prop="value_type"
+                                  label="信息类型"
+                                  width="120">
+                          </el-table-column>
+                          <el-table-column
+                                  prop="status"
+                                  label="状态"
+                                  width="120">
+                          </el-table-column>
+                        </el-table>
+                        <div class="block" style="margin-top:15px;">
+                          <el-pagination
+                                  align="center"
+                                  @size-change="handleSizeChange"
+                                  @current-change="handleCurrentChange"
+                                  :current-page="currentPage"
+                                  :page-sizes="[10, 30, 50, 100]"
+                                  :page-size="pageSize"
+                                  layout="total, sizes, prev, pager, next, jumper"
+                                  :total="forShowData.length"
+                          ></el-pagination>
+                        </div>
+                        <div style="margin-top: 20px">
+                          <el-button @click="rightChose">确定选择</el-button>
+                          <el-button @click="toggleSelection()">取消选择</el-button>
+                        </div>
+                        <el-button type="text" slot="reference">新增</el-button>
+                      </el-popover>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="onSubmit">提交</el-button>
+                      <el-button @click="closePopover">取消</el-button>
+                    </el-form-item>
+                  </el-form>
+                  <el-button type="danger" size="small" slot="reference" icon="el-icon-plus">新增</el-button>
+                </el-popover>
+              </div>
+            </div>
+          </ToolBar>
+          <el-table
+                  :data="graphData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                  v-loading="loading"
+                  border
+                  style="width: 100%"
+                  :row-style="tableRowStyle"
+                  :header-cell-style="tableHeaderColor"
+          >
+            <el-table-column label="graphid" prop="graphid" :resizable="false" v-if="show"></el-table-column>
+            <el-table-column label="图形名称" prop="name" min-width="70%"></el-table-column>
+            <el-table-column label="高" prop="height" min-width="15%"></el-table-column>
+            <el-table-column label="宽" prop="width" min-width="15%"></el-table-column>
+            <el-table-column label="图形类型" prop="graphtype" min-width="15%"></el-table-column>
+            <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
+              <template slot-scope="scope">
+                <el-popconfirm
+                        title="是否添加指标到概况？"
+                        @onConfirm="confirmGraphSaveTrend(scope.$index, scope.row)"
+                >
+                  <el-button
+                          size="mini"
+                          type="primary"
+                          slot="reference"
+                          icon="fa fa-external-link"
+                          circle
+                  ></el-button>
+                </el-popconfirm>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="block" style="margin-top:15px;">
+            <el-pagination
+                    align="center"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 30, 50, 100]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="graphData.length"
             ></el-pagination>
           </div>
         </div>
@@ -269,7 +572,111 @@ export default {
         this.$parent.$parent.noReloadData()
       },
       itemstableData: [],
-      activeName: 'first'
+      activeName: 'first',
+      graphstableData: [],
+      form: {
+        hostids: [this.$route.query.hostId],
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+        ymax_type: '',
+        ymin_type: '',
+        graphtype: '',
+        show_legend: 1,
+        show_work_period: 0,
+        percent_left: '',
+        percent_right: '',
+        gitems: []
+      },
+      leftOption: false,
+      rightOption: false,
+      yOptions: [{
+        value: 0,
+        label: '计算的'
+      }, {
+        value: 1,
+        label: '固定的'
+      }, {
+        value: 2,
+        label: '监控项'
+      }],
+      fncOptions: [{
+        value: 1,
+        label: '最小值'
+      }, {
+        value: 2,
+        label: '平均值'
+      }, {
+        value: 4,
+        label: '最大值'
+      }, {
+        value: 7,
+        label: '所有值'
+      }],
+      drawTypeOptions: [{
+        value: 0,
+        label: '实线'
+      }, {
+        value: 1,
+        label: '面积图'
+      }, {
+        value: 2,
+        label: '粗实线'
+      }, {
+        value: 3,
+        label: '点'
+      }, {
+        value: 4,
+        label: '虚线'
+      }, {
+        value: 5,
+        label: '梯度线'
+      }],
+      yAxisOptions: [{
+        value: 0,
+        label: '左侧'
+      }, {
+        value: 1,
+        label: '右侧'
+      }],
+      graphtypeOptions: [{
+        value: 0,
+        label: '常规'
+      }, {
+        value: 1,
+        label: '堆积图'
+      }, {
+        value: 2,
+        label: '饼图'
+      }, {
+        value: 3,
+        label: '分散饼图'
+      }],
+      forShowData: [
+        {
+          itemid: '',
+          name: '',
+          key_: '',
+          type: '',
+          value_type: '',
+          status: ''
+        }
+      ],
+      multipleSelection: [],
+      multipleSelection1: [],
+      color: '',
+      graphData: [{
+        graphid: '',
+        name: '',
+        height: '',
+        width: '',
+        graphtype: ''
+      }]
     }
   },
   created () {
@@ -281,6 +688,10 @@ export default {
     this.getUserConnet()
     this.getSessionActive()
     this.getSessionsNum()
+    this.getGraphData()
+    this.form.ymax_type = this.yOptions[0].value
+    this.form.ymin_type = this.yOptions[0].value
+    this.form.graphtype = this.graphtypeOptions[0].value
   },
   methods: {
     // 修改table tr行的背景色
@@ -300,8 +711,10 @@ export default {
     showInfo (str) {
       this.loading = true
       this.tableData = this.tableDataclear
+      this.graphData = this.tableDataclear
       const _this = this
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
+      this.setTimeoutster = window.setTimeout(() => { _this.showGraphInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
       const region = {
@@ -313,6 +726,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
+            this.forShowData = json.data
             this.currentPage = 1
           }
         } else {
@@ -760,6 +1174,430 @@ export default {
         }
       }
       return name
+    },
+    removeGraphs (str) {
+      this.$confirm('确定删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.delete('/trend/deleteHostDetailGraph/' + str.id).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.getGraphData()
+              this.activeName = 'first'
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          }
+        })
+      })
+    },
+    saveGraphTrend (row) {
+      const region = {
+        hostId: this.$route.query.hostId,
+        graphId: row.graphid,
+        graphName: row.name
+      }
+      this.axios.post('/trend/addHostDetailGraph', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+            this.getGraphData()
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    confirmGraphSaveTrend (index, row) {
+      const region = {
+        hostId: this.$route.query.hostId,
+        graphId: row.graphid
+      }
+      console.log(region)
+      this.axios.post('/trend/checkHostDetailGraph', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          console.log(json.data)
+          if (!json.data) {
+            this.saveGraphTrend(row)
+          } else {
+            this.$message({
+              message: '添加失败【已经存在！】',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    async getGraphsData (graphid, graphName, index1) {
+      var starttime = timesMethod.fun_date(0)
+      var timefrom = timesMethod.getDatestamp(starttime)
+      var endtime = timesMethod.fun_date(1)
+      var timetill = timesMethod.getDatestamp(endtime)
+      const itemids = []
+      var gItemData = []
+      var itemData = []
+      var trendData = []
+      const legendData = []
+      var seriesData = []
+      var colorData = []
+      const returndataclock = []
+      const params = {
+        graphids: [graphid]
+      }
+      await this.axios.post('/gItem/getGItemInfoList', params).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            gItemData = json.data
+            gItemData.forEach(element => {
+              itemids.push(element.itemid)
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      const param = {
+        hostids: [this.$route.query.hostId],
+        itemids: itemids
+      }
+      await this.axios.post('/item/getItemInfoList', param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            itemData = json.data
+            for (var i = 0; i < itemData.length; i++) {
+              legendData.push(itemData[i].name)
+            }
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      var sum = 0
+      for (var i = 0; i < gItemData.length; i++) {
+        const region = {
+          itemids: [itemids[i]],
+          timefrom: timefrom,
+          timetill: timetill
+        }
+        await this.axios.post('/trend/getItemInfoList', region).then((resp) => {
+          console.log(resp.status)
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              trendData = json.data
+              var data = []
+              for (var j = 0; j < trendData.length; j++) {
+                var clock = timesMethod.getTimestamp(trendData[j].clock)
+                var index
+                if (clock) {
+                  index = i
+                  sum += 1
+                }
+                if (i === index && sum <= trendData.length) {
+                  returndataclock.push(clock)
+                }
+                switch (gItemData[i].calc_fnc) {
+                  case 1 : data.push(trendData[j].value_min)
+                    break
+                  case 2 : data.push(trendData[j].value_avg)
+                    break
+                  case 4 : data.push(trendData[j].value_max)
+                    break
+                }
+              }
+              var series = {}
+              series.name = itemData[i].name
+              var type = ''
+              switch (gItemData[i].drawtype) {
+                case 0: type = 'line'
+                  break
+                case 1:
+                  type = 'line'
+                  series.areaStyle = {}
+                  break
+                case 3:
+                  type = 'effectScatter'
+                  break
+                case 2:
+                  type = 'line'
+                  series.itemStyle = {
+                    normal: {
+                      lineStyle: {
+                        width: 5
+                      }
+                    }
+                  }
+                  break
+                case 4:
+                  type = 'line'
+                  series.itemStyle = {
+                    normal: {
+                      lineStyle: {
+                        type: 'dotted'
+                      }
+                    }
+                  }
+                  break
+                case 5:
+                  type = 'bar'
+                  break
+              }
+              series.type = type
+              colorData.push('#' + gItemData[i].color)
+              series.lineStyle = {
+                normal: {
+                  color: '#' + gItemData[i].color
+                }
+              }
+              series.data = data
+              seriesData.push(series)
+              console.log(seriesData)
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          }
+        })
+      }
+      const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+      var pieEcharts = document.getElementById('pieEcharts')
+      pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+      const myChart = this.$echarts.init(pieCharts)
+      // 绘制图表
+      myChart.setOption({
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        color: colorData,
+        legend: {
+          data: legendData
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: returndataclock,
+            axisLabel: {
+              interval: 0,
+              rotate: 45, // 倾斜度-90至90默认为0
+              margin: 2,
+              textStyle: {
+                fontWeight: 'bolder',
+                color: '#000000',
+                fontSize: '7'
+              }
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: seriesData
+      })
+      if (this.itemsloading !== '') {
+        this.itemsloading.close()
+      }
+      this.setTimeoutItems = ''
+    },
+    getGraphID (index) {
+      return 'charts-graph-demo-' + index
+    },
+    getGraphData () {
+      this.axios.post('/trend/findHostDetailGraphs/' + this.$route.query.hostId).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.graphstableData = json.data
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    showGraphInfoTimeout (str) {
+      const region = {
+        hostids: [this.$route.query.hostId],
+        name: this.nameTop
+      }
+      this.axios.post('/gPrototype/getGProInfoList', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.graphData = json.data
+            this.currentPage = 1
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+        this.loading = false
+      })
+    },
+    // 提交表单
+    onSubmit () {
+      if (this.form.name) {
+        alert('名称不能为空!')
+        return
+      }
+      if (this.form.gitems.length === 0) {
+        alert('监控项不能为空！')
+        return
+      }
+      this.axios.post('/gPrototype/createGpro', this.form).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(resp.data)
+            this.$message({
+              message: '新增成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: json.msg,
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: json.msg,
+            type: 'error'
+          })
+        }
+      })
+      this.$refs.gPopover.doClose()
+      this.showInfo()
+    },
+    closePopover () {
+      this.$refs.gPopover.doClose()
+      this.form.gitems = []
+    },
+    handleDelete (index, row) {
+      this.form.gitems.splice(index, 1)
+    },
+    showRandomColor () {
+      var num = '#'
+      for (var i = 0; i < 6; i++) {
+        var tmp = Math.ceil((Math.random() * 15))
+        if (tmp > 9) {
+          switch (tmp) {
+            case (10):
+              num += 'A'
+              break
+            case (11):
+              num += 'B'
+              break
+            case (12):
+              num += 'C'
+              break
+            case (13):
+              num += 'D'
+              break
+            case (14):
+              num += 'E'
+              break
+            case (15):
+              num += 'F'
+              break
+          }
+        } else {
+          num += tmp
+        }
+      }
+      return num
+    },
+    rightChose () {
+      var _this = this.multipleSelection1
+      for (var i = 0; i < _this.length; i++) {
+        console.log(this.showRandomColor())
+        var breaked = false
+        var gitems = {
+          name: '',
+          itemid: '',
+          color: this.showRandomColor(),
+          calc_fnc: this.fncOptions[1].value,
+          drawtype: this.drawTypeOptions[0].value,
+          yaxisside: this.yAxisOptions[0].value
+        }
+        var list = this.form.gitems
+        for (var j = 0; j < list.length; j++) {
+          if (list[j].itemid === _this[i].itemid) {
+            breaked = true
+            break
+          }
+        }
+        if (breaked) {
+          continue
+        }
+        gitems.name = _this[i].name
+        gitems.itemid = _this[i].itemid
+        this.form.gitems.push(gitems)
+      }
+      this.$refs.gList.doClose()
+    },
+    toggleSelection (rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection1 = val
     }
   },
   mounted () {
@@ -904,7 +1742,7 @@ export default {
   width: 100%;
 }
 /deep/.el-tabs__item {
-  width: 50%;
+  width: 33.33%;
 }
 a:hover {
   background-color: #c5c5c5;
