@@ -126,8 +126,8 @@
           <el-link type="primary" @click="showPossessionInfo(scope.row)">{{scope.row.objectName}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="业务名称" prop="businessName" min-width="12%"></el-table-column>
-      <el-table-column label="IP" prop="hostIp" min-width="12%" :resizable="false"></el-table-column>
+      <el-table-column label="业务名称" prop="businessName" min-width="12%" v-if="datashow"></el-table-column>
+      <el-table-column label="IP" prop="hostIp" min-width="10%" :resizable="false"></el-table-column>
       <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
         <template slot-scope="scope">
           <el-switch
@@ -139,7 +139,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="监控状态" prop="monitorType" min-width="15%" :resizable="false">
+      <el-table-column label="监控状态" prop="monitorType" min-width="17%" :resizable="false">
         <template slot-scope="scope">
           <el-tag
             v-for="item in makeMonitorTypeItems(scope.row)"
@@ -152,8 +152,8 @@
         </template>
       </el-table-column>
       <el-table-column label="类型" prop="type" min-width="6%" :resizable="false"></el-table-column>
-      <el-table-column label="子类型" prop="subtype" min-width="6%" :resizable="false"></el-table-column>
-      <el-table-column label="备注" prop="remark" min-width="12%" :resizable="false"></el-table-column>
+      <el-table-column label="子类型" prop="subtype" min-width="6%" :resizable="false" v-if="datashow"></el-table-column>
+      <el-table-column label="备注" prop="remark" min-width="12%" :resizable="false" v-if="datashow"></el-table-column>
       <el-table-column label="分组" prop="groupId" min-width="6%" :resizable="false">
         <template slot-scope="scope">
           <el-popover trigger="click" placement="top">
@@ -227,6 +227,7 @@ export default {
   data () {
     return {
       show: false,
+      datashow: false,
       hostObjectName: '',
       hostIp: '',
       hostType: '',
@@ -297,6 +298,10 @@ export default {
     this.getSubTypes()
     this.getGroups()
     this.showInfo()
+    var clientWidth = document.body.clientWidth
+    if (clientWidth > 1500) {
+      this.datashow = true
+    }
   },
   methods: {
     initParams () {

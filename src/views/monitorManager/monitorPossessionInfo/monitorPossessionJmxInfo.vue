@@ -47,8 +47,7 @@
       <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
           <div
-            class="card dark-main-background queryleft"
-            style="width:32.5%;margin-left:10px"
+            class="card dark-main-background queryleft card-width"
             v-for="(items, index) in itemstableData"
             v-bind:key="index"
           >
@@ -85,10 +84,7 @@
               <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
             </div>
           </div>
-          <div
-            class="dark-main-background queryleft"
-            style="width:32.5%;margin-left:10px;margin-top:0px"
-          >
+          <div class="dark-main-background queryleft card-width-top">
             <a
               href="javascript:void(0);"
               @click="addItems()"
@@ -618,8 +614,15 @@ export default {
       })
     },
     formatitemName (name) {
-      if (name !== null && name !== '' && name.length > 50) {
-        name = name.substring(0, 50) + '...'
+      var clientWidth = document.body.clientWidth
+      if (clientWidth > 1500) {
+        if (name !== null && name !== '' && name.length > 50) {
+          name = name.substring(0, 50) + '...'
+        }
+      } else {
+        if (name !== null && name !== '' && name.length > 25) {
+          name = name.substring(0, 25) + '...'
+        }
       }
       return name
     }
@@ -774,5 +777,25 @@ a:hover {
 .echart {
   width: 100%;
   height: 300px;
+}
+.card-width {
+  width: 32.5%;
+  margin-left: 10px;
+}
+.card-width-top {
+  width: 32.5%;
+  margin-left: 10px;
+  margin-top: 0px;
+}
+@media screen and (max-width: 1500px) {
+  .card-width {
+    width: 32%;
+    margin-left: 10px;
+  }
+  .card-width-top {
+    width: 32%;
+    margin-left: 10px;
+    margin-top: 0px;
+  }
 }
 </style>

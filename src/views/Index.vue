@@ -269,7 +269,7 @@
               </div>
             </div>
             <div class="tempList card-body queryleft">
-              <div class="queryleft" style="width:300px">
+              <div class="queryleft width-300">
                 <div id="liquidFillMonitorState" class="echartliquidFill"></div>
                 <div class="liquidFilldata">
                   <i class="fa fa-certificate" style="color:#F87B27"></i> 用户总数 :
@@ -280,7 +280,7 @@
                   <span class="list-count" style="color:#08DFAF">1</span>
                 </div>
               </div>
-              <div class="queryleft" style="width:200px;margin-top:20px;margin-left:30px">
+              <div class="queryleft width-200-margin">
                 <div class="liquidFilldata" style="text-align:left">
                   <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 监控列表
                 </div>
@@ -358,27 +358,47 @@
               </div>
             </div>
             <div class="tempList card-body queryleft">
-              <div style="width:100%;height:180px">
-                <div class="queryleft" style="width:300px">
+              <div class="height-180">
+                <div class="queryleft width-300">
                   <div id="liquidFillAddAlert" class="echartliquidFill"></div>
                 </div>
-                <div class="queryleft" style="width:200px;">
+                <div class="queryleft width-200">
                   <div id="liquidFillCloseAlert" class="echartliquidFill"></div>
                 </div>
               </div>
-              <div style="width:100%;height:110px">
-                <div style="margin-left:20px;height:20px">
-                  <div style="width:12%;float:left">
-                    <div style="font-size:12px;padding: 2px;">发出通知</div>
-                    <div style="font-size:12px;padding: 2px;">IM通知</div>
-                    <div style="font-size:12px;padding: 2px;">邮箱通知</div>
-                    <div style="font-size:12px;padding: 2px;">短信通知</div>
+              <div class="height-110">
+                <div class="height-20-margin">
+                  <div class="width-padding">
+                    <div class="font-size-padding">发出通知</div>
+                    <div class="font-size-padding">IM通知</div>
+                    <div class="font-size-padding">邮箱通知</div>
+                    <div class="font-size-padding">短信通知</div>
                   </div>
                   <div style="width:80%;float:left">
-                    <el-progress :percentage="2" :format="progressformat" color="#28FF28" style="padding: 2.5px;"></el-progress>
-                    <el-progress :percentage="4" :format="progressformat" color="#28FF28" style="padding: 2.5px;"></el-progress>
-                    <el-progress :percentage="1" :format="progressformat" color="#28FF28" style="padding: 2.5px;"></el-progress>
-                    <el-progress :percentage="7" :format="progressformat" color="#28FF28" style="padding: 2.5px;"></el-progress>
+                    <el-progress
+                      :percentage="2"
+                      :format="progressformat"
+                      color="#28FF28"
+                      class="padding-2"
+                    ></el-progress>
+                    <el-progress
+                      :percentage="4"
+                      :format="progressformat"
+                      color="#28FF28"
+                      class="padding-2"
+                    ></el-progress>
+                    <el-progress
+                      :percentage="1"
+                      :format="progressformat"
+                      color="#28FF28"
+                      class="padding-2"
+                    ></el-progress>
+                    <el-progress
+                      :percentage="7"
+                      :format="progressformat"
+                      color="#28FF28"
+                      class="padding-2"
+                    ></el-progress>
                   </div>
                 </div>
               </div>
@@ -457,7 +477,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.memoryTop5 = json.data
             this.getItemsData('chartsTwo')
           } else {
@@ -479,8 +498,11 @@ export default {
     getItemsData (id) {
       var pieCharts = document.getElementById(id)
       var pieEcharts = document.getElementById('pieEcharts')
-      console.log(pieEcharts.clientWidth)
-      pieCharts.style.width = pieEcharts.clientWidth / 3 - 20 + 'px'
+      if (pieEcharts.clientWidth > 1200) {
+        pieCharts.style.width = (pieEcharts.clientWidth / 3 - 20) / 16 + 'rem'
+      } else {
+        pieCharts.style.width = (pieEcharts.clientWidth / 3 - 20) / 16 + 'rem'
+      }
       const myChart = echarts.init(pieCharts)
       if (id === 'chartsOne') {
         const returndataclock = []
@@ -525,7 +547,7 @@ export default {
             }
           },
           legend: {
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他']
+            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
           },
           grid: {
             left: '3%',
@@ -580,31 +602,6 @@ export default {
                   [{ type: 'min' }, { type: 'max' }]
                 ]
               }
-            },
-            {
-              name: '百度',
-              type: 'bar',
-              barWidth: 5,
-              stack: '搜索引擎',
-              data: [620, 732, 701, 734, 1090, 1130, 1120]
-            },
-            {
-              name: '谷歌',
-              type: 'bar',
-              stack: '搜索引擎',
-              data: [120, 132, 101, 134, 290, 230, 220]
-            },
-            {
-              name: '必应',
-              type: 'bar',
-              stack: '搜索引擎',
-              data: [60, 72, 71, 74, 190, 130, 110]
-            },
-            {
-              name: '其他',
-              type: 'bar',
-              stack: '搜索引擎',
-              data: [62, 82, 91, 84, 109, 110, 120]
             }
           ]
         })
@@ -712,7 +709,7 @@ export default {
           legend: {
             left: 'center',
             top: 'bottom',
-            data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+            data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5']
           },
           toolbox: {
             show: true,
@@ -731,8 +728,8 @@ export default {
             {
               name: '半径模式',
               type: 'pie',
-              radius: [20, 110],
-              center: ['25%', '50%'],
+              radius: [20, 100],
+              center: ['50%', '50%'],
               roseType: 'radius',
               label: {
                 show: false
@@ -747,27 +744,7 @@ export default {
                 { value: 5, name: 'rose2' },
                 { value: 15, name: 'rose3' },
                 { value: 25, name: 'rose4' },
-                { value: 20, name: 'rose5' },
-                { value: 35, name: 'rose6' },
-                { value: 30, name: 'rose7' },
-                { value: 40, name: 'rose8' }
-              ]
-            },
-            {
-              name: '面积模式',
-              type: 'pie',
-              radius: [30, 110],
-              center: ['75%', '50%'],
-              roseType: 'area',
-              data: [
-                { value: 10, name: 'rose1' },
-                { value: 5, name: 'rose2' },
-                { value: 15, name: 'rose3' },
-                { value: 25, name: 'rose4' },
-                { value: 20, name: 'rose5' },
-                { value: 35, name: 'rose6' },
-                { value: 30, name: 'rose7' },
-                { value: 40, name: 'rose8' }
+                { value: 20, name: 'rose5' }
               ]
             }
           ]
@@ -995,7 +972,7 @@ export default {
   background: #fff;
 }
 .tempList p {
-  width: 200px;
+  width: 20rem;
   height: 40px;
 }
 .color-danger {
@@ -1049,8 +1026,8 @@ export default {
 }
 [class^='card-icon-round-'] {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 3.8rem;
+  height: 3.8rem;
   right: 10px;
   top: 30%;
   margin-top: -30px;
@@ -1124,16 +1101,84 @@ export default {
 }
 .echart {
   width: 100%;
-  height: 290px;
+  height: 18rem;
 }
 .echartliquidFill {
-  width: 100%;
+  width: 18rem;
   height: 190px;
   text-align: center;
 }
 .liquidFilldata {
   text-align: center;
-  width: 100%;
+  width: 18rem;
   height: 50px;
+}
+.width-300 {
+  width: 18rem;
+}
+.width-200-margin {
+  width: 12rem;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+.width-200 {
+  width: 12rem;
+}
+.height-180 {
+  width: 100%;
+  height: 180px;
+}
+.height-110 {
+  width: 100%;
+  height: 110px;
+}
+.height-20-margin {
+  margin-left: 20px;
+  height: 20px;
+}
+.font-size-padding {
+  font-size: 12px;
+  padding: 2px;
+}
+.padding-2 {
+  padding: 2.5px;
+}
+.width-padding {
+  width: 12%;
+  float: left;
+}
+@media screen and (max-width: 1500px) {
+  .echartliquidFill {
+    width: 10rem;
+    height: 190px;
+    text-align: center;
+  }
+  .liquidFilldata {
+    text-align: center;
+    width: 8rem;
+    height: 50px;
+  }
+  .width-300 {
+    width: 10rem;
+  }
+  .width-200-margin {
+    width: 8rem;
+    margin-top: 20px;
+    margin-left: 30px;
+  }
+  .width-200 {
+    width: 8rem;
+  }
+  .width-padding {
+    width: 60px;
+    float: left;
+  }
+  .echart {
+    width: 100%;
+    height: 18rem;
+  }
+  .span-date {
+    display: none;
+  }
 }
 </style>
