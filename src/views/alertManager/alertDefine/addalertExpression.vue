@@ -177,7 +177,7 @@ export default {
       // this.showInfo()
     },
     chooseItems () {
-      this.chooseItemsDialog = true
+      // this.chooseItemsDialog = true
     }
   },
   components: { ChooseItems }
