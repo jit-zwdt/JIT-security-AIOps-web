@@ -1,17 +1,17 @@
 <template>
   <div>
     <div>
-      <div class="templateStyle-one">
+      <div class="templateStyle-one" @click="headerOneherf('1')">
         <template>
           <div class="card">
             <div class="header">
               <div class="queryleft">
-                <h1 class="title-bar-title m-b-sm">
-                  <span class="d-ib">10</span>
+                <h1 class="title-bar-title m-b-sm" style="min-height:48px">
+                  <span class="d-ib">{{this.headerOne.hostCount}}</span>
                 </h1>
                 <div>
-                  <p class="title-bar-description">
-                    <span>操作系统</span>
+                  <p class="title-bar-description" style="min-height:24px">
+                    <span>{{this.headerOne.type}}</span>
                   </p>
                 </div>
               </div>
@@ -23,143 +23,114 @@
             </div>
             <div class="tempList card-body">
               <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-danger"></i>
-                7
+                <i class="fa fa-bell color-disaster"></i>
+                {{this.headerOnedisasterCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-high"></i>
+                {{this.headerOnehighCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-average"></i>
+                {{this.headerOneaverageCount}}
               </span>
               <span class="card-tag card-tag-span">
                 <i class="fa fa-bell color-warning"></i>
-                0
+                {{this.headerOnewarningCount}}
               </span>
               <span class="card-tag card-tag-span">
                 <i class="fa fa-bell color-info"></i>
-                1
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-primary"></i>
-                2
+                {{this.headerOneinformationCount}}
               </span>
             </div>
           </div>
         </template>
       </div>
-      <div class="templateStyle">
+      <div class="templateStyle" @click="headerOneherf('2')">
         <template>
           <div class="card">
             <div class="header">
               <div class="queryleft">
-                <h1 class="title-bar-title m-b-sm">
-                  <span class="d-ib">3</span>
+                <h1 class="title-bar-title m-b-sm" style="min-height:48px">
+                  <span class="d-ib">{{this.headerTwo.hostCount}}</span>
                 </h1>
                 <div>
-                  <p class="title-bar-description">
-                    <span>网络设备</span>
+                  <p class="title-bar-description" style="min-height:24px">
+                    <span>{{this.headerTwo.type}}</span>
                   </p>
                 </div>
               </div>
               <div class="card-icon-round-network queryright">
                 <div class="card-icon-circular-network">
-                  <i class="fa fa-rss-square i-fa"></i>
-                </div>
-              </div>
-            </div>
-            <div class="tempList card-body">
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-danger"></i>
-                2
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-warning"></i>
-                0
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-info"></i>
-                1
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-primary"></i>
-                0
-              </span>
-            </div>
-          </div>
-        </template>
-      </div>
-      <div class="templateStyle">
-        <template>
-          <div class="card">
-            <div class="header">
-              <div class="queryleft">
-                <h1 class="title-bar-title m-b-sm">
-                  <span class="d-ib">12</span>
-                </h1>
-                <div>
-                  <p class="title-bar-description">
-                    <span>硬件</span>
-                  </p>
-                </div>
-              </div>
-              <div class="card-icon-round-hard queryright">
-                <div class="card-icon-circular-hard">
-                  <i class="fa fa-server i-fa"></i>
-                </div>
-              </div>
-            </div>
-            <div class="tempList card-body">
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-danger"></i>
-                3
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-warning"></i>
-                2
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-info"></i>
-                7
-              </span>
-              <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-primary"></i>
-                0
-              </span>
-            </div>
-          </div>
-        </template>
-      </div>
-      <div class="templateStyle">
-        <template>
-          <div class="card">
-            <div class="header">
-              <div class="queryleft">
-                <h1 class="title-bar-title m-b-sm">
-                  <span class="d-ib">4</span>
-                </h1>
-                <div>
-                  <p class="title-bar-description">
-                    <span>数据库</span>
-                  </p>
-                </div>
-              </div>
-              <div class="card-icon-round-database queryright">
-                <div class="card-icon-circular-database">
                   <i class="fa fa-stack-exchange i-fa"></i>
                 </div>
               </div>
             </div>
             <div class="tempList card-body">
               <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-danger"></i>
-                0
+                <i class="fa fa-bell color-disaster"></i>
+                {{this.headerTwodisasterCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-high"></i>
+                {{this.headerTwohighCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-average"></i>
+                {{this.headerTwoaverageCount}}
               </span>
               <span class="card-tag card-tag-span">
                 <i class="fa fa-bell color-warning"></i>
-                0
+                {{this.headerTwowarningCount}}
               </span>
               <span class="card-tag card-tag-span">
                 <i class="fa fa-bell color-info"></i>
-                1
+                {{this.headerTwoinformationCount}}
+              </span>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="templateStyle" @click="headerOneherf('3')">
+        <template>
+          <div class="card">
+            <div class="header">
+              <div class="queryleft">
+                <h1 class="title-bar-title m-b-sm" style="min-height:48px">
+                  <span class="d-ib">{{this.headerThree.hostCount}}</span>
+                </h1>
+                <div>
+                  <p class="title-bar-description" style="min-height:24px">
+                    <span>{{this.headerThree.type}}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="card-icon-round-hard queryright">
+                <div class="card-icon-circular-hard">
+                  <i class="fa fa-internet-explorer i-fa"></i>
+                </div>
+              </div>
+            </div>
+            <div class="tempList card-body">
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-disaster"></i>
+                {{this.headerThreedisasterCount}}
               </span>
               <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-primary"></i>
-                3
+                <i class="fa fa-bell color-high"></i>
+                {{this.headerThreehighCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-average"></i>
+                {{this.headerThreeaverageCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-warning"></i>
+                {{this.headerThreewarningCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-info"></i>
+                {{this.headerThreeinformationCount}}
               </span>
             </div>
           </div>
@@ -170,37 +141,86 @@
           <div class="card">
             <div class="header">
               <div class="queryleft">
-                <h1 class="title-bar-title m-b-sm">
-                  <span class="d-ib">6</span>
+                <h1 class="title-bar-title m-b-sm" style="min-height:48px">
+                  <span class="d-ib">{{this.headerFour.hostCount}}</span>
                 </h1>
                 <div>
-                  <p class="title-bar-description">
-                    <span>WEB</span>
+                  <p class="title-bar-description" style="min-height:24px">
+                    <span>{{this.headerFour.type}}</span>
                   </p>
                 </div>
               </div>
-              <div class="card-icon-round-web queryright">
-                <div class="card-icon-circular-web">
-                  <i class="fa fa-internet-explorer i-fa"></i>
+              <div class="card-icon-round-database queryright">
+                <div class="card-icon-circular-database">
+                  <i class="fa fa-rss-square i-fa"></i>
                 </div>
               </div>
             </div>
             <div class="tempList card-body">
               <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-danger"></i>
-                0
+                <i class="fa fa-bell color-disaster"></i>
+                {{this.headerFourdisasterCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-high"></i>
+                {{this.headerFourhighCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-average"></i>
+                {{this.headerFouraverageCount}}
               </span>
               <span class="card-tag card-tag-span">
                 <i class="fa fa-bell color-warning"></i>
-                0
+                {{this.headerFourwarningCount}}
               </span>
               <span class="card-tag card-tag-span">
                 <i class="fa fa-bell color-info"></i>
-                0
+                {{this.headerFourinformationCount}}
+              </span>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="templateStyle">
+        <template>
+          <div class="card">
+            <div class="header">
+              <div class="queryleft">
+                <h1 class="title-bar-title m-b-sm" style="min-height:48px">
+                  <span class="d-ib">{{this.headerFive.hostCount}}</span>
+                </h1>
+                <div>
+                  <p class="title-bar-description" style="min-height:24px">
+                    <span>{{this.headerFive.type}}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="card-icon-round-web queryright">
+                <div class="card-icon-circular-web">
+                  <i class="fa fa-server i-fa"></i>
+                </div>
+              </div>
+            </div>
+            <div class="tempList card-body">
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-disaster"></i>
+                {{this.headerFivedisasterCount}}
               </span>
               <span class="card-tag card-tag-span">
-                <i class="fa fa-bell color-primary"></i>
-                6
+                <i class="fa fa-bell color-high"></i>
+                {{this.headerFivehighCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-average"></i>
+                {{this.headerFiveaverageCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-warning"></i>
+                {{this.headerFivewarningCount}}
+              </span>
+              <span class="card-tag card-tag-span">
+                <i class="fa fa-bell color-info"></i>
+                {{this.headerFiveinformationCount}}
               </span>
             </div>
           </div>
@@ -273,7 +293,7 @@
                 <div id="liquidFillMonitorState" class="echartliquidFill"></div>
                 <div class="liquidFilldata">
                   <i class="fa fa-certificate" style="color:#F87B27"></i> 用户总数 :
-                  <span class="list-count" style="color:#F87B27">1</span>
+                  <span class="list-count" style="color:#F87B27">2</span>
                 </div>
                 <div class="liquidFilldata">
                   <i class="fa fa-certificate" style="color:#08DFAF"></i> 线上用户 :
@@ -281,14 +301,33 @@
                 </div>
               </div>
               <div class="queryleft width-200-margin">
-                <div class="liquidFilldata" style="text-align:left">
+                <div
+                  class="liquidFilldata"
+                  style="text-align:left"
+                  @click="liquidFilldataherf('1')"
+                >
                   <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 监控列表
                 </div>
-                <div class="liquidFilldata" style="text-align:left">
-                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 未恢复告警
-                </div>
-                <div class="liquidFilldata" style="text-align:left">
+                <div
+                  class="liquidFilldata"
+                  style="text-align:left"
+                  @click="liquidFilldataherf('2')"
+                >
                   <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 新增对象
+                </div>
+                <div
+                  class="liquidFilldata"
+                  style="text-align:left"
+                  @click="liquidFilldataherf('3')"
+                >
+                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 告警列表
+                </div>
+                <div
+                  class="liquidFilldata"
+                  style="text-align:left"
+                  @click="liquidFilldataherf('4')"
+                >
+                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 故障认领
                 </div>
               </div>
             </div>
@@ -370,9 +409,8 @@
                 <div class="height-20-margin">
                   <div class="width-padding">
                     <div class="font-size-padding">发出通知</div>
-                    <div class="font-size-padding">IM通知</div>
                     <div class="font-size-padding">邮箱通知</div>
-                    <div class="font-size-padding">短信通知</div>
+                    <div class="font-size-padding">微信通知</div>
                   </div>
                   <div style="width:80%;float:left">
                     <el-progress
@@ -420,7 +458,37 @@ export default {
       itemsloading: '',
       currentTime: '', // 获取当前时间
       cpuRateTop5: [],
-      setTimeoutItems: ''
+      setTimeoutItems: '',
+      headerOne: [],
+      headerOneaverageCount: '',
+      headerOnehighCount: '',
+      headerOneinformationCount: '',
+      headerOnewarningCount: '',
+      headerOnedisasterCount: '',
+      headerTwo: [],
+      headerTwoaverageCount: '',
+      headerTwohighCount: '',
+      headerTwoinformationCount: '',
+      headerTwowarningCount: '',
+      headerTwodisasterCount: '',
+      headerThree: [],
+      headerThreeaverageCount: '',
+      headerThreehighCount: '',
+      headerThreeinformationCount: '',
+      headerThreewarningCount: '',
+      headerThreedisasterCount: '',
+      headerFour: [],
+      headerFouraverageCount: '',
+      headerFourhighCount: '',
+      headerFourinformationCount: '',
+      headerFourwarningCount: '',
+      headerFourdisasterCount: '',
+      headerFive: [],
+      headerFiveaverageCount: '',
+      headerFivehighCount: '',
+      headerFiveinformationCount: '',
+      headerFivewarningCount: '',
+      headerFivedisasterCount: ''
     }
   },
   created () {
@@ -434,6 +502,7 @@ export default {
     this.getMonitorStateRunInfo()
     this.getAddAlertRunInfo()
     this.getCloseAlertRunInfo()
+    this.showInfo()
   },
   methods: {
     currentTimefunction () {
@@ -441,6 +510,82 @@ export default {
     },
     getDate () {
       this.currentTime = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+    },
+    showInfo () {
+      this.axios.post('/homePage/getMonitorTypeUsedInfo').then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            json.data.forEach(element => {
+              if (element.typeId === '1') {
+                this.headerOne = element
+                this.headerOneinformationCount = this.headerOne.problemsSeverityCount.informationCount
+                this.headerOnewarningCount = this.headerOne.problemsSeverityCount.warningCount
+                this.headerOneaverageCount = this.headerOne.problemsSeverityCount.averageCount
+                this.headerOnehighCount = this.headerOne.problemsSeverityCount.highCount
+                this.headerOnedisasterCount = this.headerOne.problemsSeverityCount.disasterCount
+              } else if (element.typeId === '2') {
+                this.headerTwo = element
+                this.headerTwoinformationCount = this.headerTwo.problemsSeverityCount.informationCount
+                this.headerTwowarningCount = this.headerTwo.problemsSeverityCount.warningCount
+                this.headerTwoaverageCount = this.headerTwo.problemsSeverityCount.averageCount
+                this.headerTwohighCount = this.headerTwo.problemsSeverityCount.highCount
+                this.headerTwodisasterCount = this.headerTwo.problemsSeverityCount.disasterCount
+              } else if (element.typeId === '3') {
+                this.headerThree = element
+                this.headerThreeinformationCount = this.headerThree.problemsSeverityCount.informationCount
+                this.headerThreewarningCount = this.headerThree.problemsSeverityCount.warningCount
+                this.headerThreeaverageCount = this.headerThree.problemsSeverityCount.averageCount
+                this.headerThreehighCount = this.headerThree.problemsSeverityCount.highCount
+                this.headerThreedisasterCount = this.headerThree.problemsSeverityCount.disasterCount
+              } else if (element.typeId === '4') {
+                this.headerFour = element
+                this.headerFourinformationCount = this.headerFour.problemsSeverityCount.informationCount
+                this.headerFourwarningCount = this.headerFour.problemsSeverityCount.warningCount
+                this.headerFouraverageCount = this.headerFour.problemsSeverityCount.averageCount
+                this.headerFourhighCount = this.headerFour.problemsSeverityCount.highCount
+                this.headerFourdisasterCount = this.headerFour.problemsSeverityCount.disasterCount
+              } else if (element.typeId === '5') {
+                this.headerFive = element
+                this.headerFiveinformationCount = this.headerFive.problemsSeverityCount.informationCount
+                this.headerFivewarningCount = this.headerFive.problemsSeverityCount.warningCount
+                this.headerFiveaverageCount = this.headerFive.problemsSeverityCount.averageCount
+                this.headerFivehighCount = this.headerFive.problemsSeverityCount.highCount
+                this.headerFivedisasterCount = this.headerFive.problemsSeverityCount.disasterCount
+              }
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    headerOneherf (str) {
+      if (str === '1') {
+        this.$router.push({ name: 'monitorSystemIndex' })
+      } else if (str === '2') {
+        this.$router.push({ name: 'monitorDBIndex' })
+      } else if (str === '3') {
+        this.$router.push({ name: 'monitorMiddlewareIndex' })
+      } else if (str === '4') {
+        // this.$router.push({ name: 'monitorAddList' })
+      } else if (str === '5') {
+        // this.$router.push({ name: 'monitorAddList' })
+      }
+    },
+    liquidFilldataherf (str) {
+      if (str === '1') {
+        this.$router.push({ name: 'monitorList' })
+      } else if (str === '2') {
+        this.$router.push({ name: 'monitorAddList' })
+      } else if (str === '3') {
+        // this.$router.push({ name: 'monitorMiddlewareIndex' })
+      } else if (str === '4') {
+        this.$router.push({ name: 'malfunctionSolveClaim' })
+      }
     },
     getcpuRateTop5ByItem () {
       const param = {
@@ -975,17 +1120,20 @@ export default {
   width: 20rem;
   height: 40px;
 }
-.color-danger {
+.color-disaster {
   color: #fd0000;
 }
-.color-warning {
+.color-high {
   color: #fc7303;
 }
-.color-info {
+.color-average {
   color: #fbdd34;
 }
-.color-primary {
+.color-warning {
   color: #1f7bff;
+}
+.color-info {
+  color: #d2e9ff;
 }
 .card-tag-span {
   margin-left: 10px;
@@ -1179,6 +1327,10 @@ export default {
   }
   .span-date {
     display: none;
+  }
+  .card-tag-span {
+    margin-left: 2px;
+    margin-top: -10px;
   }
 }
 </style>
