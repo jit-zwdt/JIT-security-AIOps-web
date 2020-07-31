@@ -345,6 +345,12 @@ export default {
     },
     noReloadData () {
       this.addalertExpressionDialog = false
+    },
+    addfrom () {
+      this.$message({
+        message: '该功能暂未开放！',
+        type: 'error'
+      })
     }
   },
   actions: {

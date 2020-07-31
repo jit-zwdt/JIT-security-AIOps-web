@@ -49,14 +49,13 @@
       <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
           <div
-                  class="card dark-main-background queryleft"
-                  style="width:32.5%;margin-left:10px"
-                  v-for="(items, index) in itemstableData"
-                  v-bind:key="index"
+            class="card dark-main-background queryleft card-width"
+            v-for="(items, index) in itemstableData"
+            v-bind:key="index"
           >
             <div
-                    class="title-bar card-header dark-main-background dark-white-color"
-                    style="height:40px;width:100%"
+              class="title-bar card-header dark-main-background dark-white-color"
+              style="height:40px;width:100%"
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
@@ -65,20 +64,20 @@
               </div>
               <div class="queryright" style="margin-top:-5px !important;height:40px">
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px;"
-                        type="text"
-                        @click="removeItems(items)"
+                  style="float: right; padding: 0px; margin-left: 5px;"
+                  type="text"
+                  @click="removeItems(items)"
                 >
                   <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
                 </el-button>
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px;"
-                        type="text"
-                        @click="refreshItems(items,index)"
+                  style="float: right; padding: 0px; margin-left: 5px;"
+                  type="text"
+                  @click="refreshItems(items,index)"
                 >
                   <i
-                          class="el-icon-refresh"
-                          style="font-size: 18px;color: #979899;font-weight: 400;"
+                    class="el-icon-refresh"
+                    style="font-size: 18px;color: #979899;font-weight: 400;"
                   ></i>
                 </el-button>
               </div>
@@ -87,15 +86,12 @@
               <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
             </div>
           </div>
-          <div
-                  class="dark-main-background queryleft"
-                  style="width:32.5%;margin-left:10px;margin-top:0px"
-          >
+          <div class="dark-main-background queryleft card-width-top">
             <a
-                    href="javascript:void(0);"
-                    @click="addItems()"
-                    class="card card-body dark-main-background"
-                    style="height:392px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+              href="javascript:void(0);"
+              @click="addItems()"
+              class="card card-body dark-main-background"
+              style="height:392px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
             >
               <div class="fa fa-plus" style="font-size: 75px;">
                 <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
@@ -112,16 +108,16 @@
                 <el-input type="text" v-model="nameTop" size="small" placeholder="名称" clearable></el-input>
               </el-col>
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showInfo() == false"
-                      icon="el-icon-search"
+                type="primary"
+                size="small"
+                @click="showInfo() == false"
+                icon="el-icon-search"
               >查询</el-button>
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showClear() == false"
-                      icon="el-icon-refresh-left"
+                type="primary"
+                size="small"
+                @click="showClear() == false"
+                icon="el-icon-refresh-left"
               >重置</el-button>
             </div>
           </ToolBar>
@@ -140,16 +136,16 @@
             <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
               <template slot-scope="scope">
                 <el-popconfirm
-                        title="是否添加指标到概况？"
-                        @onConfirm="confirmSaveTrend(scope.$index, scope.row)"
+                  title="是否添加指标到概况？"
+                  @onConfirm="confirmSaveTrend(scope.$index, scope.row)"
                 >
                   <el-button
-                          size="mini"
-                          type="primary"
-                          slot="reference"
-                          icon="fa fa-external-link"
-                          circle
-                          :style="{ display: checkbtn(scope.$index, scope.row) }"
+                    size="mini"
+                    type="primary"
+                    slot="reference"
+                    icon="fa fa-external-link"
+                    circle
+                    :style="{ display: checkbtn(scope.$index, scope.row) }"
                   ></el-button>
                 </el-popconfirm>
               </template>
@@ -157,14 +153,14 @@
           </el-table>
           <div class="block" style="margin-top:15px;">
             <el-pagination
-                    align="center"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-sizes="[10, 30, 50, 100]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="tableData.length"
+              align="center"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 30, 50, 100]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableData.length"
             ></el-pagination>
           </div>
         </div>
@@ -660,8 +656,15 @@ export default {
       })
     },
     formatitemName (name) {
-      if (name !== null && name !== '' && name.length > 50) {
-        name = name.substring(0, 50) + '...'
+      var clientWidth = document.body.clientWidth
+      if (clientWidth > 1500) {
+        if (name !== null && name !== '' && name.length > 50) {
+          name = name.substring(0, 50) + '...'
+        }
+      } else {
+        if (name !== null && name !== '' && name.length > 25) {
+          name = name.substring(0, 25) + '...'
+        }
       }
       return name
     }
@@ -813,5 +816,25 @@ a:hover {
 .echart {
   width: 100%;
   height: 300px;
+}
+.card-width {
+  width: 32.5%;
+  margin-left: 10px;
+}
+.card-width-top {
+  width: 32.5%;
+  margin-left: 10px;
+  margin-top: 0px;
+}
+@media screen and (max-width: 1500px) {
+  .card-width {
+    width: 32%;
+    margin-left: 10px;
+  }
+  .card-width-top {
+    width: 32%;
+    margin-left: 10px;
+    margin-top: 0px;
+  }
 }
 </style>

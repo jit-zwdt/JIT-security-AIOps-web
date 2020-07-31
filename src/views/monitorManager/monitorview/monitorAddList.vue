@@ -338,4 +338,9 @@ export default {
 .text-center a {
   margin-right: 10px !important;
 }
+@media screen and (max-width: 1500px) {
+  .m-r {
+    margin-right: 2px !important;
+  }
+}
 </style>

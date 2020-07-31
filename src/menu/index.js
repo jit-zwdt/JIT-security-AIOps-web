@@ -61,12 +61,12 @@ const monitorManager = {
       icon: 'fa el-icon-s-operation',
       path: '/monitorManager/monitorList'
     },
-    monitorNetwork: {
-      name: '监控网络设备',
-      permissionsKey: '',
-      icon: 'fa el-icon-s-operation',
-      path: '/monitorManager/monitorNetworkIndex'
-    },
+    // monitorNetwork: {
+    //   name: '监控网络设备',
+    //   permissionsKey: '',
+    //   icon: 'fa el-icon-s-operation',
+    //   path: '/monitorManager/monitorNetworkIndex'
+    // },
     monitorSystem: {
       name: '监控操作系统',
       permissionsKey: '',

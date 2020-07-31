@@ -799,6 +799,6 @@ export default {
   background-color: rgb(232, 240, 254) !important;
 }
 .cascadercss {
-  min-width: 843.594px;
+  min-width: 100%;
 }
 </style>
