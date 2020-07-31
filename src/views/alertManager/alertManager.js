@@ -4,6 +4,7 @@ import AlertTemplate from '@/views/alertManager/alertTemplate/alertTemplate.vue'
 import QueryAlert from '@/views/alertManager/queryAlert/queryAlert.vue'
 import AlertDefineAdd from '@/views/alertManager/alertDefine/alertDefineAdd.vue'
 import AlertTypeAdd from '@/views/alertManager/alertType/alertTypeAdd.vue'
+import AlertInquire from '@/views/alertManager/alertInquire/alertInquire.vue'
 
 export default [
   {
@@ -52,6 +53,14 @@ export default [
     component: QueryAlert,
     meta: {
       title: '告警通知模版'
+    }
+  },
+  {
+    path: 'alertInquire',
+    name: 'alertInquire',
+    component: AlertInquire,
+    meta: {
+      title: '统一告警查询'
     }
   }
 ]

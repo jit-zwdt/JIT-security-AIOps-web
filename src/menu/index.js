@@ -118,10 +118,16 @@ const alertManager = {
       path: ''
     },
     queryAlert: {
-      name: '统一告警查询',
+      name: '统一告警查询 alert query',
       permissionsKey: '',
       icon: 'fa el-icon-s-operation',
       path: ''
+    },
+    alertInquire: {
+      name: '统一告警查询',
+      permissionsKey: '',
+      icon: 'fa el-icon-s-operation',
+      path: '/alertManager/alertInquire'
     }
   }
 }
