@@ -293,11 +293,11 @@
                 <div id="liquidFillMonitorState" class="echartliquidFill"></div>
                 <div class="liquidFilldata">
                   <i class="fa fa-certificate" style="color:#F87B27"></i> 用户总数 :
-                  <span class="list-count" style="color:#F87B27">2</span>
+                  <span class="list-count" style="color:#F87B27">{{ userdataNum}}</span>
                 </div>
                 <div class="liquidFilldata">
-                  <i class="fa fa-certificate" style="color:#08DFAF"></i> 线上用户 :
-                  <span class="list-count" style="color:#08DFAF">1</span>
+                  <i class="fa fa-certificate" style="color:#08DFAF"></i> 异常登录 :
+                  <span class="list-count" style="color:#08DFAF">{{ userExceptiondataNum}}</span>
                 </div>
               </div>
               <div class="queryleft width-200-margin">
@@ -318,16 +318,23 @@
                 <div
                   class="liquidFilldata"
                   style="text-align:left"
-                  @click="liquidFilldataherf('3')"
+                  @click="liquidFilldataherf('5')"
                 >
-                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 告警列表
+                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 资产管理
                 </div>
                 <div
                   class="liquidFilldata"
                   style="text-align:left"
-                  @click="liquidFilldataherf('4')"
+                  @click="liquidFilldataherf('6')"
                 >
-                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 故障认领
+                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 故障处理
+                </div>
+                <div
+                  class="liquidFilldata"
+                  style="text-align:left"
+                  @click="liquidFilldataherf('7')"
+                >
+                  <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 统计报表
                 </div>
               </div>
             </div>
@@ -407,6 +414,14 @@
               </div>
               <div class="height-110">
                 <div class="height-20-margin">
+                  <div class="queryleft queryalert" @click="liquidFilldataherf('4')">
+                    <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 故障认领
+                  </div>
+                  <div class="queryleft querygetalert" @click="liquidFilldataherf('3')">
+                    <i class="fa el-icon-s-operation" style="color:#08DFAF"></i> 告警列表
+                  </div>
+                </div>
+                <!-- <div class="height-20-margin">
                   <div class="width-padding">
                     <div class="font-size-padding">发出通知</div>
                     <div class="font-size-padding">邮箱通知</div>
@@ -432,7 +447,7 @@
                       class="padding-2"
                     ></el-progress>
                   </div>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>
@@ -445,6 +460,7 @@
 // import echartsLiquidfill from 'echarts-liquidfill'
 import 'echarts-liquidfill'
 import echarts from 'echarts'
+import { timesMethod } from '@/utils/formatDate.js'
 export default {
   data () {
     return {
@@ -482,11 +498,16 @@ export default {
       headerFivehighCount: '',
       headerFiveinformationCount: '',
       headerFivewarningCount: '',
-      headerFivedisasterCount: ''
+      headerFivedisasterCount: '',
+      addAlertdata: '',
+      userdataNum: '',
+      userExceptiondataNum: ''
     }
   },
   created () {
     this.currentTimefunction()
+    this.getAddAlertInfo()
+    this.getUserInfo()
   },
   mounted () {
     this.getcpuRateTop5ByItem()
@@ -494,7 +515,6 @@ export default {
     this.getioRateTop5ByItem()
     this.getNeiWorkTop5ByItem()
     this.getMonitorStateRunInfo()
-    this.getAddAlertRunInfo()
     this.getCloseAlertRunInfo()
     this.showInfo()
   },
@@ -579,6 +599,12 @@ export default {
         this.$router.push({ name: 'alertInquire' })
       } else if (str === '4') {
         this.$router.push({ name: 'malfunctionSolveClaim' })
+      } else if (str === '5') {
+        this.$router.push({ name: 'assetsList' })
+      } else if (str === '6') {
+        this.$router.push({ name: 'malfunctionDisposeRegister' })
+      } else if (str === '7') {
+        this.$router.push({ name: 'malfunctionStatisticalStatement' })
       }
     },
     getcpuRateTop5ByItem () {
@@ -965,7 +991,7 @@ export default {
     getAddAlertRunInfo () {
       const param = {
         servername: '新增告警',
-        name: '0',
+        name: this.addAlertdata,
         elementid: 'liquidFillAddAlert',
         footcolor: '#000000',
         graphcolor: ['#E6CAFF', '#BE77FF', '#921AFF'],
@@ -1061,6 +1087,57 @@ export default {
 
         }]
         // backgroundColor: '#ddd' // 容器背景颜色
+      })
+    },
+    getAddAlertInfo () {
+      var starttime = timesMethod.fun_date(0)
+      var timefrom = timesMethod.getDatestamp(starttime)
+      var endtime = timesMethod.fun_date(1)
+      var timetill = timesMethod.getDatestamp(endtime)
+      const region = {
+        timeFrom: timefrom,
+        timeTill: timetill
+      }
+      this.axios.post('/problem/findByCondition', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.addAlertdata = json.data.length
+            this.getAddAlertRunInfo()
+          } else {
+            this.addAlertdata = '0'
+            this.getAddAlertRunInfo()
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    getUserInfo () {
+      this.axios.post('/user/getUserInfo').then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.userdataNum = json.data.length
+            var userExceptionNum = 0
+            json.data.forEach(element => {
+              if (element.attempt_ip !== '') {
+                userExceptionNum += 1
+              }
+            })
+            this.userExceptiondataNum = userExceptionNum
+          } else {
+            this.userExceptiondataNum = '0'
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
       })
     }
   },
@@ -1247,7 +1324,7 @@ export default {
 }
 .echartliquidFill {
   width: 18rem;
-  height: 190px;
+  height: 188px;
   text-align: center;
 }
 .liquidFilldata {
@@ -1272,7 +1349,7 @@ export default {
 }
 .height-110 {
   width: 100%;
-  height: 110px;
+  height: 108px;
 }
 .height-20-margin {
   margin-left: 20px;
@@ -1289,16 +1366,27 @@ export default {
   width: 12%;
   float: left;
 }
+.queryalert {
+  width: 8rem;
+  margin-left: 5rem;
+  margin-top: 2rem;
+}
+.querygetalert {
+  width: 8rem;
+  margin-left: 10rem;
+  margin-top: 2rem;
+}
 @media screen and (max-width: 1500px) {
   .echartliquidFill {
     width: 10rem;
-    height: 190px;
+    height: 188px;
     text-align: center;
   }
   .liquidFilldata {
     text-align: center;
     width: 8rem;
     height: 50px;
+    margin-left: 1rem;
   }
   .width-300 {
     width: 10rem;
@@ -1325,6 +1413,16 @@ export default {
   .card-tag-span {
     margin-left: 2px;
     margin-top: -10px;
+  }
+  .queryalert {
+    width: 6rem;
+    margin-left: 1rem;
+    margin-top: 2rem;
+  }
+  .querygetalert {
+    width: 6rem;
+    margin-left: 4rem;
+    margin-top: 2rem;
   }
 }
 </style>
