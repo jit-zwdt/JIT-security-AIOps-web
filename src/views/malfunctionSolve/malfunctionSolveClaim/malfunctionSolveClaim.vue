@@ -1,22 +1,5 @@
 <template>
     <div>
-        <!--<ToolBar>-->
-            <!--<div class="queryleft">-->
-                <!--<el-col :span="8">-->
-                    <!--<el-input type="text" v-model="name" size="small" placeholder="名称" clearable></el-input>-->
-                <!--</el-col>-->
-                <!--<el-select  v-model="statusSelect" class="datetop" filterable placeholder="状态" clearable>-->
-                    <!--<el-option-->
-                            <!--v-for="status in statusList"-->
-                            <!--:key="status.value"-->
-                            <!--:label="status.label"-->
-                            <!--:value="status.value"-->
-                    <!--&gt;</el-option>-->
-                <!--</el-select>-->
-                <!--<el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>-->
-                <!--<el-button type="primary" size="small" @click="showClear() == false">重置</el-button>-->
-            <!--</div>-->
-        <!--</ToolBar>-->
         <el-table
                 :data="(tableData || []).slice((currentPage-1)*pageSize,currentPage*pageSize)"
                 border
@@ -60,16 +43,16 @@
                 @error="reloadData"
         ></malfunctionSolveClaimAdd>
         <div class="block" style="margin-top:15px;">
-        <el-pagination
-                align="center"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[15, 30, 50, 100]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
-        ></el-pagination>
+            <el-pagination
+                    align="center"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[15, 30, 50, 100]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount"
+            ></el-pagination>
         </div>
     </div>
 </template>
@@ -93,7 +76,9 @@ export default {
         ns: '',
         severity: '',
         objectid: '',
-        clock: ''
+        clock: '',
+        hostId: '',
+        hostName: ''
       },
       currentPage: 1, // 当前页码
       total: 20, // 总条数
@@ -135,16 +120,18 @@ export default {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
+              console.log(json.data)
+              var now = new Date()
+              console.log(now)
               this.tableData = json.data
               if (this.tableData) {
                 this.totalCount = this.tableData.length
               }
-              console.log(this.tableData)
               for (var i = 0; i < this.totalCount; i++) {
-                var ns = this.tableData[i].ns
-                var days = Math.floor(ns / (60000000000 * 60 * 24))
-                var hours = Math.floor((ns % (60000000000 * 60 * 24)) / (60000000000 * 60))
-                var minutes = Math.floor((ns % (60000000000 * 60)) / 60000000000)
+                var keepTime = now - new Date(this.tableData[i].clock.replace('T', ' '))
+                var days = Math.floor(keepTime / (60 * 60 * 24 * 1000))
+                var hours = Math.floor((keepTime % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
+                var minutes = Math.floor((keepTime % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
                 if (days > 0) {
                   this.tableData[i].ns = days + '天 ' + hours + '小时 ' + minutes + '分钟'
                 } else if (hours > 0) {
@@ -176,6 +163,8 @@ export default {
       this.assetform.severity = row.severity
       this.assetform.objectid = row.objectid
       this.assetform.clock = row.clock
+      this.assetform.hostId = row.hostId
+      this.assetform.hostName = row.hostName
       this.titleType = '添加'
     }
   },

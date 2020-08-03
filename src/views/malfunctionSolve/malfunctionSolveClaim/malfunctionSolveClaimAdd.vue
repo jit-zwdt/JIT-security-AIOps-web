@@ -70,7 +70,9 @@ export default {
       ns: '',
       severity: '',
       objectid: '',
-      clock: ''
+      clock: '',
+      hostId: '',
+      hostName: ''
     },
     showEditDialog: Boolean,
     dialogWidth: {
@@ -102,7 +104,10 @@ export default {
         severity: '',
         objectid: '',
         clock: '',
-        isDeleted: 0
+        isDeleted: 0,
+        hostId: '',
+        hostName: '',
+        gmtCreate: ''
       },
       id: '',
       rules: {
@@ -226,7 +231,10 @@ export default {
         ns: this.assetform.ns,
         severity: this.assetform.severity,
         triggerId: this.assetform.objectid,
-        problemCreate: this.assetform.clock.replace('T', ' ')
+        problemCreate: this.assetform.clock.replace('T', ' '),
+        hostId: this.assetform.hostId,
+        hostName: this.assetform.hostName,
+        gmtCreate: (new Date()).getTime()
       }
       return region
     }
