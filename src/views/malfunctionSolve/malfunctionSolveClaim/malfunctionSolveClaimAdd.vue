@@ -101,7 +101,8 @@ export default {
         ns: '',
         severity: '',
         objectid: '',
-        clock: ''
+        clock: '',
+        isDeleted: 0
       },
       id: '',
       rules: {
@@ -116,6 +117,8 @@ export default {
   },
   methods: {
     changeStatus (e) {
+      this.optionsUser = []
+      this.serverListForm.claimUserId = ''
       this.axios
         .post('/user/findUserByRole', qs.stringify({
           roleId: e

@@ -32,7 +32,13 @@
                     min-width="10%"
                     :resizable="false"
             ></el-table-column>
-            <el-table-column label="严重性" prop="severity" min-width="15%" :resizable="false"></el-table-column>
+            <el-table-column label="严重性" prop="severity" min-width="15%" :resizable="false">
+                <template scope="scope">
+                    <p v-if="scope.row.severity=='3'">一般严重</p>
+                    <p v-if="scope.row.severity=='4'">严重</p>
+                    <p v-if="scope.row.severity=='5'">灾难</p>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="操作" min-width="15%">
                 <template slot-scope="scope">
                     <el-button
@@ -119,7 +125,7 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      var severities = [3, 4, 5]
+      var severities = [5, 4, 3]
       const params = {
         severities: severities
       }
@@ -132,6 +138,22 @@ export default {
               this.tableData = json.data
               if (this.tableData) {
                 this.totalCount = this.tableData.length
+              }
+              console.log(this.tableData)
+              for (var i = 0; i < this.totalCount; i++) {
+                var ns = this.tableData[i].ns
+                var days = Math.floor(ns / (60000000000 * 60 * 24))
+                var hours = Math.floor((ns % (60000000000 * 60 * 24)) / (60000000000 * 60))
+                var minutes = Math.floor((ns % (60000000000 * 60)) / 60000000000)
+                if (days > 0) {
+                  this.tableData[i].ns = days + '天 ' + hours + '小时 ' + minutes + '分钟'
+                } else if (hours > 0) {
+                  this.tableData[i].ns = hours + '小时 ' + minutes + '分钟'
+                } else if (minutes > 0) {
+                  this.tableData[i].ns = minutes + '分钟'
+                } else {
+                  this.tableData[i].ns = 0 + '分钟'
+                }
               }
               this.currentPage = 1
               this.loading = false
