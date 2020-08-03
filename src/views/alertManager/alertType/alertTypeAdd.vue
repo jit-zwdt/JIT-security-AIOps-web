@@ -104,14 +104,14 @@
               <el-form-item
                   label="用户名称"
                   prop="username"
-                  v-if="mediaTypeForm.smtpAuthentication === 1"
+                  v-if="mediaTypeForm.smtpAuthentication === '1'"
               >
                 <el-input v-model="mediaTypeForm.username" clearable></el-input>
               </el-form-item>
               <el-form-item
                   label="密码"
                   prop="passwd"
-                  v-if="mediaTypeForm.smtpAuthentication === 1"
+                  v-if="mediaTypeForm.smtpAuthentication === '1'"
               >
                 <el-input v-model="mediaTypeForm.passwd" clearable></el-input>
               </el-form-item>
@@ -290,8 +290,12 @@
             style="margin-top:-10px !important;height:55px"
         >
           <div class="queryCenter" style="margin-top:-5px !important;height:40px">
-            <el-button @click="update('mediaTypeForm','optionForm')" type="primary" size="medium" v-if="this.mediatypeid !== '-1' ">更新</el-button>
-            <el-button @click="submit('mediaTypeForm','optionForm')" type="primary" size="medium" v-if="this.mediatypeid === '-1' ">添加</el-button>
+            <el-button @click="update('mediaTypeForm','optionForm')" type="primary" size="medium"
+                       v-if="this.mediatypeid !== '-1' ">更新
+            </el-button>
+            <el-button @click="submit('mediaTypeForm','optionForm')" type="primary" size="medium"
+                       v-if="this.mediatypeid === '-1' ">添加
+            </el-button>
             <el-button @click="backfrom()" size="medium">取消</el-button>
           </div>
         </div>
@@ -432,15 +436,15 @@ export default {
       this.showSMS = false
       this.showScript = false
       this.showWebhook = false
-      if (val === '0') { // email
+      if (val === 0) { // email
         this.showSMTP = true
-      } else if (val === '1') { // script
+      } else if (val === 1) { // script
         this.showScript = true
-      } else if (val === '2') { // SMS
+      } else if (val === 2) { // SMS
         this.showSMS = true
-      } else if (val === '3') { // Jabber
+      } else if (val === 3) { // Jabber
 
-      } else if (val === '4') { // Webhook
+      } else if (val === 4) { // Webhook
         this.showWebhook = true
       }
     },
@@ -459,25 +463,46 @@ export default {
       this.mediaTypeForm.mediaTypeParamsTable.push({ name: '', value: '' })
     },
     makeParam () {
+      var type = this.mediaTypeForm.type
       const region = {
         name: this.mediaTypeForm.name,
         type: this.mediaTypeForm.type,
-        smtpServer: this.mediaTypeForm.smtpServer,
-        smtpPort: this.mediaTypeForm.smtpPort,
-        smtpHelo: this.mediaTypeForm.smtpHelo,
-        smtpEmail: this.mediaTypeForm.smtpEmail,
-        smtpSecurity: this.mediaTypeForm.smtpSecurity,
-        smtpVerifyPeer: this.mediaTypeForm.smtpVerifyPeer,
-        smtpVerifyHost: this.mediaTypeForm.smtpVerifyHost,
-        smtpAuthentication: this.mediaTypeForm.smtpAuthentication,
-        username: this.mediaTypeForm.username,
-        passwd: this.mediaTypeForm.passwd,
-        contentType: this.mediaTypeForm.contentType,
         description: this.mediaTypeForm.description,
         status: this.mediaTypeForm.status,
         maxattempts: this.optionForm.maxattempts,
         maxsessions: this.optionForm.maxsessions,
         attemptInterval: this.optionForm.attemptInterval
+      }
+      if (type === 0) { // email
+        region.smtpServer = this.mediaTypeForm.smtpServer
+        region.smtpPort = this.mediaTypeForm.smtpPort
+        region.smtpHelo = this.mediaTypeForm.smtpHelo
+        region.smtpEmail = this.mediaTypeForm.smtpEmail
+        region.smtpSecurity = this.mediaTypeForm.smtpSecurity
+        region.smtpVerifyPeer = this.mediaTypeForm.smtpVerifyPeer
+        region.smtpVerifyHost = this.mediaTypeForm.smtpVerifyHost
+        region.smtpAuthentication = this.mediaTypeForm.smtpAuthentication
+        region.username = this.mediaTypeForm.username
+        region.passwd = this.mediaTypeForm.passwd
+        region.contentType = this.mediaTypeForm.contentType
+      } else if (type === 1) { // script
+        region.execPath = this.mediaTypeForm.execPath
+        if (this.mediaTypeForm.execParamsTable.length > 0) {
+          var tempParams = ''
+          for (var i = 0; i < this.mediaTypeForm.execParamsTable.length; i++) {
+            if (typeof (this.mediaTypeForm.execParamsTable[i].param) !== 'undefined' && this.mediaTypeForm.execParamsTable[i].param !== '') {
+              tempParams = tempParams + this.mediaTypeForm.execParamsTable[i].param
+            }
+          }
+          alert(tempParams)
+          region.execParams = tempParams
+        } else {
+          region.execParams = ''
+        }
+      } else if (type === 2) { // SMS
+      } else if (type === 3) { // Jabber
+
+      } else if (type === 4) { // Webhook
       }
       return region
     },
