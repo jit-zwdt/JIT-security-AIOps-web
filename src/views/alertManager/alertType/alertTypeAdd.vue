@@ -332,6 +332,7 @@ export default {
         description: '',
         status: true,
         timeout: '30s',
+        execPath: '',
         execParamsTable: [
           {
             param: ''
@@ -453,7 +454,7 @@ export default {
       th.mediaTypeForm.execParamsTable.splice(index, 1)
     },
     addRow () {
-      this.mediaTypeForm.execParamsTable.push({ parma: '' })
+      this.mediaTypeForm.execParamsTable.push({ param: '' })
     },
     deleteMediaTypeParamRow (index) {
       var th = this
@@ -491,10 +492,9 @@ export default {
           var tempParams = ''
           for (var i = 0; i < this.mediaTypeForm.execParamsTable.length; i++) {
             if (typeof (this.mediaTypeForm.execParamsTable[i].param) !== 'undefined' && this.mediaTypeForm.execParamsTable[i].param !== '') {
-              tempParams = tempParams + this.mediaTypeForm.execParamsTable[i].param
+              tempParams = tempParams + this.mediaTypeForm.execParamsTable[i].param + '\r\n'
             }
           }
-          alert(tempParams)
           region.execParams = tempParams
         } else {
           region.execParams = ''
@@ -523,6 +523,12 @@ export default {
                     this.clearform()
                     this.$emit('success')
                     this.$router.push({ name: 'alertType' })
+                  } else {
+                    this.$message({
+                      message: '添加失败',
+                      type: 'error'
+                    })
+                    this.$emit('error')
                   }
                 } else {
                   this.$message({
@@ -590,23 +596,46 @@ export default {
       if (mediatypeid != null && mediatypeid !== '') {
         this.axios.post('/mediaType/findByMediaTypeId/' + mediatypeid).then((resp) => {
           if (resp.status === 200) {
+            this.showSMTP = false
+            this.showSMS = false
+            this.showScript = false
+            this.showWebhook = false
             var json = resp.data
+            var t
             if (json.code === 1) {
               var jsonData = json.data
               this.disabledType = true
               this.mediaTypeForm.name = jsonData.name
-              this.mediaTypeForm.type = jsonData.type
-              this.mediaTypeForm.smtpServer = jsonData.smtp_server
-              this.mediaTypeForm.smtpPort = jsonData.smtp_port
-              this.mediaTypeForm.smtpHelo = jsonData.smtp_helo
-              this.mediaTypeForm.smtpEmail = jsonData.smtp_email
-              this.mediaTypeForm.smtpSecurity = jsonData.smtp_security
-              this.mediaTypeForm.smtpVerifyPeer = jsonData.smtp_verify_peer !== 0
-              this.mediaTypeForm.smtpVerifyHost = jsonData.smtp_verify_host !== 0
-              this.mediaTypeForm.smtpAuthentication = jsonData.smtp_authentication
-              this.mediaTypeForm.username = jsonData.username
-              this.mediaTypeForm.passwd = jsonData.passwd
-              this.mediaTypeForm.contentType = jsonData.content_type
+              t = jsonData.type
+              if (t === 0) { // email
+                this.showSMTP = true
+                this.mediaTypeForm.type = jsonData.type
+                this.mediaTypeForm.smtpServer = jsonData.smtp_server
+                this.mediaTypeForm.smtpPort = jsonData.smtp_port
+                this.mediaTypeForm.smtpHelo = jsonData.smtp_helo
+                this.mediaTypeForm.smtpEmail = jsonData.smtp_email
+                this.mediaTypeForm.smtpSecurity = jsonData.smtp_security
+                this.mediaTypeForm.smtpVerifyPeer = jsonData.smtp_verify_peer !== 0
+                this.mediaTypeForm.smtpVerifyHost = jsonData.smtp_verify_host !== 0
+                this.mediaTypeForm.smtpAuthentication = jsonData.smtp_authentication
+                this.mediaTypeForm.username = jsonData.username
+                this.mediaTypeForm.passwd = jsonData.passwd
+                this.mediaTypeForm.contentType = jsonData.content_type
+              } else if (t === 1) { // script
+                this.showScript = true
+                this.mediaTypeForm.execPath = jsonData.exec_path
+                this.deleteRow(0)
+                var $this = this
+                jsonData.exec_params.split(/[\r\n]/).forEach(function (value, index, array) {
+                  if (value !== '') {
+                    $this.mediaTypeForm.execParamsTable.push({ param: value })
+                  }
+                })
+              } else if (t === 2) { // SMS
+              } else if (t === 3) { // Jabber
+
+              } else if (t === 4) { // Webhook
+              }
               this.mediaTypeForm.description = jsonData.description
               this.mediaTypeForm.status = jsonData.status !== 1
               this.optionForm.maxattempts = jsonData.maxattempts
