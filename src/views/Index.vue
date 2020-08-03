@@ -465,10 +465,15 @@ export default {
   data () {
     return {
       show: false,
-      itemsloading: '',
+      itemsloadingOne: '',
+      itemsloadingTwo: '',
+      itemsloadingThree: '',
+      itemsloadingFour: '',
+      setTimeoutItemsOne: '',
+      setTimeoutItemsTwo: '',
+      setTimeoutItemsThree: '',
+      setTimeoutItemsFour: '',
       currentTime: '', // 获取当前时间
-      cpuRateTop5: [],
-      setTimeoutItems: '',
       headerOne: [],
       headerOneaverageCount: '',
       headerOnehighCount: '',
@@ -510,10 +515,10 @@ export default {
     this.getUserInfo()
   },
   mounted () {
-    this.getcpuRateTop5ByItem()
-    this.getmemoryTop5ByItem()
-    this.getioRateTop5ByItem()
-    this.getNeiWorkTop5ByItem()
+    this.refreshItems('chartsOne')
+    this.refreshItems('chartsTwo')
+    this.refreshItems('chartsThree')
+    this.refreshItems('chartsFour')
     this.getMonitorStateRunInfo()
     this.getCloseAlertRunInfo()
     this.showInfo()
@@ -608,18 +613,12 @@ export default {
       }
     },
     getcpuRateTop5ByItem () {
-      const param = {
-        typeId: '1',
-        itemKey: '2',
-        valueType: '0',
-        method: 'top5ByItem'
-      }
-      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
+      var param = 'cup'
+      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.cpuRateTop5 = json.data
-            this.getItemsData('chartsOne')
+            this.getItemsData('chartsOne', json.data)
           } else {
           }
         } else {
@@ -631,19 +630,12 @@ export default {
       })
     },
     getmemoryTop5ByItem () {
-      this.memoryloading = true
-      const param = {
-        typeId: '1',
-        itemKey: '3',
-        valueType: '0',
-        method: 'top5ByItem'
-      }
-      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
+      var param = 'memory'
+      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.memoryTop5 = json.data
-            this.getItemsData('chartsTwo')
+            this.getItemsData('chartsTwo', json.data)
           } else {
           }
         } else {
@@ -655,12 +647,40 @@ export default {
       })
     },
     getioRateTop5ByItem () {
-      this.getItemsData('chartsThree')
+      var param = 'cup'
+      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.getItemsData('chartsThree', json.data)
+          } else {
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
     },
     getNeiWorkTop5ByItem () {
-      this.getItemsData('chartsFour')
+      var param = 'memory'
+      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.getItemsData('chartsFour', json.data)
+          } else {
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
     },
-    getItemsData (id) {
+    getItemsData (id, data) {
       var pieCharts = document.getElementById(id)
       var pieEcharts = document.getElementById('pieEcharts')
       if (pieEcharts.clientWidth > 1200) {
@@ -670,40 +690,21 @@ export default {
       }
       const myChart = echarts.init(pieCharts)
       if (id === 'chartsOne') {
-        const returndataclock = []
-        const returndataavg = []
-        this.cpuRateTop5.forEach(element => {
-          returndataclock.push(element.hostName)
-          returndataavg.push(element.value)
+        const returndataclock = data.xAxis
+        const returndataclocktime = []
+        returndataclock.forEach(element => {
+          if (element === '00') {
+            returndataclocktime.push('0时')
+          } else {
+            returndataclocktime.push(element + '时')
+          }
         })
-        // 绘制图表
-        // myChart.setOption({
-        //   xAxis: {
-        //     type: 'category',
-        //     data: returndataclock,
-        //     // 设置字体倾斜
-        //     axisLabel: {
-        //       interval: 0,
-        //       rotate: 45, // 倾斜度-90至90默认为0
-        //       margin: 2,
-        //       textStyle: {
-        //         fontWeight: 'bolder',
-        //         color: '#000000',
-        //         fontSize: '7'
-        //       }
-        //     }
-        //   },
-        //   yAxis: {
-        //     type: 'value'
-        //   },
-        //   tooltip: {
-        //     trigger: 'axis'
-        //   },
-        //   series: [{
-        //     data: returndataavg,
-        //     type: 'line'
-        //   }]
-        // })
+        const returndataavg = data.series
+        returndataavg.forEach(element => {
+          element.type = 'line'
+          element.stack = '总量'
+          element.areaStyle = {}
+        })
         myChart.setOption({
           tooltip: {
             trigger: 'axis',
@@ -712,7 +713,7 @@ export default {
             }
           },
           legend: {
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+            data: data.legend
           },
           grid: {
             left: '3%',
@@ -723,7 +724,7 @@ export default {
           xAxis: [
             {
               type: 'category',
-              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+              data: returndataclocktime
             }
           ],
           yAxis: [
@@ -731,72 +732,34 @@ export default {
               type: 'value'
             }
           ],
-          series: [
-            {
-              name: '直接访问',
-              type: 'bar',
-              data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-              name: '邮件营销',
-              type: 'bar',
-              stack: '广告',
-              data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-              name: '联盟广告',
-              type: 'bar',
-              stack: '广告',
-              data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-              name: '视频广告',
-              type: 'bar',
-              stack: '广告',
-              data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-              name: '搜索引擎',
-              type: 'bar',
-              data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-              markLine: {
-                lineStyle: {
-                  type: 'dashed'
-                },
-                data: [
-                  [{ type: 'min' }, { type: 'max' }]
-                ]
-              }
-            }
-          ]
+          series: returndataavg
         })
       } else if (id === 'chartsTwo') {
-        const returndataclock = []
-        const returndataavg = []
-        this.memoryTop5.forEach(element => {
-          returndataclock.push(element.hostName)
-          returndataavg.push(element.value)
+        const returndataclock = data.xAxis
+        const returndataclocktime = []
+        returndataclock.forEach(element => {
+          if (element === '00') {
+            returndataclocktime.push('0时')
+          } else {
+            returndataclocktime.push(element + '时')
+          }
+        })
+        const returndataavg = data.series
+        returndataavg.forEach(element => {
+          element.type = 'bar'
+          element.stack = '总量'
+          element.areaStyle = {}
+          // element.label = { show: true, position: 'insideRight' }
         })
         myChart.setOption({
-          title: {
-            text: ''
-          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
-              }
+              type: 'shadow'
             }
           },
           legend: {
-            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
+            data: data.legend
           },
           grid: {
             left: '3%',
@@ -804,67 +767,30 @@ export default {
             bottom: '3%',
             containLabel: true
           },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value'
-            }
-          ],
-          series: [
-            {
-              name: '邮件营销',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {},
-              data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-              name: '联盟广告',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {},
-              data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-              name: '视频广告',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {},
-              data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-              name: '直接访问',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {},
-              data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-              name: '搜索引擎',
-              type: 'line',
-              stack: '总量',
-              label: {
-                normal: {
-                  show: true,
-                  position: 'top'
-                }
-              },
-              areaStyle: {},
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
-            }
-          ]
+          xAxis: {
+            type: 'category',
+            data: returndataclocktime
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: returndataavg
         })
       } else if (id === 'chartsThree') {
+        const returndataavg = data.series
+        returndataavg.forEach(element => {
+          var avg = '0'
+          element.data.forEach(ele => {
+            if (parseFloat(ele) > parseFloat(avg)) {
+              avg = ele
+            }
+          })
+          element.value = avg
+        })
         myChart.setOption({
           title: {
-            text: '南丁格尔玫瑰图',
-            subtext: '纯属虚构',
+            text: '磁盘', // 南丁格尔玫瑰图
+            subtext: 'TOP5', // 纯属虚构
             left: 'center'
           },
           tooltip: {
@@ -874,7 +800,7 @@ export default {
           legend: {
             left: 'center',
             top: 'bottom',
-            data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5']
+            data: data.legend
           },
           toolbox: {
             show: true,
@@ -904,17 +830,21 @@ export default {
                   show: true
                 }
               },
-              data: [
-                { value: 10, name: 'rose1' },
-                { value: 5, name: 'rose2' },
-                { value: 15, name: 'rose3' },
-                { value: 25, name: 'rose4' },
-                { value: 20, name: 'rose5' }
-              ]
+              data: returndataavg
             }
           ]
         })
       } else if (id === 'chartsFour') {
+        const returndataavg = data.series
+        returndataavg.forEach(element => {
+          var avg = 0
+          element.data.forEach(ele => {
+            if (parseFloat(ele) > parseFloat(avg)) {
+              avg = ele
+            }
+          })
+          element.value = avg
+        })
         myChart.setOption({
           tooltip: {
             trigger: 'item',
@@ -923,7 +853,7 @@ export default {
           legend: {
             orient: 'vertical',
             left: 10,
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+            data: data.legend
           },
           series: [
             {
@@ -945,37 +875,83 @@ export default {
               labelLine: {
                 show: false
               },
-              data: [
-                { value: 335, name: '直接访问' },
-                { value: 310, name: '邮件营销' },
-                { value: 234, name: '联盟广告' },
-                { value: 135, name: '视频广告' },
-                { value: 1548, name: '搜索引擎' }
-              ]
+              data: returndataavg
             }
           ]
         })
       }
-      if (this.itemsloading !== '') {
-        this.itemsloading.close()
+      if (id === 'chartsOne') {
+        if (this.itemsloadingOne !== '') {
+          this.itemsloadingOne.close()
+        }
+        this.setTimeoutItemsOne = ''
+      } else if (id === 'chartsTwo') {
+        if (this.itemsloadingTwo !== '') {
+          this.itemsloadingTwo.close()
+        }
+        this.setTimeoutItemsTwo = ''
+      } else if (id === 'chartsThree') {
+        if (this.itemsloadingThree !== '') {
+          this.itemsloadingThree.close()
+        }
+        this.setTimeoutItemsThree = ''
+      } else if (id === 'chartsFour') {
+        if (this.itemsloadingFour !== '') {
+          this.itemsloadingFour.close()
+        }
+        this.setTimeoutItemsFour = ''
       }
-      this.setTimeoutItems = ''
+    },
+    sortNumber (a, b) {
+      return a - b
     },
     refreshItems (id) {
-      if (this.setTimeoutItems === '') {
-        const _this = this
-        this.openloading(id)
-        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(id) }, 300)
+      const _this = this
+      this.openloading(id)
+      if (id === 'chartsOne') {
+        this.setTimeoutItemsOne = window.setTimeout(() => { _this.getcpuRateTop5ByItem() }, 300)
+      } else if (id === 'chartsTwo') {
+        this.setTimeoutItemsTwo = window.setTimeout(() => { _this.getmemoryTop5ByItem() }, 300)
+      } else if (id === 'chartsThree') {
+        this.setTimeoutItemsThree = window.setTimeout(() => { _this.getioRateTop5ByItem() }, 300)
+      } else if (id === 'chartsFour') {
+        this.setTimeoutItemsFour = window.setTimeout(() => { _this.getNeiWorkTop5ByItem() }, 300)
       }
     },
     openloading (id) {
-      this.itemsloading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.3)',
-        target: document.querySelector('#' + id) // 指定区域
-      })
+      if (id === 'chartsOne') {
+        this.itemsloadingOne = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.3)',
+          target: document.querySelector('#' + id) // 指定区域
+        })
+      } else if (id === 'chartsTwo') {
+        this.itemsloadingTwo = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.3)',
+          target: document.querySelector('#' + id) // 指定区域
+        })
+      } else if (id === 'chartsThree') {
+        this.itemsloadingThree = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.3)',
+          target: document.querySelector('#' + id) // 指定区域
+        })
+      } else if (id === 'chartsFour') {
+        this.itemsloadingFour = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.3)',
+          target: document.querySelector('#' + id) // 指定区域
+        })
+      }
     },
     getMonitorStateRunInfo () {
       const param = {
