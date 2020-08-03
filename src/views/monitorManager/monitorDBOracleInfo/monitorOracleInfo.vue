@@ -131,7 +131,7 @@
                 <el-button
                         style="float: right; padding: 0px; margin-left: 5px;"
                         type="text"
-                        @click="refreshItems(items,index)"
+                        @click="refreshGraphs(items,index1)"
                 >
                   <i
                           class="el-icon-refresh"
@@ -246,7 +246,7 @@
               <div style="margin-left: 58%">
                 <el-popover
                         placement="left"
-                        width="1900"
+                        width="1200"
                         trigger="click"
                         ref="gPopover"
                 >
@@ -254,22 +254,10 @@
                     <el-form-item label="名称">
                       <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="宽">
-                      <el-input v-model="form.width"></el-input>
-                    </el-form-item>
-                    <el-form-item label="高">
-                      <el-input v-model="form.height"></el-input>
-                    </el-form-item>
                     <el-form-item label="图形类型">
                       <el-select v-model="form.graphtype">
                         <el-option v-for="item in graphtypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
                       </el-select>
-                    </el-form-item>
-                    <el-form-item label="查看图例">
-                      <el-checkbox true-label="1" false-label="0" v-model="form.show_legend">查看图例</el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="查看工作时间">
-                      <el-checkbox true-label="1" false-label="0" v-model="form.show_work_period">查看图例</el-checkbox>
                     </el-form-item>
                     <!--<el-form-item label="查看触发器">-->
                     <!--<el-checkbox v-model="form.show_legend">查看图例</el-checkbox>-->
@@ -367,7 +355,7 @@
                         </el-table>
                       </div>
                       <el-popover
-                              placement="left"
+                              placement="right"
                               width="1000"
                               trigger="click"
                               ref="gList"
@@ -587,7 +575,7 @@ export default {
         ymax_type: '',
         ymin_type: '',
         graphtype: '',
-        show_legend: 1,
+        show_legend: 0,
         show_work_period: 0,
         percent_left: '',
         percent_right: '',
@@ -676,7 +664,9 @@ export default {
         height: '',
         width: '',
         graphtype: ''
-      }]
+      }],
+      setTimeoutGraphs: '',
+      graphsloading: ''
     }
   },
   created () {
@@ -1252,7 +1242,7 @@ export default {
       var timefrom = timesMethod.getDatestamp(starttime)
       var endtime = timesMethod.fun_date(1)
       var timetill = timesMethod.getDatestamp(endtime)
-      const itemids = []
+      var finalResult = ''
       var gItemData = []
       var itemData = []
       var trendData = []
@@ -1261,16 +1251,18 @@ export default {
       var colorData = []
       const returndataclock = []
       const params = {
-        graphids: [graphid]
+        graphids: [graphid],
+        hostids: [this.$route.query.hostId],
+        timefrom: timefrom,
+        timetill: timetill
       }
-      await this.axios.post('/gItem/getGItemInfoList', params).then((resp) => {
+      await this.axios.post('/gItem/getResultList', params).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            gItemData = json.data
-            gItemData.forEach(element => {
-              itemids.push(element.itemid)
-            })
+            finalResult = json.data
+            itemData = finalResult.itemData
+            gItemData = finalResult.gItemData
           }
         } else {
           this.$message({
@@ -1279,114 +1271,79 @@ export default {
           })
         }
       })
-      const param = {
-        hostids: [this.$route.query.hostId],
-        itemids: itemids
-      }
-      await this.axios.post('/item/getItemInfoList', param).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            itemData = json.data
-            for (var i = 0; i < itemData.length; i++) {
-              legendData.push(itemData[i].name)
-            }
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
+      itemData.forEach(element => {
+        legendData.push(element.name)
       })
       var sum = 0
       for (var i = 0; i < gItemData.length; i++) {
-        const region = {
-          itemids: [itemids[i]],
-          timefrom: timefrom,
-          timetill: timetill
-        }
-        await this.axios.post('/trend/getItemInfoList', region).then((resp) => {
-          console.log(resp.status)
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              trendData = json.data
-              var data = []
-              for (var j = 0; j < trendData.length; j++) {
-                var clock = timesMethod.getTimestamp(trendData[j].clock)
-                var index
-                if (clock) {
-                  index = i
-                  sum += 1
-                }
-                if (i === index && sum <= trendData.length) {
-                  returndataclock.push(clock)
-                }
-                switch (gItemData[i].calc_fnc) {
-                  case 1 : data.push(trendData[j].value_min)
-                    break
-                  case 2 : data.push(trendData[j].value_avg)
-                    break
-                  case 4 : data.push(trendData[j].value_max)
-                    break
-                }
-              }
-              var series = {}
-              series.name = itemData[i].name
-              var type = ''
-              switch (gItemData[i].drawtype) {
-                case 0: type = 'line'
-                  break
-                case 1:
-                  type = 'line'
-                  series.areaStyle = {}
-                  break
-                case 3:
-                  type = 'effectScatter'
-                  break
-                case 2:
-                  type = 'line'
-                  series.itemStyle = {
-                    normal: {
-                      lineStyle: {
-                        width: 5
-                      }
-                    }
-                  }
-                  break
-                case 4:
-                  type = 'line'
-                  series.itemStyle = {
-                    normal: {
-                      lineStyle: {
-                        type: 'dotted'
-                      }
-                    }
-                  }
-                  break
-                case 5:
-                  type = 'bar'
-                  break
-              }
-              series.type = type
-              colorData.push('#' + gItemData[i].color)
-              series.lineStyle = {
-                normal: {
-                  color: '#' + gItemData[i].color
-                }
-              }
-              series.data = data
-              seriesData.push(series)
-              console.log(seriesData)
-            }
-          } else {
-            this.$message({
-              message: '查询失败',
-              type: 'error'
-            })
+        trendData = finalResult.trendListData[i]
+        var data = []
+        for (var j = 0; j < trendData.length; j++) {
+          var clock = timesMethod.getTimestamp(trendData[j].clock)
+          var index
+          if (clock) {
+            index = i
+            sum = sum + 1
           }
-        })
+          if (i === index && sum <= trendData.length) {
+            returndataclock.push(clock)
+          }
+          switch (gItemData[i].calc_fnc) {
+            case 1 : data.push(trendData[j].value_min)
+              break
+            case 2 : data.push(trendData[j].value_avg)
+              break
+            case 4 : data.push(trendData[j].value_max)
+              break
+          }
+        }
+        var series = {}
+        series.name = itemData[i].name
+        var type = ''
+        switch (gItemData[i].drawtype) {
+          case 0: type = 'line'
+            break
+          case 1:
+            type = 'line'
+            series.areaStyle = {}
+            break
+          case 3:
+            type = 'effectScatter'
+            break
+          case 2:
+            type = 'line'
+            series.itemStyle = {
+              normal: {
+                lineStyle: {
+                  width: 5
+                }
+              }
+            }
+            break
+          case 4:
+            type = 'line'
+            series.itemStyle = {
+              normal: {
+                lineStyle: {
+                  type: 'dotted'
+                }
+              }
+            }
+            break
+          case 5:
+            type = 'bar'
+            break
+        }
+        series.type = type
+        colorData.push('#' + gItemData[i].color)
+        series.lineStyle = {
+          normal: {
+            color: '#' + gItemData[i].color
+          }
+        }
+        series.data = data
+        seriesData.push(series)
+        console.log(seriesData)
       }
       const pieCharts = document.getElementById('charts-graph-demo-' + index1)
       var pieEcharts = document.getElementById('pieEcharts')
@@ -1441,10 +1398,10 @@ export default {
         ],
         series: seriesData
       })
-      if (this.itemsloading !== '') {
-        this.itemsloading.close()
+      if (this.graphsloading !== '') {
+        this.graphsloading.close()
       }
-      this.setTimeoutItems = ''
+      this.setTimeoutGraphs = ''
     },
     getGraphID (index) {
       return 'charts-graph-demo-' + index
@@ -1487,12 +1444,17 @@ export default {
     },
     // 提交表单
     onSubmit () {
-      if (this.form.name) {
-        alert('名称不能为空!')
+      if (!this.form.name) {
+        this.$message({
+          message: '名称不能为空!',
+          type: 'error'
+        })
         return
-      }
-      if (this.form.gitems.length === 0) {
-        alert('监控项不能为空！')
+      } else if (this.form.gitems.length === 0) {
+        this.$message({
+          message: '监控项不能为空',
+          type: 'error'
+        })
         return
       }
       this.axios.post('/gPrototype/createGpro', this.form).then((resp) => {
@@ -1595,9 +1557,26 @@ export default {
       } else {
         this.$refs.multipleTable.clearSelection()
       }
+      this.$refs.gList.doClose()
     },
     handleSelectionChange (val) {
       this.multipleSelection1 = val
+    },
+    openGraphloading (index) {
+      this.graphsloading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.3)',
+        target: document.querySelector('#charts-graph-demo-' + index) // 指定区域
+      })
+    },
+    refreshGraphs (items, index) {
+      if (this.setTimeoutGraphs === '') {
+        const _this = this
+        this.openGraphloading(index)
+        this.setTimeoutGraphs = window.setTimeout(() => { _this.getGraphsData(items.graphId, items.graphName, index) }, 300)
+      }
     }
   },
   mounted () {
