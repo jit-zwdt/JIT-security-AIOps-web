@@ -33,7 +33,7 @@
         <el-row :gutter="40">
           <el-col :span="12">
             <el-form-item label="资产类型：" prop="assetType">
-              <el-select v-model="serverListForm.assetType" placeholder="请选择">
+              <el-select v-model="serverListForm.assetType" placeholder="请选择" style="width: 100%">
                 <el-option
                   v-for="item in typeOptions"
                   :key="item.value"
