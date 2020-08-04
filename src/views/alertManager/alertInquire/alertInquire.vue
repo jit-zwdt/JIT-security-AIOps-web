@@ -62,7 +62,7 @@
               <el-radio-button label="1">信息</el-radio-button>
               <el-radio-button label="2">警告</el-radio-button>
               <el-radio-button label="3">一般严重</el-radio-button>
-              <el-radio-button label="4">严重</el-radio-button>
+              <el-radio-button label="4">严重</el-radio-button>fo
               <el-radio-button label="5">灾难</el-radio-button>
             </el-radio-group>
           </div>

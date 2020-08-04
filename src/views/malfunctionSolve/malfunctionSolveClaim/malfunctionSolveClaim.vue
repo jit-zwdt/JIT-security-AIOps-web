@@ -15,12 +15,12 @@
                     min-width="10%"
                     :resizable="false"
             ></el-table-column>
-            <el-table-column label="严重性" prop="severity" min-width="15%" :resizable="false">
-                <template scope="scope">
-                    <p v-if="scope.row.severity=='3'">一般严重</p>
-                    <p v-if="scope.row.severity=='4'">严重</p>
-                    <p v-if="scope.row.severity=='5'">灾难</p>
-                </template>
+            <el-table-column label="严重性" prop="severity" min-width="15%" :resizable="false" :formatter="severityLevelFormat">
+                <!--<template scope="scope">-->
+                    <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='3'">一般严重</p>-->
+                    <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='4'">严重</p>-->
+                    <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
+                <!--</template>-->
             </el-table-column>
             <el-table-column align="center" label="操作" min-width="15%">
                 <template slot-scope="scope">
@@ -68,7 +68,8 @@ export default {
         name: '',
         ns: '',
         severity: '',
-        isClaim: ''
+        isClaim: '',
+        aaa: ''
       }],
       assetform: {
         eventid: '',
@@ -120,9 +121,7 @@ export default {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
-              console.log(json.data)
               var now = new Date()
-              console.log(now)
               this.tableData = json.data
               if (this.tableData) {
                 this.totalCount = this.tableData.length
@@ -147,6 +146,15 @@ export default {
             }
           }
         })
+    },
+    severityLevelFormat (val) {
+      if (val.severity === 3) {
+        return '一般严重'
+      } else if (val.severity === 4) {
+        return '严重'
+      } else if (val.severity === 5) {
+        return '灾难'
+      }
     },
     handleSizeChange (val) {
       this.currentPage = 1

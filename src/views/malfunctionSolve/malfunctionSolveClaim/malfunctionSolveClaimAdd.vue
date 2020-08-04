@@ -116,6 +116,9 @@ export default {
         ],
         claimUserId: [
           { required: true, message: '请选择认领人' }
+        ],
+        claimOpinion: [
+          { required: true, message: '请填写认领意见' }
         ]
       }
     }
