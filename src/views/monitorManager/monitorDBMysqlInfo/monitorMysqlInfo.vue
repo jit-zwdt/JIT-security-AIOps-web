@@ -228,7 +228,7 @@
               <el-button
                       type="primary"
                       size="small"
-                      @click="showInfo() == false"
+                      @click="showGraphsInfo() == false"
                       icon="el-icon-search"
               >查询</el-button>
               <el-button
@@ -436,7 +436,7 @@
             <el-table-column label="图形名称" prop="name" min-width="70%"></el-table-column>
             <el-table-column label="高" prop="height" min-width="15%"></el-table-column>
             <el-table-column label="宽" prop="width" min-width="15%"></el-table-column>
-            <el-table-column label="图形类型" prop="graphtype" min-width="15%"></el-table-column>
+            <el-table-column label="图形类型" prop="graphtype" min-width="15%" :formatter="typeFormat"></el-table-column>
             <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
               <template slot-scope="scope">
                 <el-popconfirm
@@ -671,6 +671,7 @@ export default {
   },
   created () {
     this.showInfo()
+    this.showGraphsInfo()
     this.getTomcatVersion()
     this.getMonitorTypeItems()
     this.findHostIdinfo()
@@ -727,9 +728,13 @@ export default {
     showInfo (str) {
       this.loading = true
       this.tableData = this.tableDataclear
-      this.graphData = this.tableDataclear
       const _this = this
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
+    },
+    showGraphsInfo (str) {
+      this.loading = true
+      this.graphData = this.tableDataclear
+      const _this = this
       this.setTimeoutster = window.setTimeout(() => { _this.showGraphInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
@@ -1206,6 +1211,7 @@ export default {
       var timetill = timesMethod.getDatestamp(endtime)
       var finalResult = ''
       var gItemData = []
+      var graphData = []
       var itemData = []
       var trendData = []
       const legendData = []
@@ -1225,6 +1231,7 @@ export default {
             finalResult = json.data
             itemData = finalResult.itemData
             gItemData = finalResult.gItemData
+            graphData = finalResult.graphData
           }
         } else {
           this.$message({
@@ -1236,130 +1243,183 @@ export default {
       itemData.forEach(element => {
         legendData.push(element.name)
       })
-      var sum = 0
-      for (var i = 0; i < gItemData.length; i++) {
-        trendData = finalResult.trendListData[i]
-        var data = []
-        for (var j = 0; j < trendData.length; j++) {
-          var clock = timesMethod.getTimestamp(trendData[j].clock)
-          var index
-          if (clock) {
-            index = i
-            sum = sum + 1
-          }
-          if (i === index && sum <= trendData.length) {
-            returndataclock.push(clock)
-          }
-          switch (gItemData[i].calc_fnc) {
-            case 1 : data.push(trendData[j].value_min)
+      if (graphData[0].graphtype === 2) {
+        for (var a = 0; a < gItemData.length; a++) {
+          trendData = finalResult.trendListData[a]
+          var value
+          var name
+          switch (gItemData[a].calc_fnc) {
+            case 1 : value = trendData[trendData.length - 1].value_min
               break
-            case 2 : data.push(trendData[j].value_avg)
+            case 2 : value = trendData[trendData.length - 1].value_avg
               break
-            case 4 : data.push(trendData[j].value_max)
+            case 4 : value = trendData[trendData.length - 1].value_max
               break
           }
+          name = legendData[a]
+          seriesData.push({
+            value: value,
+            name: name
+          })
+          colorData.push('#' + gItemData[a].color)
         }
-        var series = {}
-        series.name = itemData[i].name
-        var type = ''
-        switch (gItemData[i].drawtype) {
-          case 0: type = 'line'
-            break
-          case 1:
-            type = 'line'
-            series.areaStyle = {}
-            break
-          case 3:
-            type = 'effectScatter'
-            break
-          case 2:
-            type = 'line'
-            series.itemStyle = {
-              normal: {
-                lineStyle: {
-                  width: 5
-                }
-              }
-            }
-            break
-          case 4:
-            type = 'line'
-            series.itemStyle = {
-              normal: {
-                lineStyle: {
-                  type: 'dotted'
-                }
-              }
-            }
-            break
-          case 5:
-            type = 'bar'
-            break
-        }
-        series.type = type
-        colorData.push('#' + gItemData[i].color)
-        series.lineStyle = {
-          normal: {
-            color: '#' + gItemData[i].color
-          }
-        }
-        series.data = data
-        seriesData.push(series)
         console.log(seriesData)
-      }
-      const pieCharts = document.getElementById('charts-graph-demo-' + index1)
-      var pieEcharts = document.getElementById('pieEcharts')
-      pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-      const myChart = this.$echarts.init(pieCharts)
-      // 绘制图表
-      myChart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
-        },
-        color: colorData,
-        legend: {
-          data: legendData
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: 'category',
-            data: returndataclock,
-            axisLabel: {
-              interval: 0,
-              rotate: 45, // 倾斜度-90至90默认为0
-              margin: 2,
-              textStyle: {
-                fontWeight: 'bolder',
-                color: '#000000',
-                fontSize: '7'
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        const pieEcharts = document.getElementById('pieEcharts')
+        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+        const myChart = this.$echarts.init(pieCharts)
+        myChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          color: colorData,
+          legend: {
+            data: legendData
+          },
+          series: [
+            {
+              name: '监控项',
+              type: 'pie',
+              radius: '55%',
+              center: ['50%', '60%'],
+              data: seriesData,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
               }
             }
+          ]
+        })
+      } else {
+        var sum = 0
+        for (var i = 0; i < gItemData.length; i++) {
+          trendData = finalResult.trendListData[i]
+          var data = []
+          for (var j = 0; j < trendData.length; j++) {
+            var clock = timesMethod.getTimestamp(trendData[j].clock)
+            var index
+            if (clock) {
+              index = i
+              sum = sum + 1
+            }
+            if (i === index && sum <= trendData.length) {
+              returndataclock.push(clock)
+            }
+            switch (gItemData[i].calc_fnc) {
+              case 1 : data.push(trendData[j].value_min)
+                break
+              case 2 : data.push(trendData[j].value_avg)
+                break
+              case 4 : data.push(trendData[j].value_max)
+                break
+            }
           }
-        ],
-        yAxis: [
-          {
-            type: 'value'
+          var series = {}
+          series.name = itemData[i].name
+          var type = ''
+          switch (gItemData[i].drawtype) {
+            case 0: type = 'line'
+              break
+            case 1:
+              type = 'line'
+              series.areaStyle = {}
+              break
+            case 3:
+              type = 'effectScatter'
+              break
+            case 2:
+              type = 'line'
+              series.itemStyle = {
+                normal: {
+                  lineStyle: {
+                    width: 5
+                  }
+                }
+              }
+              break
+            case 4:
+              type = 'line'
+              series.itemStyle = {
+                normal: {
+                  lineStyle: {
+                    type: 'dotted'
+                  }
+                }
+              }
+              break
+            case 5:
+              type = 'bar'
+              break
           }
-        ],
-        series: seriesData
-      })
+          series.type = type
+          colorData.push('#' + gItemData[i].color)
+          series.lineStyle = {
+            normal: {
+              color: '#' + gItemData[i].color
+            }
+          }
+          series.data = data
+          seriesData.push(series)
+          console.log(seriesData)
+        }
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        const pieEcharts = document.getElementById('pieEcharts')
+        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+        const myChart = this.$echarts.init(pieCharts)
+        // 绘制图表
+        myChart.setOption({
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          color: colorData,
+          legend: {
+            data: legendData
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: returndataclock,
+              axisLabel: {
+                interval: 0,
+                rotate: 45, // 倾斜度-90至90默认为0
+                margin: 2,
+                textStyle: {
+                  fontWeight: 'bolder',
+                  color: '#000000',
+                  fontSize: '7'
+                }
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: seriesData
+        })
+      }
       if (this.graphsloading !== '') {
         this.graphsloading.close()
       }
@@ -1443,7 +1503,7 @@ export default {
         }
       })
       this.$refs.gPopover.doClose()
-      this.showInfo()
+      this.showGraphsInfo()
     },
     closePopover () {
       this.$refs.gPopover.doClose()
@@ -1524,6 +1584,17 @@ export default {
     },
     handleSelectionChange (val) {
       this.multipleSelection1 = val
+    },
+    typeFormat (row, column) {
+      if (row.graphtype === 0) {
+        return '常规'
+      } else if (row.graphtype === 1) {
+        return '堆积图'
+      } else if (row.graphtype === 2) {
+        return '饼图'
+      } else if (row.graphtype === 3) {
+        return '分散饼图'
+      }
     }
   },
   mounted () {
