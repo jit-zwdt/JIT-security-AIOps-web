@@ -16,7 +16,7 @@
                     :resizable="false"
             ></el-table-column>
             <el-table-column label="严重性" prop="severity" min-width="15%" :resizable="false" :formatter="severityLevelFormat">
-                <!--<template scope="scope">-->
+                <!--<template slot-scope="scope">-->
                     <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='3'">一般严重</p>-->
                     <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='4'">严重</p>-->
                     <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
@@ -132,12 +132,15 @@ export default {
                 var hours = Math.floor((keepTime % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
                 var minutes = Math.floor((keepTime % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
                 if (days > 0) {
-                  this.tableData[i].ns = days + '天 ' + hours + '小时 ' + minutes + '分钟'
-                } else if (hours > 0) {
-                  this.tableData[i].ns = hours + '小时 ' + minutes + '分钟'
-                } else if (minutes > 0) {
-                  this.tableData[i].ns = minutes + '分钟'
-                } else {
+                  this.tableData[i].ns = days + '天 '
+                }
+                if (hours > 0) {
+                  this.tableData[i].ns += hours + '小时 '
+                }
+                if (minutes > 0) {
+                  this.tableData[i].ns += minutes + '分钟'
+                }
+                if (days < 1 && hours < 1 && minutes < 1) {
                   this.tableData[i].ns = 0 + '分钟'
                 }
               }
