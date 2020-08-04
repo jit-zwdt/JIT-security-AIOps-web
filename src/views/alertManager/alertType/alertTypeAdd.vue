@@ -104,14 +104,14 @@
               <el-form-item
                   label="用户名称"
                   prop="username"
-                  v-if="mediaTypeForm.smtpAuthentication === '1'"
+                  v-if="mediaTypeForm.smtpAuthentication === 1 || mediaTypeForm.smtpAuthentication === '1'"
               >
                 <el-input v-model="mediaTypeForm.username" clearable></el-input>
               </el-form-item>
               <el-form-item
                   label="密码"
                   prop="passwd"
-                  v-if="mediaTypeForm.smtpAuthentication === '1'"
+                  v-if="mediaTypeForm.smtpAuthentication === 1 || mediaTypeForm.smtpAuthentication === '1'"
               >
                 <el-input v-model="mediaTypeForm.passwd" clearable></el-input>
               </el-form-item>
@@ -313,14 +313,14 @@ export default {
       disabledType: false,
       show: false,
       showexpression: false,
-      showSMTP: true,
+      showSMTP: false,
       showSMS: false,
       showScript: false,
       showWebhook: false,
       isShow: false,
       mediaTypeForm: {
         name: '',
-        type: 0,
+        type: '',
         smtpServer: 'mail.example.com',
         smtpPort: '25',
         smtpHelo: 'example.com',
@@ -362,24 +362,27 @@ export default {
         maxattempts: '3',
         attemptInterval: '10s'
       },
-      options: [{
-        value: 0,
-        label: '电子邮件'
-      }, {
-        value: 1,
-        label: '脚本'
-      }, {
-        value: 2,
-        label: '短信'
-      }, {
-        value: 4,
-        label: 'Webhook'
-      }
+      options: [
+        {
+          value: '',
+          label: '请选择'
+        }, {
+          value: 0,
+          label: '电子邮件'
+        }, {
+          value: 1,
+          label: '脚本'
+        }
+        //, { value: 2, label: '短信' }
+        // , { value: 4, label: 'Webhook' }
         // ,{  value: 3, label: 'Jabber' }
       ],
       mediaTypeFormRules: {
         name: [
           { required: true, message: '请输入名称' }
+        ],
+        type: [
+          { required: true, message: '请选择类型' }
         ],
         smtpServer: [
           { required: true, message: '请输入SMTP服务器地址' }
@@ -593,7 +596,7 @@ export default {
       this.$refs.optionForm.resetFields()
     },
     showInfo (mediatypeid) {
-      if (mediatypeid != null && mediatypeid !== '') {
+      if (mediatypeid != null && mediatypeid !== '-1') {
         this.axios.post('/mediaType/findByMediaTypeId/' + mediatypeid).then((resp) => {
           if (resp.status === 200) {
             this.showSMTP = false
@@ -607,6 +610,7 @@ export default {
               this.disabledType = true
               this.mediaTypeForm.name = jsonData.name
               t = jsonData.type
+              this.mediaTypeForm.type = t
               if (t === 0) { // email
                 this.showSMTP = true
                 this.mediaTypeForm.type = jsonData.type
@@ -619,7 +623,7 @@ export default {
                 this.mediaTypeForm.smtpVerifyHost = jsonData.smtp_verify_host !== 0
                 this.mediaTypeForm.smtpAuthentication = jsonData.smtp_authentication
                 this.mediaTypeForm.username = jsonData.username
-                this.mediaTypeForm.passwd = jsonData.passwd
+                this.mediaTypeForm.passwd = ''
                 this.mediaTypeForm.contentType = jsonData.content_type
               } else if (t === 1) { // script
                 this.showScript = true
