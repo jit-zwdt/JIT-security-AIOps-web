@@ -355,7 +355,7 @@
                               ref="gList"
                       >
                         <el-table
-                                :data="forShowData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                                :data="forShowData.slice((currentInsidePage-1)*pageSize,currentInsidePage*pageSize)"
                                 v-loading="loading"
                                 border
                                 style="width: 100%"
@@ -398,9 +398,9 @@
                         <div class="block" style="margin-top:15px;">
                           <el-pagination
                                   align="center"
-                                  @size-change="handleSizeChange"
-                                  @current-change="handleCurrentChange"
-                                  :current-page="currentPage"
+                                  @size-change="handleSizeInsideChange"
+                                  @current-change="handleCurrentInsideChange"
+                                  :current-page="currentInsidePage"
                                   :page-sizes="[10, 30, 50, 100]"
                                   :page-size="pageSize"
                                   layout="total, sizes, prev, pager, next, jumper"
@@ -425,7 +425,7 @@
             </div>
           </ToolBar>
           <el-table
-                  :data="graphData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                  :data="graphData.slice((currentGraphPage-1)*pageSize,currentGraphPage*pageSize)"
                   v-loading="loading"
                   border
                   style="width: 100%"
@@ -457,9 +457,9 @@
           <div class="block" style="margin-top:15px;">
             <el-pagination
                     align="center"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
+                    @size-change="handleSizeGraphChange"
+                    @current-change="handleCurrentGraphChange"
+                    :current-page="currentGraphPage"
                     :page-sizes="[10, 30, 50, 100]"
                     :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
@@ -542,6 +542,8 @@ export default {
       }],
       nameTop: '',
       currentPage: 1, // 当前页码
+      currentInsidePage: 1, // 监控项页码
+      currentGraphPage: 1, // 图形列表页码
       total: 20, // 总条数
       pageSize: 10, // 每页的数据条数
       loading: true,
@@ -639,16 +641,7 @@ export default {
         value: 3,
         label: '分散饼图'
       }],
-      forShowData: [
-        {
-          itemid: '',
-          name: '',
-          key_: '',
-          type: '',
-          value_type: '',
-          status: ''
-        }
-      ],
+      forShowData: [],
       multipleSelection: [],
       multipleSelection1: [],
       color: '',
@@ -747,7 +740,11 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
-            this.forShowData = json.data
+            json.data.forEach(element => {
+              if (element.value_type !== 1 && element.value_type !== 2 && element.value_type !== 4) {
+                this.forShowData.push(element)
+              }
+            })
             this.currentPage = 1
           }
         } else {
@@ -884,6 +881,20 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
+    },
+    handleSizeInsideChange (val) {
+      this.currentInsidePage = 1
+      this.pageSize = val
+    },
+    handleCurrentInsideChange (val) {
+      this.currentInsidePage = val
+    },
+    handleSizeGraphChange (val) {
+      this.currentGraphPage = 1
+      this.pageSize = val
+    },
+    handleCurrentGraphChange (val) {
+      this.currentGraphPage = val
     },
     getShowData () {
       this.axios.post('/trend/findHostDetailItems/' + this.$route.query.hostId).then((resp) => {
