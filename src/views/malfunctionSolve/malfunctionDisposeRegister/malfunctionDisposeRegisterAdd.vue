@@ -30,7 +30,7 @@
             </div>
         </template>
         <template>
-            <div class="card dark-main-background" v-if="showTable === true">
+            <div class="card dark-main-background" v-show="showTable">
                 <div
                         class="title-bar card-header dark-main-background dark-white-color"
                         style="margin-top:-10px !important;height:40px"
@@ -321,12 +321,12 @@ export default {
         }).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
-            console.log(json)
             if (json.code === 1) {
               this.tableData = json.data
               this.loading = false
-              this.showTable = true
-              console.log(this.showTable)
+              if (this.tableData.length !== 0) {
+                this.showTable = true
+              }
             }
             if (resp.data.data[0] != null) {
               this.registerForm.problemReason = resp.data.data[0].problemReason
@@ -337,7 +337,7 @@ export default {
                 this.registerForm.isResolve = true
                 this.buttonDisplay = 'none'
                 this.readOnly = true
-                var temp = new Date(resp.data.data[0].gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
+                var temp = new Date(resp.data.data[resp.data.data.length - 1].gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
                 var days = Math.floor(temp / (60 * 60 * 24 * 1000))
                 var hours = Math.floor((temp % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
                 var minutes = Math.floor((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
