@@ -8,18 +8,18 @@
                 :row-style="tableRowStyle"
                 :header-cell-style="tableHeaderColor"
         >
-            <el-table-column label="问题名称" prop="name" min-width="60%" :resizable="false"></el-table-column>
+            <el-table-column label="问题名称" prop="zabbixProblemDTO.name" min-width="60%" :resizable="false"></el-table-column>
             <el-table-column
                     label="持续时间"
-                    prop="ns"
+                    prop="zabbixProblemDTO.ns"
                     min-width="10%"
                     :resizable="false"
             ></el-table-column>
-            <el-table-column label="严重性" prop="severity" min-width="15%" :resizable="false" :formatter="severityLevelFormat">
+            <el-table-column label="严重性" prop="zabbixProblemDTO.severity" min-width="15%" :resizable="false" :formatter="severityLevelFormat">
                 <!--<template slot-scope="scope">-->
-                    <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='3'">一般严重</p>-->
-                    <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='4'">严重</p>-->
-                    <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
+                <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='3'">一般严重</p>-->
+                <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='4'">严重</p>-->
+                <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
                 <!--</template>-->
             </el-table-column>
             <el-table-column align="center" label="操作" min-width="15%">
@@ -85,8 +85,7 @@ export default {
         name: '',
         ns: '',
         severity: '',
-        isClaim: '',
-        aaa: ''
+        isClaim: ''
       }],
       assetform: {
         eventid: '',
@@ -144,18 +143,18 @@ export default {
                 this.totalCount = this.tableData.length
               }
               for (var i = 0; i < this.totalCount; i++) {
-                var keepTime = now - new Date(this.tableData[i].clock.replace('T', ' '))
+                var keepTime = now - new Date(this.tableData[i].zabbixProblemDTO.clock.replace('T', ' '))
                 var days = Math.floor(keepTime / (60 * 60 * 24 * 1000))
                 var hours = Math.floor((keepTime % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
                 var minutes = Math.floor((keepTime % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
                 if (days > 0) {
-                  this.tableData[i].ns = days + '天 '
+                  this.tableData[i].zabbixProblemDTO.ns = days + '天 '
                 }
                 if (hours > 0) {
-                  this.tableData[i].ns += hours + '小时 '
+                  this.tableData[i].zabbixProblemDTO.ns += hours + '小时 '
                 }
                 if (minutes > 0) {
-                  this.tableData[i].ns += minutes + '分钟'
+                  this.tableData[i].zabbixProblemDTO.ns += minutes + '分钟'
                 }
                 if (days < 1 && hours < 1 && minutes < 1) {
                   this.tableData[i].ns = 0 + '分钟'
@@ -168,11 +167,11 @@ export default {
         })
     },
     severityLevelFormat (val) {
-      if (val.severity === 3) {
+      if (val.zabbixProblemDTO.severity === 3) {
         return '一般严重'
-      } else if (val.severity === 4) {
+      } else if (val.zabbixProblemDTO.severity === 4) {
         return '严重'
-      } else if (val.severity === 5) {
+      } else if (val.zabbixProblemDTO.severity === 5) {
         return '灾难'
       }
     },
@@ -185,29 +184,28 @@ export default {
     },
     malfucntionSolveClaim: function (index, row) {
       this.showEditDialog = true
-      this.assetform.eventid = row.eventid
-      this.assetform.name = row.name
-      this.assetform.ns = row.ns
-      this.assetform.severity = row.severity
-      this.assetform.objectid = row.objectid
-      this.assetform.clock = row.clock
+      this.assetform.eventid = row.zabbixProblemDTO.eventid
+      this.assetform.name = row.zabbixProblemDTO.name
+      this.assetform.ns = row.zabbixProblemDTO.ns
+      this.assetform.severity = row.zabbixProblemDTO.severity
+      this.assetform.objectid = row.zabbixProblemDTO.objectid
+      this.assetform.clock = row.zabbixProblemDTO.clock
       this.assetform.hostId = row.hostId
       this.assetform.hostName = row.hostName
       this.titleType = '添加'
     },
     malfucntionShowInfo: function (index, row) {
       this.showInfoDialog = true
-      this.assetform.eventid = row.eventid
-      this.assetform.name = row.name
-      this.assetform.ns = row.ns
-      this.assetform.severity = row.severity
-      this.assetform.objectid = row.objectid
-      this.assetform.clock = row.clock
+      this.assetform.eventid = row.zabbixProblemDTO.eventid
+      this.assetform.name = row.zabbixProblemDTO.name
+      this.assetform.ns = row.zabbixProblemDTO.ns
+      this.assetform.severity = row.zabbixProblemDTO.severity
+      this.assetform.objectid = row.zabbixProblemDTO.objectid
+      this.assetform.clock = row.zabbixProblemDTO.clock
       this.assetform.hostId = row.hostId
       this.assetform.hostName = row.hostName
       this.titleType = '详情'
     }
-
   },
   actions: {},
   components: { malfunctionSolveClaimAdd, malfunctionShowInfo }

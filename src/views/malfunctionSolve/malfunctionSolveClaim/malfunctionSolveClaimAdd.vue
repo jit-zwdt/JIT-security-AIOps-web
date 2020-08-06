@@ -6,6 +6,7 @@
             :visible.sync="showEditDialog"
             :show-close="false"
             :close-on-click-modal="false"
+            :close-on-press-escape="false"
     >
         <div>
             <ToolBar>
@@ -237,7 +238,9 @@ export default {
         problemCreate: this.assetform.clock.replace('T', ' '),
         hostId: this.assetform.hostId,
         hostName: this.assetform.hostName,
-        gmtCreate: (new Date()).getTime()
+        gmtCreate: (new Date()).getTime(),
+        isRegister: 0,
+        isResolve: 0
       }
       return region
     }
