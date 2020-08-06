@@ -1093,8 +1093,7 @@ export default {
       })
     },
     getUserInfo () {
-      var alias = 'NULL'
-      this.axios.post('/user/getUserInfo/' + alias).then((resp) => {
+      this.axios.post('/user/getUserInfo').then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

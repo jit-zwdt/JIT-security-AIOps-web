@@ -2,8 +2,8 @@
   <div>
     <ToolBar>
       <div class="queryleft">
-        <el-col :span="8">
-          <el-input type="text" v-model="nameTop" size="small" placeholder="名称" clearable></el-input>
+        <el-col :span="12">
+          <el-input type="text" v-model="nameTop" size="small" placeholder="别名" clearable></el-input>
         </el-col>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
@@ -26,7 +26,19 @@
       <el-table-column label="别名" prop="alias" min-width="25%"></el-table-column>
       <el-table-column label="用户名" prop="name" min-width="25%"></el-table-column>
       <el-table-column label="姓氏" prop="surname" min-width="25%"></el-table-column>
-      <el-table-column label="用户类型" prop="type" min-width="25%"></el-table-column>
+      <el-table-column label="用户类型" prop="type" min-width="15%" :formatter="usertypeinfo"></el-table-column>
+      <el-table-column align="center" label="操作" min-width="10%">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="primary"
+            slot="reference"
+            icon="el-icon-s-grid"
+            circle
+            @click="showUserInfo(scope.$index, scope.row)"
+          ></el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="block" style="margin-top:15px;">
       <el-pagination
@@ -40,12 +52,22 @@
         :total="tableData.length"
       ></el-pagination>
     </div>
+    <AddUserMedias
+      :addUserMediasDialog="addUserMediasDialog"
+      :userid="userid"
+      @close="addUserMediasDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></AddUserMedias>
   </div>
 </template>
 <script>
+import qs from 'qs'
+import AddUserMedias from '@/views/alertManager/alertDefine/addUserMedias.vue'
 export default {
   data () {
     return {
+      addUserMediasDialog: false,
       show: false,
       tableData: [],
       nameTop: '',
@@ -54,7 +76,8 @@ export default {
       pageSize: 15, // 每页的数据条数
       loading: true,
       tableDataclear: [],
-      setTimeoutster: ''
+      setTimeoutster: '',
+      userid: ''
     }
   },
   created () {
@@ -79,12 +102,13 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      var alias = 'NULL'
-      this.axios.post('/user/getUserInfo/' + alias).then((resp) => {
+      var alias = this.nameTop
+      this.axios.post('/user/getUserInfo', qs.stringify({
+        alias: alias
+      })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.tableData = json.data
             this.currentPage = 1
           }
@@ -106,11 +130,35 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
+    },
+    usertypeinfo (str) {
+      switch (str.type) {
+        case 3:
+          str = '超级管理员'
+          break
+        case 2:
+          str = '管理员'
+          break
+        default:
+          str = '用户'
+      }
+      return str
+    },
+    reloadData () {
+      this.showInfo()
+    },
+    noReloadData () {
+      this.addUserMediasDialog = false
+      // this.showInfo()
+    },
+    showUserInfo (index, row) {
+      this.userid = row.userid
+      this.addUserMediasDialog = true
     }
   },
   actions: {
   },
-  components: {}
+  components: { AddUserMedias }
 }
 </script>
 <style lang="scss" scoped>
