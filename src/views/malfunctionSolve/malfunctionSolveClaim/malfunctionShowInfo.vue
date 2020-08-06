@@ -17,21 +17,40 @@
                         label-position="right"
                         :label-width="labelWidth"
                 >
-                    <el-row>
-                        <el-form-item label="角色：" prop="claimRoleId">
-                            {{role}}
-                        </el-form-item>
-                    </el-row>
-                    <el-row>
+                    <el-row :gutter="40">
                         <el-col>
-                            <el-form-item label="认领人：" prop="claimUserId">
+                            <el-form-item label="问题名称：" prop="assetName">
+                                {{assetform.name}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="40">
+                        <el-col :span="12">
+                            <el-form-item label="持续时间：" prop="assetName">
+                                {{assetform.ns}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="严重性：" prop="assetName">
+                                {{severityLevelFormat(assetform.severity)}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="40">
+                        <el-col :span="12">
+                            <el-form-item label="角色：" prop="assetName">
+                                {{role}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="认领人：" prop="assetNumber">
                                 {{user}}
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row>
+                    <el-row :gutter="40">
                         <el-col>
-                            <el-form-item label="认领意见：" prop="claimOpinion">
+                            <el-form-item label="认领意见：" prop="assetName">
                                 {{claimOpinion}}
                             </el-form-item>
                         </el-col>
@@ -141,6 +160,15 @@ export default {
             this.$emit('error')
           }
         })
+      }
+    },
+    severityLevelFormat (val) {
+      if (val === 3) {
+        return '一般严重'
+      } else if (val === 4) {
+        return '严重'
+      } else if (val === 5) {
+        return '灾难'
       }
     }
   }
