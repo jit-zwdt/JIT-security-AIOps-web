@@ -28,7 +28,14 @@
                             size="mini"
                             type="primary"
                             slot="reference"
-                            :disabled="scope.row.isClaim ==1"
+                            v-if="scope.row.isClaim ==1"
+                            @click="malfucntionShowInfo(scope.$index, scope.row)"
+                    >已认领</el-button>
+                    <el-button
+                            size="mini"
+                            type="primary"
+                            slot="reference"
+                            v-else
                             @click="malfucntionSolveClaim(scope.$index, scope.row)"
                     >认领</el-button>
                 </template>
@@ -42,6 +49,14 @@
                 @success="reloadData"
                 @error="reloadData"
         ></malfunctionSolveClaimAdd>
+        <malfunctionShowInfo
+                :title="'信息'+titleType"
+                :assetform="assetform"
+                :showEditDialog="showInfoDialog"
+                @close="showInfoDialog = false"
+                @success="reloadData"
+                @error="reloadData"
+        ></malfunctionShowInfo>
         <div class="block" style="margin-top:15px;">
             <el-pagination
                     align="center"
@@ -58,12 +73,14 @@
 </template>
 <script>
 import malfunctionSolveClaimAdd from '@/views/malfunctionSolve/malfunctionSolveClaim/malfunctionSolveClaimAdd.vue'
+import malfunctionShowInfo from '@/views/malfunctionSolve/malfunctionSolveClaim/malfunctionShowInfo.vue'
 export default {
   data: function () {
     return {
       totalCount: 0,
       titleType: '',
       showEditDialog: false,
+      showInfoDialog: false,
       tableData: [{
         name: '',
         ns: '',
@@ -176,10 +193,22 @@ export default {
       this.assetform.hostId = row.hostId
       this.assetform.hostName = row.hostName
       this.titleType = '添加'
+    },
+    malfucntionShowInfo: function (index, row) {
+      this.showInfoDialog = true
+      this.assetform.eventid = row.zabbixProblemDTO.eventid
+      this.assetform.name = row.zabbixProblemDTO.name
+      this.assetform.ns = row.zabbixProblemDTO.ns
+      this.assetform.severity = row.zabbixProblemDTO.severity
+      this.assetform.objectid = row.zabbixProblemDTO.objectid
+      this.assetform.clock = row.zabbixProblemDTO.clock
+      this.assetform.hostId = row.hostId
+      this.assetform.hostName = row.hostName
+      this.titleType = '详情'
     }
   },
   actions: {},
-  components: { malfunctionSolveClaimAdd }
+  components: { malfunctionSolveClaimAdd, malfunctionShowInfo }
 }
 </script>
 <style lang="scss" scoped>
