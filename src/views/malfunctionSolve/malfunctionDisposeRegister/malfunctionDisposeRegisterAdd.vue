@@ -30,12 +30,41 @@
             </div>
         </template>
         <template>
+            <div class="card dark-main-background" v-if="showTable === true">
+                <div
+                        class="title-bar card-header dark-main-background dark-white-color"
+                        style="margin-top:-10px !important;height:40px"
+                >
+                    <div class="queryleft">
+                        <p class="title-bar-description" style>
+                            <span>登记信息</span>
+                        </p>
+                    </div>
+                </div>
+                <el-table
+                        :data="tableData"
+                        border
+                        v-loading="loading"
+                        style="width: 100%"
+                        :row-style="tableRowStyle"
+                        :header-cell-style="tableHeaderColor"
+                >
+                    <el-table-column label="故障类型" prop="problemType" min-width="10%" :resizable="false" :formatter="problemTypeFormat"></el-table-column>
+                    <el-table-column label="故障原因" prop="problemReason" min-width="25%" :resizable="false"></el-table-column>
+                    <el-table-column label="解决方式" prop="problemSolution" min-width="25%" :resizable="false"></el-table-column>
+                    <el-table-column label="处理过程" prop="problemProcess" min-width="25%" :resizable="false"></el-table-column>
+                    <el-table-column label="登记时间" prop="gmtCreate" min-width="15%" :resizable="false" :formatter="gmtCreateFormat">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+        <template>
             <el-tabs type="border-card" style="margin-top:5px">
-                <el-tab-pane label="登记信息">
+                <el-tab-pane label="添加">
                     <div class="queryCenter">
                         <el-form
-                                :model="registerform"
-                                ref="registerform"
+                                :model="registerForm"
+                                ref="registerForm"
                                 class="edit-forms fromadd"
                                 label-position="right"
                                 label-width="150px"
@@ -43,7 +72,7 @@
                         >
                             <el-form-item label="故障类型" prop="problemType">
                                 <el-select
-                                        v-model="registerform.problemType"
+                                        v-model="registerForm.problemType"
                                         placeholder="请选择"
                                         class="formqueryleft"
                                         :disabled=this.readOnly
@@ -57,28 +86,18 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="故障原因" prop="problemReason">
-                                <el-input type="textarea" v-model="registerform.problemReason" clearable :disabled=this.readOnly></el-input>
+                                <el-input type="textarea" v-model="registerForm.problemReason" clearable :disabled=this.readOnly></el-input>
                             </el-form-item>
                             <el-form-item label="解决方式" prop="resolveWay">
-                                <el-input type="textarea" v-model="registerform.resolveWay" clearable :disabled=this.readOnly></el-input>
+                                <el-input type="textarea" v-model="registerForm.resolveWay" clearable :disabled=this.readOnly></el-input>
                             </el-form-item>
                             <el-form-item label="处理过程" prop="process">
-                                <el-input type="textarea" v-model="registerform.process" clearable :disabled=this.readOnly></el-input>
+                                <el-input type="textarea" v-model="registerForm.process" clearable :disabled=this.readOnly></el-input>
                             </el-form-item>
                             <el-form-item label="已解决" prop="isResole">
-                                <el-checkbox v-model="registerform.isResolve" class="formqueryleft" :disabled=this.readOnly></el-checkbox>
+                                <el-checkbox v-model="registerForm.isResolve" class="formqueryleft" :disabled=this.readOnly></el-checkbox>
                             </el-form-item>
-                            <el-button type="primary" @click="dialogVisible = true" :style="{ display: buttonDisplay }">登记</el-button>
-                            <el-dialog
-                                    title="提示"
-                                    :visible.sync="dialogVisible"
-                                    width="30%">
-                                <span style="font-size: medium;font-weight: bold">确认信息登记无误，登记后无法更改！</span>
-                                <span slot="footer" class="dialog-footer">
-                                    <el-button @click="dialogVisible = false">取 消</el-button>
-                                    <el-button type="primary" @click="submit('registerform')">确 定</el-button>
-                                  </span>
-                            </el-dialog>
+                            <el-button type="primary" @click="dialogRegister('registerForm')" :style="{ display: buttonDisplay }">登记</el-button>
                         </el-form>
                     </div>
                 </el-tab-pane>
@@ -111,7 +130,14 @@ export default {
       dialogVisible: false,
       readOnly: false,
       buttonDisplay: '',
-      registerform: {
+      tableData: [{
+        problemType: '',
+        problemReason: '',
+        problemSolution: '',
+        problemProcess: '',
+        gmtCreate: ''
+      }],
+      registerForm: {
         problemName: '',
         problemType: '',
         ns: '',
@@ -119,8 +145,10 @@ export default {
         problemReason: '',
         resolveWay: '',
         process: '',
-        isResolve: false
+        isResolve: false,
+        claimId: ''
       },
+      showTable: false,
       show: false,
       isShow: false,
       options: [{
@@ -154,113 +182,159 @@ export default {
     }
   },
   created () {
-    this.showInfo(this.$route.query.problemId)
+    this.loading = true
+    this.tableData = this.tableDataclear
+    this.showInfo(this.$route.query.claimId)
   },
   mounted () {
   },
   methods: {
+    dialogRegister (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // this.dialogVisible = true
+          this.$confirm('确认信息登记无误，登记后无法更改!', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.submit()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消登记'
+            })
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    problemTypeFormat (val) {
+      if (val.problemType === '0') {
+        return '类型一'
+      } else if (val.problemType === '1') {
+        return '类型二'
+      } else if (val.problemType === '2') {
+        return '类型三'
+      } else if (val.problemType === '3') {
+        return '类型四'
+      }
+    },
+    gmtCreateFormat (val) {
+      if (val.gmtCreate !== null && val.gmtCreate !== '') {
+        var index = val.gmtCreate.indexOf('.')
+        return val.gmtCreate.substr(0, index).replace('T', ' ')
+      }
+    },
+    tableRowStyle ({ row, column, rowIndex, columnIndex }) {
+    },
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
+      }
+    },
     reloadData () {
     },
     backfrom () {
       this.$router.go(-1) // 返回上一层
     },
     clearform () {
-      resetObject(this.registerform)
-      this.$refs.registerform.resetFields()
+      resetObject(this.registerForm)
+      this.$refs.registerForm.resetFields()
     },
     makeParam () {
       var problemTypeResult = 0
-      if (this.registerform.isResolve === true) {
+      if (this.registerForm.isResolve === true) {
         problemTypeResult = 1
       }
       const region = {
         problemId: this.$route.query.problemId,
-        // problemName: this.$route.query.problemName,
-        problemType: this.registerform.problemType,
-        // ns: this.registerform.ns,
-        // registerTime: this.registerform.registerTime,
-        problemReason: this.registerform.problemReason,
-        problemSolution: this.registerform.resolveWay,
-        problemProcess: this.registerform.process,
+        problemType: this.registerForm.problemType,
+        problemReason: this.registerForm.problemReason,
+        problemSolution: this.registerForm.resolveWay,
+        problemProcess: this.registerForm.process,
         isResolve: problemTypeResult,
         gmtCreate: (new Date()).getTime(),
         isDeleted: 0,
-        handleTime: ''
+        handleTime: '',
+        claimId: this.$route.query.claimId
       }
       return region
     },
-    submit (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          const region = this.makeParam()
-          this.axios.post('/register/addRegister', region).then((resp) => {
-            if (resp.status === 200) {
-              var json = resp.data
-              if (json.code === 1) {
-                const param = {
-                  problemId: json.data.problemId,
-                  isRegister: 1,
-                  isResolve: json.data.isResolve,
-                  handleTime: this.handleTime
+    submit () {
+      const region = this.makeParam()
+      this.axios.post('/register/addRegister', region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            const param = {
+              id: this.$route.query.claimId,
+              isRegister: 1,
+              isResolve: json.data.isResolve,
+              handleTime: this.handleTime
+            }
+            this.axios.post('/problem/updateClaimAfterRegister', param).then((resp) => {
+              if (resp.status === 200) {
+                var json = resp.data
+                if (json.code === 1) {
+                  this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                  })
+                  this.$emit('success')
+                  this.$router.push({ name: 'malfunctionDisposeRegister' })
                 }
-                this.axios.post('/problem/updateClaimAfterRegister', param).then((resp) => {
-                  if (resp.status === 200) {
-                    var json = resp.data
-                    if (json.code === 1) {
-                      this.$message({
-                        message: '添加成功',
-                        type: 'success'
-                      })
-                      this.$emit('success')
-                      this.$router.push({ name: 'malfunctionDisposeRegister' })
-                    }
-                  } else {
-                    this.$message({
-                      message: '添加失败',
-                      type: 'error'
-                    })
-                    this.$emit('error')
-                    this.$router.push({ name: 'malfunctionDisposeRegister' })
-                  }
-                })
               } else {
                 this.$message({
                   message: '添加失败',
                   type: 'error'
                 })
-                this.clearform()
                 this.$emit('error')
                 this.$router.push({ name: 'malfunctionDisposeRegister' })
               }
-            } else {
-              this.$message({
-                message: '添加失败',
-                type: 'error'
-              })
-              this.clearform()
-              this.$emit('error')
-              this.$router.push({ name: 'malfunctionDisposeRegister' })
-            }
-          })
-          this.dialogVisible = false
+            })
+          } else {
+            this.$message({
+              message: '添加失败',
+              type: 'error'
+            })
+            this.clearform()
+            this.$emit('error')
+            this.$router.push({ name: 'malfunctionDisposeRegister' })
+          }
         } else {
-          return false
+          this.$message({
+            message: '添加失败',
+            type: 'error'
+          })
+          this.clearform()
+          this.$emit('error')
+          this.$router.push({ name: 'malfunctionDisposeRegister' })
         }
       })
     },
-    showInfo (id) {
-      if (id != null && id !== '') {
-        this.axios.post('/register/findRegisterById/' + id, {
-          id: id
+    showInfo (claimId) {
+      if (claimId != null && claimId !== '') {
+        this.axios.post('/register/findRegisterByClaimId/' + claimId, {
+          id: claimId
         }).then((resp) => {
           if (resp.status === 200) {
+            var json = resp.data
+            console.log(json)
+            if (json.code === 1) {
+              this.tableData = json.data
+              this.loading = false
+              this.showTable = true
+              console.log(this.showTable)
+            }
             if (resp.data.data[0] != null) {
-              this.registerform.problemReason = resp.data.data[0].problemReason
-              this.registerform.process = resp.data.data[0].problemProcess
-              this.registerform.resolveWay = resp.data.data[0].problemSolution
+              this.registerForm.problemReason = resp.data.data[0].problemReason
+              this.registerForm.process = resp.data.data[0].problemProcess
+              this.registerForm.resolveWay = resp.data.data[0].problemSolution
               if (resp.data.data[0].isResolve === 1) {
                 this.show = true
-                this.registerform.isResolve = true
+                this.registerForm.isResolve = true
                 this.buttonDisplay = 'none'
                 this.readOnly = true
                 var temp = new Date(resp.data.data[0].gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
@@ -280,9 +354,9 @@ export default {
                   this.handleTime = 0 + '分钟'
                 }
               } else {
-                this.registerform.isResolve = false
+                this.registerForm.isResolve = false
               }
-              this.registerform.problemType = Number(resp.data.data[0].problemType)
+              this.registerForm.problemType = Number(resp.data.data[0].problemType)
             }
           } else {
             this.$message({
@@ -300,6 +374,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    .tableHeaderColor {
+        font-size: 20;
+    }
     .queryleft {
         float: left;
     }

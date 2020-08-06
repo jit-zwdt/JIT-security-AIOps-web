@@ -49,7 +49,8 @@ export default {
       tableData: [{
         problemName: '',
         ns: '',
-        claimTime: ''
+        claimTime: '',
+        claimId: ''
       }],
       registerform: {
         problemName: '',
@@ -65,15 +66,6 @@ export default {
     this.showInfo()
   },
   methods: {
-    // setButtonVal (val) {
-    //   if (val.isRegister === 1 && val.isResolve === 1) {
-    //     return '已解决'
-    //   } else if (val.isRegister === 1 && val.isResolve !== 1) {
-    //     return '已登记'
-    //   } else if (val.isRegister !== 1) {
-    //     return '登记'
-    //   }
-    // },
     // 修改table tr行的背景色
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
     },
@@ -123,7 +115,8 @@ export default {
       this.currentPage = val
     },
     malfunctionDisposeRegister: function (index, row) {
-      this.$router.push({ name: 'malfunctionDisposeRegisterAdd', query: { problemId: row.problemId, problemName: row.problemName, ns: row.ns, claimTime: row.claimTime } })
+      console.log(row)
+      this.$router.push({ name: 'malfunctionDisposeRegisterAdd', query: { problemId: row.problemId, problemName: row.problemName, ns: row.ns, claimTime: row.claimTime, claimId: row.id } })
     }
   },
   actions: {}
