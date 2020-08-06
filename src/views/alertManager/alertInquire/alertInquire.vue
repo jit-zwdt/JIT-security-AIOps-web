@@ -18,16 +18,21 @@
             </el-option>
           </el-select>
         </el-col>
-        <el-col :span="20">
-          <el-date-picker
-                  v-model="dateRange"
-                  type="daterange"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :default-time="['00:00:00', '23:59:59']">
-          </el-date-picker>
+        <el-date-picker
+                v-model="timeFrom"
+                type="date"
+                placeholder="开始日期"
+                class="datetop"
+        ></el-date-picker>
+        <el-date-picker
+                v-model="timeTill"
+                type="date"
+                placeholder="结束日期"
+                class="datetop"
+        ></el-date-picker>
+        <el-col :span="12">
+          <el-input type="text" v-model="name" size="small" placeholder="告警标题" clearable></el-input>
         </el-col>
-        <el-input v-model="name" placeholder="请输入关键字"></el-input>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
                 type="primary"
@@ -47,38 +52,43 @@
             :row-style="tableRowStyle"
             :header-cell-style="tableHeaderColor"
     >
-      <el-table-column label="主机id" prop="hostId" :resizable="false" width="75"></el-table-column>
-      <el-table-column label="主机名称" prop="hostName" :resizable="false" width="100"></el-table-column>
+      <el-table-column label="主机名称" prop="hostName" :resizable="false" width="150"></el-table-column>
+      <el-table-column label="主机ip" prop="ip" :resizable="false" width="150"></el-table-column>
       <el-table-column label="告警标题" prop="zabbixProblemDTO.name" :resizable="false"></el-table-column>
-      <el-table-column label="级别" min-width="30%">
-        <template slot-scope="scope">
-          <div>
-            <el-radio-group
-                    v-model="scope.row.severity"
-                    size="small"
-                    @mouseover.native="default_priority(scope.row)"
-            >
-               <el-radio-button label="0">未分类</el-radio-button>
-              <el-radio-button label="1">信息</el-radio-button>
-              <el-radio-button label="2">警告</el-radio-button>
-              <el-radio-button label="3">一般严重</el-radio-button>
-              <el-radio-button label="4">严重</el-radio-button>fo
-              <el-radio-button label="5">灾难</el-radio-button>
-            </el-radio-group>
-          </div>
-        </template>
+      <el-table-column label="级别"
+                       prop="zabbixProblemDTO.severity"
+                       min-width="10%"
+                       :resizable="false"
+                       :formatter="severityLevelFormat"
+      >
       </el-table-column>
 
     </el-table>
+    <div class="block" style="margin-top:15px;">
+      <el-pagination
+              align="center"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[15, 30, 50, 100]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableData.length"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
+import { Message } from 'element-ui'
+import { formatTodate, compareDate } from '@/utils/format.js'
+// import { timesMethod } from '../../../utils/formatDate'
+
 export default {
   name: 'alertInquire',
   data () {
     return {
-      severity: 0,
+      severity: '',
       severityOptions: [
         {
           value: 0,
@@ -105,11 +115,13 @@ export default {
           label: '灾难'
         }
       ],
-      dateRange: [],
+      timeFrom: '',
+      timeTill: '',
       name: '',
       loading: true,
       tableData: [{
         hostId: '',
+        ip: '',
         hostName: '',
         clock: '',
         name: ''
@@ -117,7 +129,9 @@ export default {
       tableDataclear: [],
       currentPage: 1, // 当前页码
       pageSize: 15,
-      show: false
+      total: 20,
+      show: false,
+      setTimeoutster: ''
     }
   },
   created () {
@@ -131,11 +145,28 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
+      this.setTimeoutster = ''
+
+      let startTimestr = ''
+      startTimestr = formatTodate(this.timeFrom, 'YYYY/MM/DD 00:00:00')
+      startTimestr = String(Math.round(new Date(startTimestr).getTime() / 1000))
+
+      let endTimestr = ''
+      endTimestr = formatTodate(this.timeTill, 'YYYY-MM-DD 23:59:59')
+      endTimestr = String(Math.round(new Date(endTimestr).getTime() / 1000))
+
+      if (compareDate(startTimestr, endTimestr)) {
+        Message({
+          message: '开始日期大于结束日期！',
+          type: 'warning'
+        })
+        return
+      }
       const region = {
-        severity: this.severity
-        // startDate: this.dateRange[0],
-        // endDate: this.dateRange[1],
-        // name: this.name
+        severity: this.severity,
+        timeFrom: startTimestr,
+        timeTill: endTimestr,
+        name: this.name
       }
       this.axios.post('/problem/findProblemHost', region).then((resp) => {
         if (resp.status === 200) {
@@ -143,7 +174,6 @@ export default {
           if (json.code === 1) {
             // console.log(json.data)
             this.tableData = json.data
-            console.log(this.tableData)
             this.currentPage = 1
           }
         } else {
@@ -156,7 +186,7 @@ export default {
       })
     },
     showClear (str) {
-      this.severity = 0
+      this.severity = ''
     },
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
     },
@@ -167,6 +197,23 @@ export default {
     },
     default_priority (rowData) {
       this.priority = rowData.priority
+    },
+    severityLevelFormat (row, column) {
+      var data = row.zabbixProblemDTO.severity
+      var level = ''
+      this.severityOptions.forEach(item => {
+        if (item.value === data) {
+          level = item.label
+        }
+      })
+      return level
+    },
+    handleSizeChange (val) {
+      this.currentPage = 1
+      this.pageSize = val
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
     }
   }
 
