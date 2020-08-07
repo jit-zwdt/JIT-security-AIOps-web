@@ -21,7 +21,7 @@
             <el-col>
               <el-form-item label="报警媒介">
                 <el-table
-                  :data="tableData"
+                  :data="tempData"
                   style="width: 100%;border:1px solid #EBEEF5"
                   min-height="40"
                 >
@@ -29,7 +29,7 @@
                   <el-table-column prop="mediaid" label="媒体ID" min-width="10%" v-if="show"></el-table-column>
                   <el-table-column prop="mediatypeid" label="媒体类型ID" min-width="10%" v-if="show"></el-table-column>
                   <el-table-column prop="name" label="类型" min-width="10%"></el-table-column>
-                  <el-table-column prop="sendto" label="收件人" min-width="15%"></el-table-column>
+                  <el-table-column prop="sendto" label="收件人" :show-overflow-tooltip="true" min-width="23%"></el-table-column>
                   <el-table-column prop="period" label="当启用时" min-width="20%"></el-table-column>
                   <el-table-column prop="severity" label="如果存在严重性则使用" min-width="38%">
                     <template slot-scope="scope">
@@ -40,7 +40,7 @@
                     <template slot-scope="scope">
                       <el-link
                         type="primary"
-                        @click="showPossessionInfo(scope.row)"
+                        @click="changeStatus(scope.row)"
                         v-html="formatterCss(scope.row)"
                       ></el-link>
                     </template>
@@ -62,7 +62,7 @@
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="closefrom()">取消</el-button>
-      <el-button type="primary" @click="submitOrUpdate('serverListForm')">更新</el-button>
+      <el-button type="primary" @click="submitOrUpdate()">更新</el-button>
     </div>
   </el-dialog>
 </template>
@@ -94,7 +94,8 @@ export default {
         this.$parent.$parent.noReloadData()
       },
       spanChangeColor: '',
-      spanredChangeColor: ''
+      spanredChangeColor: '',
+      tempData: ''
     }
   },
   methods: {
@@ -121,6 +122,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
+            this.tempData = this.tableData
           }
         } else {
           this.$message({
@@ -204,6 +206,34 @@ export default {
     },
     fillZero (p) {
       return new Array(6 - (p + '').length + 1).join('0') + p
+    },
+    changeStatus (row) {
+      if (row.active === '1') {
+        row.active = '0'
+      } else {
+        row.active = '1'
+      }
+    },
+    deleteRow (index) {
+      this.tempData.splice(index, 1)
+    },
+    submitOrUpdate () {
+      console.log(this.tempData)
+      this.axios.post('/user/updateUserAndMediaInfo/' + this.userid, this.tempData).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.tableData = json.data
+            this.tempData = this.tableData
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      this.closefrom()
     }
   },
   components: {}
