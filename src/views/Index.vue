@@ -1074,7 +1074,7 @@ export default {
         timeFrom: timefrom,
         timeTill: timetill
       }
-      this.axios.post('/problem/findByCondition', region).then((resp) => {
+      this.axios.post('/problem/getAlertdata', region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
