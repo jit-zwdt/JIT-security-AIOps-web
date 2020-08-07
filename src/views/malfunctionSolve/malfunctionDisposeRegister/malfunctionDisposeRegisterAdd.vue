@@ -49,6 +49,7 @@
                         :row-style="tableRowStyle"
                         :header-cell-style="tableHeaderColor"
                 >
+                    <el-table-column label="序号" prop="num" min-width="10%" :resizable="false"></el-table-column>
                     <el-table-column label="故障类型" prop="problemType" min-width="10%" :resizable="false" :formatter="problemTypeFormat"></el-table-column>
                     <el-table-column label="故障原因" prop="problemReason" min-width="25%" :resizable="false"></el-table-column>
                     <el-table-column label="解决方式" prop="problemSolution" min-width="25%" :resizable="false"></el-table-column>
@@ -59,49 +60,51 @@
             </div>
         </template>
         <template>
-            <el-tabs type="border-card" style="margin-top:5px">
-                <el-tab-pane label="添加">
-                    <div class="queryCenter">
-                        <el-form
-                                :model="registerForm"
-                                ref="registerForm"
-                                class="edit-forms fromadd"
-                                label-position="right"
-                                label-width="150px"
-                                :rules="RegisterRules"
-                        >
-                            <el-form-item label="故障类型" prop="problemType">
-                                <el-select
-                                        v-model="registerForm.problemType"
-                                        placeholder="请选择"
-                                        class="formqueryleft"
-                                        :disabled=this.readOnly
-                                >
-                                    <el-option
-                                            v-for="item in options"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
-                                    ></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="故障原因" prop="problemReason">
-                                <el-input type="textarea" v-model="registerForm.problemReason" clearable :disabled=this.readOnly></el-input>
-                            </el-form-item>
-                            <el-form-item label="解决方式" prop="resolveWay">
-                                <el-input type="textarea" v-model="registerForm.resolveWay" clearable :disabled=this.readOnly></el-input>
-                            </el-form-item>
-                            <el-form-item label="处理过程" prop="process">
-                                <el-input type="textarea" v-model="registerForm.process" clearable :disabled=this.readOnly></el-input>
-                            </el-form-item>
-                            <el-form-item label="已解决" prop="isResole">
-                                <el-checkbox v-model="registerForm.isResolve" class="formqueryleft" :disabled=this.readOnly></el-checkbox>
-                            </el-form-item>
-                            <el-button type="primary" @click="dialogRegister('registerForm')" :style="{ display: buttonDisplay }">登记</el-button>
-                        </el-form>
-                    </div>
-                </el-tab-pane>
-            </el-tabs>
+            <div v-if="showList">
+                <el-tabs type="border-card" style="margin-top:5px">
+                    <el-tab-pane label="添加">
+                        <div class="queryCenter">
+                            <el-form
+                                    :model="registerForm"
+                                    ref="registerForm"
+                                    class="edit-forms fromadd"
+                                    label-position="right"
+                                    label-width="150px"
+                                    :rules="RegisterRules"
+                            >
+                                <el-form-item label="故障类型" prop="problemType">
+                                    <el-select
+                                            v-model="registerForm.problemType"
+                                            placeholder="请选择"
+                                            class="formqueryleft"
+                                            :disabled=this.readOnly
+                                    >
+                                        <el-option
+                                                v-for="item in options"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value"
+                                        ></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="故障原因" prop="problemReason">
+                                    <el-input type="textarea" v-model="registerForm.problemReason" clearable :disabled=this.readOnly></el-input>
+                                </el-form-item>
+                                <el-form-item label="解决方式" prop="resolveWay">
+                                    <el-input type="textarea" v-model="registerForm.resolveWay" clearable :disabled=this.readOnly></el-input>
+                                </el-form-item>
+                                <el-form-item label="处理过程" prop="process">
+                                    <el-input type="textarea" v-model="registerForm.process" clearable :disabled=this.readOnly></el-input>
+                                </el-form-item>
+                                <el-form-item label="已解决" prop="isResole">
+                                    <el-checkbox v-model="registerForm.isResolve" class="formqueryleft" :disabled=this.readOnly></el-checkbox>
+                                </el-form-item>
+                                <el-button type="primary" @click="dialogRegister('registerForm')" :style="{ display: buttonDisplay }">登记</el-button>
+                            </el-form>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </template>
         <template>
             <div class="card dark-main-background" v-if="show">
@@ -127,10 +130,10 @@ export default {
   data () {
     return {
       handleTime: '',
+      showList: true,
       dialogVisible: false,
-      readOnly: false,
-      buttonDisplay: '',
       tableData: [{
+        num: '',
         problemType: '',
         problemReason: '',
         problemSolution: '',
@@ -150,7 +153,6 @@ export default {
       },
       showTable: false,
       show: false,
-      isShow: false,
       options: [{
         value: 0,
         label: '类型一'
@@ -275,6 +277,7 @@ export default {
               handleTime: this.handleTime
             }
             this.axios.post('/problem/updateClaimAfterRegister', param).then((resp) => {
+              console.log(this.handleTime)
               if (resp.status === 200) {
                 var json = resp.data
                 if (json.code === 1) {
@@ -326,21 +329,20 @@ export default {
               this.loading = false
               if (this.tableData.length !== 0) {
                 this.showTable = true
+                for (var i = 0; i < this.tableData.length; i++) {
+                  this.tableData[i].num = i + 1
+                }
               }
             }
-            if (resp.data.data[0] != null) {
-              this.registerForm.problemReason = resp.data.data[0].problemReason
-              this.registerForm.process = resp.data.data[0].problemProcess
-              this.registerForm.resolveWay = resp.data.data[0].problemSolution
-              if (resp.data.data[0].isResolve === 1) {
+            if (resp.data.data[resp.data.data.length - 1] != null) {
+              if (resp.data.data[resp.data.data.length - 1].isResolve === 1) {
                 this.show = true
-                this.registerForm.isResolve = true
-                this.buttonDisplay = 'none'
-                this.readOnly = true
+                this.showList = false
                 var temp = new Date(resp.data.data[resp.data.data.length - 1].gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
                 var days = Math.floor(temp / (60 * 60 * 24 * 1000))
                 var hours = Math.floor((temp % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
                 var minutes = Math.floor((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
+                var seconds = Math.floor(((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) % (60 * 1000)) / (60 * 1000))
                 if (days > 0) {
                   this.handleTime = days + '天 '
                 }
@@ -350,13 +352,14 @@ export default {
                 if (minutes > 0) {
                   this.handleTime += minutes + '分钟'
                 }
-                if (days < 1 && hours < 1 && minutes < 1) {
-                  this.handleTime = 0 + '分钟'
+                if (seconds > 0) {
+                  this.handleTime += seconds + '秒'
                 }
-              } else {
-                this.registerForm.isResolve = false
+                if (days < 1 && hours < 1 && minutes < 1) {
+                  this.handleTime = seconds + '秒'
+                }
+                console.log(this.handleTime)
               }
-              this.registerForm.problemType = Number(resp.data.data[0].problemType)
             }
           } else {
             this.$message({
