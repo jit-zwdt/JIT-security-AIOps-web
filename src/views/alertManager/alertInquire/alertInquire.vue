@@ -152,7 +152,7 @@ export default {
       startTimestr = String(Math.round(new Date(startTimestr).getTime() / 1000))
 
       let endTimestr = ''
-      endTimestr = formatTodate(this.timeTill, 'YYYY-MM-DD 23:59:59')
+      endTimestr = formatTodate(this.timeTill, 'YYYY/MM/DD 23:59:59')
       endTimestr = String(Math.round(new Date(endTimestr).getTime() / 1000))
 
       if (compareDate(startTimestr, endTimestr)) {

@@ -29,7 +29,7 @@
                   <el-table-column prop="mediaid" label="媒体ID" min-width="10%" v-if="show"></el-table-column>
                   <el-table-column prop="mediatypeid" label="媒体类型ID" min-width="10%" v-if="show"></el-table-column>
                   <el-table-column prop="name" label="类型" min-width="10%"></el-table-column>
-                  <el-table-column prop="sendto" label="收件人" min-width="15%"></el-table-column>
+                  <el-table-column prop="sendto" label="收件人" :show-overflow-tooltip="true" min-width="15%"></el-table-column>
                   <el-table-column prop="period" label="当启用时" min-width="20%"></el-table-column>
                   <el-table-column prop="severity" label="如果存在严重性则使用" min-width="38%">
                     <template slot-scope="scope">
@@ -40,7 +40,7 @@
                     <template slot-scope="scope">
                       <el-link
                         type="primary"
-                        @click="showPossessionInfo(scope.row)"
+                        @click="changeStatus(scope.row)"
                         v-html="formatterCss(scope.row)"
                       ></el-link>
                     </template>
@@ -204,6 +204,10 @@ export default {
     },
     fillZero (p) {
       return new Array(6 - (p + '').length + 1).join('0') + p
+    },
+    changeStatus (row) {
+      // var isActive = row.active
+      // this.axios.update()
     }
   },
   components: {}
