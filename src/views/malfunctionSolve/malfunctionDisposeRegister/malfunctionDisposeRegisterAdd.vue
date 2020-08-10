@@ -60,7 +60,7 @@
             </div>
         </template>
         <template>
-            <div v-if="showList" style="display:none;">
+            <div v-if="showList" v-cloak>
                 <el-tabs type="border-card" style="margin-top:5px">
                     <el-tab-pane label="添加">
                         <div class="queryCenter">
@@ -385,6 +385,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    [v-cloak]
+    {
+        display:none;
+    }
     .tableHeaderColor {
         font-size: 20;
     }
