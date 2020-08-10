@@ -77,7 +77,6 @@
                                             v-model="registerForm.problemType"
                                             placeholder="请选择"
                                             class="formqueryleft"
-                                            :disabled=this.readOnly
                                     >
                                         <el-option
                                                 v-for="item in options"
@@ -88,18 +87,18 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="故障原因" prop="problemReason">
-                                    <el-input type="textarea" v-model="registerForm.problemReason" clearable :disabled=this.readOnly></el-input>
+                                    <el-input type="textarea" v-model="registerForm.problemReason" clearable ></el-input>
                                 </el-form-item>
                                 <el-form-item label="解决方式" prop="resolveWay">
-                                    <el-input type="textarea" v-model="registerForm.resolveWay" clearable :disabled=this.readOnly></el-input>
+                                    <el-input type="textarea" v-model="registerForm.resolveWay" clearable ></el-input>
                                 </el-form-item>
                                 <el-form-item label="处理过程" prop="process">
-                                    <el-input type="textarea" v-model="registerForm.process" clearable :disabled=this.readOnly></el-input>
+                                    <el-input type="textarea" v-model="registerForm.process" clearable ></el-input>
                                 </el-form-item>
                                 <el-form-item label="已解决" prop="isResole">
-                                    <el-checkbox v-model="registerForm.isResolve" class="formqueryleft" :disabled=this.readOnly></el-checkbox>
+                                    <el-checkbox v-model="registerForm.isResolve" class="formqueryleft" ></el-checkbox>
                                 </el-form-item>
-                                <el-button type="primary" @click="dialogRegister('registerForm')" :style="{ display: buttonDisplay }">登记</el-button>
+                                <el-button type="primary" @click="dialogRegister('registerForm')" >登记</el-button>
                             </el-form>
                         </div>
                     </el-tab-pane>
@@ -259,7 +258,6 @@ export default {
         isResolve: problemTypeResult,
         gmtCreate: (new Date()).getTime(),
         isDeleted: 0,
-        handleTime: '',
         claimId: this.$route.query.claimId
       }
       return region
@@ -270,14 +268,44 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
+            console.log(json.data)
+            if (json.data.isResolve === 1) {
+              console.log(json.data.gmtCreate.replace('.000+08:00', ''))
+              console.log(this.$route.query.claimTime)
+              var temp = new Date(json.data.gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
+              console.log(temp)
+              var days = Math.floor(temp / (60 * 60 * 24 * 1000))
+              console.log(days)
+              var hours = Math.floor((temp % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
+              console.log(hours)
+              var minutes = Math.floor((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
+              console.log(minutes)
+              var seconds = Math.floor(((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) % (60 * 1000)) / 1000)
+              console.log(seconds)
+              if (days > 0) {
+                this.handleTime += days + '天 '
+              }
+              if (hours > 0) {
+                this.handleTime += hours + '小时 '
+              }
+              if (minutes > 0) {
+                this.handleTime += minutes + '分钟'
+              }
+              if (seconds > 0) {
+                this.handleTime += seconds + '秒'
+              }
+              if (days < 1 && hours < 1 && minutes < 1) {
+                this.handleTime = seconds + '秒'
+              }
+            }
+            console.log('111111111111111111111111111111111', this.handleTime)
             const param = {
               id: this.$route.query.claimId,
               isRegister: 1,
               isResolve: json.data.isResolve,
-              handleTime: this.handleTime
+              problemHandleTime: this.handleTime
             }
             this.axios.post('/problem/updateClaimAfterRegister', param).then((resp) => {
-              console.log(this.handleTime)
               if (resp.status === 200) {
                 var json = resp.data
                 if (json.code === 1) {
@@ -338,27 +366,7 @@ export default {
               if (resp.data.data[resp.data.data.length - 1].isResolve === 1) {
                 this.show = true
                 this.showList = false
-                var temp = new Date(resp.data.data[resp.data.data.length - 1].gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
-                var days = Math.floor(temp / (60 * 60 * 24 * 1000))
-                var hours = Math.floor((temp % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
-                var minutes = Math.floor((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
-                var seconds = Math.floor(((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) % (60 * 1000)) / (60 * 1000))
-                if (days > 0) {
-                  this.handleTime = days + '天 '
-                }
-                if (hours > 0) {
-                  this.handleTime += hours + '小时 '
-                }
-                if (minutes > 0) {
-                  this.handleTime += minutes + '分钟'
-                }
-                if (seconds > 0) {
-                  this.handleTime += seconds + '秒'
-                }
-                if (days < 1 && hours < 1 && minutes < 1) {
-                  this.handleTime = seconds + '秒'
-                }
-                console.log(this.handleTime)
+                this.handleTime = resp.data.data[resp.data.data.length - 1].problemHandleTime
               }
             }
           } else {
