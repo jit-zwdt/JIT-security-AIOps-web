@@ -3,7 +3,7 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="12">
-          <el-input type="text" v-model="problemHandleTime" size="small" placeholder="故障解决时长" clearable></el-input>
+          <el-input type="text" v-model="problemName" size="small" placeholder="故障名称" clearable></el-input>
         </el-col>
         <el-select v-model="problemType" class="datetop" filterable placeholder="故障类型" clearable>
           <el-option
@@ -31,7 +31,7 @@
             :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="序号" prop="index" min-width="2%" :resizable="false"></el-table-column>
-      <el-table-column label="名称" prop="claim.problemName" min-width="20%" :resizable="false"></el-table-column>
+      <el-table-column label="故障名称" prop="claim.problemName" min-width="20%" :resizable="false"></el-table-column>
       <el-table-column
               label="故障类型"
               prop="register.problemType"
@@ -56,7 +56,7 @@ export default {
     return {
       showEditDialog: false,
       problemType: '',
-      problemHandleTime: '',
+      problemName: '',
       statusList: [{
         value: 0,
         label: '类型一'
@@ -83,7 +83,7 @@ export default {
     // 修改table header的背景色
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #d6dee4;color: #FFFFFF;font-weight: 500;font-size:15px'
+        return 'background-color: #93cdff;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
     reloadData () {
@@ -101,7 +101,7 @@ export default {
       this.axios
         .post('/problem/problemSolveReport', qs.stringify({
           problemType: this.problemType,
-          problemHandleTime: this.problemHandleTime
+          problemName: this.problemName
         }))
         .then(resp => {
           if (resp.status === 200) {
@@ -115,7 +115,7 @@ export default {
     },
     showClear () {
       this.problemType = ''
-      this.problemHandleTime = ''
+      this.problemName = ''
     },
     problemTypeFormat (val) {
       if (val.register.problemType === '0') {
