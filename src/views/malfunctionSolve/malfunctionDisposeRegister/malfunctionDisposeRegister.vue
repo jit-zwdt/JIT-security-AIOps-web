@@ -1,5 +1,24 @@
 <template>
   <div>
+    <ToolBar>
+      <div class="queryleft">
+        <el-col :span="12">
+          <el-input type="text" v-model="problemName" size="small" placeholder="故障名称" clearable></el-input>
+        </el-col>
+        <el-select v-model="resolveType" class="datetop" filterable placeholder="是否解决" clearable>
+          <el-option
+                  v-for="status in resolveTypeList"
+                  :key="status.value"
+                  :label="status.label"
+                  :value="status.value"
+          ></el-option>
+        </el-select>
+        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
+      </div>
+      <div class="queryright">
+      </div>
+    </ToolBar>
     <el-table
             :data="(tableData || []).slice((currentPage-1)*pageSize,currentPage*pageSize)"
             border
@@ -40,12 +59,22 @@
   </div>
 </template>
 <script>
+import qs from 'qs'
 export default {
   data: function () {
     return {
       totalCount: 0,
       titleType: '',
       showEditDialog: false,
+      problemName: '',
+      resolveType: '',
+      resolveTypeList: [{
+        value: 0,
+        label: '未解决'
+      }, {
+        value: 1,
+        label: '已解决'
+      }],
       tableData: [{
         problemName: '',
         ns: '',
@@ -78,6 +107,10 @@ export default {
     reloadData () {
       this.showInfo()
     },
+    showClear () {
+      this.resolveType = ''
+      this.problemName = ''
+    },
     showInfo () {
       this.loading = true
       this.tableData = this.tableDataclear
@@ -88,8 +121,10 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post('/problem/findClaimByUser')
-        .then(resp => {
+        .post('/problem/findClaimByUser', qs.stringify({
+          problemName: this.problemName,
+          resolveType: this.resolveType
+        })).then(resp => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {

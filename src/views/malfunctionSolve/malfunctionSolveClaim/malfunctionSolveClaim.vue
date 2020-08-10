@@ -1,5 +1,21 @@
 <template>
     <div>
+        <ToolBar>
+            <div class="queryleft">
+                <el-select v-model="claimType" class="datetop" filterable placeholder="认领类型" clearable>
+                    <el-option
+                            v-for="status in claimTypeList"
+                            :key="status.value"
+                            :label="status.label"
+                            :value="status.value"
+                    ></el-option>
+                </el-select>
+                <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
+            </div>
+            <div class="queryright">
+            </div>
+        </ToolBar>
         <el-table
                 :data="(tableData || []).slice((currentPage-1)*pageSize,currentPage*pageSize)"
                 border
@@ -79,8 +95,16 @@ export default {
     return {
       totalCount: 0,
       titleType: '',
+      claimType: '',
       showEditDialog: false,
       showInfoDialog: false,
+      claimTypeList: [{
+        value: 0,
+        label: '未认领'
+      }, {
+        value: 1,
+        label: '已认领'
+      }],
       tableData: [{
         name: '',
         ns: '',
@@ -118,6 +142,9 @@ export default {
     reloadData () {
       this.showInfo()
     },
+    showClear () {
+      this.claimType = ''
+    },
     showInfo () {
       this.loading = true
       this.tableData = this.tableDataclear
@@ -129,7 +156,8 @@ export default {
     showInfoTimeout () {
       var severities = [5, 4, 3]
       const params = {
-        severities: severities
+        severities: severities,
+        claimType: this.claimType
       }
       this.axios
         .post('/problem/findBySeverityLevel', params)
@@ -147,6 +175,7 @@ export default {
                 var days = Math.floor(keepTime / (60 * 60 * 24 * 1000))
                 var hours = Math.floor((keepTime % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
                 var minutes = Math.floor((keepTime % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
+                this.tableData[i].zabbixProblemDTO.ns = ''
                 if (days > 0) {
                   this.tableData[i].zabbixProblemDTO.ns = days + '天 '
                 }

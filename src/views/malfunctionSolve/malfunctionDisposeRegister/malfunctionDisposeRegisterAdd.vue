@@ -30,7 +30,7 @@
             </div>
         </template>
         <template>
-            <div class="card dark-main-background" v-show="showTable">
+            <div class="card dark-main-background" v-if="showTable">
                 <div
                         class="title-bar card-header dark-main-background dark-white-color"
                         style="margin-top:-10px !important;height:40px"
@@ -60,7 +60,7 @@
             </div>
         </template>
         <template>
-            <div v-if="showList" v-cloak>
+            <div v-if="showList">
                 <el-tabs type="border-card" style="margin-top:5px">
                     <el-tab-pane label="添加">
                         <div class="queryCenter">
@@ -129,8 +129,7 @@ export default {
   data () {
     return {
       handleTime: '',
-      showList: true,
-      dialogVisible: false,
+      showList: false,
       tableData: [{
         num: '',
         problemType: '',
@@ -193,7 +192,6 @@ export default {
     dialogRegister (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // this.dialogVisible = true
           this.$confirm('确认信息登记无误，登记后无法更改!', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -351,6 +349,7 @@ export default {
           id: claimId
         }).then((resp) => {
           if (resp.status === 200) {
+            this.showList = true
             var json = resp.data
             if (json.code === 1) {
               this.tableData = json.data
@@ -367,6 +366,8 @@ export default {
                 this.show = true
                 this.showList = false
                 this.handleTime = resp.data.data[resp.data.data.length - 1].problemHandleTime
+              } else {
+                this.showList = true
               }
             }
           } else {
