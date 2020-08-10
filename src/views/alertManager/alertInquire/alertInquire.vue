@@ -55,6 +55,7 @@
       <el-table-column label="主机名称" prop="hostName" :resizable="false" width="150"></el-table-column>
       <el-table-column label="主机ip" prop="ip" :resizable="false" width="150"></el-table-column>
       <el-table-column label="告警标题" prop="zabbixProblemDTO.name" :resizable="false"></el-table-column>
+      <el-table-column label="告警时间" prop="zabbixProblemDTO.clock" :resizable="false" :formatter="formatterdata" width="200" ></el-table-column>
       <el-table-column label="级别"
                        prop="zabbixProblemDTO.severity"
                        min-width="10%"
@@ -148,13 +149,10 @@ export default {
       this.setTimeoutster = ''
 
       let startTimestr = ''
-      startTimestr = formatTodate(this.timeFrom, 'YYYY/MM/DD 00:00:00')
-      startTimestr = String(Math.round(new Date(startTimestr).getTime() / 1000))
+      startTimestr = formatTodate(this.timeFrom, 'YYYY-MM-DD 00:00:00')
 
       let endTimestr = ''
-      endTimestr = formatTodate(this.timeTill, 'YYYY/MM/DD 23:59:59')
-      endTimestr = String(Math.round(new Date(endTimestr).getTime() / 1000))
-
+      endTimestr = formatTodate(this.timeTill, 'YYYY-MM-DD 23:59:59')
       if (compareDate(startTimestr, endTimestr)) {
         Message({
           message: '开始日期大于结束日期！',
@@ -162,6 +160,9 @@ export default {
         })
         return
       }
+      endTimestr = String(Math.round(new Date(endTimestr).getTime() / 1000))
+      startTimestr = String(Math.round(new Date(startTimestr).getTime() / 1000))
+
       const region = {
         severity: this.severity,
         timeFrom: startTimestr,
@@ -174,6 +175,7 @@ export default {
           if (json.code === 1) {
             // console.log(json.data)
             this.tableData = json.data
+            console.log(this.tableData)
             this.currentPage = 1
           }
         } else {
@@ -187,6 +189,9 @@ export default {
     },
     showClear (str) {
       this.severity = ''
+      this.timeFrom = ''
+      this.timeTill = ''
+      this.name = ''
     },
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
     },
@@ -214,6 +219,9 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
+    },
+    formatterdata (str) {
+      return formatTodate(str.zabbixProblemDTO.clock, 'YYYY-MM-DD HH:mm:ss')
     }
   }
 
