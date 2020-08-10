@@ -60,7 +60,7 @@
             </div>
         </template>
         <template>
-            <div v-if="showList">
+            <div v-if="showList" style="display:none;">
                 <el-tabs type="border-card" style="margin-top:5px">
                     <el-tab-pane label="添加">
                         <div class="queryCenter">
