@@ -107,7 +107,7 @@ export default {
       },
       spanChangeColor: '',
       spanredChangeColor: '',
-      tempData: ''
+      tempData: []
     }
   },
   methods: {
@@ -196,7 +196,6 @@ export default {
     },
     makeMonitorTypeItems (row) {
       var html = ''
-      // console.log(row.severity)
       var severity = parseInt(row.severity)
       var severityString = Number(severity.toString(2))
       var severityNum = this.fillZero(severityString)

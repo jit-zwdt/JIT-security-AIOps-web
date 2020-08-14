@@ -114,8 +114,8 @@ export default {
           { required: true, message: '请输入启用条件' }
         ],
         moreNotifyOjbectEmail: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          { required: true, message: '请输入收件人邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的收件人邮箱地址', trigger: 'blur' }
         ]
       },
       serverListForm: {
@@ -167,7 +167,7 @@ export default {
     },
     closefrom () {
       this.checkList = []
-      // this.clearform()
+      this.clearform()
       this.$emit('close')
     },
     clearform () {
@@ -177,7 +177,6 @@ export default {
     submit () {
     },
     showInfo () {
-      console.log(this.row)
       this.clearform()
       this.serverListForm.moreNotifyObject = []
       const params = {
@@ -271,7 +270,7 @@ export default {
     submitOrUpdate (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.serverListForm.type)
+          console.log('1', this.serverListForm)
           var list = []
           var sendtoList = []
           sendtoList.push(this.serverListForm.sendto)
@@ -298,6 +297,7 @@ export default {
             this.serverListForm.active = '1'
           }
           this.serverListForm.severity = parseInt(list.toString().replace(/,/g, ''), 2)
+          console.log('2', this.serverListForm)
           this.$emit('success', this.serverListForm)
           this.closefrom()
         } else {
