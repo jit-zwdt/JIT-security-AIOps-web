@@ -5,6 +5,7 @@ import QueryAlert from '@/views/alertManager/queryAlert/queryAlert.vue'
 import AlertDefineAdd from '@/views/alertManager/alertDefine/alertDefineAdd.vue'
 import AlertTypeAdd from '@/views/alertManager/alertType/alertTypeAdd.vue'
 import AlertInquire from '@/views/alertManager/alertInquire/alertInquire.vue'
+import AddUserMedias from '@/views/alertManager/alertDefine/addUserMedias.vue'
 
 export default [
   {
@@ -61,6 +62,14 @@ export default [
     component: AlertInquire,
     meta: {
       title: '统一告警查询'
+    }
+  },
+  {
+    path: 'addUserMedias',
+    name: 'addUserMedias',
+    component: AddUserMedias,
+    meta: {
+      title: '告警媒介'
     }
   }
 ]

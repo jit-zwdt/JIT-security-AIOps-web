@@ -167,6 +167,7 @@ export default {
             if (json.code === 1) {
               var now = new Date()
               this.tableData = json.data
+              console.log(this.tableData)
               if (this.tableData) {
                 this.totalCount = this.tableData.length
               }
@@ -219,8 +220,8 @@ export default {
       this.assetform.severity = row.zabbixProblemDTO.severity
       this.assetform.objectid = row.zabbixProblemDTO.objectid
       this.assetform.clock = row.zabbixProblemDTO.clock
-      this.assetform.hostId = row.hostId
-      this.assetform.hostName = row.hostName
+      this.assetform.hostId = row.zabbixProblemDTO.hostid
+      this.assetform.hostName = row.zabbixProblemDTO.host
       this.titleType = '添加'
     },
     malfucntionShowInfo: function (index, row) {

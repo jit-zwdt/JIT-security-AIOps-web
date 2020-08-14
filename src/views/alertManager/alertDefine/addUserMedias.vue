@@ -5,8 +5,9 @@
     :title="title"
     :visible.sync="addUserMediasDialog"
     :before-close="handleclosebind"
-    :show-close="true"
+    :show-close="false"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
   >
     <div>
       <ToolBar>
@@ -19,24 +20,23 @@
         >
           <el-row>
             <el-col>
-              <el-form-item label="报警媒介">
                 <el-table
                   :data="tempData"
                   style="width: 100%;border:1px solid #EBEEF5"
                   min-height="40"
                 >
-                  <el-table-column prop="userid" label="ID" min-width="10%" v-if="show"></el-table-column>
-                  <el-table-column prop="mediaid" label="媒体ID" min-width="10%" v-if="show"></el-table-column>
-                  <el-table-column prop="mediatypeid" label="媒体类型ID" min-width="10%" v-if="show"></el-table-column>
+                  <el-table-column prop="userid" label="ID" v-if="show"></el-table-column>
+                  <el-table-column prop="mediaid" label="媒体ID" v-if="show"></el-table-column>
+                  <el-table-column prop="mediatypeid" label="媒体类型ID" v-if="show"></el-table-column>
                   <el-table-column prop="name" label="类型" min-width="10%"></el-table-column>
-                  <el-table-column prop="sendto" label="收件人" :show-overflow-tooltip="true" min-width="23%"></el-table-column>
-                  <el-table-column prop="period" label="当启用时" min-width="20%"></el-table-column>
-                  <el-table-column prop="severity" label="如果存在严重性则使用" min-width="38%">
+                  <el-table-column prop="sendto" label="收件人" :show-overflow-tooltip="true" min-width="30%"></el-table-column>
+                  <el-table-column prop="period" label="当启用时" min-width="15%"></el-table-column>
+                  <el-table-column prop="severity" label="如果存在严重性则使用" min-width="20%">
                     <template slot-scope="scope">
                       <div v-html="makeMonitorTypeItems(scope.row)"></div>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="active" label="Status" min-width="12%">
+                  <el-table-column prop="active" label="Status" min-width="10%">
                     <template slot-scope="scope">
                       <el-link
                         type="primary"
@@ -45,16 +45,23 @@
                       ></el-link>
                     </template>
                   </el-table-column>
-                  <el-table-column label="动作" min-width="10%">
+                  <el-table-column label="动作" min-width="15%">
                     <template slot-scope="scope">
+                      <el-button @click="addMedium(scope.row)" type="text" size="small" >编辑</el-button>
                       <el-button @click="deleteRow(scope.$index)" type="text" size="small">移除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
                 <div class="queryleft" style="margin-left:10px">
-                  <el-button @click="addRow()" type="text" size="small">添加</el-button>
+                  <el-button @click="addMedium(1)" type="text" size="small">添加</el-button>
                 </div>
-              </el-form-item>
+                <AddMedium
+                        :addMediumDialog="addMediumDialog"
+                        :row="row"
+                        @close="addMediumDialog = false"
+                        @success="reloadData"
+                        @error="reloadData"
+                ></AddMedium>
             </el-col>
           </el-row>
         </el-form>
@@ -68,6 +75,7 @@
 </template>
 <script>
 import qs from 'qs'
+import AddMedium from '@/views/alertManager/alertDefine/addMedium.vue'
 export default {
   props: {
     userid: {},
@@ -87,6 +95,10 @@ export default {
   },
   data () {
     return {
+      row: '',
+      addMediumDialog: false,
+      outerVisible: false,
+      innerVisible: false,
       show: false,
       tableData: [],
       serverForm: {},
@@ -99,6 +111,10 @@ export default {
     }
   },
   methods: {
+    addMedium (row) {
+      this.row = row
+      this.addMediumDialog = true
+    },
     openDialog () {
       this.showInfo()
     },
@@ -133,8 +149,32 @@ export default {
         this.loading = false
       })
     },
-    reloadData () {
-      // this.showInfo()
+    reloadData (e) {
+      console.log(e)
+      if (e.operation === '修改') {
+        for (var i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].mediaid === e.mediaid) {
+            this.tableData[i].sendto = e.sendto
+            this.tableData[i].active = e.active
+            this.tableData[i].severity = e.severity
+            this.tableData[i].period = e.period
+            this.tableData[i].name = e.type
+            this.tableData[i].mediatypeid = e.mediatypeid
+          }
+        }
+      } else {
+        this.tableData.push({
+          mediaid: e.mediaid,
+          userid: this.userid,
+          mediatypeid: e.mediatypeid,
+          sendto: e.sendto,
+          active: e.active,
+          severity: e.severity,
+          period: e.period,
+          name: e.type,
+          type: '0'
+        })
+      }
     },
     chooseItems () {
       // this.chooseItemsDialog = true
@@ -156,22 +196,16 @@ export default {
     },
     makeMonitorTypeItems (row) {
       var html = ''
+      // console.log(row.severity)
       var severity = parseInt(row.severity)
       var severityString = Number(severity.toString(2))
       var severityNum = this.fillZero(severityString)
-      console.log(severityNum)
       var one = severityNum.substring(0, 1)
-      console.log(one)
       var two = severityNum.substring(1, 2)
-      console.log(two)
       var three = severityNum.substring(2, 3)
-      console.log(three)
       var four = severityNum.substring(3, 4)
-      console.log(four)
       var five = severityNum.substring(4, 5)
-      console.log(five)
       var six = severityNum.substring(5, 6)
-      console.log(six)
       if (six === '1') {
         html = html + '<el-button type="primary" style="background-color:#97AAB3;border: 1px solid rgba(31, 44, 51, 0.2)" title="未分类">未</el-button>'
       } else {
@@ -218,7 +252,6 @@ export default {
       this.tempData.splice(index, 1)
     },
     submitOrUpdate () {
-      console.log(this.tempData)
       this.axios.post('/user/updateUserAndMediaInfo/' + this.userid, this.tempData).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -228,7 +261,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '查询失败',
+            message: '更新失败',
             type: 'error'
           })
         }
@@ -236,7 +269,7 @@ export default {
       this.closefrom()
     }
   },
-  components: {}
+  components: { AddMedium }
 }
 </script>
 <style lang="scss" scoped>

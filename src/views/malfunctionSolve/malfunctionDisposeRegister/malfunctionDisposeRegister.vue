@@ -150,7 +150,6 @@ export default {
       this.currentPage = val
     },
     malfunctionDisposeRegister: function (index, row) {
-      console.log(row)
       this.$router.push({ name: 'malfunctionDisposeRegisterAdd', query: { problemId: row.problemId, problemName: row.problemName, ns: row.ns, claimTime: row.claimTime, claimId: row.id } })
     }
   },
