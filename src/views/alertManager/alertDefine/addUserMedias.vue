@@ -150,7 +150,7 @@ export default {
       })
     },
     reloadData (e) {
-      console.log(e)
+      this.addMediumDialog = false
       if (e.operation === '修改') {
         for (var i = 0; i < this.tableData.length; i++) {
           if (this.tableData[i].mediaid === e.mediaid) {

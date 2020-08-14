@@ -84,7 +84,7 @@
 </template>
 <script>
 // import qs from 'qs'
-import { resetObject } from '@/utils/common'
+// import { resetObject } from '@/utils/common'
 export default {
   props: {
     userid: {},
@@ -166,18 +166,18 @@ export default {
       this.showInfo()
     },
     closefrom () {
-      this.checkList = []
       this.clearform()
       this.$emit('close')
     },
     clearform () {
-      resetObject(this.serverListForm)
-      // this.$refs.serverListForm.resetFields()
+      // resetObject(this.serverListForm)
+      this.checkList = []
+      this.$refs.serverListForm.resetFields()
+      this.showAdd = true
     },
     submit () {
     },
     showInfo () {
-      this.clearform()
       this.serverListForm.moreNotifyObject = []
       const params = {
         name: '',
@@ -270,7 +270,6 @@ export default {
     submitOrUpdate (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('1', this.serverListForm)
           var list = []
           var sendtoList = []
           sendtoList.push(this.serverListForm.sendto)
@@ -297,9 +296,8 @@ export default {
             this.serverListForm.active = '1'
           }
           this.serverListForm.severity = parseInt(list.toString().replace(/,/g, ''), 2)
-          console.log('2', this.serverListForm)
           this.$emit('success', this.serverListForm)
-          this.closefrom()
+          this.clearform()
         } else {
           return false
         }
