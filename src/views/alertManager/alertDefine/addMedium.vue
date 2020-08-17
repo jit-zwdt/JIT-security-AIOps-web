@@ -127,6 +127,7 @@ export default {
         severity: '',
         active: '',
         sendto: '',
+        sendtoList: [],
         moreNotifyObject: [{
           email: ''
         }]
@@ -271,13 +272,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var list = []
-          var sendtoList = []
-          sendtoList.push(this.serverListForm.sendto)
+          var senList = []
+          senList.push(this.serverListForm.sendto)
           if (this.serverListForm.moreNotifyObject.length > 0) {
             for (var i = 0; i < this.serverListForm.moreNotifyObject.length; i++) {
-              sendtoList.push(this.serverListForm.moreNotifyObject[i].email)
+              senList.push(this.serverListForm.moreNotifyObject[i].email)
             }
-            this.serverListForm.sendto = sendtoList
+            this.serverListForm.sendtoList = senList
           }
           if (this.checkList.length < 1) {
             this.checkList = ['0', '0', '0', '0', '0', '0']

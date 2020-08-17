@@ -21,7 +21,7 @@
           <el-row>
             <el-col>
                 <el-table
-                  :data="tempData"
+                  :data="tableData"
                   style="width: 100%;border:1px solid #EBEEF5"
                   min-height="40"
                 >
@@ -29,7 +29,7 @@
                   <el-table-column prop="mediaid" label="媒体ID" v-if="show"></el-table-column>
                   <el-table-column prop="mediatypeid" label="媒体类型ID" v-if="show"></el-table-column>
                   <el-table-column prop="name" label="类型" min-width="10%"></el-table-column>
-                  <el-table-column prop="sendto" label="收件人" :show-overflow-tooltip="true" min-width="30%"></el-table-column>
+                  <el-table-column prop="sendto" label="收件人" :show-overflow-tooltip="true" min-width="30%" :formatter="sendtoFormatter"></el-table-column>
                   <el-table-column prop="period" label="当启用时" min-width="15%"></el-table-column>
                   <el-table-column prop="severity" label="如果存在严重性则使用" min-width="20%">
                     <template slot-scope="scope">
@@ -106,8 +106,7 @@ export default {
         this.$parent.$parent.noReloadData()
       },
       spanChangeColor: '',
-      spanredChangeColor: '',
-      tempData: []
+      spanredChangeColor: ''
     }
   },
   methods: {
@@ -124,10 +123,23 @@ export default {
       this.$emit('close')
     },
     clearform () {
+      this.tableData = []
       // resetObject(this.serverListForm)
       // this.$refs.serverListForm.resetFields()
     },
     submit () {
+    },
+    sendtoFormatter (row, column) {
+      var temp = row.sendto
+      var result = ''
+      for (var i = 0; i < temp.length; i++) {
+        if (i !== temp.length - 1) {
+          result += (temp[i] + ',')
+        } else {
+          result += temp[i]
+        }
+      }
+      return result
     },
     showInfo () {
       var userid = this.userid
@@ -138,7 +150,6 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
-            this.tempData = this.tableData
           }
         } else {
           this.$message({
@@ -154,7 +165,7 @@ export default {
       if (e.operation === '修改') {
         for (var i = 0; i < this.tableData.length; i++) {
           if (this.tableData[i].mediaid === e.mediaid) {
-            this.tableData[i].sendto = e.sendto
+            this.tableData[i].sendto = e.sendtoList
             this.tableData[i].active = e.active
             this.tableData[i].severity = e.severity
             this.tableData[i].period = e.period
@@ -167,7 +178,7 @@ export default {
           mediaid: e.mediaid,
           userid: this.userid,
           mediatypeid: e.mediatypeid,
-          sendto: e.sendto,
+          sendto: e.sendtoList,
           active: e.active,
           severity: e.severity,
           period: e.period,
@@ -248,15 +259,14 @@ export default {
       }
     },
     deleteRow (index) {
-      this.tempData.splice(index, 1)
+      this.tableData.splice(index, 1)
     },
     submitOrUpdate () {
-      this.axios.post('/user/updateUserAndMediaInfo/' + this.userid, this.tempData).then((resp) => {
+      this.axios.post('/user/updateUserAndMediaInfo/' + this.userid, this.tableData).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
-            this.tempData = this.tableData
           }
         } else {
           this.$message({
