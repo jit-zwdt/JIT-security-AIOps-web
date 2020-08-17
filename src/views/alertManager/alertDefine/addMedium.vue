@@ -133,11 +133,8 @@ export default {
         }]
       },
       show: false,
-      tableData: [],
-      serverForm: {},
       spanChangeColor: '',
-      spanredChangeColor: '',
-      tempData: ''
+      spanredChangeColor: ''
     }
   },
   methods: {
@@ -278,8 +275,8 @@ export default {
             for (var i = 0; i < this.serverListForm.moreNotifyObject.length; i++) {
               senList.push(this.serverListForm.moreNotifyObject[i].email)
             }
-            this.serverListForm.sendtoList = senList
           }
+          this.serverListForm.sendtoList = senList
           if (this.checkList.length < 1) {
             this.checkList = ['0', '0', '0', '0', '0', '0']
           } else {
