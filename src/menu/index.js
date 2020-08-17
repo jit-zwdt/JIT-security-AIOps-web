@@ -4,39 +4,25 @@ const home = {
   permissionsKey: '',
   icon: 'fa fa-tachometer'
 }
-// const regionManager = {
-//   name: '各地区信息',
-//   permissionsKey: '',
-//   icon: 'fa fa-book',
-//   children: {
-//     regionManager: {
-//       name: '各地区服务器管理',
-//       path: '/regionManager/list',
-//       permissionsKey: ''
-//     },
-//     regionInfo: {
-//       name: '地区信息维护',
-//       path: '/regionManager/info',
-//       permissionsKey: ''
-//     }
-//   }
-// }
-// const updateManager = {
-//   name: '版本升级管理',
-//   permissionsKey: '',CPU使用的百分比
-//     },CPU使用的百分比
-//     versionHistory: {
-//       name: '版本回溯',
-//       path: '/versionHistory',
-//       permissionsKey: ''
-//     },
-//     versionError: {
-//       name: '版本异常',
-//       path: '/versionError',
-//       permissionsKey: ''
-//     }
-//   }
-// }
+const sysManager = {
+  name: '系统管理',
+  permissionsKey: '',
+  icon: 'fa el-icon-s-tools',
+  children: {
+    regionManager: {
+      name: '角色维护',
+      icon: 'fa el-icon-s-check',
+      path: '/roleManager/roleList',
+      permissionsKey: ''
+    },
+    regionInfo: {
+      name: '部门管理',
+      icon: 'fa el-icon-menu',
+      path: '/departmentManager/departmentList',
+      permissionsKey: ''
+    }
+  }
+}
 const assetsManager = {
   name: '资产管理',
   permissionsKey: '',
@@ -154,8 +140,7 @@ const malfunctionSolve = {
 
 export default {
   home,
-  // regionManager,
-  // updateManager,
+  sysManager,
   assetsManager,
   monitorManager,
   alertManager,
