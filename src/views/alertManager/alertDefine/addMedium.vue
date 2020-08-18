@@ -89,6 +89,7 @@ export default {
   props: {
     userid: {},
     row: {},
+    maxid: {},
     addMediumDialog: Boolean,
     dialogWidth: {
       type: String,
@@ -236,6 +237,7 @@ export default {
           this.checkList.push('未分类')
         }
       } else {
+        this.serverListForm.mediaid = this.maxid + 1
         this.serverListForm.mediatypeid = '1'
         this.serverListForm.type = 'Email'
         this.serverListForm.operation = '添加'

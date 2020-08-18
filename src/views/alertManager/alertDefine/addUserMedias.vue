@@ -58,6 +58,7 @@
                 <AddMedium
                         :addMediumDialog="addMediumDialog"
                         :row="row"
+                        :maxid="maxid"
                         @close="addMediumDialog = false"
                         @success="reloadData"
                         @error="reloadData"
@@ -96,6 +97,7 @@ export default {
   data () {
     return {
       row: '',
+      maxid: '',
       addMediumDialog: false,
       outerVisible: false,
       innerVisible: false,
@@ -112,6 +114,7 @@ export default {
   methods: {
     addMedium (row) {
       this.row = row
+      this.maxid = this.tableData[this.tableData.length - 1].mediaid
       this.addMediumDialog = true
     },
     openDialog () {
