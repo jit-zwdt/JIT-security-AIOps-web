@@ -140,6 +140,8 @@ export default {
   },
   methods: {
     getValue (e) {
+      this.serverListForm.sendto = ''
+      this.serverListForm.moreNotifyObject = []
       if (e === '44') {
         this.showAdd = false
       } else if (e === '1') {
@@ -201,6 +203,9 @@ export default {
         this.serverListForm.operation = '修改'
         this.serverListForm.mediaid = this.row.mediaid
         this.serverListForm.mediatypeid = this.row.mediatypeid
+        if (this.serverListForm.mediatypeid === '44') {
+          this.showAdd = false
+        }
         this.serverListForm.type = this.row.name
         this.serverListForm.period = this.row.period
         this.serverListForm.severity = this.row.severity

@@ -36,7 +36,7 @@
                       <div v-html="makeMonitorTypeItems(scope.row)"></div>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="active" label="Status" min-width="10%">
+                  <el-table-column prop="active" label="状态" min-width="10%">
                     <template slot-scope="scope">
                       <el-link
                         type="primary"
@@ -133,14 +133,18 @@ export default {
     submit () {
     },
     sendtoFormatter (row, column) {
-      var temp = row.sendto
       var result = ''
-      for (var i = 0; i < temp.length; i++) {
-        if (i !== temp.length - 1) {
-          result += (temp[i] + ',')
-        } else {
-          result += temp[i]
+      if (typeof row.sendto === 'object') {
+        var temp = row.sendto
+        for (var i = 0; i < temp.length; i++) {
+          if (i !== temp.length - 1) {
+            result += (temp[i] + ',')
+          } else {
+            result += temp[i]
+          }
         }
+      } else {
+        result = row.sendto
       }
       return result
     },
@@ -270,6 +274,10 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
+            this.$message({
+              message: '更新成功',
+              type: 'success'
+            })
           }
         } else {
           this.$message({
