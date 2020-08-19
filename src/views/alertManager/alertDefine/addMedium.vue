@@ -112,10 +112,10 @@ export default {
       checkList: [],
       rules: {
         period: [
-          { required: true, message: '请输入启用条件' }
+          { required: true, message: '启用条件不能为空' }
         ],
         moreNotifyOjbectEmail: [
-          { required: true, message: '请输入收件人邮箱地址', trigger: 'blur' },
+          { required: true, message: '收件人不能为空', trigger: 'blur' },
           { type: 'email', message: '请输入正确的收件人邮箱地址', trigger: 'blur' }
         ]
       },
