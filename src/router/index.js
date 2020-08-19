@@ -11,6 +11,7 @@ import AssetsManager from '@/views/assetsManager/assetsManager'
 import MonitorManager from '@/views/monitorManager/monitorManager'
 import AlertManager from '@/views/alertManager/alertManager'
 import MalfunctionSolve from '@/views/malfunctionSolve/malfunctionSolve'
+import SysManager from '@/views/sysManager/sysManager'
 
 Vue.use(VueRouter)
 
@@ -88,6 +89,16 @@ const routes = [
     meta: {
       requireAuth: true
     }
+  },
+  {
+    path: '/sysManager',
+    name: 'sysManager',
+    component: Layout,
+    meta: {
+      title: '系统管理',
+      requireAuth: true
+    },
+    children: SysManager
   },
   {
     path: '/assetsManager',
