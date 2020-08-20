@@ -1,16 +1,14 @@
 <template>
   <div class = "login-container">
-    <el-form ref="form" :model="loginForm" label-width="80px" class="login-page">
+    <el-form ref="form" :model="loginForm" class="login-page">
       <h3 class="title">登录</h3>
-      <el-form-item label="用户名">
-        <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
-      </el-form-item>
+      <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
       <el-form-item>
-        <el-button style="width: 100%" type="primary" @click="submitClick">登录</el-button>
       </el-form-item>
+      <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
+      <el-form-item>
+      </el-form-item>
+      <el-button style="width: 100%" type="primary" @click="submitClick">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -79,7 +77,7 @@ export default {
     border-radius: 5px;
     margin:0px auto;
     width: 350px;
-    padding: 20px 35px 35px 15px;
+    padding: 20px 20px 35px 20px;
     background: #fff;
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
