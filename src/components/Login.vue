@@ -1,12 +1,12 @@
 <template>
   <div class = "login-container">
-    <el-form ref="form" :model="loginForm" class="login-page">
+    <el-form ref="form" :model="loginForm" class="login-page" :rules="rules">
       <h3 class="title">登录</h3>
-      <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
-      <el-form-item>
+      <el-form-item prop="username">
+        <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable ></el-input>
       </el-form-item>
-      <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
-      <el-form-item>
+      <el-form-item prop="password">
+        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
       </el-form-item>
       <el-button style="width: 100%" type="primary" @click="submitClick">登录</el-button>
     </el-form>
@@ -21,6 +21,14 @@ export default {
       loginForm: {
         username: '',
         password: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名' }
+        ],
+        password: [
+          { required: true, message: '请输入密码' }
+        ]
       }
     }
   },
