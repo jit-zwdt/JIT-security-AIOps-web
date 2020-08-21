@@ -51,7 +51,7 @@
               <el-dropdown-item>密码</el-dropdown-item>
               <el-dropdown-item>冻结</el-dropdown-item>
               <el-dropdown-item>删除</el-dropdown-item>
-            </el-dropdown-menu>assetsList
+            </el-dropdown-menu>
           </el-dropdown>
         </template>
       </el-table-column>
