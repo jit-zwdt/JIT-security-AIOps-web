@@ -83,19 +83,18 @@
         :formatter="formatDate"
         v-if="show"
       ></el-table-column>
-      <el-table-column align="center" label="操作" min-width="10%">
+      <el-table-column align="center" label="操作" min-width="18">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
-            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete" circle></el-button>
+            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
           </el-popconfirm>
           <el-button
             size="mini"
             type="primary"
             slot="reference"
             icon="el-icon-edit-outline"
-            circle
             @click="confirmupdate(scope.$index, scope.row)"
-          ></el-button>
+          >编辑</el-button>
         </template>
       </el-table-column>
     </el-table>

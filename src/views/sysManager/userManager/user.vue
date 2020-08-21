@@ -33,16 +33,26 @@
       <el-table-column label="手机号" prop="mobile"></el-table-column>
       <el-table-column label="邮箱" prop="email" min-width="150"></el-table-column>
       <el-table-column label="状态" prop="status" :formatter="statusFormat"></el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button
               size="mini"
               type="primary"
               slot="reference"
               icon="el-icon-edit-outline"
-              circle
               @click="confirmupdate(scope.$index, scope.row)"
-          ></el-button>
+          >编辑</el-button>
+          <el-dropdown>
+            <el-button type="primary" size="mini">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>详情</el-dropdown-item>
+              <el-dropdown-item>密码</el-dropdown-item>
+              <el-dropdown-item>冻结</el-dropdown-item>
+              <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>assetsList
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>

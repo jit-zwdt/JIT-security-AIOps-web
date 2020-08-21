@@ -34,9 +34,8 @@
             type="primary"
             slot="reference"
             icon="el-icon-s-grid"
-            circle
             @click="showUserInfo(scope.$index, scope.row)"
-          ></el-button>
+          >编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
