@@ -28,11 +28,11 @@
       <el-table-column label="账号" prop="username"></el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
       <el-table-column label="所属部门" prop="department"></el-table-column>
-      <el-table-column label="性别" prop="sex"></el-table-column>
-      <el-table-column label="生日" prop="birth"></el-table-column>
+      <el-table-column label="性别" prop="sex" :formatter="sexFormat"></el-table-column>
+      <el-table-column label="生日" prop="birth" :formatter="dateFormat" min-width="120"></el-table-column>
       <el-table-column label="手机号" prop="mobile"></el-table-column>
-      <el-table-column label="邮箱" prop="email"></el-table-column>
-      <el-table-column label="状态" prop="status"></el-table-column>
+      <el-table-column label="邮箱" prop="email" min-width="150"></el-table-column>
+      <el-table-column label="状态" prop="status" :formatter="statusFormat"></el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button
@@ -139,13 +139,33 @@ export default {
       this.name = ''
       this.status = ''
     },
-    formatDate (row, column) {
+    dateFormat (row, column) {
       let data = ''
       data = row[column.property]
       if (data == null) {
         return ''
       }
       return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    },
+    sexFormat (row, column) {
+      const data = row[column.property]
+      if (data === 0) {
+        return '男'
+      } else if (data === 1) {
+        return '女'
+      } else {
+        return data
+      }
+    },
+    statusFormat (row, column) {
+      const data = row[column.property]
+      if (data === 0) {
+        return '禁用'
+      } else if (data === 1) {
+        return '正常'
+      } else {
+        return data
+      }
     }
   },
   components: { Pagination }
