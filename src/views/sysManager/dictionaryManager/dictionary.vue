@@ -237,6 +237,7 @@ export default {
       }
     },
     handleClose (done) {
+      this.currentPageDictItem = 1
       this.tableItemData = []
       done()
     },
