@@ -156,7 +156,8 @@ export default {
         departCode: [
           { required: true, message: '请填写部门编码' }, {
             validator: isExisted,
-            trigger: 'blur'
+            trigger: 'blur',
+            extend: ''// 自定义字段
           }
         ]
       }
@@ -172,6 +173,7 @@ export default {
             const json = resp.data
             if (json.code === 1) {
               this.form = json.data
+              this.rules.departCode[1].extend = json.data.id
             } else {
               this.$message({
                 message: '获取部门信息失败！',
@@ -193,6 +195,7 @@ export default {
       this.isDisable = false
     },
     clearform () {
+      this.rules.departCode[1].extend = ''
       for (var key in this.reqestData) {
         delete this.reqestData[key]
       }

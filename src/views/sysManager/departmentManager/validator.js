@@ -5,7 +5,12 @@ export function isExisted (rule, value, callback) {
     return callback(new Error('部门编码不可以为空'))
   }
   setTimeout(() => {
-    axios.get('/sys/department/checkDepartCode/' + value).then((resp) => {
+    axios.get('/sys/department/checkDepartCode', {
+      params: {
+        departCode: value,
+        id: rule.extend
+      }
+    }).then((resp) => {
       if (resp.status === 200) {
         const json = resp.data
         if (json.code === 1) {

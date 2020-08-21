@@ -17,31 +17,31 @@
       <div class="queryright"></div>
     </ToolBar>
     <el-table
-      :data="tableData"
-      border
-      v-loading="loading"
-      style="width: 100%"
-      :row-style="tableRowStyle"
-      :header-cell-style="tableHeaderColor"
+        :data="tableData"
+        border
+        v-loading="loading"
+        style="width: 100%"
+        :row-style="tableRowStyle"
+        :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
-      <el-table-column label="账号" prop="username" ></el-table-column>
-      <el-table-column label="姓名" prop="name" ></el-table-column>
-      <el-table-column label="所属部门" prop="department" ></el-table-column>
-      <el-table-column label="性别" prop="sex" ></el-table-column>
-      <el-table-column label="生日" prop="birth" ></el-table-column>
-      <el-table-column label="手机号"  prop="mobile" ></el-table-column>
-      <el-table-column label="邮箱" prop="email" ></el-table-column>
-      <el-table-column label="状态" prop="status" ></el-table-column>
-      <el-table-column align="center" label="操作" >
+      <el-table-column label="账号" prop="username"></el-table-column>
+      <el-table-column label="姓名" prop="name"></el-table-column>
+      <el-table-column label="所属部门" prop="department"></el-table-column>
+      <el-table-column label="性别" prop="sex"></el-table-column>
+      <el-table-column label="生日" prop="birth"></el-table-column>
+      <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <el-table-column label="邮箱" prop="email"></el-table-column>
+      <el-table-column label="状态" prop="status"></el-table-column>
+      <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button
-            size="mini"
-            type="primary"
-            slot="reference"
-            icon="el-icon-edit-outline"
-            circle
-            @click="confirmupdate(scope.$index, scope.row)"
+              size="mini"
+              type="primary"
+              slot="reference"
+              icon="el-icon-edit-outline"
+              circle
+              @click="confirmupdate(scope.$index, scope.row)"
           ></el-button>
         </template>
       </el-table-column>
@@ -52,6 +52,7 @@
 <script>
 import { formatTodate } from '@/utils/format.js'
 import Pagination from '@/components/Pagination.vue'
+
 export default {
   data () {
     return {
@@ -87,7 +88,8 @@ export default {
   },
   methods: {
     // 修改table tr行的背景色
-    tableRowStyle ({ row, column, rowIndex, columnIndex }) { },
+    tableRowStyle ({ row, column, rowIndex, columnIndex }) {
+    },
     // 修改table header的背景色
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
@@ -103,10 +105,12 @@ export default {
       this.loading = true
       this.tableData = this.tableDataclear
       const _this = this
-      this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
+      this.setTimeoutster = window.setTimeout(() => {
+        _this.showInfoTimeout()
+      }, 300)
     },
     showInfoTimeout () {
-      this.axios.get('/sys/user/getUsers', {
+      this.axios.post('/sys/user/getUsers', {
         param: {
           username: this.username,
           name: this.name,
@@ -148,23 +152,28 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.queryleft {
-  float: left;
-}
-.queryright {
-  float: right;
-}
-.tableHeaderColor {
-  font-size: 20;
-}
-.datetop /deep/ input {
-  height: 32px !important;
-  margin-top: 1px !important;
-}
-/deep/.el-input__prefix {
-  margin-top: -3px;
-}
-/deep/.el-button {
-  margin-left: 10px;
-}
+  .queryleft {
+    float: left;
+  }
+
+  .queryright {
+    float: right;
+  }
+
+  .tableHeaderColor {
+    font-size: 20;
+  }
+
+  .datetop /deep/ input {
+    height: 32px !important;
+    margin-top: 1px !important;
+  }
+
+  /deep/ .el-input__prefix {
+    margin-top: -3px;
+  }
+
+  /deep/ .el-button {
+    margin-left: 10px;
+  }
 </style>
