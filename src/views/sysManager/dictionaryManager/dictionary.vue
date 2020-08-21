@@ -151,7 +151,7 @@
                             @size-change="handleSizeChangeDictItem"
                             @current-change="handleCurrentChangeDictItem"
                             :current-page="currentPageDictItem"
-                            :page-sizes="[15, 30, 50, 100]"
+                            :page-sizes="[10]"
                             :page-size="pageSizeDictItem"
                             layout="total, sizes, prev, pager, next, jumper"
                             :total="totalDictItemCount"
@@ -182,7 +182,7 @@ export default {
       currentPage: 1, // 当前页码
       pageSize: 15, // 每页的数据条数
       currentPageDictItem: 1, // 当前页码
-      pageSizeDictItem: 15, // 每页的数据条数
+      pageSizeDictItem: 10, // 每页的数据条数
       showEditDialog: false,
       showEditDictItemDialog: false,
       name: '',
