@@ -9,16 +9,22 @@ const sysManager = {
   permissionsKey: '',
   icon: 'fa el-icon-s-tools',
   children: {
-    roleManager: {
-      name: '角色维护',
-      icon: 'fa el-icon-s-check',
-      path: '/roleManager/roleList',
-      permissionsKey: ''
-    },
     departmentManager: {
       name: '部门管理',
       icon: 'fa el-icon-menu',
       path: '/sysManager/department',
+      permissionsKey: ''
+    },
+    userManager: {
+      name: '人员管理',
+      icon: 'fa el-icon-user-solid',
+      path: '/sysManager/user',
+      permissionsKey: ''
+    },
+    roleManager: {
+      name: '角色维护',
+      icon: 'fa el-icon-s-check',
+      path: '/roleManager/roleList',
       permissionsKey: ''
     },
     dictionaryManager: {
