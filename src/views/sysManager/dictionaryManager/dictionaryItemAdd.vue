@@ -88,6 +88,31 @@ export default {
     }
   },
   data () {
+    var isItemTextExisted = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('名称不可以为空'))
+      }
+      if (rule.originalItemText !== value) {
+        setTimeout(() => {
+          this.axios.get('/sys/dictionary/checkItemText/' + value).then((resp) => {
+            if (resp.status === 200) {
+              const json = resp.data
+              if (json.code === 1) {
+                if (json.data === true) {
+                  callback(new Error('名称已存在！'))
+                } else {
+                  callback()
+                }
+              } else {
+                callback(new Error('名称校验失败！'))
+              }
+            } else {
+              callback(new Error('名称校验失败！'))
+            }
+          })
+        }, 0)
+      }
+    }
     return {
       num: 1,
       dictionaryItemForm: {
@@ -100,7 +125,7 @@ export default {
       },
       rules: {
         itemText: [
-          { required: true, message: '名称不能为空' }
+          { required: true, validator: isItemTextExisted, originalItemText: '' }
         ],
         itemValue: [
           { required: true, message: '数据值不能为空' }
@@ -110,16 +135,15 @@ export default {
   },
   methods: {
     openDialog () {
-      console.log(this.id)
-      console.log(this.dictId)
       if (this.id !== -1) {
         this.axios
-          .post('/dictionary/findDictionaryItemById/' + this.id)
+          .post('/sys/dictionary/findDictionaryItemById/' + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {
                 this.dictionaryItemForm = json.data
+                this.rules.itemText[0].originalItemText = this.dictionaryItemForm.itemText
               }
             }
           })
@@ -130,6 +154,7 @@ export default {
       this.$emit('close')
     },
     clearform () {
+      this.rules.itemText[0].originalItemText = ''
       resetObject(this.dictionaryItemForm)
       this.$refs.dictionaryItemForm.resetFields()
     },
@@ -144,7 +169,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post('/dictionary/addDictionaryItem', this.dictionaryItemForm).then((resp) => {
+      this.axios.post('/sys/dictionary/addDictionaryItem', this.dictionaryItemForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
