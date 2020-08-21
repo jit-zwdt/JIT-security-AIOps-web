@@ -68,6 +68,7 @@
 </template>
 <script>
 import { resetObject } from '@/utils/common'
+import qs from 'qs'
 export default {
   props: {
     titleType: {},
@@ -94,7 +95,10 @@ export default {
       }
       if (rule.originalItemText !== value) {
         setTimeout(() => {
-          this.axios.get('/sys/dictionary/checkItemText/' + value).then((resp) => {
+          this.axios.post('/sys/dictionary/checkItemText', qs.stringify({
+            itemText: value,
+            dictId: rule.dictId
+          })).then((resp) => {
             if (resp.status === 200) {
               const json = resp.data
               if (json.code === 1) {
@@ -111,6 +115,8 @@ export default {
             }
           })
         }, 0)
+      } else {
+        callback()
       }
     }
     return {
@@ -125,7 +131,7 @@ export default {
       },
       rules: {
         itemText: [
-          { required: true, validator: isItemTextExisted, originalItemText: '' }
+          { required: true, validator: isItemTextExisted, originalItemText: '', dictId: '' }
         ],
         itemValue: [
           { required: true, message: '数据值不能为空' }
@@ -144,9 +150,12 @@ export default {
               if (json.code === 1) {
                 this.dictionaryItemForm = json.data
                 this.rules.itemText[0].originalItemText = this.dictionaryItemForm.itemText
+                this.rules.itemText[0].dictId = this.dictionaryItemForm.dictId
               }
             }
           })
+      } else {
+        this.rules.itemText[0].dictId = this.dictId
       }
     },
     closefrom () {

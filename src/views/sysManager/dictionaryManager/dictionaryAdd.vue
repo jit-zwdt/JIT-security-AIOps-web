@@ -90,6 +90,8 @@ export default {
             }
           })
         }, 0)
+      } else {
+        callback()
       }
     }
     var isDictCodeExisted = (rule, value, callback) => {
@@ -115,6 +117,8 @@ export default {
             }
           })
         }, 0)
+      } else {
+        callback()
       }
     }
     return {
@@ -161,6 +165,7 @@ export default {
       this.$refs.dictionaryForm.resetFields()
     },
     submitOrUpdate (formName) {
+      console.log('111111', this.dictionaryForm)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.submit()

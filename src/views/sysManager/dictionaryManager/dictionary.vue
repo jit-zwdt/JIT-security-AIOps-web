@@ -76,7 +76,7 @@
                 @error="reloadData"
         ></dictionaryAdd>
         <el-drawer
-                title="字典列表"
+                :title="title"
                 :visible.sync="drawer"
                 size = "30%"
                 :direction="direction"
@@ -177,6 +177,7 @@ import dictionaryItemAdd from '@/views/sysManager/dictionaryManager/dictionaryIt
 export default {
   data () {
     return {
+      title: '',
       totalCount: 0,
       totalDictItemCount: 0,
       currentPage: 1, // 当前页码
@@ -351,6 +352,7 @@ export default {
     },
     dictionaryConfig (row) {
       this.dictId = row.dictionaryEntity.id
+      this.title = '字典项列表（' + row.dictionaryEntity.dictName + '）'
       this.showDictItemInfo()
     },
     showDictItem () {
