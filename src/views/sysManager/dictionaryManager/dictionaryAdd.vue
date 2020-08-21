@@ -67,6 +67,56 @@ export default {
     }
   },
   data () {
+    var isDictNameExisted = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('字典名称不可以为空'))
+      }
+      if (rule.originalDictName !== value) {
+        setTimeout(() => {
+          this.axios.get('/sys/dictionary/checkDictName/' + value).then((resp) => {
+            if (resp.status === 200) {
+              const json = resp.data
+              if (json.code === 1) {
+                if (json.data === true) {
+                  callback(new Error('字典名称已存在！'))
+                } else {
+                  callback()
+                }
+              } else {
+                callback(new Error('字典名称校验失败！'))
+              }
+            } else {
+              callback(new Error('字典名称校验失败！'))
+            }
+          })
+        }, 0)
+      }
+    }
+    var isDictCodeExisted = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('字典编号不可以为空'))
+      }
+      if (rule.originalDictCode !== value) {
+        setTimeout(() => {
+          this.axios.get('/sys/dictionary/checkDictCode/' + value).then((resp) => {
+            if (resp.status === 200) {
+              const json = resp.data
+              if (json.code === 1) {
+                if (json.data === true) {
+                  callback(new Error('字典编号已存在！'))
+                } else {
+                  callback()
+                }
+              } else {
+                callback(new Error('字典编号校验失败！'))
+              }
+            } else {
+              callback(new Error('字典编号校验失败！'))
+            }
+          })
+        }, 0)
+      }
+    }
     return {
       dictionaryForm: {
         dictName: '',
@@ -75,10 +125,10 @@ export default {
       },
       rules: {
         dictName: [
-          { required: true, message: '字典名称不能为空' }
+          { required: true, validator: isDictNameExisted, originalDictName: '' }
         ],
         dictCode: [
-          { required: true, message: '字典编号不能为空' }
+          { required: true, validator: isDictCodeExisted, originalDictCode: '' }
         ]
       }
     }
@@ -87,12 +137,14 @@ export default {
     openDialog () {
       if (this.id !== -1) {
         this.axios
-          .post('/dictionary/findDictionaryById/' + this.id)
+          .post('/sys/dictionary/findDictionaryById/' + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {
                 this.dictionaryForm = json.data
+                this.rules.dictName[0].originalDictName = json.data.dictName
+                this.rules.dictCode[0].originalDictCode = json.data.dictCode
               }
             }
           })
@@ -103,6 +155,8 @@ export default {
       this.$emit('close')
     },
     clearform () {
+      this.rules.dictName[0].originalDictName = ''
+      this.rules.dictCode[0].originalDictCode = ''
       resetObject(this.dictionaryForm)
       this.$refs.dictionaryForm.resetFields()
     },
@@ -116,7 +170,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post('/dictionary/addDictionary', this.dictionaryForm).then((resp) => {
+      this.axios.post('/sys/dictionary/addDictionary', this.dictionaryForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

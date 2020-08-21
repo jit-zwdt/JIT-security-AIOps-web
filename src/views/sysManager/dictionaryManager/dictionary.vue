@@ -75,89 +75,89 @@
                 @success="reloadData"
                 @error="reloadData"
         ></dictionaryAdd>
-        <template>
-            <el-drawer
+        <el-drawer
                 title="字典列表"
                 :visible.sync="drawer"
                 size = "30%"
                 :direction="direction"
-                >
+                :before-close="handleClose"
+        >
             <div class="card dark-main-background">
-                    <ToolBar>
-                        <div class="queryleft" style="width: 50%">
-                            <el-col :span="12">
-                                <el-input type="text" v-model="itemText" size="small" placeholder="名称" clearable></el-input>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-select v-model="status" class="datetop" size="small" filterable placeholder="状态" clearable>
-                                    <el-option
-                                            v-for="status in statusList"
-                                            :key="status.value"
-                                            :label="status.label"
-                                            :value="status.value"
-                                    ></el-option>
-                                </el-select>
-                            </el-col>
-                        </div>
-                        <div class="queryright" style="width: 50%">
-                            <el-button type="primary" size="small" @click="showDictItem()" icon="el-icon-search">查询</el-button>
-                            <el-button type="primary" size="small" @click="showDictItemClear()">重置</el-button>
-                        </div>
-                    </ToolBar>
-                    <ToolBar>
-                        <div>
-                            <el-button
-                                    type="primary"
-                                    size="small"
-                                    icon="el-icon-plus"
-                                    @click="showDictionaryItemAdd()== true"
-                            >新增
-                            </el-button>
-                        </div>
-                    </ToolBar>
-                    <el-table
-                            :data="tableItemData"
-                            border
-                            style="width: 100%"
-                            :row-style="tableRowStyle"
-                            :header-cell-style="tableHeaderColor"
-                    >
-                        <el-table-column label="名称" prop="itemText" min-width="25%" :resizable="false"></el-table-column>
-                        <el-table-column
-                                label="数据值"
-                                prop="itemValue"
-                                min-width="25%"
-                                :resizable="false"
-                        ></el-table-column>
-                        <el-table-column label="状态" prop="status" min-width="25%" :resizable="false" :formatter="statusFormat"></el-table-column>
-                        <el-table-column align="center" label="操作" min-width="25%">
-                            <template slot-scope="scope">
-                                <el-popconfirm title="确定删除吗？" @onConfirm="deleteDictItem(scope.row)">
-                                    <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete"></el-button>
-                                </el-popconfirm>
-                                <el-button
-                                        size="mini"
-                                        type="primary"
-                                        slot="reference"
-                                        icon="el-icon-edit-outline"
-                                        @click="dictionaryItemUpdate(scope.$index, scope.row)"
-                                ></el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <div class="block" style="margin-top:15px;">
-                        <el-pagination
-                                align="center"
-                                @size-change="handleSizeChangeDictItem"
-                                @current-change="handleCurrentChangeDictItem"
-                                :current-page="currentPageDictItem"
-                                :page-sizes="[10]"
-                                :page-size="pageSizeDictItem"
-                                layout="total, sizes, prev, pager, next, jumper"
-                                :total="totalDictItemCount"
-                        ></el-pagination>
+                <ToolBar>
+                    <div class="queryleft" style="width: 50%">
+                        <el-col :span="12">
+                            <el-input type="text" v-model="itemText" size="small" placeholder="名称" clearable></el-input>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-select v-model="status" class="datetop" size="small" filterable placeholder="状态" clearable>
+                                <el-option
+                                        v-for="status in statusList"
+                                        :key="status.value"
+                                        :label="status.label"
+                                        :value="status.value"
+                                ></el-option>
+                            </el-select>
+                        </el-col>
                     </div>
+                    <div class="queryright" style="width: 50%">
+                        <el-button type="primary" size="small" @click="showDictItem()" icon="el-icon-search">查询</el-button>
+                        <el-button type="primary" size="small" @click="showDictItemClear()">重置</el-button>
+                    </div>
+                </ToolBar>
+                <ToolBar>
+                    <div>
+                        <el-button
+                                type="primary"
+                                size="small"
+                                icon="el-icon-plus"
+                                @click="showDictionaryItemAdd()== true"
+                        >新增
+                        </el-button>
+                    </div>
+                </ToolBar>
+                <el-table
+                        :data="tableItemData"
+                        border
+                        style="width: 100%;height: 50px"
+                        :row-style="tableRowStyle"
+                        :header-cell-style="tableHeaderColor"
+                >
+                    <el-table-column label="名称" prop="itemText" min-width="25%" :resizable="false"></el-table-column>
+                    <el-table-column
+                            label="数据值"
+                            prop="itemValue"
+                            min-width="25%"
+                            :resizable="false"
+                    ></el-table-column>
+                    <el-table-column label="状态" prop="status" min-width="25%" :resizable="false" :formatter="statusFormat"></el-table-column>
+                    <el-table-column align="center" label="操作" min-width="25%">
+                        <template slot-scope="scope">
+                            <el-popconfirm title="确定删除吗？" @onConfirm="deleteDictItem(scope.row)">
+                                <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete"></el-button>
+                            </el-popconfirm>
+                            <el-button
+                                    size="mini"
+                                    type="primary"
+                                    slot="reference"
+                                    icon="el-icon-edit-outline"
+                                    @click="dictionaryItemUpdate(scope.$index, scope.row)"
+                            ></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="block" style="margin-top:15px;">
+                    <el-pagination
+                            align="center"
+                            @size-change="handleSizeChangeDictItem"
+                            @current-change="handleCurrentChangeDictItem"
+                            :current-page="currentPageDictItem"
+                            :page-sizes="[15, 30, 50, 100]"
+                            :page-size="pageSizeDictItem"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="totalDictItemCount"
+                    ></el-pagination>
                 </div>
+            </div>
             <dictionaryItemAdd
                     :title="titleType"
                     :id="id"
@@ -168,7 +168,6 @@
                     @error="reloadDataItem"
             ></dictionaryItemAdd>
         </el-drawer>
-        </template>
     </div>
 </template>
 <script>
@@ -183,7 +182,7 @@ export default {
       currentPage: 1, // 当前页码
       pageSize: 15, // 每页的数据条数
       currentPageDictItem: 1, // 当前页码
-      pageSizeDictItem: 10, // 每页的数据条数
+      pageSizeDictItem: 15, // 每页的数据条数
       showEditDialog: false,
       showEditDictItemDialog: false,
       name: '',
@@ -237,6 +236,10 @@ export default {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
+    handleClose (done) {
+      this.tableItemData = []
+      done()
+    },
     reloadData () {
       this.showInfo()
     },
@@ -261,7 +264,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post('/dictionary/getDictionary', qs.stringify({
+        .post('/sys/dictionary/getDictionary', qs.stringify({
           name: this.name,
           code: this.code,
           currentPage: this.currentPage,
@@ -273,7 +276,6 @@ export default {
             if (json.code === 1) {
               this.tableData = json.data.list
               this.totalCount = json.data.count
-              console.log(this.totalCount)
             }
           }
         })
@@ -297,7 +299,7 @@ export default {
       this.showEditDictItemDialog = true
     },
     confirmdelete (index, row) {
-      this.axios.delete('/dictionary/deleteDictionary/' + row.dictionaryEntity.id).then((resp) => {
+      this.axios.delete('/sys/dictionary/deleteDictionary/' + row.dictionaryEntity.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -316,8 +318,8 @@ export default {
         }
       })
     },
-    deleteDictItem (index, row) {
-      this.axios.delete('/dictionary/deleteDictionaryItem/' + row.id).then((resp) => {
+    deleteDictItem (row) {
+      this.axios.delete('/sys/dictionary/deleteDictionaryItem/' + row.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -325,14 +327,14 @@ export default {
               message: '删除成功',
               type: 'success'
             })
-            this.showInfo()
+            this.showDictItemInfo()
           }
         } else {
           this.$message({
             message: '删除失败',
             type: 'error'
           })
-          this.showInfo()
+          this.showDictItemInfo()
         }
       })
     },
@@ -355,7 +357,7 @@ export default {
       this.showDictItemInfo()
     },
     showDictItemInfo () {
-      this.axios.post('/dictionary/findDictionaryItemByDicId', qs.stringify({
+      this.axios.post('/sys/dictionary/findDictionaryItemByDicId', qs.stringify({
         id: this.dictId,
         itemText: this.itemText,
         status: this.status,
@@ -401,9 +403,5 @@ export default {
 
     /deep/ .el-button {
         margin-left: 10px;
-    }
-
-    .el-drawer.rtl{
-        overflow: scroll;
     }
 </style>
