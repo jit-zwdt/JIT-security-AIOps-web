@@ -173,7 +173,7 @@ export default {
             const json = resp.data
             if (json.code === 1) {
               this.form = json.data
-              this.rules.departCode[1].extend = json.data.id
+              this.rules.departCode[1].extend = json.data.departCode
             } else {
               this.$message({
                 message: '获取部门信息失败！',
