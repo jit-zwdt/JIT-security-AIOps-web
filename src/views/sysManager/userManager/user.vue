@@ -3,10 +3,13 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="12">
-          <el-input type="text" v-model="temp_name" size="small" placeholder="模版名称" clearable></el-input>
+          <el-input type="text" v-model="username" size="small" placeholder="账号" clearable></el-input>
         </el-col>
-        <el-select v-model="temp_type" class="datetop" filterable placeholder="请选择模版类型" clearable>
-          <el-option v-for="item in types" :key="item.id" :label="item.type" :value="item.id"></el-option>
+        <el-col :span="12">
+          <el-input type="text" v-model="name" size="small" placeholder="姓名" clearable></el-input>
+        </el-col>
+        <el-select v-model="status" class="datetop" filterable placeholder="用户状态" clearable>
+          <el-option v-for="item in statuses" :key="item.id" :label="item.type" :value="item.id"></el-option>
         </el-select>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
@@ -20,34 +23,17 @@
       style="width: 100%"
       :row-style="tableRowStyle"
       :header-cell-style="tableHeaderColor"
-      @sort-change="changeTableSort"
     >
-      <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="ico" prop="ico" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="名称" prop="name" min-width="25%" :resizable="false" :sortable="true"></el-table-column>
-      <el-table-column
-        label="类型"
-        prop="typeId"
-        min-width="15%"
-        :resizable="false"
-        :formatter="formatType"
-      ></el-table-column>
-      <el-table-column label="帮助描述文档" prop="helpDoc" min-width="10%" :resizable="false">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="？帮助" placement="right">
-            <el-link type="primary" @click="showTemp(scope.$index, scope.row)">查看</el-link>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="使用模版" prop="templates" min-width="25%" :resizable="false"></el-table-column>
-      <el-table-column
-        label="创建时间"
-        prop="gmtCreate"
-        min-width="15%"
-        :resizable="false"
-        :formatter="formatDate"
-      ></el-table-column>
-      <el-table-column align="center" label="操作" min-width="10%">
+      <el-table-column label="id" prop="id" v-if="false"></el-table-column>
+      <el-table-column label="账号" prop="username" ></el-table-column>
+      <el-table-column label="姓名" prop="name" ></el-table-column>
+      <el-table-column label="所属部门" prop="department" ></el-table-column>
+      <el-table-column label="性别" prop="sex" ></el-table-column>
+      <el-table-column label="生日" prop="birth" ></el-table-column>
+      <el-table-column label="手机号"  prop="mobile" ></el-table-column>
+      <el-table-column label="邮箱" prop="email" ></el-table-column>
+      <el-table-column label="状态" prop="status" ></el-table-column>
+      <el-table-column align="center" label="操作" >
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -61,59 +47,42 @@
       </el-table-column>
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
-    <monitorTemplateAdd
-      :title="titleType"
-      :editform="editform"
-      :showEditDialog="showEditDialog"
-      @close="showEditDialog = false"
-      @success="reloadData"
-      @error="reloadData"
-    ></monitorTemplateAdd>
-    <HelpTemplates :helpform="helpform" :showhelpDialog="showhelpDialog"></HelpTemplates>
   </div>
 </template>
 <script>
 import { formatTodate } from '@/utils/format.js'
-import monitorTemplateAdd from '@/views/monitorManager/monitorTemplates/monitorTemplateAdd.vue'
 import Pagination from '@/components/Pagination.vue'
-import HelpTemplates from '@/views/monitorManager/helpTemplates/helpTemplates.vue'
 export default {
   data () {
     return {
-      show: false,
       showEditDialog: false,
-      titleType: '',
+      username: '',
+      name: '',
+      status: '',
+      statuses: [
+        { id: '0', type: '禁用' },
+        { id: '1', type: '正常' }
+      ],
       tableData: [
         {
           id: '',
+          username: '',
           name: '',
-          type: '',
-          helpDoc: '',
-          userTemplate: ''
+          department: '',
+          sex: '',
+          birth: '',
+          mobile: '',
+          email: '',
+          status: ''
         }
       ],
-      temp_name: '',
-      temp_type: '',
-      types: [],
-      editform: {
-        id: '',
-        buttonflag: false
-      },
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
-      showhelpDialog: false,
-      helpform: {
-        url: '',
-        name: ''
-      },
-      loading: true,
-      tableDataclear: [],
-      setTimeoutster: ''
+      loading: true
     }
   },
   created () {
-    this.getTypes()
     this.showInfo()
   },
   methods: {
@@ -126,12 +95,9 @@ export default {
       }
     },
     reloadData () {
-      this.showEditDialog = false
-      this.showhelpDialog = false
       this.showInfo()
     },
     noReloadData () {
-      this.showhelpDialog = false
     },
     showInfo () {
       this.loading = true
@@ -140,38 +106,24 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout () {
-      this.axios
-        .post('/monitorTemplates/getMonitorTemplates', {
-          param: {
-            name: this.temp_name,
-            type: this.temp_type
-          },
-          page: this.currentPage,
-          size: this.pageSize,
-          orders: [
-            {
-              property: 'orderNum',
-              direction: 'ASC'
-            }
-          ]
-        })
-        .then(resp => {
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              this.tableData = json.data.dataList
-              this.currentTotal = json.data.totalRow
-              this.loading = false
-            }
+      this.axios.get('/sys/user/getUsers', {
+        param: {
+          username: this.username,
+          name: this.name,
+          status: this.status
+        },
+        page: this.currentPage,
+        size: this.pageSize
+      }).then(resp => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.tableData = json.data.dataList
+            this.currentTotal = json.data.totalRow
+            this.loading = false
           }
-        })
-    },
-    confirmupdate (index, row) {
-      this.showEditDialog = true
-      this.editform.id = row.id
-      this.editform.templates = row.templates
-      this.editform.buttonflag = true
-      this.titleType = row.name
+        }
+      })
     },
     pageChange (item) {
       this.currentPage = item.page_currentPage
@@ -179,9 +131,9 @@ export default {
       this.showInfo()
     },
     showClear () {
-      this.temp_name = ''
-      this.temp_type = ''
-      this.titleType = ''
+      this.username = ''
+      this.name = ''
+      this.status = ''
     },
     formatDate (row, column) {
       let data = ''
@@ -190,53 +142,9 @@ export default {
         return ''
       }
       return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
-    },
-    formatType (row, column) {
-      let data = ''
-      data = row[column.property]
-      for (var i = 0; i < this.types.length; i++) {
-        if (this.types[i].id === data) {
-          return this.types[i].type
-        }
-      }
-    },
-    changeTableSort (column) {
-      var fieldName = column.prop
-      var sortingType = column.order
-      if (sortingType === 'descendin') {
-        this.tableData = this.tableData.sort(
-          (a, b) => b[fieldName] - a[fieldName]
-        )
-      } else {
-        this.tableData = this.tableData.sort(
-          (a, b) => a[fieldName] - b[fieldName]
-        )
-      }
-    },
-    showTemp (index, row) {
-      this.helpform.url = row.helpDoc
-      this.helpform.name = row.name
-      this.helpform.imgurl = row.ico
-      this.showhelpDialog = true
-    },
-    getTypes () {
-      this.axios.post('/monitorType/getMonitorTypes').then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.types = json.data
-          }
-        } else {
-          this.$message({
-            message: '获取类型信息失败',
-            type: 'error'
-          })
-        }
-      })
     }
   },
-  actions: {},
-  components: { monitorTemplateAdd, Pagination, HelpTemplates }
+  components: { Pagination }
 }
 </script>
 <style lang="scss" scoped>
