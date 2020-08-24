@@ -36,7 +36,7 @@
             <el-table-column align="center" label="操作" min-width="10%">
                 <template slot-scope="scope">
                     <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
-                        <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete"></el-button>
+                        <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
                     </el-popconfirm>
                     <el-button
                             size="mini"
@@ -44,14 +44,14 @@
                             slot="reference"
                             icon="el-icon-edit-outline"
                             @click="dictionaryUpdate(scope.$index, scope.row)"
-                    ></el-button>
+                    >编辑</el-button>
                     <el-button
                             size="mini"
                             type="primary"
                             slot="reference"
                             icon="el-icon-setting"
                             @click="dictionaryConfig (scope.row)"
-                    ></el-button>
+                    >子项</el-button>
                 </template>
             </el-table-column>
         </el-table>
