@@ -45,6 +45,10 @@ export default {
   },
   mounted () {
     this.makeCode()
+    this.enterKeyup()
+  },
+  destroyed () {
+    this.enterKeyupDestroyed()
   },
   data () {
     return {
@@ -145,6 +149,22 @@ export default {
           })
         }
       })
+    },
+    enterKey (event) {
+      const code = event.keyCode
+        ? event.keyCode
+        : event.which
+          ? event.which
+          : event.charCode
+      if (code === 13) {
+        this.submitClick()
+      }
+    },
+    enterKeyupDestroyed () {
+      document.removeEventListener('keyup', this.enterKey)
+    },
+    enterKeyup () {
+      document.addEventListener('keyup', this.enterKey)
     }
   }
 }
