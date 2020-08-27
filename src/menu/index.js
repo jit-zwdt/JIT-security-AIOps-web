@@ -24,7 +24,13 @@ const sysManager = {
     roleManager: {
       name: '角色维护',
       icon: 'fa el-icon-s-check',
-      path: '/roleManager/roleList',
+      path: '/sysManager/role',
+      permissionsKey: ''
+    },
+    menuManager: {
+      name: '菜单管理',
+      icon: 'fa el-icon-tickets',
+      path: '/sysManager/menu',
       permissionsKey: ''
     },
     dictionaryManager: {
