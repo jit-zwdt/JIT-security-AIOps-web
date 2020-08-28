@@ -3,18 +3,20 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="12">
-          <el-input type="text" v-model="username" size="small" placeholder="账号" clearable></el-input>
+          <el-input type="text" v-model="roleName" size="small" placeholder="角色名称" clearable></el-input>
         </el-col>
-        <el-col :span="12">
-          <el-input type="text" v-model="name" size="small" placeholder="姓名" clearable></el-input>
-        </el-col>
-        <el-select v-model="status" class="datetop" filterable placeholder="用户状态" clearable>
-          <el-option v-for="item in statuses" :key="item.id" :label="item.type" :value="item.id"></el-option>
-        </el-select>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
-      <div class="queryright"></div>
+      <div class="queryright">
+        <el-button
+            type="primary"
+            size="small"
+            icon="el-icon-plus"
+            @click="roleAdd()"
+        >新增
+        </el-button>
+      </div>
     </ToolBar>
     <el-table
         :data="tableData"
@@ -25,14 +27,9 @@
         :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
-      <el-table-column label="账号" prop="username"></el-table-column>
-      <el-table-column label="姓名" prop="name"></el-table-column>
-      <el-table-column label="所属部门" prop="department"></el-table-column>
-      <el-table-column label="性别" prop="sex" :formatter="sexFormat"></el-table-column>
-      <el-table-column label="生日" prop="birth" :formatter="dateFormat" min-width="120"></el-table-column>
-      <el-table-column label="手机号" prop="mobile"></el-table-column>
-      <el-table-column label="邮箱" prop="email" min-width="150"></el-table-column>
-      <el-table-column label="状态" prop="status" :formatter="statusFormat"></el-table-column>
+      <el-table-column label="角色名称" prop="roleName"></el-table-column>
+      <el-table-column label="角色标识" prop="roleSign"></el-table-column>
+      <el-table-column label="备注" prop="remark"></el-table-column>
       <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button
@@ -40,53 +37,67 @@
               type="primary"
               slot="reference"
               icon="el-icon-edit-outline"
+              @click="modifyRole(scope.row.id)"
+          >编辑
+          </el-button>
+          <el-button
+              size="mini"
+              type="primary"
+              slot="reference"
+              icon="el-icon-user"
               @click="confirmupdate(scope.$index, scope.row)"
-          >编辑</el-button>
-          <el-dropdown>
-            <el-button type="primary" size="mini">
-              更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>详情</el-dropdown-item>
-              <el-dropdown-item>密码</el-dropdown-item>
-              <el-dropdown-item>冻结</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          >人员维护
+          </el-button>
+          <el-button
+              size="mini"
+              type="primary"
+              slot="reference"
+              icon="el-icon-paperclip"
+              @click="confirmupdate(scope.$index, scope.row)"
+          >菜单维护
+          </el-button>
+          <el-button
+              size="mini"
+              type="primary"
+              slot="reference"
+              icon="el-icon-delete"
+              @click="confirmupdate(scope.$index, scope.row)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
+    <roleAdd
+        :title="title"
+        :showEditDialog="showEditDialog"
+        @close="showEditDialog = false"
+        :requestData="requestData"
+        @success="reloadData"
+        @error="reloadData"
+    ></roleAdd>
   </div>
 </template>
 <script>
-import { formatTodate } from '@/utils/format.js'
 import Pagination from '@/components/Pagination.vue'
+import roleAdd from '@/views/sysManager/roleManager/roleAdd.vue'
 
 export default {
   data () {
     return {
+      roleName: '',
+      title: '',
       showEditDialog: false,
-      username: '',
-      name: '',
-      status: '',
-      statuses: [
-        { id: '0', type: '禁用' },
-        { id: '1', type: '正常' }
-      ],
       tableData: [
         {
           id: '',
-          username: '',
-          name: '',
-          department: '',
-          sex: '',
-          birth: '',
-          mobile: '',
-          email: '',
-          status: ''
+          roleName: '',
+          roleSign: ''
         }
       ],
+      requestData: {
+        id: ''
+      },
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
@@ -120,11 +131,9 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post('/sys/user/getUsers', {
+      this.axios.post('/sys/role/getRoles', {
         param: {
-          username: this.username,
-          name: this.name,
-          status: this.status
+          roleName: this.roleName
         },
         page: this.currentPage,
         size: this.pageSize
@@ -145,40 +154,19 @@ export default {
       this.showInfo()
     },
     showClear () {
-      this.username = ''
-      this.name = ''
-      this.status = ''
+      this.roleName = ''
     },
-    dateFormat (row, column) {
-      let data = ''
-      data = row[column.property]
-      if (data == null) {
-        return ''
-      }
-      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    roleAdd () {
+      this.title = '添加角色'
+      this.showEditDialog = true
     },
-    sexFormat (row, column) {
-      const data = row[column.property]
-      if (data === 0) {
-        return '男'
-      } else if (data === 1) {
-        return '女'
-      } else {
-        return data
-      }
-    },
-    statusFormat (row, column) {
-      const data = row[column.property]
-      if (data === 0) {
-        return '禁用'
-      } else if (data === 1) {
-        return '正常'
-      } else {
-        return data
-      }
+    modifyRole (id) { // modify
+      this.requestData.id = id
+      this.title = '修改角色'
+      this.showEditDialog = true
     }
   },
-  components: { Pagination }
+  components: { Pagination, roleAdd }
 }
 </script>
 <style lang="scss" scoped>
