@@ -26,14 +26,14 @@
                     <el-row>
                         <el-col>
                             <el-form-item label="登录密码：" prop="pass">
-                                <el-input  v-model="ruleForm.pass" clearable style="width:95%" show-password></el-input>
+                                <el-input  v-model="ruleForm.pass" clearable style="width:95%" show-password auto-complete="new-password"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col>
                             <el-form-item label="确认密码：" prop="checkPass">
-                                <el-input  v-model="ruleForm.checkPass" clearable style="width:95%" show-password></el-input>
+                                <el-input  v-model="ruleForm.checkPass" clearable style="width:95%" show-password auto-complete="new-password"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>

@@ -19,39 +19,6 @@
                         :rules="rules"
                 >
                     <el-row>
-                        <el-form-item label="用户账号：" prop="username">
-                            <el-input  v-model="userForm.username" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                        </el-form-item>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="用户名称：" prop="name">
-                                <el-input  v-model="userForm.name" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="工号：" prop="workNo">
-                                <el-input  v-model="userForm.workNo" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="部门分配：" prop="department">
-                                <el-input  v-model="department" clearable style="width:79%" :readonly="isReadOnly"></el-input>
-                                <el-button
-                                        type="primary"
-                                        icon="el-icon-search"
-                                        @click="showDepartment()== true"
-                                        :style="{ display: visibleCancel }"
-                                >选择
-                                </el-button>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
                         <el-col>
                             <el-form-item label="头像：" prop="pic">
                                 <el-upload
@@ -67,7 +34,48 @@
                         </el-col>
                     </el-row>
                     <el-row>
+                        <el-co>
+                            <el-form-item label="用户账号：" prop="username">
+                                <el-input  v-model="userForm.username" clearable style="width:98%" :readonly="isReadOnly"></el-input>
+                            </el-form-item>
+                        </el-co>
+                    </el-row>
+                    <el-row>
+                        <el-col v-if="isShow">
+                            <el-form-item label="密码：" prop="password">
+                                <el-input  v-model="userForm.password" clearable style="width:98%" :readonly="isReadOnly" show-password auto-complete="new-password"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="工号：" prop="workNo">
+                                <el-input  v-model="userForm.workNo" clearable style="width:98%" :readonly="isReadOnly"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="用户名称：" prop="name">
+                                <el-input  v-model="userForm.name" clearable style="width:98%" :readonly="isReadOnly"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
                         <el-col>
+                            <el-form-item label="部门分配：" prop="department">
+                                <el-input  v-model="department" clearable :style="width" readonly id="department"></el-input>
+                                <el-button
+                                        style="margin-left: 0px"
+                                        type="primary"
+                                        icon="el-icon-search"
+                                        @click="showDepartment()== true"
+                                        :style="{ display: visibleCancel }"
+                                >选择
+                                </el-button>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
                             <el-form-item label="生日：" prop="birth">
                                 <el-date-picker
                                         v-model="userForm.birth"
@@ -76,9 +84,7 @@
                                 </el-date-picker>
                             </el-form-item>
                         </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="性别：" prop="sex">
                                 <el-radio v-model="userForm.sex" :label="0" :disabled="disabled">男</el-radio>
                                 <el-radio v-model="userForm.sex" :label="1" :disabled="disabled">女</el-radio>
@@ -86,35 +92,31 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="邮箱：" prop="email">
                                 <el-input  v-model="userForm.email" clearable style="width:95%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
                         </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="手机号：" prop="mobile">
                                 <el-input  v-model="userForm.mobile" clearable style="width:95%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="Zabbix用户名：" prop="zabbixUsername">
-                                <el-input  v-model="userForm.zabbixUsername" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                                <el-input  v-model="userForm.zabbixUsername" clearable style="width:95%" :readonly="isReadOnly" auto-complete="new-accounts"></el-input>
                             </el-form-item>
                         </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="Zabbix密码：" prop="zabbixPassword">
-                                <el-input  v-model="userForm.zabbixPassword" clearable style="width:95%" show-password :readonly="isReadOnly"></el-input>
+                                <el-input  v-model="userForm.zabbixPassword" clearable style="width:95%" show-password :readonly="isReadOnly" auto-complete="new-password"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="zabbix登录：" prop="isZabbixActive">
                                 <el-switch
                                         v-model="userForm.isZabbixActive"
@@ -125,37 +127,7 @@
                                 </el-switch>
                             </el-form-item>
                         </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="所在省份：" prop="province">
-                                <el-input  v-model="userForm.province" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="所在城市：" prop="city">
-                                <el-input  v-model="userForm.city" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="现居住地：" prop="liveAddress">
-                                <el-input  v-model="userForm.liveAddress" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
-                            <el-form-item label="爱好：" prop="hobby">
-                                <el-input  v-model="userForm.hobby" clearable style="width:95%" :readonly="isReadOnly"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col>
+                        <el-col :span="12">
                             <el-form-item label="状态：" prop="status">
                                 <el-switch
                                         v-model="userForm.status"
@@ -164,6 +136,30 @@
                                         active-color="#13ce66"
                                         :disabled="disabled">
                                 </el-switch>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="所在省份：" prop="province">
+                                <el-input  v-model="userForm.province" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="所在城市：" prop="city">
+                                <el-input  v-model="userForm.city" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="现居住地：" prop="liveAddress">
+                                <el-input  v-model="userForm.liveAddress" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="爱好：" prop="hobby">
+                                <el-input  v-model="userForm.hobby" clearable style="width:95%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -207,13 +203,43 @@ export default {
     }
   },
   data () {
+    var isUserNameExisted = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('账号名称不可以为空'))
+      }
+      if (rule.uname !== value) {
+        setTimeout(() => {
+          this.axios.get('/sys/user/checkUserName/' + value).then((resp) => {
+            if (resp.status === 200) {
+              const json = resp.data
+              if (json.code === 1) {
+                if (json.data === true) {
+                  callback(new Error('账号名称已存在！'))
+                } else {
+                  callback()
+                }
+              } else {
+                callback(new Error('账号名称校验失败！'))
+              }
+            } else {
+              callback(new Error('账号名称校验失败！'))
+            }
+          })
+        }, 0)
+      } else {
+        callback()
+      }
+    }
     return {
+      isShow: false,
+      width: 'width:84%',
       disabled: false,
       visibleCancel: 'none',
       department: '',
       showDepartmentDialog: false,
       imageUrl: '',
       userForm: {
+        password: '',
         username: '',
         name: '',
         workNo: '',
@@ -233,20 +259,23 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: '请输入账号名称' }
+          { required: true, validator: isUserNameExisted, uname: '' }
         ],
         name: [
-          { required: true, message: '请输入用户名称' }
+          { required: true, message: '用户名称不可以为空' }
+        ],
+        password: [
+          { required: true, message: '密码不可以为空' }
         ],
         workNo: [
-          { required: true, message: '请输入工号' }
+          { required: true, message: '工号不可以为空' }
         ],
         email: [
           { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
         ],
         mobile: [
           {
-            pattern: /^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/,
+            pattern: /^1[0-9]{10}$/,
             message: '手机号格式不对',
             trigger: 'blur'
           }
@@ -266,6 +295,7 @@ export default {
       if (this.isReadOnly === true) {
         this.visibleCancel = 'none'
         this.disabled = true
+        this.width = 'width:98%'
       } else {
         this.visibleCancel = ''
       }
@@ -277,6 +307,7 @@ export default {
               var json = resp.data
               if (json.code === 1) {
                 this.userForm = json.data
+                this.rules.username[0].uname = json.data.username
                 const id = this.userForm.departmentId
                 if (id !== undefined && id !== '' && id !== null) {
                   this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
@@ -301,6 +332,8 @@ export default {
               }
             }
           })
+      } else {
+        this.isShow = true
       }
     },
     closefrom () {
@@ -309,10 +342,11 @@ export default {
     },
     clearform () {
       // this.id = {}
+      this.width = 'width:84%'
       this.department = ''
-      // this.isReadOnly = false
-      // this.disabled = false
-      // this.visibleCancel = 'none'
+      this.disabled = false
+      this.visibleCancel = 'none'
+      this.isShow = false
       resetObject(this.userForm)
       this.$refs.userForm.resetFields()
     },
