@@ -56,14 +56,9 @@
               @click="confirmupdate(scope.$index, scope.row)"
           >菜单维护
           </el-button>
-          <el-button
-              size="mini"
-              type="primary"
-              slot="reference"
-              icon="el-icon-delete"
-              @click="confirmupdate(scope.$index, scope.row)"
-          >删除
-          </el-button>
+          <el-popconfirm title="确定删除吗？" @onConfirm="deleteRole(scope.row.id)">
+            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -160,10 +155,34 @@ export default {
       this.title = '添加角色'
       this.showEditDialog = true
     },
-    modifyRole (id) { // modify
+    modifyRole (id) {
       this.requestData.id = id
       this.title = '修改角色'
       this.showEditDialog = true
+    },
+    deleteRole (id) {
+      this.axios.delete('/sys/role/delRole/' + id).then((resp) => {
+        if (resp.status === 200) {
+          const json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '删除失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+        }
+        this.showInfo()
+      })
     }
   },
   components: { Pagination, roleAdd }
