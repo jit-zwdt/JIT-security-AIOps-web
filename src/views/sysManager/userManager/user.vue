@@ -238,7 +238,7 @@ export default {
       if (data == null) {
         return ''
       }
-      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+      return formatTodate(data, 'YYYY-MM-DD')
     },
     sexFormat (row, column) {
       const data = row[column.property]

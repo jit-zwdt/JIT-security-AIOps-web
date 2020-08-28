@@ -34,26 +34,28 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="12">
+                        <el-co>
                             <el-form-item label="用户账号：" prop="username">
-                                <el-input  v-model="userForm.username" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                                <el-input  v-model="userForm.username" clearable style="width:98%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
+                        </el-co>
+                    </el-row>
+                    <el-row>
+                        <el-col v-if="isShow">
                             <el-form-item label="密码：" prop="password">
-                                <el-input  v-model="userForm.password" clearable style="width:95%" :readonly="isReadOnly" show-password auto-complete="new-password"></el-input>
+                                <el-input  v-model="userForm.password" clearable style="width:98%" :readonly="isReadOnly" show-password auto-complete="new-password"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="工号：" prop="workNo">
-                                <el-input  v-model="userForm.workNo" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                                <el-input  v-model="userForm.workNo" clearable style="width:98%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="用户名称：" prop="name">
-                                <el-input  v-model="userForm.name" clearable style="width:95%" :readonly="isReadOnly"></el-input>
+                                <el-input  v-model="userForm.name" clearable style="width:98%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -229,6 +231,7 @@ export default {
       }
     }
     return {
+      isShow: false,
       width: 'width:84%',
       disabled: false,
       visibleCancel: 'none',
@@ -329,6 +332,8 @@ export default {
               }
             }
           })
+      } else {
+        this.isShow = true
       }
     },
     closefrom () {
@@ -341,6 +346,7 @@ export default {
       this.department = ''
       this.disabled = false
       this.visibleCancel = 'none'
+      this.isShow = false
       resetObject(this.userForm)
       this.$refs.userForm.resetFields()
     },

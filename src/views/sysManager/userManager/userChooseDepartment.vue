@@ -152,6 +152,7 @@ export default {
       this.$emit('close')
     },
     clearform () {
+      this.$refs.tree.setCheckedNodes([])
     },
     submitOrUpdate () {
       if (this.$refs.tree.getCheckedNodes().length > 0) {
