@@ -28,9 +28,6 @@ const api = {
         getUserAndMediaInfo: '/user/getUserAndMediaInfo',
         updateUserAndMediaInfo: '/user/updateUserAndMediaInfo/'
       },
-      alertDefine: {
-        getUserInfo: '/user/getUserInfo'
-      },
       alertDefineAdd: {
       },
       alertDefinev1: {
@@ -55,7 +52,6 @@ const api = {
     },
     alertType: {
       alertType: {
-        getMediaTypes: '/mediaType/getMediaTypes',
         updateStatus: '/mediaType/updateStatus',
         deleteMediaType: '/mediaType/deleteMediaType/'
       },
@@ -63,13 +59,6 @@ const api = {
         addMediaType: '/mediaType/addMediaType',
         updateMediaType: '/mediaType/updateMediaType/',
         findByMediaTypeId: '/mediaType/findByMediaTypeId/'
-      }
-    },
-    queryAlert: {
-      queryAlert: {
-        bindTemplates: '/monitorTemplates/bindTemplates',
-        getZabbixTemplates: '/monitorTemplates/getZabbixTemplates',
-        checkItems: '/monitorTemplates/checkItems'
       }
     }
   },
@@ -81,7 +70,6 @@ const api = {
     findRegisterByClaimId: '/register/findRegisterByClaimId/',
     // malfunctionSolveClaim
     findByProblemId: '/problem/findByProblemId',
-    findById: '/assets/findById/',
     findBySeverityLevel: '/problem/findBySeverityLevel',
     findUserByRole: '/user/findUserByRole',
     findAllRole: '/role/findAllRole',
@@ -118,16 +106,12 @@ const api = {
     // monitorPossessionInfo 上面的 monitorDBMysqlInfo 都有
     // monitorSystem 上面的 monitorDBMysqlInfo 都有
     // monitorTemplates
-    bindTemplates: '/monitorTemplates/bindTemplates',
-    getZabbixTemplates: '/monitorTemplates/getZabbixTemplates',
     checkItems: '/monitorTemplates/checkItems',
     getMonitorTemplates: '/monitorTemplates/getMonitorTemplates',
     getMonitorTypes: '/monitorType/getMonitorTypes',
     // monitorview
     updateItemStatus: '/item/updateItemStatus/',
     findByCondition: '/trigger/findByCondition',
-    updateTriggerStatus: '/trigger/updateTriggerStatus/',
-    updateTriggerPriority: '/trigger/updateTriggerPriority/',
     findById: '/host/findById/',
     getZabbixHostGroup: '/hostGroup/getZabbixHostGroup',
     getJsonTypes: '/monitorType/getJsonTypes',

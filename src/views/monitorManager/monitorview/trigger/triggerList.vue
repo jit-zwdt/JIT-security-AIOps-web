@@ -209,7 +209,7 @@ export default {
       this.enableItemTop = ''
     },
     change_enableMonitor (index, rowData) {
-      this.axios.put(this.$api.monitorManager.updateTriggerStatus + rowData.triggerid, qs.stringify({
+      this.axios.put(this.$api.alertManager.alertDefine.alertDefinev1.updateTriggerStatus + rowData.triggerid, qs.stringify({
         status: rowData.status
       })).then((resp) => {
         if (resp.status === 200) {
@@ -265,7 +265,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.axios.put(this.$api.monitorManager.updateTriggerPriority + rowData.triggerid, qs.stringify({
+        this.axios.put(this.$api.alertManager.alertDefine.alertDefinev1.updateTriggerPriority + rowData.triggerid, qs.stringify({
           priority: rowData.priority
         })).then((resp) => {
           if (resp.status === 200) {

@@ -124,7 +124,7 @@ export default {
         flag: flag
       }
       this.axios
-        .post(api.alertManager.alertType.alertType.getMediaTypes, params)
+        .post(api.alertManager.alertManager.alertDefine.addMedium.getMediaTypes, params)
         .then(resp => {
           if (resp.status === 200) {
             var json = resp.data

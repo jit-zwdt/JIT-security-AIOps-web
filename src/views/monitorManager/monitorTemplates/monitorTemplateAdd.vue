@@ -112,7 +112,7 @@ export default {
       const param = new URLSearchParams()
       param.append('id', this.editform.id)
       param.append('templates', this.tempform.templates)
-      this.axios.post(this.$api.monitorManager.bindTemplates, param).then((resp) => {
+      this.axios.post(this.$api.alertManager.alertTemplate.alertTemplate.bindTemplates, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -134,7 +134,7 @@ export default {
       })
     },
     getTemplates () {
-      this.axios.post(this.$api.monitorManager.getZabbixTemplates).then((resp) => {
+      this.axios.post(this.$api.alertManager.alertTemplate.alertTemplate.getZabbixTemplates).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -158,7 +158,7 @@ export default {
     checkItem (value) {
       const param = new URLSearchParams()
       param.append('templates', value)
-      this.axios.post(this.$api.monitorManager.checkItems, param).then((resp) => {
+      this.axios.post(this.$api.alertManager.alertTemplate.alertTemplate.checkItems, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

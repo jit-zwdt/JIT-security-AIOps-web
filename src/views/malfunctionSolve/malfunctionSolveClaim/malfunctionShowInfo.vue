@@ -144,7 +144,7 @@ export default {
     },
     showInfo (assetid) {
       if (assetid != null && assetid !== '') {
-        this.axios.post(this.$api.malfunctionSolve.findById + assetid, {
+        this.axios.post(this.$api.assetsManager.assetsList.assetsAdd.findById + assetid, {
           id: this.id
         }).then((resp) => {
           if (resp.status === 200) {
