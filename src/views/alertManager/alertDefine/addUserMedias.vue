@@ -77,6 +77,7 @@
 <script>
 import qs from 'qs'
 import AddMedium from '@/views/alertManager/alertDefine/addMedium.vue'
+import api from '@/api/api'
 export default {
   props: {
     userid: {},
@@ -150,7 +151,7 @@ export default {
     },
     showInfo () {
       var userid = this.userid
-      this.axios.post('/user/getUserAndMediaInfo', qs.stringify({
+      this.axios.post(api.alertManager.alertDefine.addUserMedias.getUserAndMediaInfo, qs.stringify({
         userid: userid
       })).then((resp) => {
         if (resp.status === 200) {
@@ -269,7 +270,7 @@ export default {
       this.tableData.splice(index, 1)
     },
     submitOrUpdate () {
-      this.axios.post('/user/updateUserAndMediaInfo/' + this.userid, this.tableData).then((resp) => {
+      this.axios.post(api.alertManager.alertDefine.addUserMedias.updateUserAndMediaInfo + this.userid, this.tableData).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

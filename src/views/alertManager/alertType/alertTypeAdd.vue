@@ -305,7 +305,7 @@
 </template>
 <script>
 import { resetObject } from '@/utils/common'
-
+import api from '@/api/api'
 export default {
   data () {
     return {
@@ -515,7 +515,7 @@ export default {
           this.$refs[formName2].validate((valid) => {
             if (valid) {
               const region = this.makeParam()
-              this.axios.post('/mediaType/addMediaType', region).then((resp) => {
+              this.axios.post(api.alertManager.alertType.alertTypeAdd.addMediaType, region).then((resp) => {
                 if (resp.status === 200) {
                   var json = resp.data
                   if (json.code === 1) {
@@ -558,7 +558,7 @@ export default {
           this.$refs[formName2].validate((valid) => {
             if (valid) {
               const region = this.makeParam()
-              this.axios.put('/mediaType/updateMediaType/' + this.mediatypeid, region).then((resp) => {
+              this.axios.put(api.alertManager.alertType.alertTypeAdd.updateMediaType + this.mediatypeid, region).then((resp) => {
                 if (resp.status === 200) {
                   var json = resp.data
                   if (json.code === 1) {
@@ -597,7 +597,7 @@ export default {
     },
     showInfo (mediatypeid) {
       if (mediatypeid != null && mediatypeid !== '-1') {
-        this.axios.post('/mediaType/findByMediaTypeId/' + mediatypeid).then((resp) => {
+        this.axios.post(api.alertManager.alertType.alertTypeAdd.findByMediaTypeId + mediatypeid).then((resp) => {
           if (resp.status === 200) {
             this.showSMTP = false
             this.showSMS = false

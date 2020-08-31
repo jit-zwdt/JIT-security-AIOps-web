@@ -51,6 +51,7 @@
   </el-dialog>
 </template>
 <script>
+import api from '@/api/api'
 export default {
   props: {
     editform: {
@@ -112,7 +113,7 @@ export default {
       const param = new URLSearchParams()
       param.append('id', this.editform.id)
       param.append('templates', this.tempform.templates)
-      this.axios.post('/monitorTemplates/bindTemplates', param).then((resp) => {
+      this.axios.post(api.alertManager.alertTemplate.alertTemplate.bindTemplates, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -134,7 +135,7 @@ export default {
       })
     },
     getTemplates () {
-      this.axios.post('/monitorTemplates/getZabbixTemplates').then((resp) => {
+      this.axios.post(api.alertManager.alertTemplate.alertTemplate.getZabbixTemplates).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -158,7 +159,7 @@ export default {
     checkItem (value) {
       const param = new URLSearchParams()
       param.append('templates', value)
-      this.axios.post('/monitorTemplates/checkItems', param).then((resp) => {
+      this.axios.post(api.alertManager.alertTemplate.alertTemplate.checkItems, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
