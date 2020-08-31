@@ -72,6 +72,7 @@
   </div>
 </template>
 <script>
+import api from '@/api/api'
 export default {
   data () {
     return {
@@ -123,7 +124,7 @@ export default {
         flag: flag
       }
       this.axios
-        .post('/mediaType/getMediaTypes', params)
+        .post(api.alertManager.alertType.alertType.getMediaTypes, params)
         .then(resp => {
           if (resp.status === 200) {
             var json = resp.data
@@ -156,7 +157,7 @@ export default {
       const param = new URLSearchParams()
       param.append('mediatypeid', rowData.mediatypeid)
       param.append('status', rowData.status)
-      this.axios.put('/mediaType/updateStatus', param).then((resp) => {
+      this.axios.put(api.alertManager.alertType.alertType.updateStatus, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -183,7 +184,7 @@ export default {
       this.$router.push({ name: 'alertTypeAdd', query: { mediatypeid: '-1' } })
     },
     confirmdelete (index, row) {
-      this.axios.delete('/mediaType/deleteMediaType/' + row.mediatypeid).then((resp) => {
+      this.axios.delete(api.alertManager.alertType.alertType.deleteMediaType + row.mediatypeid).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

@@ -481,7 +481,7 @@ export default {
       }
     },
     showform (id) {
-      this.axios.post('/host/findById/' + id).then((resp) => {
+      this.axios.post(this.$api.monitorManager.findById + id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -506,7 +506,7 @@ export default {
       })
     },
     groupIdDataInfo () {
-      this.axios.post('/hostGroup/getZabbixHostGroup').then((resp) => {
+      this.axios.post(this.$api.monitorManager.getZabbixHostGroup).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           // console.log(json.data)
@@ -524,7 +524,7 @@ export default {
     getSubtypeIdOptions () {
       const param = new URLSearchParams()
       param.append('ids', this.serverListForm.subtypeIds)
-      this.axios.post('/monitorType/getJsonTypes', param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getJsonTypes, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           // console.log(json.data)
@@ -540,7 +540,7 @@ export default {
       })
     },
     getAssetInfo () {
-      this.axios.post('/assets/findByConditionInfo').then((resp) => {
+      this.axios.post(this.$api.monitorManager.findByConditionInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           // console.log(json.data)
@@ -585,7 +585,7 @@ export default {
     },
     submit () {
       const region = this.makeParam()
-      this.axios.post('/host/addHost', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.addHost, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -612,7 +612,7 @@ export default {
     },
     update (id) {
       const region = this.makeParam()
-      this.axios.put('/host/updateHost/' + id, region).then((resp) => {
+      this.axios.put(this.$api.monitorManager.updateHost + id, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

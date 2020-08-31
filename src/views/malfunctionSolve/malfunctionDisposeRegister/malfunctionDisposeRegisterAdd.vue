@@ -124,7 +124,6 @@
 </template>
 <script>
 import { resetObject } from '@/utils/common'
-
 export default {
   data () {
     return {
@@ -262,7 +261,7 @@ export default {
     },
     submit () {
       const region = this.makeParam()
-      this.axios.post('/register/addRegister', region).then((resp) => {
+      this.axios.post(this.$api.malfunctionSolve.addRegister, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -303,7 +302,7 @@ export default {
               isResolve: json.data.isResolve,
               problemHandleTime: this.handleTime
             }
-            this.axios.post('/problem/updateClaimAfterRegister', param).then((resp) => {
+            this.axios.post(this.$api.malfunctionSolve.updateClaimAfterRegister, param).then((resp) => {
               if (resp.status === 200) {
                 var json = resp.data
                 if (json.code === 1) {
@@ -345,7 +344,7 @@ export default {
     },
     showInfo (claimId) {
       if (claimId != null && claimId !== '') {
-        this.axios.post('/register/findRegisterByClaimId/' + claimId, {
+        this.axios.post(this.$api.malfunctionSolve.findRegisterByClaimId + claimId, {
           id: claimId
         }).then((resp) => {
           if (resp.status === 200) {

@@ -182,7 +182,7 @@ export default {
       const param = new URLSearchParams()
       param.append('keyword', this.hostObjectName)
       param.append('type', this.hostType)
-      this.axios.post('/monitorTemplates/getTemplates', param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getTemplates, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           // console.log(json)

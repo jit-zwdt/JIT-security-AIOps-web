@@ -680,7 +680,7 @@ export default {
         hostids: [this.$route.query.hostId],
         name: this.nameTop
       }
-      this.axios.post('/item/getItemInfoList', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoList, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -702,7 +702,7 @@ export default {
       })
     },
     findHostIdinfo () {
-      this.axios.post('/host/findHostIdinfo/' + this.$route.query.hostId).then((resp) => {
+      this.axios.post(this.$api.monitorManager.findHostIdinfo + this.$route.query.hostId).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -730,7 +730,7 @@ export default {
         status: '',
         key_: 'jmx["Catalina:type=Server",serverInfo]'
       }
-      this.axios.post('/item/getItemInfoList', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoList, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -777,7 +777,7 @@ export default {
     getMonitorTypeItems () {
       const hostIds = []
       hostIds.push(this.$route.query.hostId)
-      this.axios.post('/host/findHostAvailable', hostIds).then((resp) => {
+      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -802,7 +802,7 @@ export default {
       this.currentPage = val
     },
     getShowData () {
-      this.axios.post('/trend/findHostDetailItems/' + this.$route.query.hostId).then((resp) => {
+      this.axios.post(this.$api.monitorManager.findHostDetailItems + this.$route.query.hostId).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -834,7 +834,7 @@ export default {
       }
       const returndataclock = []
       const returndataavg = []
-      this.axios.post('/trend/getItemInfoList', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoList, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -935,7 +935,7 @@ export default {
         hostId: row.hostid,
         itemId: row.itemid
       }
-      this.axios.post('/trend/checkHostDetailItem', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.checkHostDetailItem, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (!json.data) {
@@ -960,7 +960,7 @@ export default {
         itemId: row.itemid,
         itemName: row.name
       }
-      this.axios.post('/trend/addHostDetailItem', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.addHostDetailItem, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -987,7 +987,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.axios.delete('/trend/deleteHostDetailItem/' + str.id).then((resp) => {
+        this.axios.delete(this.$api.monitorManager.deleteHostDetailItem + str.id).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
@@ -1038,7 +1038,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.axios.delete('/trend/deleteHostDetailGraph/' + str.id).then((resp) => {
+        this.axios.delete(this.$api.monitorManager.deleteHostDetailGraph + str.id).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
@@ -1060,7 +1060,7 @@ export default {
         graphId: row.graphid,
         graphName: row.name
       }
-      this.axios.post('/trend/addHostDetailGraph', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.addHostDetailGraph, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1084,7 +1084,7 @@ export default {
         graphId: row.graphid
       }
       console.log(region)
-      this.axios.post('/trend/checkHostDetailGraph', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.checkHostDetailGraph, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           console.log(json.data)
@@ -1124,7 +1124,7 @@ export default {
         timefrom: timefrom,
         timetill: timetill
       }
-      await this.axios.post('/gItem/getResultList', params).then((resp) => {
+      await this.axios.post(this.$api.monitorManager.getResultList, params).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1329,7 +1329,7 @@ export default {
       return 'charts-graph-demo-' + index
     },
     getGraphData () {
-      this.axios.post('/trend/findHostDetailGraphs/' + this.$route.query.hostId).then((resp) => {
+      this.axios.post(this.$api.monitorManager.findHostDetailGraphs + this.$route.query.hostId).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1348,7 +1348,7 @@ export default {
         hostids: [this.$route.query.hostId],
         name: this.nameTop
       }
-      this.axios.post('/gPrototype/getGProInfoList', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getGProInfoList, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1379,7 +1379,7 @@ export default {
         })
         return
       }
-      this.axios.post('/gPrototype/createGpro', this.form).then((resp) => {
+      this.axios.post(this.$api.monitorManager.createGpro, this.form).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

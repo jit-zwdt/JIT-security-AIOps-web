@@ -257,7 +257,7 @@ export default {
       this.currentTime = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
     },
     getGroups () {
-      this.axios.post('/host/getZabbixHostGroupByHostType', qs.stringify({
+      this.axios.post(this.$api.monitorManager.getZabbixHostGroupByHostType, qs.stringify({
         typeId: this.$route.meta.typeId,
         groupName: this.groupName
       })).then((resp) => {
@@ -288,7 +288,7 @@ export default {
         valueType: '0',
         method: 'top5ByItem'
       }
-      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -311,7 +311,7 @@ export default {
       const param = {
         typeId: this.$route.meta.typeId
       }
-      this.axios.post('/host/getTop5ByTrigger', param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getTop5ByTrigger, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -337,7 +337,7 @@ export default {
         valueType: '0',
         method: 'top5ByItem'
       }
-      this.axios.post('/top5/getTop5Msg', param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

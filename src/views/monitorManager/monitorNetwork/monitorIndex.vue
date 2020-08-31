@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     getGroups () {
-      this.axios.post('/host/getZabbixHostGroupByHostType', qs.stringify({
+      this.axios.post(this.$api.monitorManager.getZabbixHostGroupByHostType, qs.stringify({
         typeId: this.$route.meta.typeId,
         groupName: this.groupName
       })).then((resp) => {
