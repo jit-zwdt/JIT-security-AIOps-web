@@ -85,6 +85,7 @@
 <script>
 // import qs from 'qs'
 // import { resetObject } from '@/utils/common'
+import api from '@/api/api'
 export default {
   props: {
     userid: {},
@@ -185,7 +186,7 @@ export default {
         status: '',
         flag: false
       }
-      this.axios.post('/mediaType/getMediaTypes', params).then((resp) => {
+      this.axios.post(api.alertManager.alertDefine.addMedium.getMediaTypes, params).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

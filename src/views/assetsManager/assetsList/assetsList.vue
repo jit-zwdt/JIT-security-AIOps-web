@@ -114,6 +114,7 @@ import { Message } from 'element-ui'
 import { formatTodate, compareDate } from '@/utils/format.js'
 import AssetsAdd from '@/views/assetsManager/assetsList/assetsAdd.vue'
 import Pagination from '@/components/Pagination.vue'
+import api from '@/api/api'
 export default {
   data () {
     return {
@@ -173,7 +174,7 @@ export default {
       this.showInfo()
     },
     confirmdelete (index, row) {
-      this.axios.delete('/assets/deleteAssets/' + row.id).then((resp) => {
+      this.axios.delete(api.assetsManager.assetsList.assetsList.deleteAssets + row.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -223,7 +224,7 @@ export default {
         })
         return
       }
-      this.axios.post('/assets/findByCondition', {
+      this.axios.post(api.assetsManager.assetsList.assetsList.findByCondition, {
         param: {
           assetName: this.assetNameTop,
           assetRegisterStartDate: assetRegisterDateStartTopstr,

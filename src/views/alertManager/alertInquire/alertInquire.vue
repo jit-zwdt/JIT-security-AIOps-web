@@ -83,6 +83,7 @@
 <script>
 import { Message } from 'element-ui'
 import { formatTodate, compareDate } from '@/utils/format.js'
+import api from '@/api/api'
 // import { timesMethod } from '../../../utils/formatDate'
 
 export default {
@@ -169,7 +170,7 @@ export default {
         timeTill: endTimestr,
         name: this.name
       }
-      this.axios.post('/problem/findProblemHost', region).then((resp) => {
+      this.axios.post(api.alertManager.alertInquire.alertInquire.findProblemHost, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

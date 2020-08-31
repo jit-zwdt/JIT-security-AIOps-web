@@ -63,6 +63,7 @@
 <script>
 import qs from 'qs'
 import AddUserMedias from '@/views/alertManager/alertDefine/addUserMedias.vue'
+import api from '@/api/api'
 export default {
   data () {
     return {
@@ -102,7 +103,7 @@ export default {
     },
     showInfoTimeout (str) {
       var alias = this.nameTop
-      this.axios.post('/user/getUserInfo', qs.stringify({
+      this.axios.post(api.alertManager.alertDefine.alertDefine.getUserInfo, qs.stringify({
         alias: alias
       })).then((resp) => {
         if (resp.status === 200) {
