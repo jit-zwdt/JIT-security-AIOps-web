@@ -1,4 +1,5 @@
 import axios from '@/utils/http'
+import api from '@/api/api'
 
 export function isRoleNameExisted (rule, value, callback) {
   const title = '角色名称'
@@ -9,7 +10,7 @@ export function isRoleNameExisted (rule, value, callback) {
     return callback()
   }
   setTimeout(() => {
-    axios.get('/sys/role/checkRoleName/' + value).then((resp) => {
+    axios.get(api.sysManager.checkRoleName + value).then((resp) => {
       if (resp.status === 200) {
         const json = resp.data
         if (json.code === 1) {
@@ -37,7 +38,7 @@ export function isRoleSignExisted (rule, value, callback) {
     return callback()
   }
   setTimeout(() => {
-    axios.get('/sys/role/checkRoleSign/' + value).then((resp) => {
+    axios.get(api.sysManager.checkRoleSign + value).then((resp) => {
       if (resp.status === 200) {
         const json = resp.data
         if (json.code === 1) {

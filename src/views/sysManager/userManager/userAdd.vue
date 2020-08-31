@@ -209,7 +209,7 @@ export default {
       }
       if (rule.uname !== value) {
         setTimeout(() => {
-          this.axios.get('/sys/user/checkUserName/' + value).then((resp) => {
+          this.axios.get(this.$api.sysManager.checkUserName + value).then((resp) => {
             if (resp.status === 200) {
               const json = resp.data
               if (json.code === 1) {
@@ -301,7 +301,7 @@ export default {
       }
       if (this.id !== -1) {
         this.axios
-          .post('/sys/user/findUserById/' + this.id)
+          .post(this.$api.sysManager.findUserById + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
@@ -310,7 +310,7 @@ export default {
                 this.rules.username[0].uname = json.data.username
                 const id = this.userForm.departmentId
                 if (id !== undefined && id !== '' && id !== null) {
-                  this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
+                  this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
                     if (resp.status === 200) {
                       const json = resp.data
                       if (json.code === 1) {
@@ -360,7 +360,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post('/sys/user/addUser', this.userForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

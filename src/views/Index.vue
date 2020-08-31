@@ -531,7 +531,7 @@ export default {
       this.currentTime = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
     },
     showInfo () {
-      this.axios.post('/homePage/getMonitorTypeUsedInfo').then((resp) => {
+      this.axios.post(this.$api.main.getMonitorTypeUsedInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -614,7 +614,7 @@ export default {
     },
     getcpuRateTop5ByItem () {
       var param = 'cup'
-      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
+      this.axios.post(this.$api.main.getTimeTop5ItemInfo + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -631,7 +631,7 @@ export default {
     },
     getmemoryTop5ByItem () {
       var param = 'memory'
-      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
+      this.axios.post(this.$api.main.getTimeTop5ItemInfo + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -648,7 +648,7 @@ export default {
     },
     getioRateTop5ByItem () {
       var param = 'cup'
-      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
+      this.axios.post(this.$api.main.getTimeTop5ItemInfothis.$api.main.getTimeTop5ItemInfo + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -665,7 +665,7 @@ export default {
     },
     getNeiWorkTop5ByItem () {
       var param = 'memory'
-      this.axios.post('/homePage/getTimeTop5ItemInfo/' + param).then((resp) => {
+      this.axios.post(this.$api.main.getTimeTop5ItemInfo + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1074,7 +1074,7 @@ export default {
         timeFrom: timefrom,
         timeTill: timetill
       }
-      this.axios.post('/problem/getAlertdata', region).then((resp) => {
+      this.axios.post(this.$api.main.getAlertdata, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1093,7 +1093,7 @@ export default {
       })
     },
     getUserInfo () {
-      this.axios.post('/user/getUserInfo').then((resp) => {
+      this.axios.post(this.$api.main.getUserInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

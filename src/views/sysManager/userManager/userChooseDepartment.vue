@@ -107,14 +107,14 @@ export default {
       return data.label.indexOf(value) !== -1
     },
     openDialog () {
-      this.axios.get('/sys/department/getDepartmentInfos').then((resp) => {
+      this.axios.get(this.$api.sysManager.getDepartmentInfos).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.treeData = json.data
             const id = this.id
             if (id !== undefined && id !== '') {
-              this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
+              this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
                 if (resp.status === 200) {
                   const json = resp.data
                   if (json.code === 1) {

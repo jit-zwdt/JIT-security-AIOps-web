@@ -178,7 +178,7 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post('/sys/user/getUsers', {
+      this.axios.post(this.$api.sysManager.getUsers, {
         param: {
           username: this.username,
           name: this.name,
@@ -193,7 +193,7 @@ export default {
             var data = json.data.dataList
             this.currentTotal = json.data.totalRow
             this.loading = false
-            this.axios.get('/sys/department/getAllDepartment').then((resp) => {
+            this.axios.get(this.$api.sysManager.getAllDepartment).then((resp) => {
               if (resp.status === 200) {
                 var json = resp.data
                 if (json.code === 1) {
@@ -278,7 +278,7 @@ export default {
       this.id = row.id
     },
     deleteUser () {
-      this.axios.delete('/sys/user/deleteUser/' + this.id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.deleteUser + this.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -321,7 +321,7 @@ export default {
       this.dialogVisible = true
     },
     freezeUser () {
-      this.axios.post('/sys/user/addUser', this.userForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

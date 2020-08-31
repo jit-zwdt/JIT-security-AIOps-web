@@ -168,7 +168,7 @@ export default {
       this.form.parentId = this.reqestData.parentId
       const id = this.reqestData.id
       if (id !== undefined && id !== '') {
-        this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
+        this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
           if (resp.status === 200) {
             const json = resp.data
             if (json.code === 1) {
@@ -205,7 +205,7 @@ export default {
       this.isDisable = true
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.axios.post('/sys/department/addDepartment', this.form).then((resp) => {
+          this.axios.post(this.$api.sysManager.addDepartment, this.form).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {

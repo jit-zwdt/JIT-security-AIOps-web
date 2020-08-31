@@ -125,7 +125,7 @@ export default {
     },
     showInfoTimeout () {
       this.loading = false
-      this.axios.get('/sys/menu/getMenus').then(resp => {
+      this.axios.get(this.$api.sysManager.getMenus).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

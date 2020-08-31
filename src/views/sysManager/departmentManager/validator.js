@@ -1,4 +1,5 @@
 import axios from '@/utils/http'
+import api from '@/api/api'
 
 export function isExisted (rule, value, callback) {
   if (!value) {
@@ -8,7 +9,7 @@ export function isExisted (rule, value, callback) {
     return callback()
   }
   setTimeout(() => {
-    axios.get('/sys/department/checkDepartCode/' + value).then((resp) => {
+    axios.get(api.sysManager.checkDepartCode + value).then((resp) => {
       if (resp.status === 200) {
         const json = resp.data
         if (json.code === 1) {

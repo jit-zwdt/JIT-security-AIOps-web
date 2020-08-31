@@ -95,7 +95,7 @@ export default {
       }
       if (rule.originalItemText !== value) {
         setTimeout(() => {
-          this.axios.post('/sys/dictionary/checkItemText', qs.stringify({
+          this.axios.post(this.$api.sysManager.checkItemText, qs.stringify({
             itemText: value,
             dictId: rule.dictId
           })).then((resp) => {
@@ -143,7 +143,7 @@ export default {
     openDialog () {
       if (this.id !== -1) {
         this.axios
-          .post('/sys/dictionary/findDictionaryItemById/' + this.id)
+          .post(this.$api.sysManager.findDictionaryItemById + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
@@ -178,7 +178,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post('/sys/dictionary/addDictionaryItem', this.dictionaryItemForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.addDictionaryItem, this.dictionaryItemForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

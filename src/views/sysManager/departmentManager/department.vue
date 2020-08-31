@@ -136,7 +136,6 @@
 </template>
 <script>
 import departmentAdd from '@/views/sysManager/departmentManager/departmentAdd.vue'
-
 export default {
   watch: {
     filterText (val) {
@@ -214,7 +213,7 @@ export default {
           ids.push(ele.id)
         })
         if (ids.length > 0) {
-          this.axios.delete('/sys/department/delDepartment/' + ids.join(',')).then((resp) => {
+          this.axios.delete(this.$api.sysManager.delDepartment + ids.join(',')).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {
@@ -240,7 +239,7 @@ export default {
       }
     },
     getTreeNodes () {
-      this.axios.get('/sys/department/getDepartmentInfos').then((resp) => {
+      this.axios.get(this.$api.sysManager.getDepartmentInfos).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -263,7 +262,7 @@ export default {
       this.getTreeNodes()
     },
     showNodeDetail (id) {
-      this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
+      this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

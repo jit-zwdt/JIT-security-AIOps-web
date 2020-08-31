@@ -266,7 +266,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post('/sys/dictionary/getDictionary', qs.stringify({
+        .post(this.$api.sysManager.getDictionary, qs.stringify({
           name: this.name,
           code: this.code,
           currentPage: this.currentPage,
@@ -301,7 +301,7 @@ export default {
       this.showEditDictItemDialog = true
     },
     confirmdelete (index, row) {
-      this.axios.delete('/sys/dictionary/deleteDictionary/' + row.dictionaryEntity.id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.deleteDictionary + row.dictionaryEntity.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -321,7 +321,7 @@ export default {
       })
     },
     deleteDictItem (row) {
-      this.axios.delete('/sys/dictionary/deleteDictionaryItem/' + row.id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.deleteDictionaryItem + row.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -360,7 +360,7 @@ export default {
       this.showDictItemInfo()
     },
     showDictItemInfo () {
-      this.axios.post('/sys/dictionary/findDictionaryItemByDicId', qs.stringify({
+      this.axios.post(this.$api.sysManager.findDictionaryItemByDicId, qs.stringify({
         id: this.dictId,
         itemText: this.itemText,
         status: this.status,

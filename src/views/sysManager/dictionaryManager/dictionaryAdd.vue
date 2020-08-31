@@ -73,7 +73,7 @@ export default {
       }
       if (rule.originalDictName !== value) {
         setTimeout(() => {
-          this.axios.get('/sys/dictionary/checkDictName/' + value).then((resp) => {
+          this.axios.get(this.$api.sysManager.checkDictName + value).then((resp) => {
             if (resp.status === 200) {
               const json = resp.data
               if (json.code === 1) {
@@ -100,7 +100,7 @@ export default {
       }
       if (rule.originalDictCode !== value) {
         setTimeout(() => {
-          this.axios.get('/sys/dictionary/checkDictCode/' + value).then((resp) => {
+          this.axios.get(this.$api.sysManager.checkDictCode + value).then((resp) => {
             if (resp.status === 200) {
               const json = resp.data
               if (json.code === 1) {
@@ -141,7 +141,7 @@ export default {
     openDialog () {
       if (this.id !== -1) {
         this.axios
-          .post('/sys/dictionary/findDictionaryById/' + this.id)
+          .post(this.$api.sysManager.findDictionaryById + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
@@ -174,7 +174,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post('/sys/dictionary/addDictionary', this.dictionaryForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.addDictionary, this.dictionaryForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
