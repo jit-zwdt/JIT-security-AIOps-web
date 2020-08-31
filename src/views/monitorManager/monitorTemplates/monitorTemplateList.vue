@@ -141,7 +141,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post('/monitorTemplates/getMonitorTemplates', {
+        .post(this.$api.monitorManager.getMonitorTemplates, {
           param: {
             name: this.temp_name,
             type: this.temp_type
@@ -220,7 +220,7 @@ export default {
       this.showhelpDialog = true
     },
     getTypes () {
-      this.axios.post('/monitorType/getMonitorTypes').then((resp) => {
+      this.axios.post(this.$api.monitorManager.getMonitorTypes).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

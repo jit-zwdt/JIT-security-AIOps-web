@@ -329,7 +329,7 @@ export default {
       this.showInfo()
     },
     confirmdelete (index, row) {
-      this.axios.delete('/host/deleteHost/' + row.id).then((resp) => {
+      this.axios.delete(this.$api.monitorManager.deleteHost + row.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -364,7 +364,7 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.axios.post('/host/hostinfo', {
+      this.axios.post(this.$api.monitorManager.hostinfo, {
         param: {
           hostObjectName: this.hostObjectName,
           hostIp: this.hostIp,
@@ -435,7 +435,7 @@ export default {
       this.$router.push({ name: 'monitorAddList' })
     },
     getTypes () {
-      this.axios.post('/monitorType/getMonitorTypes').then((resp) => {
+      this.axios.post(this.$api.monitorManager.getMonitorTypes).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -450,7 +450,7 @@ export default {
       })
     },
     getSubTypes () {
-      this.axios.post('/monitorType/getMonitorSubTypes').then((resp) => {
+      this.axios.post(this.$api.monitorManager.getMonitorSubTypes).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -465,7 +465,7 @@ export default {
       })
     },
     getGroups () {
-      this.axios.post('/hostGroup/getZabbixHostGroup').then((resp) => {
+      this.axios.post(this.$api.monitorManager.getZabbixHostGroup).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -537,7 +537,7 @@ export default {
       this.tableData.forEach(element => {
         hostIds.push(element.hostid)
       })
-      this.axios.post('/host/findHostAvailable', hostIds).then((resp) => {
+      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -565,7 +565,7 @@ export default {
       this.currentHostGroup = selVal
     },
     change_enableMonitor (rowData) {
-      this.axios.put('/host/updateHostEnableMonitor/' + rowData.id, qs.stringify({
+      this.axios.put(this.$api.monitorManager.updateHostEnableMonitor + rowData.id, qs.stringify({
         enableMonitor: rowData.enableMonitor
       })).then((resp) => {
         if (resp.status === 200) {

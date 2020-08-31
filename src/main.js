@@ -13,10 +13,12 @@ import '@/assets/css/style.scss'
 import Config from '@/config/app'
 import ToolBar from '@/components/ToolBar.vue'
 import echarts from 'echarts'
+import api from '@/api/api'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)
 Vue.prototype.axios = axios
+Vue.prototype.$api = api
 Vue.use(ElementUI)
 Vue.use(ToolBar)
 Vue.prototype.GlobalCfg = Config

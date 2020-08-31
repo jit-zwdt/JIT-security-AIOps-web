@@ -162,7 +162,7 @@ export default {
         status: this.enableItemTop,
         name: this.nameTop
       }
-      this.axios.post('/item/getItemInfoList', region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -184,7 +184,7 @@ export default {
       this.enableItemTop = ''
     },
     change_enableMonitor (index, rowData) {
-      this.axios.put('/item/updateItemStatus/' + rowData.itemid, qs.stringify({
+      this.axios.put(this.$api.monitorManager.updateItemStatus + rowData.itemid, qs.stringify({
         status: rowData.status
       })).then((resp) => {
         if (resp.status === 200) {

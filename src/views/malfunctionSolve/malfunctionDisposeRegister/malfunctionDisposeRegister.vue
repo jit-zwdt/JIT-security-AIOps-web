@@ -121,7 +121,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post('/problem/findClaimByUser', qs.stringify({
+        .post(this.$api.malfunctionSolve.findClaimByUser, qs.stringify({
           problemName: this.problemName,
           resolveType: this.resolveType
         })).then(resp => {

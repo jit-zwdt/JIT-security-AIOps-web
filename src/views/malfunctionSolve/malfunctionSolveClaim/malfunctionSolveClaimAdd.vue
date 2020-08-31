@@ -129,7 +129,7 @@ export default {
       this.optionsUser = []
       this.serverListForm.claimUserId = ''
       this.axios
-        .post('/user/findUserByRole', qs.stringify({
+        .post(this.$api.malfunctionSolve.findUserByRole, qs.stringify({
           roleId: e
         }))
         .then(resp => {
@@ -148,7 +148,7 @@ export default {
     },
     openDialog () {
       this.axios
-        .post('/role/findAllRole')
+        .post(this.$api.malfunctionSolve.findAllRole)
         .then(resp => {
           if (resp.status === 200) {
             var json = resp.data
@@ -180,7 +180,7 @@ export default {
     },
     submit () {
       const region = this.makeParam()
-      this.axios.post('/problem/addClaim', region).then((resp) => {
+      this.axios.post(this.$api.malfunctionSolve.addClaim, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -206,7 +206,7 @@ export default {
     },
     showInfo (assetid) {
       if (assetid != null && assetid !== '') {
-        this.axios.post('/assets/findById/' + assetid, {
+        this.axios.post(this.$api.malfunctionSolve.findById + assetid, {
           id: this.id
         }).then((resp) => {
           if (resp.status === 200) {

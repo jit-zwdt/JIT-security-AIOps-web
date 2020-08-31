@@ -99,7 +99,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post('/problem/problemSolveReport', qs.stringify({
+        .post(this.$api.malfunctionSolve.problemSolveReport, qs.stringify({
           problemType: this.problemType,
           problemName: this.problemName
         }))
