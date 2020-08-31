@@ -25,12 +25,12 @@
       </div>
     </ToolBar>
     <el-table
-        :data="tableData"
-        border
-        v-loading="loading"
-        style="width: 100%"
-        :row-style="tableRowStyle"
-        :header-cell-style="tableHeaderColor"
+            :data="tableData"
+            border
+            v-loading="loading"
+            style="width: 100%"
+            :row-style="tableRowStyle"
+            :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
       <el-table-column label="账号" prop="username"></el-table-column>
@@ -44,11 +44,11 @@
       <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button
-              size="mini"
-              type="primary"
-              slot="reference"
-              icon="el-icon-edit-outline"
-              @click="confirmupdate(scope.$index, scope.row)"
+                  size="mini"
+                  type="primary"
+                  slot="reference"
+                  icon="el-icon-edit-outline"
+                  @click="confirmupdate(scope.$index, scope.row)"
           >编辑</el-button>
           <el-dropdown>
             <el-button type="primary" size="mini">
@@ -67,10 +67,10 @@
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
     <el-dialog
-          title="提示"
-          :visible.sync="dialogDelete"
-          width="30%"
-          :id="id"
+            title="提示"
+            :visible.sync="dialogDelete"
+            width="30%"
+            :id="id"
     >
       <span>确定删除该用户？</span>
       <span slot="footer" class="dialog-footer">
@@ -79,13 +79,13 @@
       </span>
     </el-dialog>
     <el-dialog
-          title="提示"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :userForm="userForm"
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :userForm="userForm"
     >
-      <span v-if="userForm.status==1">确定冻结该用户？</span>
-      <span v-if="userForm.status==0">确定取消冻结该用户？</span>
+      <span v-if="userForm.status===1">确定冻结该用户？</span>
+      <span v-if="userForm.status===0">确定取消冻结该用户？</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="freezeUser">确 定</el-button>
         <el-button type="primary" @click="dialogVisible = false">取 消</el-button>
@@ -108,6 +108,14 @@
             @success="reloadData"
             @error="reloadData"
     ></userPassUpdate>
+    <useView
+            :title="titleType"
+            :id="id"
+            :showEditDialog="showViewDialog"
+            @close="showViewDialog = false"
+            @success="reloadData"
+            @error="reloadData"
+    ></useView>
   </div>
 </template>
 <script>
@@ -115,9 +123,11 @@ import { formatTodate } from '@/utils/format.js'
 import Pagination from '@/components/Pagination.vue'
 import userAdd from '@/views/sysManager/userManager/userAdd.vue'
 import userPassUpdate from '@/views/sysManager/userManager/userPassUpdate.vue'
+import useView from '@/views/sysManager/userManager/userView.vue'
 export default {
   data () {
     return {
+      showViewDialog: false,
       dialogDelete: false,
       dialogVisible: false,
       showEditDialog: false,
@@ -178,7 +188,7 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post(this.$api.sysManager.getUsers, {
+      this.axios.post('/sys/user/getUsers', {
         param: {
           username: this.username,
           name: this.name,
@@ -193,7 +203,7 @@ export default {
             var data = json.data.dataList
             this.currentTotal = json.data.totalRow
             this.loading = false
-            this.axios.get(this.$api.sysManager.getAllDepartment).then((resp) => {
+            this.axios.get('/sys/department/getAllDepartment').then((resp) => {
               if (resp.status === 200) {
                 var json = resp.data
                 if (json.code === 1) {
@@ -270,7 +280,7 @@ export default {
       this.titleType = '详情'
       this.id = row.id
       this.isReadOnly = true
-      this.showEditDialog = true
+      this.showViewDialog = true
     },
     deleteUserConfirm (index, row) {
       this.titleType = '冻结'
@@ -278,7 +288,7 @@ export default {
       this.id = row.id
     },
     deleteUser () {
-      this.axios.delete(this.$api.sysManager.deleteUser + this.id).then((resp) => {
+      this.axios.delete('/sys/user/deleteUser/' + this.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -312,16 +322,17 @@ export default {
     },
     freezeUserConfirm (index, row) {
       this.titleType = '冻结'
+      console.log(row)
       this.userForm = row
-      if (row.status === 1) {
+      this.dialogVisible = true
+    },
+    freezeUser () {
+      if (this.userForm.status === 1) {
         this.userForm.status = 0
       } else {
         this.userForm.status = 1
       }
-      this.dialogVisible = true
-    },
-    freezeUser () {
-      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
+      this.axios.post('/sys/user/addUser', this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -345,7 +356,7 @@ export default {
       })
     }
   },
-  components: { Pagination, userAdd, userPassUpdate }
+  components: { Pagination, userAdd, userPassUpdate, useView }
 }
 </script>
 <style lang="scss" scoped>
