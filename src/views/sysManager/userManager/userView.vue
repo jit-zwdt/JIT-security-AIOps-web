@@ -181,14 +181,14 @@ export default {
       this.department = e.label
     },
     openDialog () {
-      this.axios.post('/sys/user/findUserById/' + this.id).then(resp => {
+      this.axios.post(this.$api.sysManager.findUserById + this.id).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.userForm = json.data
             const id = this.userForm.departmentId
             if (id !== undefined && id !== '' && id !== null) {
-              this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
+              this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
                 if (resp.status === 200) {
                   const json = resp.data
                   if (json.code === 1) {
@@ -232,7 +232,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post('/sys/user/addUser', this.userForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
