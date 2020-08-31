@@ -131,6 +131,7 @@
 <script>
 import { resetObject } from '@/utils/common'
 import { formatTodate } from '@/utils/format.js'
+import api from '@/api/api'
 export default {
   props: {
     assetform: {
@@ -254,7 +255,7 @@ export default {
     },
     submit () {
       const region = this.makeParam()
-      this.axios.post('/assets/addAssets', region).then((resp) => {
+      this.axios.post(api.assetsManager.assetsList.assetsAdd.addAssets, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -278,7 +279,7 @@ export default {
     },
     update () {
       const region = this.makeParam()
-      this.axios.put('/assets/updateAssets/' + this.assetform.id, region).then((resp) => {
+      this.axios.put(api.assetsManager.assetsList.assetsAdd.updateAssets + this.assetform.id, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -301,7 +302,7 @@ export default {
     },
     showInfo (assetid) {
       if (assetid != null && assetid !== '') {
-        this.axios.post('/assets/findById/' + assetid, {
+        this.axios.post(api.assetsManager.assetsList.assetsAdd.findById + assetid, {
           id: this.id
         }).then((resp) => {
           if (resp.status === 200) {

@@ -5,7 +5,20 @@ const api = {
     list: '/regionManager/list'
   },
   assetsManager: {
-    assetsList: '/assetsManager/assetsList'
+    assetsList: {
+      assetsAdd: {
+        addAssets: '/assets/addAssets',
+        updateAssets: '/assets/updateAssets/',
+        findById: '/assets/findById/'
+      },
+      assetsList: {
+        deleteAssets: '/assets/deleteAssets/',
+        findByCondition: '/assets/findByCondition'
+      }
+    }
+  },
+  alertManager: {
+
   },
   refreshToken: '/refreshToken'
 }
