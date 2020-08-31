@@ -34,11 +34,11 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-co>
+                        <el-col>
                             <el-form-item label="用户账号：" prop="username">
                                 <el-input  v-model="userForm.username" clearable style="width:98%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
-                        </el-co>
+                        </el-col>
                     </el-row>
                     <el-row>
                         <el-col v-if="isShow">
@@ -55,7 +55,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="用户名称：" prop="name">
-                                <el-input  v-model="userForm.name" clearable style="width:98%" :readonly="isReadOnly"></el-input>
+                                <el-input  v-model="userForm.name" clearable style="width:95%" :readonly="isReadOnly"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -205,24 +205,24 @@ export default {
   data () {
     var isUserNameExisted = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('账号名称不可以为空'))
+        return callback(new Error('用户账号不可以为空'))
       }
       if (rule.uname !== value) {
         setTimeout(() => {
-          this.axios.get(this.$api.sysManager.checkUserName + value).then((resp) => {
+          this.axios.get('/sys/user/checkUserName/' + value).then((resp) => {
             if (resp.status === 200) {
               const json = resp.data
               if (json.code === 1) {
                 if (json.data === true) {
-                  callback(new Error('账号名称已存在！'))
+                  callback(new Error('用户账号已存在！'))
                 } else {
                   callback()
                 }
               } else {
-                callback(new Error('账号名称校验失败！'))
+                callback(new Error('用户账号校验失败！'))
               }
             } else {
-              callback(new Error('账号名称校验失败！'))
+              callback(new Error('用户账号校验失败！'))
             }
           })
         }, 0)
@@ -301,7 +301,7 @@ export default {
       }
       if (this.id !== -1) {
         this.axios
-          .post(this.$api.sysManager.findUserById + this.id)
+          .post('/sys/user/findUserById/' + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
@@ -310,7 +310,7 @@ export default {
                 this.rules.username[0].uname = json.data.username
                 const id = this.userForm.departmentId
                 if (id !== undefined && id !== '' && id !== null) {
-                  this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
+                  this.axios.get('/sys/department/getDepartment/' + id).then((resp) => {
                     if (resp.status === 200) {
                       const json = resp.data
                       if (json.code === 1) {
@@ -360,7 +360,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
+      this.axios.post('/sys/user/addUser', this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
