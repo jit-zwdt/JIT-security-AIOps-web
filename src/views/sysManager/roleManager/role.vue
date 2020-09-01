@@ -45,7 +45,7 @@
               type="primary"
               slot="reference"
               icon="el-icon-user"
-              @click="roleAndUser(scope.row.id)"
+              @click="roleAndUser(scope.row.id,scope.row.roleName)"
           >绑定人员
           </el-button>
           <el-button
@@ -71,11 +71,20 @@
         @success="reloadData"
         @error="reloadData"
     ></roleAdd>
+    <roleAddUser
+        :title="title"
+        :showAddUserDialog="showAddUserDialog"
+        @close="showAddUserDialog = false"
+        :requestData="roleAddUserData"
+        @success="reloadData"
+        @error="reloadData"
+    ></roleAddUser>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
 import roleAdd from '@/views/sysManager/roleManager/roleAdd.vue'
+import roleAddUser from '@/views/sysManager/roleManager/roleAddUser.vue'
 
 export default {
   data () {
@@ -83,6 +92,7 @@ export default {
       roleName: '',
       title: '',
       showEditDialog: false,
+      showAddUserDialog: false,
       tableData: [
         {
           id: '',
@@ -91,6 +101,9 @@ export default {
         }
       ],
       requestData: {
+        id: ''
+      },
+      roleAddUserData: {
         id: ''
       },
       currentPage: 1,
@@ -184,14 +197,16 @@ export default {
         this.showInfo()
       })
     },
-    roleAndUser (id) {
-      console.log(id)
+    roleAndUser (id, roleName) {
+      this.roleAddUserData.id = id
+      this.title = '【' + roleName + '】绑定人员'
+      this.showAddUserDialog = true
     },
     roleAndMenu (id) {
       console.log(id)
     }
   },
-  components: { Pagination, roleAdd }
+  components: { Pagination, roleAdd, roleAddUser }
 }
 </script>
 <style lang="scss" scoped>
