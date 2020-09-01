@@ -164,7 +164,8 @@ const api = {
     addUser: '/sys/user/addUser',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
-    findUserById: '/sys/user/findUserById/'
+    findUserById: '/sys/user/findUserById/',
+    getUserInfo: '/sys/user/getUserInfo'
   },
   main: {
     // Index.vue

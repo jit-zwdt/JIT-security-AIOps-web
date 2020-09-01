@@ -37,7 +37,7 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="$router.push('/personal')">
+          <el-dropdown-item @click.native="showUserMassage = true">
             <i style="padding-right: 8px" class="fa fa-user"></i>个人中心
           </el-dropdown-item>
           <el-dropdown-item @click.native="logout">
@@ -45,6 +45,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <UserMassage :showUserMassage="showUserMassage" @close="showUserMassage = false" @success="showUserMassage = false"></UserMassage>
     </div>
   </div>
 </template>
@@ -53,13 +54,19 @@
 import ScreenFull from 'screenfull'
 import { mapState } from 'vuex'
 import Menu from '@/menu/index'
+import UserMassage from './UserMassage'
 export default {
   name: 'BodyTop',
   data () {
     return {
       menu: Menu,
-      userName: 'Admin'
+      userName: 'Admin',
+      showUserMassage: false
     }
+  },
+  // 添加组件
+  components: {
+    UserMassage
   },
   methods: {
     hiddenSidebar () {
@@ -81,6 +88,10 @@ export default {
         path: '/',
         query: { redirect: this.$router.currentRoute.fullPath }
       })
+    },
+    // 将弹框回复初始状态
+    noReloadData () {
+      this.showUserMassage = false
     }
   },
   computed: mapState(['system'])
