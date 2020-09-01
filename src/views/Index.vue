@@ -648,7 +648,7 @@ export default {
     },
     getioRateTop5ByItem () {
       var param = 'cup'
-      this.axios.post(this.$api.main.getTimeTop5ItemInfothis.$api.main.getTimeTop5ItemInfo + param).then((resp) => {
+      this.axios.post(this.$api.main.getTimeTop5ItemInfo + param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
