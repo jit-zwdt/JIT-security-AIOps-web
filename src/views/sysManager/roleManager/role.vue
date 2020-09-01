@@ -45,16 +45,16 @@
               type="primary"
               slot="reference"
               icon="el-icon-user"
-              @click="confirmupdate(scope.$index, scope.row)"
-          >人员维护
+              @click="roleAndUser(scope.row.id)"
+          >绑定人员
           </el-button>
           <el-button
               size="mini"
               type="primary"
               slot="reference"
               icon="el-icon-paperclip"
-              @click="confirmupdate(scope.$index, scope.row)"
-          >菜单维护
+              @click="roleAndMenu(scope.row.id)"
+          >绑定菜单
           </el-button>
           <el-popconfirm title="确定删除吗？" @onConfirm="deleteRole(scope.row.id)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
@@ -183,6 +183,12 @@ export default {
         }
         this.showInfo()
       })
+    },
+    roleAndUser (id) {
+      console.log(id)
+    },
+    roleAndMenu (id) {
+      console.log(id)
     }
   },
   components: { Pagination, roleAdd }
