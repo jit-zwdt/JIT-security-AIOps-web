@@ -19,15 +19,8 @@
                 >
                     <el-row>
                         <el-col>
-                            <el-form-item label="头像：" prop="pic">
-                                <el-upload
-                                        class="avatar-uploader"
-                                        action=""
-                                        :show-file-list="false"
-                                        :before-upload="beforeAvatarUpload">
-                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
+                            <el-form-item label="头像：" prop="picUrl">
+                                <img v-if="userForm.picUrl" :src="userForm.picUrl" class="avatar">
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -171,7 +164,8 @@ export default {
         city: '',
         liveAddress: '',
         hobby: '',
-        status: 1
+        status: 1,
+        picUrl: ''
       }
     }
   },

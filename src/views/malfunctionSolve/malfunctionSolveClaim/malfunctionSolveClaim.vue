@@ -167,7 +167,6 @@ export default {
             if (json.code === 1) {
               var now = new Date()
               this.tableData = json.data
-              console.log(this.tableData)
               if (this.tableData) {
                 this.totalCount = this.tableData.length
               }

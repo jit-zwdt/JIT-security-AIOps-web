@@ -265,20 +265,12 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             if (json.data.isResolve === 1) {
-              console.log(json.data.gmtCreate.replace('.000+08:00', ''))
-              console.log(this.$route.query.claimTime)
               var temp = new Date(json.data.gmtCreate.replace('.000+08:00', '')) - new Date(this.$route.query.claimTime)
-              console.log(temp)
               var days = Math.floor(temp / (60 * 60 * 24 * 1000))
-              console.log(days)
               var hours = Math.floor((temp % (60 * 60 * 24 * 1000)) / (60 * 60 * 1000))
-              console.log(hours)
               var minutes = Math.floor((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) / (60 * 1000))
-              console.log(minutes)
               var seconds = Math.floor(((temp % (60 * 60 * 24 * 1000)) % (60 * 60 * 1000) % (60 * 1000)) / 1000)
-              console.log(seconds)
               if (days > 0) {
                 this.handleTime += days + '天 '
               }
@@ -295,7 +287,6 @@ export default {
                 this.handleTime = seconds + '秒'
               }
             }
-            console.log('111111111111111111111111111111111', this.handleTime)
             const param = {
               id: this.$route.query.claimId,
               isRegister: 1,
