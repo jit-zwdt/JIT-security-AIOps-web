@@ -28,6 +28,9 @@ const api = {
         getUserAndMediaInfo: '/user/getUserAndMediaInfo',
         updateUserAndMediaInfo: '/user/updateUserAndMediaInfo/'
       },
+      alertDefine: {
+        getUserInfo: '/user/getUserInfo'
+      },
       alertDefineAdd: {
       },
       alertDefinev1: {
@@ -52,6 +55,7 @@ const api = {
     },
     alertType: {
       alertType: {
+        getMediaTypes: '/mediaType/getMediaTypes',
         updateStatus: '/mediaType/updateStatus',
         deleteMediaType: '/mediaType/deleteMediaType/'
       },
@@ -59,6 +63,13 @@ const api = {
         addMediaType: '/mediaType/addMediaType',
         updateMediaType: '/mediaType/updateMediaType/',
         findByMediaTypeId: '/mediaType/findByMediaTypeId/'
+      }
+    },
+    queryAlert: {
+      queryAlert: {
+        bindTemplates: '/monitorTemplates/bindTemplates',
+        getZabbixTemplates: '/monitorTemplates/getZabbixTemplates',
+        checkItems: '/monitorTemplates/checkItems'
       }
     }
   },
