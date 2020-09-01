@@ -176,7 +176,8 @@ const api = {
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
     findUserById: '/sys/user/findUserById/',
-    getUserInfo: '/sys/user/getUserInfo'
+    getUserInfo: '/sys/user/getUserInfo',
+    uploadPic: '/sys/user/uploadPic'
   },
   main: {
     // Index.vue

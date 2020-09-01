@@ -20,14 +20,15 @@
                 >
                     <el-row>
                         <el-col>
-                            <el-form-item label="头像：" prop="pic">
+                            <el-form-item label="头像：" prop="picUrl">
                                 <el-upload
                                         class="avatar-uploader"
-                                        action=""
+                                        :action="this.$api.sysManager.uploadPic"
+                                        :headers="getHeaders"
                                         :show-file-list="false"
                                         :on-success="handleAvatarSuccess"
                                         :before-upload="beforeAvatarUpload">
-                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                    <img v-if="userForm.picUrl" :src="userForm.picUrl" class="avatar">
                                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
                             </el-form-item>
@@ -238,7 +239,12 @@ export default {
       department: '',
       showDepartmentDialog: false,
       imageUrl: '',
+      getHeaders: {
+        Accept: 'application/json',
+        Authorization: sessionStorage.getItem('token')
+      },
       userForm: {
+        picUrl: '',
         password: '',
         username: '',
         name: '',
@@ -382,19 +388,21 @@ export default {
       })
     },
     handleAvatarSuccess (res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      this.userForm.picUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload (file) {
-      const isJPG = file.type === 'image/jpeg'
+      const isJPEG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      const isJPG = file.type === 'image/jpg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+      if (isJPG === false && isJPEG === false && isPNG === false) {
+        this.$message.error('上传头像图片只能是 JPG、PNG、JPEG 格式!')
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M
+      return !(isJPG === false && isJPEG === false && isPNG === false) && isLt2M
     }
   },
   components: { chooseDepartment }

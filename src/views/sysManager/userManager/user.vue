@@ -322,7 +322,6 @@ export default {
     },
     freezeUserConfirm (index, row) {
       this.titleType = '冻结'
-      console.log(row)
       this.userForm = row
       this.dialogVisible = true
     },
