@@ -3,16 +3,16 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="12">
-          <el-input type="text" v-model="assetNameTop" size="small" placeholder="资产名称" clearable></el-input>
+          <el-input type="text" v-model="nameTop" size="small" placeholder="资产名称" clearable></el-input>
         </el-col>
         <el-date-picker
-          v-model="assetRegisterDateStartTop"
+          v-model="registerDateStartTop"
           type="date"
           placeholder="开始登记时间"
           class="datetop"
         ></el-date-picker>
         <el-date-picker
-          v-model="assetRegisterDateEndTop"
+          v-model="registerDateEndTop"
           type="date"
           placeholder="结束登记时间"
           class="datetop"
@@ -43,26 +43,26 @@
       :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="资产名称" prop="assetName" min-width="20%">
+      <el-table-column label="资产名称" prop="name" min-width="20%">
         <template slot-scope="scope">
-          <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.assetName}}</el-link>
+          <el-link type="primary" @click="showAssetsInfo(scope.row)">{{scope.row.name}}</el-link>
         </template>
       </el-table-column>
       <el-table-column
         label="资产类型"
-        prop="assetType"
+        prop="type"
         min-width="10%"
         :resizable="false"
-        :formatter="assetTypeformatType"
+        :formatter="typeformatType"
       ></el-table-column>
-      <el-table-column label="资产编号" prop="assetNumber" min-width="15%" :resizable="false"></el-table-column>
-      <el-table-column label="资产状态" prop="assetState" min-width="10%" :resizable="false" :formatter="assetStateformatType"></el-table-column>
-      <el-table-column label="数量" prop="assetAmount" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="资产所属单位" prop="assetBelongsDept" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="资产所属人" prop="assetBelongsPerson" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="资产编号" prop="number" min-width="15%" :resizable="false"></el-table-column>
+      <el-table-column label="资产状态" prop="state" min-width="10%" :resizable="false" :formatter="stateformatType"></el-table-column>
+      <el-table-column label="数量" prop="amount" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="资产所属单位" prop="belongsDept" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="资产所属人" prop="belongsPerson" :resizable="false" v-if="show"></el-table-column>
       <el-table-column
         label="资产登记时间"
-        prop="assetRegisterDate"
+        prop="registerDate"
         min-width="15%"
         :resizable="false"
         :formatter="formatDate"
@@ -75,10 +75,10 @@
         v-if="show"
         :formatter="formatDate"
       ></el-table-column>
-      <el-table-column label="资产位置" prop="assetLocation" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column label="资产位置" prop="location" :resizable="false" v-if="show"></el-table-column>
       <el-table-column
         label="资产注销时间"
-        prop="assetLogoutDate"
+        prop="logoutDate"
         :resizable="false"
         :formatter="formatDate"
         v-if="show"
@@ -123,25 +123,37 @@ export default {
       titleType: '',
       tableData: [{
         id: '',
-        assetName: '',
-        assetType: '',
-        assetNumber: '',
-        assetState: '',
-        assetAmount: '',
-        assetBelongsDept: '',
-        assetBelongsPerson: '',
-        assetRegisterDate: '',
-        assetRegistrant: '',
-        assetUpdateDate: '',
-        assetLocation: '',
-        assetLogoutDate: ''
+        name: '',
+        type: '',
+        number: '',
+        state: '',
+        gbType: '',
+        ip: '',
+        backupIp: '',
+        amount: '',
+        belongsDept: '',
+        belongsPerson: '',
+        registerDate: '',
+        registrant: '',
+        updateDate: '',
+        location: '',
+        logoutDate: '',
+        dateRecorded: '',
+        worth: '',
+        acquisitionMode: '',
+        userDepartment: '',
+        user: '',
+        objectClassification: '',
+        sn: '',
+        brand: '',
+        productModel: ''
       }],
-      assetNameTop: '',
-      assetRegisterDateStartTop: '',
-      assetRegisterDateEndTop: '',
+      nameTop: '',
+      registerDateStartTop: '',
+      registerDateEndTop: '',
       serverResource: {
-        assetName: '1',
-        assetRegisterDate: ''
+        name: '1',
+        registerDate: ''
       },
       assetform: {
         id: '',
@@ -213,11 +225,11 @@ export default {
     },
     showInfoTimeout (str) {
       this.setTimeoutster = ''
-      let assetRegisterDateStartTopstr = ''
-      assetRegisterDateStartTopstr = formatTodate(this.assetRegisterDateStartTop, 'YYYY-MM-DD HH:mm:ss')
-      let assetRegisterDateEndTopstr = ''
-      assetRegisterDateEndTopstr = formatTodate(this.assetRegisterDateEndTop, 'YYYY-MM-DD 23:59:59')
-      if (compareDate(assetRegisterDateStartTopstr, assetRegisterDateEndTopstr)) {
+      let registerDateStartTopstr = ''
+      registerDateStartTopstr = formatTodate(this.registerDateStartTop, 'YYYY-MM-DD HH:mm:ss')
+      let registerDateEndTopstr = ''
+      registerDateEndTopstr = formatTodate(this.registerDateEndTop, 'YYYY-MM-DD 23:59:59')
+      if (compareDate(registerDateStartTopstr, registerDateEndTopstr)) {
         Message({
           message: '开始日期大于结束日期！',
           type: 'warning'
@@ -226,9 +238,9 @@ export default {
       }
       this.axios.post(api.assetsManager.assetsList.assetsList.findByCondition, {
         param: {
-          assetName: this.assetNameTop,
-          assetRegisterStartDate: assetRegisterDateStartTopstr,
-          assetRegisterEndDate: assetRegisterDateEndTopstr
+          name: this.nameTop,
+          assetRegisterStartDate: registerDateStartTopstr,
+          assetRegisterEndDate: registerDateEndTopstr
         },
         page: this.currentPage,
         size: this.pageSize
@@ -249,7 +261,7 @@ export default {
         }
       })
     },
-    assetTypeformatType (row, column) {
+    typeformatType (row, column) {
       let data = ''
       data = row[column.property]
       if (data === '1') {
@@ -263,7 +275,7 @@ export default {
       }
       return ''
     },
-    assetStateformatType (row, column) {
+    stateformatType (row, column) {
       let data = ''
       data = row[column.property]
       if (data === '0') {
@@ -276,9 +288,9 @@ export default {
       return ''
     },
     showClear () {
-      this.assetNameTop = ''
-      this.assetRegisterDateStartTop = ''
-      this.assetRegisterDateEndTop = ''
+      this.nameTop = ''
+      this.registerDateStartTop = ''
+      this.registerDateEndTop = ''
       this.titleType = ''
     },
     formatDate (row, column) {

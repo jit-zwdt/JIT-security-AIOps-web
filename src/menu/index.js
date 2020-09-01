@@ -116,7 +116,7 @@ const alertManager = {
       path: '/alertManager/alertType'
     },
     alertTemplate: {
-      name: '告警通知模版',
+      name: '告警通知模板',
       permissionsKey: '',
       icon: 'fa el-icon-s-operation',
       path: ''
