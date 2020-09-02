@@ -120,22 +120,26 @@
                         <el-col :span="12">
                             <el-form-item label="zabbix登录：" prop="isZabbixActive">
                                 <el-switch
+                                        class="switchStyle1"
                                         v-model="userForm.isZabbixActive"
                                         :active-value="1"
+                                        active-text="是"
                                         :inactive-value="0"
-                                        active-color="#13ce66"
-                                        :disabled="disabled">
+                                        inactive-text="否"
+                                        >
                                 </el-switch>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="状态：" prop="status">
                                 <el-switch
+                                        class="switchStyle"
                                         v-model="userForm.status"
                                         :active-value="1"
+                                        active-text="正常"
                                         :inactive-value="0"
-                                        active-color="#13ce66"
-                                        :disabled="disabled">
+                                        inactive-text="禁用"
+                                       >
                                 </el-switch>
                             </el-form-item>
                         </el-col>
@@ -408,7 +412,8 @@ export default {
   components: { chooseDepartment }
 }
 </script>
-<style>
+
+<style lang="scss" scoped>
     .fromadd {
         width: 100%;
     }
@@ -434,5 +439,49 @@ export default {
         width: 120px;
         height: 120px;
         display: block;
+    }
+    /deep/ .switchStyle .el-switch__label {
+      position: absolute;
+      display: none;
+      color: #fff;
+    }
+    /deep/ .switchStyle .el-switch__label--left {
+      width: 28px;
+      z-index: 1;
+      left: 21px;
+    }
+    /deep/ .switchStyle .el-switch__label--right {
+      width: 28px;
+      z-index: 1;
+      right: 0px;
+    }
+    /deep/ .switchStyle .el-switch__label.is-active {
+      display: block;
+    }
+    /deep/ .switchStyle.el-switch .el-switch__core,
+    .el-switch .el-switch__label {
+      width: 55px !important;
+    }
+    /deep/ .switchStyle1 .el-switch__label {
+      position: absolute;
+      display: none;
+      color: #fff;
+    }
+    /deep/ .switchStyle1 .el-switch__label--left {
+      width: 28px;
+      z-index: 1;
+      left: 20px;
+    }
+    /deep/ .switchStyle1 .el-switch__label--right {
+      width: 28px;
+      z-index: 1;
+      right: -15px;
+    }
+    /deep/ .switchStyle1 .el-switch__label.is-active {
+      display: block;
+    }
+    /deep/ .switchStyle1 .el-switch .el-switch__core,
+    /deep/ .el-switch .el-switch__label {
+      width: 50px !important;
     }
 </style>

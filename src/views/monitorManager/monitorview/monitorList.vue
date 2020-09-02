@@ -131,10 +131,12 @@
       <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
         <template slot-scope="scope">
           <el-switch
+            class="switchStyle"
             v-model="scope.row.enableMonitor"
             active-value="1"
+            active-text="已监控"
             inactive-value="0"
-            active-color="#13ce66"
+            inactive-text="未监控"
             @change="change_enableMonitor(scope.row)"
           />
         </template>
@@ -650,5 +652,27 @@ export default {
   border-radius: 1px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+/deep/ .switchStyle .el-switch__label {
+  position: absolute;
+  display: none;
+  color: #fff;
+}
+/deep/ .switchStyle .el-switch__label--left {
+  width: 45px;
+  z-index: 1;
+  left: 21px;
+}
+/deep/ .switchStyle .el-switch__label--right {
+  width: 45px;
+  z-index: 1;
+  right: 21px;
+}
+/deep/ .switchStyle .el-switch__label.is-active {
+  display: block;
+}
+/deep/ .switchStyle.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+  width: 70px !important;
 }
 </style>

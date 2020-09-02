@@ -49,10 +49,13 @@
                         <el-col>
                             <el-form-item label="是否启用：" prop="status">
                                 <el-switch
+                                        class="switchStyle"
                                         v-model="dictionaryItemForm.status"
                                         :active-value="1"
+                                        active-text="是"
                                         :inactive-value="0"
-                                        active-color="#13ce66">
+                                        inactive-text="否"
+                                        >
                                 </el-switch>
                             </el-form-item>
                         </el-col>
@@ -204,8 +207,30 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
     .fromadd {
         width: 100%;
+    }
+    /deep/ .switchStyle .el-switch__label {
+      position: absolute;
+      display: none;
+      color: #fff;
+    }
+    /deep/ .switchStyle .el-switch__label--left {
+      width: 25px;
+      z-index: 1;
+      left: 25px;
+    }
+    /deep/ .switchStyle .el-switch__label--right {
+      width: 25px;
+      z-index: 1;
+      right: 15px;
+    }
+    /deep/ .switchStyle .el-switch__label.is-active {
+      display: block;
+    }
+    /deep/ .switchStyle.el-switch .el-switch__core,
+    .el-switch .el-switch__label {
+      width: 50px !important;
     }
 </style>

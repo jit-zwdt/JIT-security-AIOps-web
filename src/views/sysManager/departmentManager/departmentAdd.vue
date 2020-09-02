@@ -61,7 +61,14 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="状态：" prop="status">
-                <el-switch v-model="form.status" :active-value="1" :inactive-value="0"></el-switch>
+                <el-switch
+                  class="switchStyle"
+                  v-model="form.status"
+                  :active-value="1"
+                  active-text="启用"
+                  :inactive-value="0"
+                  inactive-text="禁用"
+                ></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -234,3 +241,27 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+    /deep/ .switchStyle .el-switch__label {
+      position: absolute;
+      display: none;
+      color: #fff;
+    }
+    /deep/ .switchStyle .el-switch__label--left {
+      width: 28px;
+      z-index: 1;
+      left: 21px;
+    }
+    /deep/ .switchStyle .el-switch__label--right {
+      width: 28px;
+      z-index: 1;
+      right: 21px;
+    }
+    /deep/ .switchStyle .el-switch__label.is-active {
+      display: block;
+    }
+    /deep/ .switchStyle.el-switch .el-switch__core,
+    .el-switch .el-switch__label {
+      width: 50px !important;
+    }
+</style>
