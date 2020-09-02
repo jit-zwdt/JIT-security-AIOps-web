@@ -159,6 +159,10 @@ const api = {
     findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
+    getMenusList: '/sys/menu/getMenusList',
+    getSysMenuFirst: '/sys/menu/getSysMenuFirst',
+    addMenus: '/sys/menu/addMenus',
+    updateMenus: '/sys/menu/updateMenus',
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
