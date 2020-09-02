@@ -1,10 +1,10 @@
 <template>
   <!-- 显示用户信息的 Dialong -->
-  <el-dialog title="用户中心" :visible.sync="showUserMassage" @opened="preShow" :before-close="handleclosebind" :show-close="true" :close-on-click-modal="false">
+  <el-dialog title="用户中心" width="20%" :visible.sync="showUserMassage" @opened="preShow" :before-close="handleclosebind" :show-close="true" :close-on-click-modal="false">
     <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
-            <span style="line-height:100px">图片:</span>
+            <span style="line-height:100px">头像:</span>
           </div>
         </el-col>
         <el-col :span="12">
@@ -12,7 +12,7 @@
         </el-col>
     </el-row>
     <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
             <span>姓名:</span>
           </div>
@@ -22,7 +22,7 @@
         </el-col>
     </el-row>
     <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
             <span>部门:</span>
           </div>
@@ -37,7 +37,7 @@
         </el-col>
     </el-row>
         <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
             <span>性别:</span>
           </div>
@@ -48,7 +48,7 @@
         </el-col>
     </el-row>
         <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
             <span>生日:</span>
           </div>
@@ -58,7 +58,7 @@
         </el-col>
     </el-row>
         <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
             <span>手机号码:</span>
           </div>
@@ -68,7 +68,7 @@
         </el-col>
     </el-row>
         <el-row :gutter="30">
-        <el-col :push="4" :span="12">
+        <el-col :push="8" :span="12">
           <div>
             <span>邮箱:</span>
           </div>
@@ -78,7 +78,7 @@
         </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close()">取 消</el-button>
+      <!-- <el-button @click="close()">取 消</el-button> -->
       <el-button type="primary" @click="$emit('success')">确 定</el-button>
     </div>
   </el-dialog>
@@ -134,11 +134,11 @@ export default {
       })
     },
     // 关闭按钮的回调函数
-    close () {
+    /* close () {
       this.user = {}
       this.departments = []
       this.$emit('close')
-    },
+    }, */
     // xx 的回调函数
     handleclosebind () {
       this.user = {}
@@ -155,5 +155,8 @@ export default {
   }
   .el-col {
     border-radius: 4px;
+  }
+  .el-dialog__body {
+    margin-left: -70px;
   }
 </style>
