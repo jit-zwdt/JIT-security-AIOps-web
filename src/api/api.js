@@ -168,6 +168,7 @@ const api = {
     // roleManager/roleAddUser
     getRoleUsers: '/sys/role/getUsers',
     getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
+    bindingUsers: '/sys/role/bindingUsers',
     // roleManager/validators.js
     checkRoleName: '/sys/role/checkRoleName/',
     checkRoleSign: '/sys/role/checkRoleSign/',
