@@ -234,7 +234,8 @@ export default {
       exceptionTop5: [],
       requestNumTop5: [],
       threadTop5: [],
-      currentTime: '' // 获取当前时间
+      currentTime: '', // 获取当前时间
+      metaTypeId: '3'
     }
   },
   created () {
@@ -260,7 +261,7 @@ export default {
     },
     getGroups () {
       this.axios.post(this.$api.monitorManager.getZabbixHostGroupByHostType, qs.stringify({
-        typeId: this.$route.meta.typeId,
+        typeId: this.metaTypeId,
         groupName: this.groupName
       })).then((resp) => {
         if (resp.status === 200) {
@@ -277,7 +278,7 @@ export default {
       })
     },
     gotoAdd () {
-      this.$router.push({ name: 'monitorAddList', query: { typeId: this.$route.meta.typeId } })
+      this.$router.push({ name: 'monitorAddList', query: { typeId: this.metaTypeId } })
     },
     showhostIdInfo (row) {
       this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostId, hostName: row.hostName } })
@@ -285,7 +286,7 @@ export default {
     getmemoryTop5ByItem () {
       this.memoryloading = true
       const param = {
-        typeId: this.$route.meta.typeId,
+        typeId: this.metaTypeId,
         itemKey: '3',
         valueType: '3',
         method: 'top5ByItem'
@@ -311,7 +312,7 @@ export default {
     getExceptionTop5ByItem () {
       this.exceptionloading = true
       const param = {
-        typeId: this.$route.meta.typeId
+        typeId: this.metaTypeId
       }
       this.axios.post(this.$api.monitorManager.getTop5ByTrigger, param).then((resp) => {
         if (resp.status === 200) {
@@ -334,7 +335,7 @@ export default {
     getthreadTop5ByItem () {
       this.threadloading = true
       const param = {
-        typeId: this.$route.meta.typeId,
+        typeId: this.metaTypeId,
         itemKey: '2',
         valueType: '3',
         method: 'top5ByItem'
@@ -360,7 +361,7 @@ export default {
     getrequestNumTop5ByItem () {
       this.requestNumloading = true
       const param = {
-        typeId: this.$route.meta.typeId,
+        typeId: this.metaTypeId,
         itemKey: '4',
         valueType: '0',
         method: 'top5ByItem'
@@ -388,7 +389,7 @@ export default {
       this.$router.push({
         name: 'monitorList',
         query: {
-          typeId: this.$route.meta.typeId,
+          typeId: this.metaTypeId,
           groupId: groupId
         }
       })
