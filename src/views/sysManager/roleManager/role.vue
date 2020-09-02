@@ -79,6 +79,46 @@
         @success="reloadData"
         @error="reloadData"
     ></roleAddUser>
+    <el-drawer
+        title="绑定菜单"
+        :visible.sync="drawer"
+        :direction="direction"
+        :before-close="handleClose"
+        size='20%'
+        @open="openDrawer"
+        :wrapperClosable="false"
+        :destroy-on-close="true">
+      <div class="el-tree-data">
+        <span>当前角色【角色名称】</span>
+        <el-input style="width: 95%"
+            placeholder="输入关键字进行过滤"
+            v-model="filterText">
+        </el-input>
+        <el-tree
+            class="filter-tree"
+            :data="menuData"
+            show-checkbox
+            node-key="id"
+            ref="tree"
+            :default-expand-all="true"
+            :default-checked-keys="menuCheckedData"
+            :filter-node-method="filterNode"
+            :props="defaultProps">
+        </el-tree>
+      </div>
+      <div>
+        <el-row :gutter="10" type="flex">
+          <el-col :span="4"></el-col>
+          <el-col :span="8">
+            <el-button @click="handleClose()">取消</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button type="primary" @click="bindingMenu()">保存</el-button>
+          </el-col>
+          <el-col :span="4"></el-col>
+        </el-row>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -87,6 +127,11 @@ import roleAdd from '@/views/sysManager/roleManager/roleAdd.vue'
 import roleAddUser from '@/views/sysManager/roleManager/roleAddUser.vue'
 
 export default {
+  watch: {
+    filterText (val) {
+      this.$refs.tree.filter(val)
+    }
+  },
   data () {
     return {
       roleName: '',
@@ -109,7 +154,55 @@ export default {
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
-      loading: true
+      loading: true,
+      drawer: false,
+      direction: 'rtl',
+      menuData: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1'
+          }, {
+            id: 10,
+            label: '三级 1-1-2'
+          }]
+        }]
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1'
+        }, {
+          id: 6,
+          label: '二级 2-2'
+        }]
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1'
+        }, {
+          id: 8,
+          label: '二级 3-2'
+        }]
+      }],
+      menuCheckedData: [
+        5
+      ],
+      filterText: '',
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
+      bindingMenu () {
+
+      }
     }
   },
   created () {
@@ -204,6 +297,22 @@ export default {
     },
     roleAndMenu (id) {
       console.log(id)
+      this.drawer = true
+    },
+    handleClose (done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {
+        })
+    },
+    openDrawer () {
+      console.log(1222)
+    },
+    filterNode (value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
     }
   },
   components: { Pagination, roleAdd, roleAddUser }
@@ -233,5 +342,11 @@ export default {
 
   /deep/ .el-button {
     margin-left: 10px;
+  }
+
+  .el-tree-data {
+    margin-left: 20px;
+    height: 90%;
+    overflow-y: auto
   }
 </style>
