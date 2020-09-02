@@ -20,20 +20,20 @@
         >
         <el-row :gutter="40">
           <el-col :span="12">
-            <el-form-item label="资产名称：" prop="assetName">
-              <el-input v-model="serverListForm.assetName" clearable></el-input>
+            <el-form-item label="资产名称：" prop="name">
+              <el-input v-model="serverListForm.name" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="资产编号：" prop="assetNumber">
-              <el-input v-model="serverListForm.assetNumber" clearable></el-input>
+            <el-form-item label="资产编号：" prop="number">
+              <el-input v-model="serverListForm.number" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="40">
           <el-col :span="12">
-            <el-form-item label="资产类型：" prop="assetType">
-              <el-select v-model="serverListForm.assetType" placeholder="请选择" style="width: 100%">
+            <el-form-item label="资产类型：" prop="type">
+              <el-select v-model="serverListForm.type" placeholder="请选择" style="width: 100%">
                 <el-option
                   v-for="item in typeOptions"
                   :key="item.value"
@@ -44,8 +44,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="资产状态：" prop="assetState">
-              <el-select v-model="serverListForm.assetState" placeholder="请选择">
+            <el-form-item label="资产状态：" prop="state">
+              <el-select v-model="serverListForm.state" placeholder="请选择">
                 <el-option
                   v-for="item in stateOptions"
                   :key="item.value"
@@ -58,38 +58,38 @@
         </el-row>
         <el-row :gutter="40">
           <el-col :span="12">
-            <el-form-item label="数量：" prop="assetAmount">
-              <el-input v-model="serverListForm.assetAmount" oninput="value=value.replace(/[^\d]/g,'')" clearable></el-input>
+            <el-form-item label="数量：" prop="amount">
+              <el-input v-model="serverListForm.amount" oninput="value=value.replace(/[^\d]/g,'')" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="资产位置：" prop="assetLocation">
-              <el-input v-model="serverListForm.assetLocation" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="资产所属人：" prop="assetBelongsPerson">
-              <el-input v-model="serverListForm.assetBelongsPerson" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产所属单位：" prop="assetBelongsDept">
-              <el-input v-model="serverListForm.assetBelongsDept" clearable></el-input>
+            <el-form-item label="资产位置：" prop="location">
+              <el-input v-model="serverListForm.location" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="40">
           <el-col :span="12">
-            <el-form-item label="登记人：" prop="assetRegistrant">
-              <el-input v-model="serverListForm.assetRegistrant" clearable></el-input>
+            <el-form-item label="资产所属人：" prop="belongsPerson">
+              <el-input v-model="serverListForm.belongsPerson" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="资产登记时间：" prop="assetRegisterDate">
+            <el-form-item label="资产所属单位：" prop="belongsDept">
+              <el-input v-model="serverListForm.belongsDept" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <el-form-item label="登记人：" prop="registrant">
+              <el-input v-model="serverListForm.registrant" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="资产登记时间：" prop="registerDate">
               <el-date-picker
-                v-model="serverListForm.assetRegisterDate"
+                v-model="serverListForm.registerDate"
                 type="date"
                 placeholder="资产登记时间"
                 class="datetop">
@@ -99,9 +99,9 @@
         </el-row>
         <el-row :gutter="40">
           <el-col :span="12">
-            <el-form-item label="资产修改时间：" prop="assetUpdateDate">
+            <el-form-item label="资产修改时间：" prop="updateDate">
               <el-date-picker
-                v-model="serverListForm.assetUpdateDate"
+                v-model="serverListForm.updateDate"
                 type="date"
                 placeholder="资产登记时间"
                 class="datetop">
@@ -109,9 +109,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="资产注销时间：" prop="assetLogoutDate">
+            <el-form-item label="资产注销时间：" prop="logoutDate">
               <el-date-picker
-                v-model="serverListForm.assetLogoutDate"
+                v-model="serverListForm.logoutDate"
                 type="date"
                 placeholder="资产注销时间"
                 class="datetop">
@@ -156,19 +156,31 @@ export default {
     return {
       showfooter: true,
       serverListForm: {
-        assetName: '',
-        assetType: '',
-        assetNumber: '',
-        assetState: '',
-        assetAmount: '',
-        assetBelongsDept: '',
-        assetBelongsPerson: '',
-        assetRegisterDate: '',
-        assetRegistrant: '',
-        assetUpdateDate: '',
-        assetLocation: '',
-        assetLogoutDate: '',
-        id: ''
+        id: '',
+        name: '',
+        type: '',
+        number: '',
+        state: '',
+        gbType: '',
+        ip: '',
+        backupIp: '',
+        amount: '',
+        belongsDept: '',
+        belongsPerson: '',
+        registerDate: '',
+        registrant: '',
+        updateDate: '',
+        location: '',
+        logoutDate: '',
+        dateRecorded: '',
+        worth: '',
+        acquisitionMode: '',
+        userDepartment: '',
+        user: '',
+        objectClassification: '',
+        sn: '',
+        brand: '',
+        productModel: ''
       },
       stateOptions: [{
         value: '0',
@@ -195,25 +207,25 @@ export default {
       }],
       id: '',
       rules: {
-        assetName: [
+        name: [
           { required: true, message: '请输入资产名称' }
         ],
-        assetNumber: [
+        number: [
           { required: true, message: '请输入资产编号' }
         ],
-        assetType: [
+        type: [
           { required: true, message: '请选择资产类型' }
         ],
-        assetState: [
+        state: [
           { required: true, message: '请选择资产状态' }
         ],
-        assetAmount: [
+        amount: [
           { required: true, message: '请输入资产数量' }
         ],
-        assetRegistrant: [
+        registrant: [
           { required: true, message: '请输入登记人' }
         ],
-        assetRegisterDate: [
+        registerDate: [
           { required: true, message: '请选择资产登记时间' }
         ]
       }
@@ -255,6 +267,7 @@ export default {
     },
     submit () {
       const region = this.makeParam()
+      console.log(region)
       this.axios.post(api.assetsManager.assetsList.assetsAdd.addAssets, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -322,25 +335,25 @@ export default {
       }
     },
     makeParam () {
-      var assetRegisterDate = this.serverListForm.assetRegisterDate
-      assetRegisterDate = formatTodate(assetRegisterDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetUpdateDate = this.serverListForm.assetUpdateDate
-      assetUpdateDate = formatTodate(assetUpdateDate, 'YYYY-MM-DD HH:mm:ss')
-      var assetLogoutDate = this.serverListForm.assetLogoutDate
-      assetLogoutDate = formatTodate(assetLogoutDate, 'YYYY-MM-DD HH:mm:ss')
+      var registerDate = this.serverListForm.registerDate
+      registerDate = formatTodate(registerDate, 'YYYY-MM-DD HH:mm:ss')
+      var updateDate = this.serverListForm.updateDate
+      updateDate = formatTodate(updateDate, 'YYYY-MM-DD HH:mm:ss')
+      var logoutDate = this.serverListForm.logoutDate
+      logoutDate = formatTodate(logoutDate, 'YYYY-MM-DD HH:mm:ss')
       const region = {
-        assetName: this.serverListForm.assetName,
-        assetType: this.serverListForm.assetType,
-        assetNumber: this.serverListForm.assetNumber,
-        assetState: this.serverListForm.assetState,
-        assetAmount: this.serverListForm.assetAmount,
-        assetBelongsDept: this.serverListForm.assetBelongsDept,
-        assetBelongsPerson: this.serverListForm.assetBelongsPerson,
-        assetRegisterDate: assetRegisterDate,
-        assetRegistrant: this.serverListForm.assetRegistrant,
-        assetUpdateDate: assetUpdateDate,
-        assetLocation: this.serverListForm.assetLocation,
-        assetLogoutDate: assetLogoutDate
+        name: this.serverListForm.name,
+        type: this.serverListForm.type,
+        number: this.serverListForm.number,
+        state: this.serverListForm.state,
+        amount: this.serverListForm.amount,
+        belongsDept: this.serverListForm.belongsDept,
+        belongsPerson: this.serverListForm.belongsPerson,
+        registerDate: registerDate,
+        registrant: this.serverListForm.registrant,
+        updateDate: updateDate,
+        location: this.serverListForm.location,
+        logoutDate: logoutDate
       }
       return region
     }

@@ -45,7 +45,7 @@ export default [
     name: 'alertTemplate',
     component: AlertTemplate,
     meta: {
-      title: '告警通知模版'
+      title: '告警通知模板'
     }
   },
   {
@@ -53,7 +53,7 @@ export default [
     name: 'queryAlert',
     component: QueryAlert,
     meta: {
-      title: '告警通知模版'
+      title: '告警通知模板'
     }
   },
   {

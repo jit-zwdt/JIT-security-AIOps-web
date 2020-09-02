@@ -73,6 +73,9 @@ export default {
       }
     }
   },
+  beforeCreate () {
+    clearToken()
+  },
   methods: {
     submitClick: function () {
       clearToken()

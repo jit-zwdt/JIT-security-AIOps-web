@@ -159,12 +159,20 @@ const api = {
     findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
+    getMenusList: '/sys/menu/getMenusList',
+    getSysMenuFirst: '/sys/menu/getSysMenuFirst',
+    addMenus: '/sys/menu/addMenus',
+    updateMenus: '/sys/menu/updateMenus',
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
     // roleManager/role
     getRoles: '/sys/role/getRoles',
     delRole: '/sys/role/delRole/',
+    // roleManager/roleAddUser
+    getRoleUsers: '/sys/role/getUsers',
+    getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
+    bindingUsers: '/sys/role/bindingUsers',
     // roleManager/validators.js
     checkRoleName: '/sys/role/checkRoleName/',
     checkRoleSign: '/sys/role/checkRoleSign/',
