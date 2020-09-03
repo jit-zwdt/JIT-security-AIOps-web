@@ -29,7 +29,8 @@
       <el-table-column prop="component" label="组件" min-width="30%"></el-table-column>
       <!-- <el-table-column prop="redirect" label="重定向" min-width="15%"></el-table-column> -->
       <el-table-column label="图标" min-width="15%" :formatter="iconFormat"></el-table-column>
-      <el-table-column label="状态" prop="isShow" min-width="5%" :formatter="isShowFormat"></el-table-column>
+      <el-table-column label="显示状态" prop="isShow" min-width="8%" align="center" :formatter="isShowFormat"></el-table-column>
+      <el-table-column label="路由菜单状态" prop="isRoute" min-width="10%" align="center" :formatter="isRouteFormat"></el-table-column>
       <el-table-column align="center" label="操作" min-width="15%">
         <template slot-scope="scope">
           <el-button
@@ -45,9 +46,9 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>详情</el-dropdown-item>
-              <el-dropdown-item>隐藏</el-dropdown-item>
-              <el-dropdown-item>显示</el-dropdown-item>
+              <el-dropdown-item @click.native="showMenuMassage = true ; menuId = scope.row.id">详情</el-dropdown-item>
+              <el-dropdown-item v-if="scope.row.isShow === '0'" @click.native="updateIsShow(scope.row.id, '1')">隐藏</el-dropdown-item>
+              <el-dropdown-item v-if="scope.row.isShow === '1'" @click.native="updateIsShow(scope.row.id, '0')">显示</el-dropdown-item>
               <el-dropdown-item>删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -146,11 +147,17 @@
         </ToolBar>
       </div>
     </el-drawer>
+    <menuMessage :menuId="menuId" :showMenuMassage="showMenuMassage" @close="showMenuMassage = false" @success="showMenuMassage = false"/>
   </div>
 </template>
 <script>
 import { resetObject } from '@/utils/common'
+// import menuMessage from '@/views/sysManager/menuManager/menuMessage'
+import menuMessage from './menuMessage'
 export default {
+  components: {
+    menuMessage
+  },
   data () {
     return {
       title: '',
@@ -194,7 +201,9 @@ export default {
           { required: true, message: '请选择一级菜单' }
         ]
       },
-      options: []
+      options: [],
+      showMenuMassage: false,
+      menuId: ''
     }
   },
   created () {
@@ -242,6 +251,16 @@ export default {
         return '显示'
       } else if (data === '1') {
         return '隐藏'
+      } else {
+        return data
+      }
+    },
+    isRouteFormat (row, column) {
+      const data = row[column.property]
+      if (data === '0') {
+        return '是'
+      } else if (data === '1') {
+        return '否'
       } else {
         return data
       }
@@ -374,6 +393,25 @@ export default {
           this.drawer = false
           this.showInfo()
         }
+      })
+    },
+    updateIsShow (id, isShow) {
+      this.axios.put(this.$api.sysManager.updateIsShow + id + '/' + isShow).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '失败',
+              type: 'error'
+            })
+          }
+        }
+        this.showInfo()
       })
     }
   }
