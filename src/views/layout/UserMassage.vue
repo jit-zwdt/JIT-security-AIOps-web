@@ -9,68 +9,67 @@
           :show-close="true"
           :close-on-click-modal="false">
       <div>
-          <el-form
-                  :model="user"
-                  ref="user"
-                  class="edit-forms fromadd"
-                  label-position="right"
-                  :label-width="labelWidth"
-          >
-              <el-row>
-                  <el-col>
-                      <el-form-item label="头像：">
-                          <img v-if="user.picUrl" :src="url" class="avatar">
-                      </el-form-item>
+              <el-row :gutter="30">
+                  <el-col :span="8" :push="4">
+                      <span>头像：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <img v-if="user.picUrl" :src="url" class="avatar" style=" height:100px;width:100px">
                   </el-col>
               </el-row>
               <el-row :gutter="30">
-                  <el-col>
-                      <el-form-item label="姓名：">
-                          <span>{{ user.name }}</span>
-                      </el-form-item>
+                  <el-col :span="8" :push="4">
+                      <span>姓名：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <span>{{ user.name }}</span>
                   </el-col>
               </el-row>
               <el-row :gutter="30">
-                  <el-col>
-                      <el-form-item label="部门：">
-                          <span v-for="(department , index) in departments" v-bind:key="index">
+                  <el-col :span="8" :push="4">
+                      <span>部门：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <span v-for="(department , index) in departments" v-bind:key="index">
                             <template v-if="user.departmentId === department.id">
                               {{ department.departName }}
                             </template>
                           </span>
-                      </el-form-item>
                   </el-col>
               </el-row>
               <el-row :gutter="30">
-                  <el-col>
-                      <el-form-item label="性别：">
-                          <span v-if="user.sex === 0">男</span>
-                          <span v-if="user.sex === 1">女</span>
-                      </el-form-item>
+                  <el-col :span="8" :push="4">
+                      <span>性别：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <span v-if="user.sex === 0">男</span>
+                      <span v-if="user.sex === 1">女</span>
                   </el-col>
               </el-row>
               <el-row :gutter="30">
-                  <el-col>
-                      <el-form-item label="生日：">
-                          <span>{{ user.birth }}</span>
-                      </el-form-item>
+                  <el-col :span="8" :push="4">
+                      <span>生日：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <span>{{ user.birth }}</span>
                   </el-col>
               </el-row>
               <el-row :gutter="30">
-                  <el-col>
-                      <el-form-item label="手机号码：">
-                          <span>{{ user.mobile }}</span>
-                      </el-form-item>
+                  <el-col :span="8" :push="4">
+                      <span>手机号码：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <span>{{ user.mobile }}</span>
                   </el-col>
               </el-row>
               <el-row :gutter="30">
-                  <el-col>
-                      <el-form-item label="邮箱：">
-                          <span>{{ user.email }}</span>
-                      </el-form-item>
+                  <el-col :span="8" :push="4">
+                      <span>邮箱：</span>
+                  </el-col>
+                  <el-col :span="16">
+                      <span>{{ user.email }}</span>
                   </el-col>
               </el-row>
-          </el-form>
       </div>
     <!--<div slot="footer" class="dialog-footer">-->
       <!--<el-button type="primary" @click="$emit('success')">确 定</el-button>-->
@@ -97,20 +96,22 @@ export default {
   data () {
     return {
       // 图片的 URL
+      userForm: {},
       url: '',
       departments: []
     }
   },
   methods: {
     preShow () {
-      const birth = formatTodate(new Date(this.user.birth), 'YYYY-MM-DD')
+      this.userForm = this.user
+      const birth = formatTodate(new Date(this.userForm.birth), 'YYYY-MM-DD')
       this.user.birth = birth
-      if (this.user.picUrl !== null && this.user.picUrl !== '') {
-        this.axios.post(this.$api.sysManager.getPicBase64, this.user.picUrl).then((resp) => {
+      if (this.userForm.picUrl !== null && this.userForm.picUrl !== '') {
+        this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
-              var prefix = this.user.picUrl.substring(this.user.picUrl.lastIndexOf('.'), this.user.picUrl.length)
+              var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
               if (prefix === 'jpg') {
                 this.url = 'data:image/jpg;base64,' + json.data
               } else if (prefix === 'png') {
@@ -142,7 +143,7 @@ export default {
     // xx 的回调函数
     handleclosebind () {
       this.url = ''
-      this.user = {}
+      this.userForm = {}
       this.departments = []
       this.$parent.noReloadData()
     },

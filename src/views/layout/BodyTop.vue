@@ -89,6 +89,7 @@ export default {
         })
     },
     logout () {
+      this.user = {}
       this.$store.commit('LOGOUT')
       this.$router.replace({
         path: '/',
