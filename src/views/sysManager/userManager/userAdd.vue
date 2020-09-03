@@ -318,7 +318,7 @@ export default {
                     if (resp.status === 200) {
                       var json = resp.data
                       if (json.code === 1) {
-                        var prefix = json.data.picUrl.substring(json.data.picUrl.lastIndexOf('.'), json.data.picUrl.length)
+                        var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
                         if (prefix === 'jpg') {
                           this.image = 'data:image/jpg;base64,' + json.data
                         } else if (prefix === 'png') {
