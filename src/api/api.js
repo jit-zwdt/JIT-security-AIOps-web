@@ -163,6 +163,7 @@ const api = {
     getSysMenuFirst: '/sys/menu/getSysMenuFirst',
     addMenus: '/sys/menu/addMenus',
     updateMenus: '/sys/menu/updateMenus',
+    delMenus: '/sys/menu/delMenus/',
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
