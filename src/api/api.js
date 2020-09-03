@@ -181,6 +181,7 @@ const api = {
     getAllDepartment: '/sys/department/getAllDepartment',
     deleteUser: '/sys/user/deleteUser/',
     addUser: '/sys/user/addUser',
+    updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
     findUserById: '/sys/user/findUserById/',

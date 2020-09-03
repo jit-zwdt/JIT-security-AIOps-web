@@ -238,7 +238,6 @@ export default {
       visibleCancel: 'none',
       department: '',
       showDepartmentDialog: false,
-      imageUrl: '',
       getHeaders: {
         Accept: 'application/json',
         Authorization: sessionStorage.getItem('token')
@@ -405,7 +404,14 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.image = 'data:image/jpg;base64,' + json.data
+            var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
+            if (prefix === 'jpg') {
+              this.image = 'data:image/jpg;base64,' + json.data
+            } else if (prefix === 'png') {
+              this.image = 'data:image/png;base64,' + json.data
+            } else {
+              this.image = 'data:image/jpeg;base64,' + json.data
+            }
           }
         }
       })
