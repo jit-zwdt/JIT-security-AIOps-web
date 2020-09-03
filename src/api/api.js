@@ -176,6 +176,9 @@ const api = {
     getRoleUsers: '/sys/role/getUsers',
     getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
     bindingUsers: '/sys/role/bindingUsers',
+    getRoleMenus: '/sys/role/getMenus',
+    getRoleMenusByRoleId: '/sys/role/getRoleMenus/',
+    bindingMenus: '/sys/role/bindingMenus',
     // roleManager/validators.js
     checkRoleName: '/sys/role/checkRoleName/',
     checkRoleSign: '/sys/role/checkRoleSign/',
@@ -184,6 +187,7 @@ const api = {
     getAllDepartment: '/sys/department/getAllDepartment',
     deleteUser: '/sys/user/deleteUser/',
     addUser: '/sys/user/addUser',
+    updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
     findUserById: '/sys/user/findUserById/',
