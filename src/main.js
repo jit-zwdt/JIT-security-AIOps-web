@@ -14,6 +14,7 @@ import Config from '@/config/app'
 import ToolBar from '@/components/ToolBar.vue'
 import echarts from 'echarts'
 import api from '@/api/api'
+import './promission'// 这里进行路由后台获取的模拟
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)

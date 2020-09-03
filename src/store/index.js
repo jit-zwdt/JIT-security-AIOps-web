@@ -25,6 +25,8 @@ export default new Vuex.Store({
     },
     LOGOUT: (state) => {
       clearToken()
+      var storage = window.localStorage
+      storage.clear()
     },
     MINI_SIDEBAR_TOGGLE (state) {
       const miniSidebar = state.system.miniSidebar === 1 ? 0 : 1

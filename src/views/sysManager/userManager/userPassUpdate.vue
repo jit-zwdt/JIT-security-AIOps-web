@@ -139,7 +139,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.updatePassword, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

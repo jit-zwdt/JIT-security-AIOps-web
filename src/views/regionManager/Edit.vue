@@ -64,7 +64,6 @@
   </el-dialog>
 </template>
 <script>
-import Menu from '@/menu/index'
 import { resetObject } from '@/utils/common'
 export default {
   props: {
@@ -96,8 +95,7 @@ export default {
         cwPort: ''
       },
       showOtaPort: false,
-      showCwPort: false,
-      menu: Menu
+      showCwPort: false
     }
   },
   methods: {

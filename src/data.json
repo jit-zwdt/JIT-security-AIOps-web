@@ -1,0 +1,48 @@
+{
+  "router": [
+    {
+      "name": "主页",
+      "path": "",
+      "component": "Layout",
+      "children": [
+        {
+          "path": "/index",
+          "name": "index",
+          "meta": {
+            "title": "首页",
+            "icon": "el-icon-monitor"
+          },
+          "permissionsKey": "",
+          "component": "views/Index.vue"
+        }
+      ]
+    },
+    {
+      "path": "/assetsManager",
+      "name": "assetsManager",
+      "component": "Layout",
+      "permissionsKey": "",
+      "meta": {
+        "title": "资产管理",
+        "requireAuth": true,
+        "icon": "el-icon-monitor"
+      },
+      "children": [
+        {
+          "path": "/assetsList",
+          "name": "assetsList",
+          "permissionsKey": "",
+          "component": "views/assetsManager/assetsList/assetsList.vue",
+          "meta": {
+            "title": "资产信息",
+            "icon": "el-icon-monitor"
+          }
+        }
+      ]
+    },
+    {
+      "path": "*",
+      "redirect": "/login"
+    }
+  ]
+}

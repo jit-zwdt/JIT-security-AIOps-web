@@ -53,13 +53,11 @@
 <script>
 import ScreenFull from 'screenfull'
 import { mapState } from 'vuex'
-import Menu from '@/menu/index'
 import UserMassage from './UserMassage'
 export default {
   name: 'BodyTop',
   data () {
     return {
-      menu: Menu,
       userName: 'Admin',
       showUserMassage: false
     }

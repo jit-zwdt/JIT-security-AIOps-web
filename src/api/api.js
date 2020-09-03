@@ -159,6 +159,10 @@ const api = {
     findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
+    getMenusList: '/sys/menu/getMenusList',
+    getSysMenuFirst: '/sys/menu/getSysMenuFirst',
+    addMenus: '/sys/menu/addMenus',
+    updateMenus: '/sys/menu/updateMenus',
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
@@ -180,11 +184,13 @@ const api = {
     getAllDepartment: '/sys/department/getAllDepartment',
     deleteUser: '/sys/user/deleteUser/',
     addUser: '/sys/user/addUser',
+    updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
     findUserById: '/sys/user/findUserById/',
     getUserInfo: '/sys/user/getUserInfo',
-    uploadPic: '/sys/user/uploadPic'
+    uploadPic: '/sys/user/uploadPic',
+    getPicBase64: '/sys/user/getPicBase64'
   },
   main: {
     // Index.vue
