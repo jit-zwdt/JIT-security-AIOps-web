@@ -33,6 +33,7 @@ router.beforeEach((to, from, next) => {
           routerGo(to, next)
         }
       } else {
+        getRouter = []
         next()
       }
     } else {
@@ -40,6 +41,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } catch (e) {
+    getRouter = []
     store.commit('LOGOUT')
     MessageBox({
       message: '路由加载失败',
