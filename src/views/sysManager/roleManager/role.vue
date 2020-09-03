@@ -384,7 +384,7 @@ export default {
 
   .el-tree-data {
     margin-left: 20px;
-    max-height: 62%;
+    max-height: 60%;
     overflow-y: auto
   }
 
