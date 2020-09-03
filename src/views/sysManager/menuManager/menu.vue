@@ -24,11 +24,15 @@
       v-if="1=='1'"
     >
       <el-table-column label="菜单名称" min-width="15%" :formatter="titleFormat"></el-table-column>
-      <el-table-column prop="path" label="路径" min-width="15%"></el-table-column>
-      <el-table-column prop="name" label="组件名称" min-width="15%"></el-table-column>
+      <el-table-column prop="path" label="路径" min-width="20%"></el-table-column>
+      <el-table-column prop="name" label="组件名称" min-width="20%"></el-table-column>
       <el-table-column prop="component" label="组件" min-width="30%"></el-table-column>
       <!-- <el-table-column prop="redirect" label="重定向" min-width="15%"></el-table-column> -->
-      <el-table-column label="图标" min-width="15%" :formatter="iconFormat"></el-table-column>
+      <el-table-column align="center" label="图标" min-width="4%">
+        <template slot-scope="scope">
+          <div v-html="iconFormat(scope.row)"></div>
+        </template>
+      </el-table-column>
       <el-table-column label="显示状态" prop="isShow" min-width="8%" align="center" :formatter="isShowFormat"></el-table-column>
       <el-table-column label="路由菜单状态" prop="isRoute" min-width="10%" align="center" :formatter="isRouteFormat"></el-table-column>
       <el-table-column align="center" label="操作" min-width="15%">
@@ -111,7 +115,14 @@
                   <el-input v-model="itemForm.redirect" clearable placeholder="请输入路由参数redirect"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单图标：" prop="icon">
-                  <el-input v-model="itemForm.icon" clearable placeholder="请点击右侧按钮选择图标"></el-input>
+                  <el-input v-model="itemForm.icon" clearable placeholder="请点击右侧按钮选择图标">
+                    <el-button
+                      slot="append"
+                      icon="el-icon-search"
+                      style="margin-left:-20px"
+                      @click="iconChange"
+                    ></el-button>
+                  </el-input>
                 </el-form-item>
                 <el-form-item label="是否显示：" prop="isShow">
                   <el-switch
@@ -148,15 +159,23 @@
       </div>
     </el-drawer>
     <menuMessage :menuId="menuId" :showMenuMassage="showMenuMassage" @close="showMenuMassage = false" @success="showMenuMassage = false"/>
+    <IconInfo
+      :showDialog="showDialog"
+      @close="showDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></IconInfo>
   </div>
 </template>
 <script>
 import { resetObject } from '@/utils/common'
-// import menuMessage from '@/views/sysManager/menuManager/menuMessage'
-import menuMessage from './menuMessage'
+import menuMessage from '@/views/sysManager/menuManager/menuMessage'
+// import menuMessage from './menuMessage'
+import IconInfo from '@/views/sysManager/menuManager/iconInfo.vue'
 export default {
   components: {
-    menuMessage
+    menuMessage,
+    IconInfo
   },
   data () {
     return {
@@ -170,6 +189,7 @@ export default {
       statusflag: false,
       addOrUpdateFlag: '',
       isDisable: true,
+      showDialog: false,
       itemForm: {
         id: '',
         status: '1',
@@ -219,9 +239,12 @@ export default {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
-    reloadData () {
+    reloadData (value) {
+      this.itemForm.icon = value
+      this.showDialog = false
     },
     noReloadData () {
+      this.showDialog = false
     },
     showInfo () {
       this.loading = true
@@ -269,7 +292,7 @@ export default {
       return row.title
     },
     iconFormat (row, column) {
-      return row.icon
+      return '<i class=' + row.icon + '></i>'
     },
     menuAdd (id) {
       this.addOrUpdateFlag = id
@@ -413,6 +436,9 @@ export default {
         }
         this.showInfo()
       })
+    },
+    iconChange () {
+      this.showDialog = true
     }
   }
 }
