@@ -99,7 +99,8 @@ export default {
   data () {
     return {
       groupName: '',
-      hostGroupOptions: []
+      hostGroupOptions: [],
+      metaTypeId: '4'
     }
   },
   created () {
@@ -109,7 +110,7 @@ export default {
   methods: {
     getGroups () {
       this.axios.post(this.$api.monitorManager.getZabbixHostGroupByHostType, qs.stringify({
-        typeId: this.$route.meta.typeId,
+        typeId: this.metaTypeId,
         groupName: this.groupName
       })).then((resp) => {
         if (resp.status === 200) {
@@ -126,13 +127,13 @@ export default {
       })
     },
     gotoAdd () {
-      this.$router.push({ name: 'monitorAddList', query: { typeId: this.$route.meta.typeId } })
+      this.$router.push({ name: 'monitorAddList', query: { typeId: this.metaTypeId } })
     },
     gotoList (groupId) {
       this.$router.push({
         name: 'monitorList',
         query: {
-          typeId: this.$route.meta.typeId,
+          typeId: this.metaTypeId,
           groupId: groupId
         }
       })

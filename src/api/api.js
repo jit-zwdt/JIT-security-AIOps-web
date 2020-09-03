@@ -164,6 +164,9 @@ const api = {
     addMenus: '/sys/menu/addMenus',
     updateMenus: '/sys/menu/updateMenus',
     delMenus: '/sys/menu/delMenus/',
+    // menuManager/menuMessage
+    findBySysMenu: '/sys/menu/findBySysMenu/',
+    updateIsShow: '/sys/menu/updateIsShow/',
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
@@ -174,6 +177,9 @@ const api = {
     getRoleUsers: '/sys/role/getUsers',
     getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
     bindingUsers: '/sys/role/bindingUsers',
+    getRoleMenus: '/sys/role/getMenus',
+    getRoleMenusByRoleId: '/sys/role/getRoleMenus/',
+    bindingMenus: '/sys/role/bindingMenus',
     // roleManager/validators.js
     checkRoleName: '/sys/role/checkRoleName/',
     checkRoleSign: '/sys/role/checkRoleSign/',
@@ -182,11 +188,13 @@ const api = {
     getAllDepartment: '/sys/department/getAllDepartment',
     deleteUser: '/sys/user/deleteUser/',
     addUser: '/sys/user/addUser',
+    updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
     findUserById: '/sys/user/findUserById/',
     getUserInfo: '/sys/user/getUserInfo',
-    uploadPic: '/sys/user/uploadPic'
+    uploadPic: '/sys/user/uploadPic',
+    getPicBase64: '/sys/user/getPicBase64'
   },
   main: {
     // Index.vue

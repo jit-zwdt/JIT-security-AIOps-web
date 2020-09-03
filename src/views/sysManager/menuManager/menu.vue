@@ -24,12 +24,17 @@
       v-if="1=='1'"
     >
       <el-table-column label="菜单名称" min-width="15%" :formatter="titleFormat"></el-table-column>
-      <el-table-column prop="path" label="路径" min-width="15%"></el-table-column>
-      <el-table-column prop="name" label="组件名称" min-width="15%"></el-table-column>
+      <el-table-column prop="path" label="路径" min-width="20%"></el-table-column>
+      <el-table-column prop="name" label="组件名称" min-width="20%"></el-table-column>
       <el-table-column prop="component" label="组件" min-width="30%"></el-table-column>
       <!-- <el-table-column prop="redirect" label="重定向" min-width="15%"></el-table-column> -->
-      <el-table-column label="图标" min-width="15%" :formatter="iconFormat"></el-table-column>
-      <el-table-column label="状态" prop="isShow" min-width="5%" :formatter="isShowFormat"></el-table-column>
+      <el-table-column align="center" label="图标" min-width="4%">
+        <template slot-scope="scope">
+          <div v-html="iconFormat(scope.row)"></div>
+        </template>
+      </el-table-column>
+      <el-table-column label="显示状态" prop="isShow" min-width="8%" align="center" :formatter="isShowFormat"></el-table-column>
+      <el-table-column label="路由菜单状态" prop="isRoute" min-width="10%" align="center" :formatter="isRouteFormat"></el-table-column>
       <el-table-column align="center" label="操作" min-width="15%">
         <template slot-scope="scope">
           <el-button
@@ -45,9 +50,9 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>详情</el-dropdown-item>
-              <el-dropdown-item>隐藏</el-dropdown-item>
-              <el-dropdown-item>显示</el-dropdown-item>
+              <el-dropdown-item @click.native="showMenuMassage = true ; menuId = scope.row.id">详情</el-dropdown-item>
+              <el-dropdown-item v-if="scope.row.isShow === '0'" @click.native="updateIsShow(scope.row.id, '1')">隐藏</el-dropdown-item>
+              <el-dropdown-item v-if="scope.row.isShow === '1'" @click.native="updateIsShow(scope.row.id, '0')">显示</el-dropdown-item>
               <el-dropdown-item @click.native="deleteMenuConfirm(scope.$index)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -110,7 +115,14 @@
                   <el-input v-model="itemForm.redirect" clearable placeholder="请输入路由参数redirect"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单图标：" prop="icon">
-                  <el-input v-model="itemForm.icon" clearable placeholder="请点击右侧按钮选择图标"></el-input>
+                  <el-input v-model="itemForm.icon" clearable placeholder="请点击右侧按钮选择图标">
+                    <el-button
+                      slot="append"
+                      icon="el-icon-search"
+                      style="margin-left:-20px"
+                      @click="iconChange"
+                    ></el-button>
+                  </el-input>
                 </el-form-item>
                 <el-form-item label="是否显示：" prop="isShow">
                   <el-switch
@@ -146,6 +158,13 @@
         </ToolBar>
       </div>
     </el-drawer>
+    <menuMessage :menuId="menuId" :showMenuMassage="showMenuMassage" @close="showMenuMassage = false" @success="showMenuMassage = false"/>
+    <IconInfo
+      :showDialog="showDialog"
+      @close="showDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></IconInfo>
     <el-drawer
       :title="title"
       :visible.sync="drawer"
@@ -242,8 +261,54 @@
 </template>
 <script>
 import { resetObject } from '@/utils/common'
+import menuMessage from '@/views/sysManager/menuManager/menuMessage'
+// import menuMessage from './menuMessage'
+import IconInfo from '@/views/sysManager/menuManager/iconInfo.vue'
 export default {
+  components: {
+    menuMessage,
+    IconInfo
+  },
   data () {
+    var validationName = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationPath', { params: { path: value, oldPath: '' } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个菜单路径已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
+    var validationTitle = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationName', { params: { name: value, oldName: '' } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个组件名称已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
+    var validationComponent = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationComponent', { params: { component: value, oldComponent: '' } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个组件路径已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
     return {
       title: '',
       name: '',
@@ -255,6 +320,7 @@ export default {
       statusflag: false,
       addOrUpdateFlag: '',
       isDisable: true,
+      showDialog: false,
       itemForm: {
         id: '',
         status: '1',
@@ -285,23 +351,28 @@ export default {
         orderNum: '1'
       },
       rules: {
-        name: [
+        title: [
           { required: true, message: '请输入菜单名称' }
         ],
         path: [
-          { required: true, message: '请输入菜单路径' }
+          { required: true, message: '请输入菜单路径' },
+          { validator: validationName, trigger: 'blur' }
         ],
-        title: [
-          { required: true, message: '请输入组件名称' }
+        name: [
+          { required: true, message: '请输入组件名称' },
+          { validator: validationTitle, trigger: 'blur' }
         ],
         component: [
-          { required: true, message: '请输入组件路径' }
+          { required: true, message: '请输入组件路径' },
+          { validator: validationComponent, trigger: 'blur' }
         ],
         pid: [
           { required: true, message: '请选择一级菜单' }
         ]
       },
-      options: []
+      options: [],
+      showMenuMassage: false,
+      menuId: ''
     }
   },
   created () {
@@ -317,11 +388,12 @@ export default {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
-    reloadData () {
-      this.showInfo()
-      this.noReloadData()
+    reloadData (value) {
+      this.itemForm.icon = value
+      this.showDialog = false
     },
     noReloadData () {
+      this.showDialog = false
     },
     showInfo () {
       this.loading = true
@@ -355,11 +427,21 @@ export default {
         return data
       }
     },
+    isRouteFormat (row, column) {
+      const data = row[column.property]
+      if (data === '0') {
+        return '是'
+      } else if (data === '1') {
+        return '否'
+      } else {
+        return data
+      }
+    },
     titleFormat (row, column) {
       return row.title
     },
     iconFormat (row, column) {
-      return row.icon
+      return '<i class=' + row.icon + '></i>'
     },
     menuAdd (id) {
       this.addOrUpdateFlag = id
@@ -602,6 +684,28 @@ export default {
           this.showInfo()
         }
       })
+    },
+    updateIsShow (id, isShow) {
+      this.axios.put(this.$api.sysManager.updateIsShow + id + '/' + isShow).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '失败',
+              type: 'error'
+            })
+          }
+        }
+        this.showInfo()
+      })
+    },
+    iconChange () {
+      this.showDialog = true
     }
   }
 }

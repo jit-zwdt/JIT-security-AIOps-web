@@ -32,8 +32,8 @@ router.beforeEach((to, from, next) => {
           getRouter = getObjArr('router')
           routerGo(to, next)
         }
-        console.log(router)
       } else {
+        getRouter = []
         next()
       }
     } else {
@@ -41,6 +41,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } catch (e) {
+    getRouter = []
     store.commit('LOGOUT')
     MessageBox({
       message: '路由加载失败',
@@ -73,7 +74,6 @@ function getObjArr (name) {
 const _import = require('./router/_import_' + process.env.NODE_ENV)
 function filterAsyncRouter (asyncRouterMap) {
   const accessedRouters = asyncRouterMap.filter(route => {
-    console.log(route.component)
     if (route.component) {
       if (route.component === 'Layout') {
         route.component = Layout
@@ -81,7 +81,6 @@ function filterAsyncRouter (asyncRouterMap) {
         route.component = _import(route.component)
       }
     }
-    console.log(route.children)
     if (route.children && route.children.length > 0) {
       route.children = filterAsyncRouter(route.children)
     }

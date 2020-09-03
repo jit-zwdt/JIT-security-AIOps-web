@@ -115,7 +115,7 @@ export default {
     }
   },
   created () {
-    console.log(global.antRouter)
+    // console.log(global.antRouter)
   },
   methods: {},
   computed: mapState(['system'])

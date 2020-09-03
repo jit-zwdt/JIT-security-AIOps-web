@@ -23,12 +23,12 @@
                             <el-form-item label="头像：" prop="picUrl">
                                 <el-upload
                                         class="avatar-uploader"
-                                        :action="this.$api.sysManager.uploadPic"
+                                        :action="$api.sysManager.uploadPic"
                                         :headers="getHeaders"
                                         :show-file-list="false"
                                         :on-success="handleAvatarSuccess"
                                         :before-upload="beforeAvatarUpload">
-                                    <img v-if="userForm.picUrl" :src="userForm.picUrl" class="avatar">
+                                    <img v-if="userForm.picUrl" :src="image" class="avatar">
                                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
                             </el-form-item>
@@ -242,11 +242,11 @@ export default {
       visibleCancel: 'none',
       department: '',
       showDepartmentDialog: false,
-      imageUrl: '',
       getHeaders: {
         Accept: 'application/json',
         Authorization: sessionStorage.getItem('token')
       },
+      image: '',
       userForm: {
         picUrl: '',
         password: '',
@@ -317,6 +317,23 @@ export default {
               var json = resp.data
               if (json.code === 1) {
                 this.userForm = json.data
+                if (this.userForm.picUrl !== null && this.userForm.picUrl !== '') {
+                  this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
+                    if (resp.status === 200) {
+                      var json = resp.data
+                      if (json.code === 1) {
+                        var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
+                        if (prefix === 'jpg') {
+                          this.image = 'data:image/jpg;base64,' + json.data
+                        } else if (prefix === 'png') {
+                          this.image = 'data:image/png;base64,' + json.data
+                        } else {
+                          this.image = 'data:image/jpeg;base64,' + json.data
+                        }
+                      }
+                    }
+                  })
+                }
                 this.rules.username[0].uname = json.data.username
                 const id = this.userForm.departmentId
                 if (id !== undefined && id !== '' && id !== null) {
@@ -352,6 +369,7 @@ export default {
     },
     clearform () {
       // this.id = {}
+      this.image = ''
       this.width = 'width:84%'
       this.department = ''
       this.disabled = false
@@ -392,7 +410,22 @@ export default {
       })
     },
     handleAvatarSuccess (res, file) {
-      this.userForm.picUrl = URL.createObjectURL(file.raw)
+      this.userForm.picUrl = res.data
+      this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
+            if (prefix === 'jpg') {
+              this.image = 'data:image/jpg;base64,' + json.data
+            } else if (prefix === 'png') {
+              this.image = 'data:image/png;base64,' + json.data
+            } else {
+              this.image = 'data:image/jpeg;base64,' + json.data
+            }
+          }
+        }
+      })
     },
     beforeAvatarUpload (file) {
       const isJPEG = file.type === 'image/jpeg'

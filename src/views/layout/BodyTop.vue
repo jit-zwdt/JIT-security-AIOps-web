@@ -33,7 +33,7 @@
       </span>
       <el-dropdown>
         <span class="body-top-btn">
-          {{ userName }}
+          {{ user.name }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -45,7 +45,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <UserMassage :showUserMassage="showUserMassage" @close="showUserMassage = false" @success="showUserMassage = false"></UserMassage>
+      <UserMassage :showUserMassage="showUserMassage" :user="user" @close="showUserMassage = false" @success="showUserMassage = false"></UserMassage>
     </div>
   </div>
 </template>
@@ -53,20 +53,26 @@
 <script>
 import ScreenFull from 'screenfull'
 import { mapState } from 'vuex'
-import Menu from '@/menu/index'
 import UserMassage from './UserMassage'
 export default {
   name: 'BodyTop',
   data () {
     return {
-      menu: Menu,
-      userName: 'Admin',
+      user: {},
       showUserMassage: false
     }
   },
   // 添加组件
   components: {
     UserMassage
+  },
+  created () {
+    this.axios.get(this.$api.sysManager.getUserInfo).then(resp => {
+      var json = resp.data
+      if (json.code === 1) {
+        this.user = json.data
+      }
+    })
   },
   methods: {
     hiddenSidebar () {
@@ -83,6 +89,7 @@ export default {
         })
     },
     logout () {
+      this.user = {}
       this.$store.commit('LOGOUT')
       this.$router.replace({
         path: '/',

@@ -53,7 +53,7 @@
               type="primary"
               slot="reference"
               icon="el-icon-paperclip"
-              @click="roleAndMenu(scope.row.id)"
+              @click="roleAndMenu(scope.row.id,scope.row.roleName)"
           >绑定菜单
           </el-button>
           <el-popconfirm title="确定删除吗？" @onConfirm="deleteRole(scope.row.id)">
@@ -79,6 +79,48 @@
         @success="reloadData"
         @error="reloadData"
     ></roleAddUser>
+    <el-drawer
+        title="绑定菜单"
+        :visible.sync="drawer"
+        :direction="direction"
+        :before-close="handleClose"
+        size='20%'
+        @closed="closedDrawer"
+        :wrapperClosable="false"
+        :destroy-on-close="true">
+      <div class="el-tree-data-title">
+        <span>当前角色【{{drawerRoleName}}】</span>
+        <el-input style="width: 95%"
+                  placeholder="输入关键字进行过滤"
+                  v-model="filterText" clearable>
+        </el-input>
+      </div>
+      <div class="el-tree-data">
+        <el-tree
+            class="filter-tree"
+            :data="menuData"
+            show-checkbox
+            node-key="id"
+            ref="tree"
+            :default-expand-all="true"
+            :default-checked-keys="menuCheckedData"
+            :filter-node-method="filterNode"
+            :props="defaultProps">
+        </el-tree>
+      </div>
+      <div>
+        <el-row :gutter="10" type="flex">
+          <el-col :span="4"></el-col>
+          <el-col :span="8">
+            <el-button @click="handleClose()">取消</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button type="primary" @click="bindingMenu()">保存</el-button>
+          </el-col>
+          <el-col :span="4"></el-col>
+        </el-row>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -87,6 +129,11 @@ import roleAdd from '@/views/sysManager/roleManager/roleAdd.vue'
 import roleAddUser from '@/views/sysManager/roleManager/roleAddUser.vue'
 
 export default {
+  watch: {
+    filterText (val) {
+      this.$refs.tree.filter(val)
+    }
+  },
   data () {
     return {
       roleName: '',
@@ -109,7 +156,18 @@ export default {
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
-      loading: true
+      loading: true,
+      drawer: false,
+      drawerId: '',
+      drawerRoleName: '',
+      direction: 'rtl',
+      menuData: [],
+      menuCheckedData: [],
+      filterText: '',
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      }
     }
   },
   created () {
@@ -202,8 +260,93 @@ export default {
       this.title = '【' + roleName + '】绑定人员'
       this.showAddUserDialog = true
     },
-    roleAndMenu (id) {
-      console.log(id)
+    roleAndMenu (id, roleName) {
+      this.drawerId = id
+      this.drawerRoleName = roleName
+      if (id !== undefined && id !== '') {
+        this.axios.get(this.$api.sysManager.getRoleMenus).then((resp) => {
+          if (resp.status === 200) {
+            const json = resp.data
+            if (json.code === 1) {
+              this.axios.get(this.$api.sysManager.getRoleMenusByRoleId + id).then((resp) => {
+                if (resp.status === 200) {
+                  const json2 = resp.data
+                  if (json2.code === 1) {
+                    this.menuData = json.data
+                    if (json2.data != null) {
+                      this.menuCheckedData = json2.data
+                    } else {
+                      this.menuCheckedData = []
+                    }
+                    this.drawer = true
+                  } else {
+                    this.$message({
+                      message: '获取已绑定菜单信息失败！',
+                      type: 'error'
+                    })
+                  }
+                } else {
+                  this.$message({
+                    message: '获取已绑定菜单信息失败！',
+                    type: 'error'
+                  })
+                }
+              })
+            } else {
+              this.$message({
+                message: '获取菜单信息失败！',
+                type: 'error'
+              })
+            }
+          } else {
+            this.$message({
+              message: '获取菜单信息失败！',
+              type: 'error'
+            })
+          }
+        })
+      }
+    },
+    handleClose () {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.drawer = false
+        })
+        .catch(_ => {
+        })
+    },
+    closedDrawer () {
+      this.drawerId = ''
+      this.filterText = ''
+    },
+    filterNode (value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
+    },
+    bindingMenu () {
+      const params = {
+        roleId: this.drawerId,
+        keys: this.$refs.tree.getHalfCheckedKeys().concat(this.$refs.tree.getCheckedKeys(false))
+      }
+      this.axios.post(this.$api.sysManager.bindingMenus, params).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.$emit('success')
+            this.drawer = false
+          }
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+          this.$emit('error')
+        }
+      })
     }
   },
   components: { Pagination, roleAdd, roleAddUser }
@@ -233,5 +376,23 @@ export default {
 
   /deep/ .el-button {
     margin-left: 10px;
+  }
+
+  .el-tree-data-title {
+    margin-left: 20px;
+  }
+
+  .el-tree-data {
+    margin-left: 20px;
+    max-height: 60%;
+    overflow-y: auto
+  }
+
+  @media screen and (max-height: 800px) {
+    .el-tree-data {
+      margin-left: 20px;
+      max-height: 35%;
+      overflow-y: auto
+    }
   }
 </style>

@@ -41,6 +41,7 @@
       <el-table-column label="手机号" prop="mobile"></el-table-column>
       <el-table-column label="邮箱" prop="email" min-width="150"></el-table-column>
       <el-table-column label="状态" prop="status" :formatter="statusFormat"></el-table-column>
+      <el-table-column label="允许登录zabbix" prop="isZabbixActive" :formatter="isZabbixActiveFormat"></el-table-column>
       <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button
@@ -266,6 +267,16 @@ export default {
         return '禁用'
       } else if (data === 1) {
         return '正常'
+      } else {
+        return data
+      }
+    },
+    isZabbixActiveFormat (row, column) {
+      const data = row[column.property]
+      if (data === 0) {
+        return '不允许'
+      } else if (data === 1) {
+        return '允许'
       } else {
         return data
       }
