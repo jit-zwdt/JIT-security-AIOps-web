@@ -326,7 +326,7 @@ export default {
     bindingMenu () {
       const params = {
         roleId: this.drawerId,
-        keys: this.$refs.tree.getCheckedKeys(false)
+        keys: this.$refs.tree.getHalfCheckedKeys().concat(this.$refs.tree.getCheckedKeys(false))
       }
       this.axios.post(this.$api.sysManager.bindingMenus, params).then((resp) => {
         if (resp.status === 200) {
