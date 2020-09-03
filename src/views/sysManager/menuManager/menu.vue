@@ -178,6 +178,45 @@ export default {
     IconInfo
   },
   data () {
+    var validationName = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationPath', { params: { path: value, oldPath: '' } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个菜单路径已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
+    var validationTitle = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationName', { params: { name: value, oldName: '' } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个组件名称已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
+    var validationComponent = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationComponent', { params: { component: value, oldComponent: '' } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个组件路径已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
     return {
       title: '',
       name: '',
@@ -205,17 +244,20 @@ export default {
         orderNum: ''
       },
       rules: {
-        name: [
+        title: [
           { required: true, message: '请输入菜单名称' }
         ],
         path: [
-          { required: true, message: '请输入菜单路径' }
+          { required: true, message: '请输入菜单路径' },
+          { validator: validationName, trigger: 'blur' }
         ],
-        title: [
-          { required: true, message: '请输入组件名称' }
+        name: [
+          { required: true, message: '请输入组件名称' },
+          { validator: validationTitle, trigger: 'blur' }
         ],
         component: [
-          { required: true, message: '请输入组件路径' }
+          { required: true, message: '请输入组件路径' },
+          { validator: validationComponent, trigger: 'blur' }
         ],
         pid: [
           { required: true, message: '请选择一级菜单' }
