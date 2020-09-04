@@ -89,7 +89,7 @@
                   class="card dark-main-background queryleft"
                   style="width:32.5%;margin-left:10px"
                   v-for="(items, index1) in graphstableData"
-                  v-bind:key="index1"
+                  v-bind:key="index1 + 1000"
           >
             <div
                     class="title-bar card-header dark-main-background dark-white-color"
@@ -167,6 +167,7 @@
             style="width: 100%"
             :row-style="tableRowStyle"
             :header-cell-style="tableHeaderColor"
+            :row-key="getRowKey"
           >
             <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
             <el-table-column label="监控项名称" prop="name" min-width="70%"></el-table-column>
@@ -236,7 +237,7 @@
                     </el-form-item>
                     <el-form-item label="图形类型">
                       <el-select v-model="form.graphtype">
-                        <el-option v-for="item in graphtypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                        <el-option v-for="(item , index) in graphtypeOptions" :key="index" :value="item.value" :label="item.label"></el-option>
                       </el-select>
                     </el-form-item>
                     <!--<el-form-item label="查看触发器">-->
@@ -252,18 +253,19 @@
                     </el-form-item>
                     <el-form-item label="纵轴最小值">
                       <el-select v-model="form.ymin_type">
-                        <el-option v-for="item in yOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                        <el-option v-for="(item , index) in yOptions" :key="index" :value="item.value" :label="item.label"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="纵轴最大值">
                       <el-select v-model="form.ymax_type">
-                        <el-option v-for="item in yOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                        <el-option v-for="(item , index) in yOptions" :key="index" :value="item.value" :label="item.label"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="监控项">
                       <div>
                         <el-table
                                 :data="form.gitems"
+                                :row-key="getRowKey"
                                 style="width: 100%">
                           <el-table-column
                                   label="监控项id"
@@ -283,7 +285,7 @@
                             <template slot-scope="scope" >
                               <el-form-item  :prop="'gitems.' + scope.$index + '.calc_fnc'">
                                 <el-select v-model="scope.row.calc_fnc">
-                                  <el-option v-for="item in fncOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                  <el-option v-for="(item , index) in fncOptions" :key="index" :value="item.value" :label="item.label"></el-option>
                                 </el-select>
                               </el-form-item>
                             </template>
@@ -294,7 +296,7 @@
                             <template slot-scope="scope" >
                               <el-form-item  :prop="'gitems.' + scope.$index + '.drawtype'">
                                 <el-select v-model="scope.row.drawtype">
-                                  <el-option v-for="item in drawTypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                  <el-option v-for="(item , index) in drawTypeOptions" :key="index" :value="item.value" :label="item.label"></el-option>
                                 </el-select>
                               </el-form-item>
                             </template>
@@ -305,7 +307,7 @@
                             <template slot-scope="scope" >
                               <el-form-item  :prop="'gitems.' + scope.$index + '.yaxisside'">
                                 <el-select v-model="scope.row.yaxisside">
-                                  <el-option v-for="item in yAxisOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                  <el-option v-for="(item , index) in yAxisOptions" :key="index" :value="item.value" :label="item.label"></el-option>
                                 </el-select>
                               </el-form-item>
                             </template>
@@ -349,6 +351,7 @@
                                 :header-cell-style="tableHeaderColor"
                                 ref="multipleTable"
                                 tooltip-effect="dark"
+                                :row-key="getRowKey"
                                 @selection-change="handleSelectionChange">
                           <el-table-column
                                   type="selection"
@@ -416,6 +419,7 @@
                   border
                   style="width: 100%"
                   :row-style="tableRowStyle"
+                  :row-key="getRowKey"
                   :header-cell-style="tableHeaderColor"
           >
             <el-table-column label="graphid" prop="graphid" :resizable="false" v-if="show"></el-table-column>
@@ -680,7 +684,7 @@ export default {
         hostids: [this.$route.query.hostId],
         name: this.nameTop
       }
-      this.axios.post(this.$api.monitorManager.getItemInfoList, region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -730,7 +734,7 @@ export default {
         status: '',
         key_: 'jmx["Catalina:type=Server",serverInfo]'
       }
-      this.axios.post(this.$api.monitorManager.getItemInfoList, region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -834,7 +838,7 @@ export default {
       }
       const returndataclock = []
       const returndataavg = []
-      this.axios.post(this.$api.monitorManager.getItemInfoList, region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoListTrend, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1524,6 +1528,9 @@ export default {
     },
     handleCurrentGraphChange (val) {
       this.currentGraphPage = val
+    },
+    getRowKey (row) {
+      return row.id
     }
   },
   mounted () {

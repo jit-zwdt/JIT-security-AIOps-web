@@ -179,7 +179,7 @@ export default {
   },
   data () {
     var validationName = (rule, value, callback) => {
-      this.axios.get('/sys/menu/getValidationPath', { params: { path: value, oldPath: '' } }).then(resp => {
+      this.axios.get(this.$api.sysManager.getValidationPath, { params: { path: value, oldPath: '' } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           console.log(json.data)
@@ -192,7 +192,7 @@ export default {
       })
     }
     var validationTitle = (rule, value, callback) => {
-      this.axios.get('/sys/menu/getValidationName', { params: { name: value, oldName: '' } }).then(resp => {
+      this.axios.get(this.$api.sysManager.getValidationName, { params: { name: value, oldName: '' } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           console.log(json.data)
@@ -205,7 +205,7 @@ export default {
       })
     }
     var validationComponent = (rule, value, callback) => {
-      this.axios.get('/sys/menu/getValidationComponent', { params: { component: value, oldComponent: '' } }).then(resp => {
+      this.axios.get(this.$api.sysManager.getValidationComponent, { params: { component: value, oldComponent: '' } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           console.log(json.data)

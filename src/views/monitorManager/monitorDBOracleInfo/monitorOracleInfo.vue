@@ -109,7 +109,7 @@
                   class="card dark-main-background queryleft"
                   style="width:32.5%;margin-left:10px"
                   v-for="(items, index1) in graphstableData"
-                  v-bind:key="index1"
+                  v-bind:key="index1 + 1000"
           >
             <div
                     class="title-bar card-header dark-main-background dark-white-color"
@@ -186,6 +186,7 @@
             border
             style="width: 100%"
             :row-style="tableRowStyle"
+            :row-key="getRowKey"
             :header-cell-style="tableHeaderColor"
           >
             <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
@@ -284,6 +285,7 @@
                       <div>
                         <el-table
                                 :data="form.gitems"
+                                :row-key="getRowKey"
                                 style="width: 100%">
                           <el-table-column
                                   label="监控项id"
@@ -369,6 +371,7 @@
                                 :header-cell-style="tableHeaderColor"
                                 ref="multipleTable"
                                 tooltip-effect="dark"
+                                :row-key="getRowKey"
                                 @selection-change="handleSelectionChange">
                           <el-table-column
                                   type="selection"
@@ -436,6 +439,7 @@
                   border
                   style="width: 100%"
                   :row-style="tableRowStyle"
+                  :row-key="getRowKey"
                   :header-cell-style="tableHeaderColor"
           >
             <el-table-column label="graphid" prop="graphid" :resizable="false" v-if="show"></el-table-column>
@@ -1659,6 +1663,9 @@ export default {
     },
     handleCurrentGraphChange (val) {
       this.currentGraphPage = val
+    },
+    getRowKey (row) {
+      return row.id
     }
   },
   mounted () {

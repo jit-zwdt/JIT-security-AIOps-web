@@ -163,6 +163,9 @@ const api = {
     getSysMenuFirst: '/sys/menu/getSysMenuFirst',
     addMenus: '/sys/menu/addMenus',
     updateMenus: '/sys/menu/updateMenus',
+    getValidationPath: '/sys/menu/getValidationPath',
+    getValidationName: '/sys/menu/getValidationName',
+    getValidationComponent: '/sys/menu/getValidationComponent',
     // menuManager/menuMessage
     findBySysMenu: '/sys/menu/findBySysMenu/',
     updateIsShow: '/sys/menu/updateIsShow/',
