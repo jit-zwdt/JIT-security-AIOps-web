@@ -34,7 +34,7 @@
         </template>
       </el-table-column>
       <el-table-column label="显示状态" prop="isShow" min-width="8%" align="center" :formatter="isShowFormat"></el-table-column>
-      <el-table-column label="路由菜单状态" prop="isRoute" min-width="10%" align="center" :formatter="isRouteFormat"></el-table-column>
+      <el-table-column label="是否路由菜单" prop="isRoute" min-width="10%" align="center" :formatter="isRouteFormat"></el-table-column>
       <el-table-column align="center" label="操作" min-width="15%">
         <template slot-scope="scope">
           <el-button
@@ -53,7 +53,7 @@
               <el-dropdown-item @click.native="showMenuMassage = true ; menuId = scope.row.id">详情</el-dropdown-item>
               <el-dropdown-item v-if="scope.row.isShow === '0'" @click.native="updateIsShow(scope.row.id, '1')">隐藏</el-dropdown-item>
               <el-dropdown-item v-if="scope.row.isShow === '1'" @click.native="updateIsShow(scope.row.id, '0')">显示</el-dropdown-item>
-              <el-dropdown-item @click.native="deleteMenuConfirm(scope.$index)">删除</el-dropdown-item>
+              <el-dropdown-item @click.native="deleteMenuConfirm(scope.row.id)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -167,10 +167,11 @@
     ></IconInfo>
     <el-drawer
       :title="title"
-      :visible.sync="drawer"
+      :visible.sync="editorDrawer"
       size="40%"
       :direction="direction"
-      :before-close="handleClose"
+      :before-close="handleClose1"
+      id="outDiv"
     >
       <div class="card dark-main-background">
         <ToolBar>
@@ -185,22 +186,20 @@
             <el-row>
               <el-col>
                 <el-form-item label="菜单类型：" prop="status">
-                  <el-radio-group v-model="itemEditor.status" @change="radiochange1">
-                    <el-radio v-model="itemEditor.status" label="1">一级菜单</el-radio>
-                    <el-radio v-model="itemEditor.status" label="2">子菜单</el-radio>
-                  </el-radio-group>
+                  <span v-if="itemEditor.parentId === '0'">一级菜单</span>
+                  <span v-else>子菜单</span>
                 </el-form-item>
-                <el-form-item label="一级菜单：" prop="pid" v-if="statusflag">
-                  <el-select v-model="itemEditor.pid" filterable placeholder="请选择">
+                <el-form-item label="一级菜单：" v-if="itemEditor.parentId !== '0'">
+                  <el-select v-model="itemEditor.parentId" filterable placeholder="请选择">
                     <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                      v-for="(item , index) in options1"
+                      :key="index"
+                      :label="item.title"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="菜单名称：" prop="title">
+                <el-form-item label="菜单名称：">
                   <el-input v-model="itemEditor.title" clearable placeholder="请输入菜单名称"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单路径：" prop="path">
@@ -209,12 +208,19 @@
                 <el-form-item label="组件名称：" prop="name">
                   <el-input v-model="itemEditor.name" clearable placeholder="请输入组件名称"></el-input>
                 </el-form-item>
-                <el-form-item label="组件路径：" prop="component">
+                <el-form-item label="组件路径：" prop="component" v-if="itemEditor.parentId === '0'">
                   <el-input
                     v-model="itemEditor.component"
                     clearable
                     placeholder="请输入组件路径"
-                    v-bind:disabled="isDisable"
+                    v-bind:disabled="true"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="组件路径：" prop="component" v-if="itemEditor.parentId !== '0'">
+                  <el-input
+                    v-model="itemEditor.component"
+                    clearable
+                    placeholder="请输入组件路径"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="默认跳转地址：" prop="redirect">
@@ -252,7 +258,7 @@
         </ToolBar>
         <ToolBar>
           <div class="queryright" style="width:100%">
-            <el-button type="primary" @click="updateMenu()">更新</el-button>
+            <el-button type="primary" @click="updateMenu('itemEditor')">更新</el-button>
           </div>
         </ToolBar>
       </div>
@@ -270,8 +276,8 @@ export default {
     IconInfo
   },
   data () {
-    var validationName = (rule, value, callback) => {
-      this.axios.get('/sys/menu/getValidationPath', { params: { path: value, oldPath: '' } }).then(resp => {
+    var validationPath = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationPath', { params: { path: value, oldPath: this.oldPath } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           console.log(json.data)
@@ -283,8 +289,8 @@ export default {
         }
       })
     }
-    var validationTitle = (rule, value, callback) => {
-      this.axios.get('/sys/menu/getValidationName', { params: { name: value, oldName: '' } }).then(resp => {
+    var validationName = (rule, value, callback) => {
+      this.axios.get('/sys/menu/getValidationName', { params: { name: value, oldName: this.oldName } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           console.log(json.data)
@@ -297,7 +303,7 @@ export default {
       })
     }
     var validationComponent = (rule, value, callback) => {
-      this.axios.get('/sys/menu/getValidationComponent', { params: { component: value, oldComponent: '' } }).then(resp => {
+      this.axios.get('/sys/menu/getValidationComponent', { params: { component: value, oldComponent: this.oldComponent } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           console.log(json.data)
@@ -313,6 +319,7 @@ export default {
       title: '',
       name: '',
       drawer: false,
+      editorDrawer: false,
       direction: 'rtl',
       tableData: [],
       loading: true,
@@ -356,11 +363,11 @@ export default {
         ],
         path: [
           { required: true, message: '请输入菜单路径' },
-          { validator: validationName, trigger: 'blur' }
+          { validator: validationPath, trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入组件名称' },
-          { validator: validationTitle, trigger: 'blur' }
+          { validator: validationName, trigger: 'blur' }
         ],
         component: [
           { required: true, message: '请输入组件路径' },
@@ -371,8 +378,12 @@ export default {
         ]
       },
       options: [],
+      options1: [],
       showMenuMassage: false,
-      menuId: ''
+      menuId: '',
+      oldPath: '',
+      oldName: '',
+      oldComponent: ''
     }
   },
   created () {
@@ -401,6 +412,9 @@ export default {
       this.setTimeoutster = window.setTimeout(() => {
         _this.showInfoTimeout()
       }, 300)
+      this.oldPath = ''
+      this.oldName = ''
+      this.oldComponent = ''
     },
     showInfoTimeout () {
       this.loading = false
@@ -430,9 +444,9 @@ export default {
     isRouteFormat (row, column) {
       const data = row[column.property]
       if (data === '0') {
-        return '是'
-      } else if (data === '1') {
         return '否'
+      } else if (data === '1') {
+        return '是'
       } else {
         return data
       }
@@ -469,6 +483,22 @@ export default {
       resetObject(this.itemForm)
       this.$refs.itemForm.resetFields()
     },
+    handleClose1 (done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.currentPageDictItem = 1
+          this.editorDrawer = false
+          this.clearform1()
+          this.itemEditor.component = 'Layout'
+          done()
+        })
+        .catch(_ => { })
+    },
+    clearform1 () {
+      this.statusflag1 = false
+      resetObject(this.itemEditor)
+      this.$refs.itemEditor.resetFields()
+    },
     radiochange (value) {
       switch (value) {
         case '1':
@@ -484,25 +514,6 @@ export default {
         default:
           this.statusflag = false
           this.itemForm.component = 'Layout'
-          this.isDisable = true
-          break
-      }
-    },
-    radiochange1 (value) {
-      switch (value) {
-        case '1':
-          this.statusflag = false
-          this.itemEditor.component = 'Layout'
-          this.isDisable = true
-          break
-        case '2':
-          this.statusflag = true
-          this.itemEditor.component = ''
-          this.isDisable = false
-          break
-        default:
-          this.statusflag = false
-          this.itemEditor.component = 'Layout'
           this.isDisable = true
           break
       }
@@ -586,105 +597,6 @@ export default {
         }
       })
     },
-    // 编辑
-    confirmupdate (index, row) {
-      this.title = '修改'
-      this.drawer = true
-      this.isDisable = true
-      this.id = row.id
-      this.axios.post('/sys/menu/findBySysMenu/' + this.id).then(resp => {
-        var json = resp.data
-        if (json.code === 1) {
-          console.log(json.data)
-          this.itemEditor = json.data
-          if(json.data.parentId === '0'){
-            this.itemEditor.status = '1'
-          } else {
-            this.itemEditor.status = '2'
-          }
-        }
-      })
-    },
-    updateMenu () {
-      this.axios.post(this.$api.sysManager.updateMenus, this.itemEditor).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            })
-            this.clearform()
-            this.drawer = false
-            this.showInfo()
-          }
-        } else {
-          this.$message({
-            message: '修改失败',
-            type: 'error'
-          })
-          this.clearform()
-          this.drawer = false
-          this.showInfo()
-        }
-      })
-    },
-    // 点击删除按钮 提示是否删除
-    deleteMenuConfirm (index) {
-      this.$confirm('该操作将删除菜单, 是否继续?', '提示', {
-        cancelButtonText: '取消',
-        confirmButtonText: '确定',
-        type: 'warning'
-      }).then(() => {
-        console.log(this.tableData[index].pid)
-        if (this.tableData[index].pid === '0') {
-          // 判断该菜单下是否有子菜单，如果pid = '0' ,证明一级菜单，
-          // 则进行判断师父有子菜单，有则不能删除，没有子菜单可以删除
-          this.axios.get('/sys/menu/judgeOfChild/' + this.tableData[index].id).then(resp => {
-            var json = resp.data
-            if (json.code === 1) {
-              if (json.data.length > 0) {
-                this.$message.error('该菜单下有二级菜单，请先去删除二级菜单！')
-              } else {
-                // 没有二级菜单
-                this.deleteMenu(index)
-              }
-            }
-          })
-        } else {
-          // pid != 0,可直接删除
-          this.deleteMenu(index)
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    // 删除
-    deleteMenu (index) {
-      this.axios.post(this.$api.sysManager.delMenus + this.tableData[index].id).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.dialogDelete = false
-            this.$message({
-              message: '删除成功',
-              type: 'success'
-            })
-            this.showInfo()
-          }
-        } else {
-          this.dialogDelete = false
-          this.$message({
-            message: '删除失败',
-            type: 'error'
-          })
-          this.showInfo()
-        }
-      })
-    },
     updateIsShow (id, isShow) {
       this.axios.put(this.$api.sysManager.updateIsShow + id + '/' + isShow).then((resp) => {
         if (resp.status === 200) {
@@ -706,6 +618,100 @@ export default {
     },
     iconChange () {
       this.showDialog = true
+    },
+    // 编辑回显
+    confirmupdate (index, row) {
+      this.title = '修改'
+      this.editorDrawer = true
+      this.id = row.id
+      this.axios.post(this.$api.sysManager.findBySysMenu + this.id).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          this.itemEditor = json.data
+          this.oldPath = json.data.path
+          this.oldName = json.data.name
+          this.oldComponent = json.data.component
+        }
+      })
+      this.axios.get(this.$api.sysManager.getMenuTitle).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          this.options1 = json.data
+        }
+      })
+    },
+    // 编辑
+    updateMenu (itemEditor) {
+      this.$refs[itemEditor].validate((valid) => {
+        if (valid) {
+          this.axios.post(this.$api.sysManager.updateMenus, this.itemEditor).then((resp) => {
+            if (resp.status === 200) {
+              var json = resp.data
+              if (json.code === 1) {
+                this.$message({
+                  message: '修改成功',
+                  type: 'success'
+                })
+                this.clearform1()
+                this.editorDrawer = false
+                this.showInfo()
+              }
+            } else {
+              this.$message({
+                message: '修改失败',
+                type: 'error'
+              })
+              this.clearform1()
+              this.editorDrawer = false
+              this.showInfo()
+            }
+          })
+        }
+      })
+    },
+    // 点击删除按钮 提示是否删除
+    deleteMenuConfirm (id) {
+      this.$confirm('该操作将删除菜单, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.post(this.$api.sysManager.judgeOfChild + id).then(resp => {
+          var json = resp.data
+          if (json.code === 1) {
+            if (json.data === true) {
+              this.$message.error('该菜单下还有二级菜单，请先去删除二级菜单！')
+            } else {
+              this.deleteMenu(id)
+            }
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 调用后台逻辑删除的方法
+    deleteMenu (id) {
+      this.axios.post(this.$api.sysManager.delMenus + id).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.showInfo()
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+        }
+      })
     }
   }
 }
@@ -759,4 +765,11 @@ export default {
 /deep/ .el-switch .el-switch__label {
   width: 50px !important;
 }
+#outDiv {
+    color: #626468;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
 </style>

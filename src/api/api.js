@@ -164,6 +164,8 @@ const api = {
     addMenus: '/sys/menu/addMenus',
     updateMenus: '/sys/menu/updateMenus',
     delMenus: '/sys/menu/delMenus/',
+    judgeOfChild: '/sys/menu/judgeOfChild/',
+    getMenuTitle: '/sys/menu/getMenuTitle',
     // menuManager/menuMessage
     findBySysMenu: '/sys/menu/findBySysMenu/',
     updateIsShow: '/sys/menu/updateIsShow/',
