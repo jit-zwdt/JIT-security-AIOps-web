@@ -126,6 +126,7 @@
                                         active-text="是"
                                         :inactive-value="0"
                                         inactive-text="否"
+                                        :disabled="disabled"
                                         >
                                 </el-switch>
                             </el-form-item>
@@ -139,6 +140,7 @@
                                         active-text="正常"
                                         :inactive-value="0"
                                         inactive-text="禁用"
+                                        :disabled="disabled"
                                        >
                                 </el-switch>
                             </el-form-item>

@@ -189,7 +189,7 @@
                   <span v-if="itemEditor.parentId === '0'">一级菜单</span>
                   <span v-else>子菜单</span>
                 </el-form-item>
-                <el-form-item label="一级菜单：" v-if="itemEditor.parentId !== '0'">
+                <el-form-item label="一级菜单：" v-show="itemEditor.parentId !== '0'">
                   <el-select v-model="itemEditor.parentId" filterable placeholder="请选择">
                     <el-option
                       v-for="(item , index) in options1"
@@ -199,7 +199,7 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="菜单名称：">
+                <el-form-item label="菜单名称：" prop="title">
                   <el-input v-model="itemEditor.title" clearable placeholder="请输入菜单名称"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单路径：" prop="path">
@@ -227,7 +227,14 @@
                   <el-input v-model="itemEditor.redirect" clearable placeholder="请输入路由参数redirect"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单图标：" prop="icon">
-                  <el-input v-model="itemEditor.icon" clearable placeholder="请点击右侧按钮选择图标"></el-input>
+                  <el-input v-model="itemEditor.icon" clearable placeholder="请点击右侧按钮选择图标">
+                    <el-button
+                      slot="append"
+                      icon="el-icon-search"
+                      style="margin-left:-20px"
+                      @click="iconChange"
+                    ></el-button>
+                  </el-input>
                 </el-form-item>
                 <el-form-item label="是否显示：" prop="isShow">
                   <el-switch
@@ -353,9 +360,9 @@ export default {
         component: '',
         redirect: '',
         icon: '',
-        isShow: '',
-        isRoute: '0',
-        orderNum: '1'
+        isShow: '0',
+        isRoute: '1',
+        orderNum: ''
       },
       rules: {
         title: [
@@ -402,6 +409,7 @@ export default {
     reloadData (value) {
       this.itemForm.icon = value
       this.showDialog = false
+      this.itemEditor.icon = value
     },
     noReloadData () {
       this.showDialog = false
@@ -473,6 +481,8 @@ export default {
           this.clearform()
           this.itemForm.component = 'Layout'
           this.isDisable = true
+          this.itemForm.icon = ''
+          this.itemEditor.icon = ''
           done()
         })
         .catch(_ => { })
@@ -490,6 +500,8 @@ export default {
           this.editorDrawer = false
           this.clearform1()
           this.itemEditor.component = 'Layout'
+          this.itemForm.icon = ''
+          this.itemEditor.icon = ''
           done()
         })
         .catch(_ => { })
@@ -654,6 +666,8 @@ export default {
                   message: '修改成功',
                   type: 'success'
                 })
+                this.itemForm.icon = ''
+                this.itemEditor.icon = ''
                 this.clearform1()
                 this.editorDrawer = false
                 this.showInfo()
@@ -682,7 +696,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             if (json.data === true) {
-              this.$message.error('该菜单下还有二级菜单，请先去删除二级菜单！')
+              this.$message.error('该菜单下含有子菜单，请先删除子菜单！')
             } else {
               this.deleteMenu(id)
             }
