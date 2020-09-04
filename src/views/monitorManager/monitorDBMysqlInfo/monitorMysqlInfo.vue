@@ -42,10 +42,12 @@
                 <th class="darkmainborderth">启动监控</th>
                 <td class="darkmainbordertd">
                   <el-switch
+                    class="switchStyle"
                     v-model="serverForm.enableMonitor"
                     active-value="1"
+                    active-text="启用"
                     inactive-value="0"
-                    active-color="#13ce66"
+                    inactive-text="停用"
                     @change="change_enableMonitor()"
                   />
                 </td>
@@ -1785,5 +1787,27 @@ a:hover {
     margin-left: 10px;
     margin-top: 0px;
   }
+}
+ /deep/ .switchStyle .el-switch__label {
+  position: absolute;
+  display: none;
+  color: #fff;
+}
+/deep/ .switchStyle .el-switch__label--left {
+  width: 28px;
+  z-index: 1;
+  left: 21px;
+}
+/deep/ .switchStyle .el-switch__label--right {
+  width: 28px;
+  z-index: 1;
+  right: 21px;
+}
+/deep/ .switchStyle .el-switch__label.is-active {
+  display: block;
+}
+/deep/ .switchStyle.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+  width: 50px !important;
 }
 </style>

@@ -45,10 +45,12 @@
       <el-table-column label="状态" min-width="10%" :resizable="false">
         <template slot-scope="scope">
           <el-switch
+              class="switchStyle"
               v-model="scope.row.status"
               :active-value="0"
+              active-text="启用"
               :inactive-value="1"
-              active-color="#13ce66"
+              inactive-text="禁用"
               @change="change_status(scope.row)"
           />
         </template>
@@ -235,4 +237,27 @@ export default {
   /deep/ .el-button {
     margin-left: 10px;
   }
+
+  /deep/ .switchStyle .el-switch__label {
+  position: absolute;
+  display: none;
+  color: #fff;
+}
+/deep/ .switchStyle .el-switch__label--left {
+  width: 28px;
+  z-index: 1;
+  left: 21px;
+}
+/deep/ .switchStyle .el-switch__label--right {
+  width: 28px;
+  z-index: 1;
+  right: 21px;
+}
+/deep/ .switchStyle .el-switch__label.is-active {
+  display: block;
+}
+/deep/ .switchStyle.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+  width: 55px !important;
+}
 </style>

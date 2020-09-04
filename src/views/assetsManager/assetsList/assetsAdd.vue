@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="资产状态：" prop="state">
-              <el-select v-model="serverListForm.state" placeholder="请选择">
+              <el-select v-model="serverListForm.state" placeholder="请选择" style="width: 100%">
                 <el-option
                   v-for="item in stateOptions"
                   :key="item.value"
@@ -70,6 +70,66 @@
         </el-row>
         <el-row :gutter="40">
           <el-col :span="12">
+            <el-form-item label="资产国标大类：" prop="gbType">
+              <el-input v-model="serverListForm.gbType"  clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="价值：" prop="worth">
+              <el-input v-model="serverListForm.worth" oninput="value=value.replace(/[^\d]/g,'')" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <el-form-item label="ip：" prop="ip">
+              <el-input v-model="serverListForm.ip"  clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="备用ip：" prop="backupIp">
+              <el-input v-model="serverListForm.backupIp" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <el-form-item label="取得方式：" prop="acquisitionMode">
+              <el-input v-model="serverListForm.acquisitionMode"  clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="使用部门：" prop="userDepartment">
+              <el-input v-model="serverListForm.userDepartment" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <el-form-item label="使用人：" prop="user">
+              <el-input v-model="serverListForm.user"  clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用途分类：" prop="objectClassification">
+              <el-input v-model="serverListForm.objectClassification" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <el-form-item label="品牌：" prop="brand">
+              <el-input v-model="serverListForm.brand"  clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="型号：" prop="productModel">
+              <el-input v-model="serverListForm.productModel" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
             <el-form-item label="资产所属人：" prop="belongsPerson">
               <el-input v-model="serverListForm.belongsPerson" clearable></el-input>
             </el-form-item>
@@ -87,12 +147,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="资产登记时间：" prop="registerDate">
+            <el-form-item label="资产登记时间：" prop="registerDate" >
               <el-date-picker
                 v-model="serverListForm.registerDate"
                 type="date"
                 placeholder="资产登记时间"
-                class="datetop">
+                class="datetop"
+                style="width: 100%">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -103,8 +164,9 @@
               <el-date-picker
                 v-model="serverListForm.updateDate"
                 type="date"
-                placeholder="资产登记时间"
-                class="datetop">
+                placeholder="资产修改时间"
+                class="datetop"
+                style="width: 100%">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -114,7 +176,21 @@
                 v-model="serverListForm.logoutDate"
                 type="date"
                 placeholder="资产注销时间"
-                class="datetop">
+                class="datetop"
+                style="width: 100%">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="40">
+          <el-col :span="12">
+            <el-form-item label="财务入账日期：" prop="dateRecorded">
+              <el-date-picker
+                      v-model="serverListForm.dateRecorded"
+                      type="date"
+                      placeholder="财务入账日期"
+                      class="datetop"
+                      style="width: 100%">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -267,7 +343,6 @@ export default {
     },
     submit () {
       const region = this.makeParam()
-      console.log(region)
       this.axios.post(api.assetsManager.assetsList.assetsAdd.addAssets, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -341,11 +416,16 @@ export default {
       updateDate = formatTodate(updateDate, 'YYYY-MM-DD HH:mm:ss')
       var logoutDate = this.serverListForm.logoutDate
       logoutDate = formatTodate(logoutDate, 'YYYY-MM-DD HH:mm:ss')
+      var dateRecorded = this.serverListForm.dateRecorded
+      dateRecorded = formatTodate(dateRecorded, 'YYYY-MM-DD HH:mm:ss')
       const region = {
         name: this.serverListForm.name,
         type: this.serverListForm.type,
         number: this.serverListForm.number,
         state: this.serverListForm.state,
+        gbType: this.serverListForm.gbType,
+        ip: this.serverListForm.ip,
+        backupIp: this.serverListForm.backupIp,
         amount: this.serverListForm.amount,
         belongsDept: this.serverListForm.belongsDept,
         belongsPerson: this.serverListForm.belongsPerson,
@@ -353,7 +433,16 @@ export default {
         registrant: this.serverListForm.registrant,
         updateDate: updateDate,
         location: this.serverListForm.location,
-        logoutDate: logoutDate
+        logoutDate: logoutDate,
+        dateRecorded: dateRecorded,
+        worth: this.serverListForm.worth,
+        acquisitionMode: this.serverListForm.acquisitionMode,
+        userDepartment: this.serverListForm.userDepartment,
+        user: this.serverListForm.user,
+        objectClassification: this.serverListForm.objectClassification,
+        sn: this.serverListForm.sn,
+        brand: this.serverListForm.brand,
+        productModel: this.serverListForm.productModel
       }
       return region
     }
