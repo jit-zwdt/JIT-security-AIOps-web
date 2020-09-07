@@ -180,7 +180,7 @@
             slot="reference"
             icon="el-icon-edit-outline"
             @click="confirmupdate(scope.$index, scope.row)"
-          >添加</el-button>
+          >编辑</el-button>
           <el-button
             size="mini"
             type="primary"
