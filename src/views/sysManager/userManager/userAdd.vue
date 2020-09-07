@@ -413,24 +413,17 @@ export default {
     },
     handleAvatarSuccess (res, file) {
       this.userForm.picUrl = res.data
-      this.getBase64()
-    },
-    getBase64 () {
       this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
-        if (resp === null) {
-          this.getBase64()
-        } else {
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
-              if (prefix === 'jpg') {
-                this.image = 'data:image/jpg;base64,' + json.data
-              } else if (prefix === 'png') {
-                this.image = 'data:image/png;base64,' + json.data
-              } else {
-                this.image = 'data:image/jpeg;base64,' + json.data
-              }
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
+            if (prefix === 'jpg') {
+              this.image = 'data:image/jpg;base64,' + json.data
+            } else if (prefix === 'png') {
+              this.image = 'data:image/png;base64,' + json.data
+            } else {
+              this.image = 'data:image/jpeg;base64,' + json.data
             }
           }
         }
