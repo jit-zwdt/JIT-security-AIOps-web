@@ -54,9 +54,8 @@
             type="primary"
             slot="reference"
             icon="el-icon-edit-outline"
-            circle
             @click="confirmupdate(scope.$index, scope.row)"
-          ></el-button>
+          >编辑</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -107,7 +107,23 @@ export default {
       const birth = formatTodate(new Date(this.userForm.birth), 'YYYY-MM-DD')
       this.user.birth = birth
       if (this.userForm.picUrl !== null && this.userForm.picUrl !== '') {
-        this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
+        this.getBase64()
+      } else {
+        this.url = 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
+      }
+      // 获取所有的部门信息
+      this.axios.get(this.$api.sysManager.getAllDepartment).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          this.departments = json.data
+        }
+      })
+    },
+    getBase64 () {
+      this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
+        if (resp === null) {
+          this.getBase64()
+        } else {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
@@ -121,16 +137,6 @@ export default {
               }
             }
           }
-        })
-      } else {
-        this.url = 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
-      }
-      // 获取所有的部门信息
-      this.axios.get(this.$api.sysManager.getAllDepartment).then(resp => {
-        var json = resp.data
-        if (json.code === 1) {
-          console.log(json.data)
-          this.departments = json.data
         }
       })
     },
