@@ -130,10 +130,10 @@
                             :resizable="false"
                     ></el-table-column>
                     <el-table-column label="状态" prop="status" min-width="25%" :resizable="false" :formatter="statusFormat"></el-table-column>
-                    <el-table-column align="center" label="操作" min-width="25%">
+                    <el-table-column align="center" label="操作" min-width="30%">
                         <template slot-scope="scope">
                             <el-popconfirm title="确定删除吗？" @onConfirm="deleteDictItem(scope.row)">
-                                <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete"></el-button>
+                                <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
                             </el-popconfirm>
                             <el-button
                                     size="mini"
@@ -141,7 +141,7 @@
                                     slot="reference"
                                     icon="el-icon-edit-outline"
                                     @click="dictionaryItemUpdate(scope.$index, scope.row)"
-                            ></el-button>
+                            >编辑</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

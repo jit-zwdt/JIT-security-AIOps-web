@@ -169,35 +169,32 @@
         </template>
       </el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
-      <el-table-column align="center" label="操作" min-width="14%">
+      <el-table-column align="center" label="操作" min-width="15%">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
-            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete" circle></el-button>
+            <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
           </el-popconfirm>
           <el-button
             size="mini"
             type="primary"
             slot="reference"
             icon="el-icon-edit-outline"
-            circle
             @click="confirmupdate(scope.$index, scope.row)"
-          ></el-button>
+          >添加</el-button>
           <el-button
             size="mini"
             type="primary"
             slot="reference"
             icon="el-icon-s-grid"
-            circle
             @click="confirmItemList(scope.$index, scope.row)"
-          ></el-button>
+          >监控项</el-button>
           <el-button
             size="mini"
             type="primary"
             slot="reference"
             icon="el-icon-share"
-            circle
             @click="confirmTriggerList(scope.$index, scope.row)"
-          ></el-button>
+          >触发器</el-button>
         </template>
       </el-table-column>
     </el-table>
