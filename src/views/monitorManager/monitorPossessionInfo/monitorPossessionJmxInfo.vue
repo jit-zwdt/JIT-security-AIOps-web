@@ -193,7 +193,7 @@
           </el-table>
           <div class="block" style="margin-top:15px;">
             <el-pagination
-              align="center"
+              align="left"
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage"
@@ -386,7 +386,7 @@
                         </el-table>
                         <div class="block" style="margin-top:15px;">
                           <el-pagination
-                                  align="center"
+                                  align="left"
                                   @size-change="handleSizeInsideChange"
                                   @current-change="handleCurrentInsideChange"
                                   :current-page="currentInsidePage"
@@ -446,7 +446,7 @@
           </el-table>
           <div class="block" style="margin-top:15px;">
             <el-pagination
-                    align="center"
+                    align="left"
                     @size-change="handleSizeGraphChange"
                     @current-change="handleCurrentGraphChange"
                     :current-page="currentGraphPage"

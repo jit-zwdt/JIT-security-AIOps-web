@@ -71,7 +71,7 @@
       </el-table>
       <div class="block" style="margin-top:15px;">
         <el-pagination
-          align="center"
+          align="left"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
