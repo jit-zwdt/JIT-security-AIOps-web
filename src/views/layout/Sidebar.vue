@@ -14,15 +14,51 @@
         :collapse="system.miniSidebar === 1"
       >
         <template v-for="(menu_v, menu_k) in routes">
-          <template v-if="menu_v.children && menu_v.meta && menu_v.isShow ==='0'">
-            <el-submenu :index="menu_v.path" :key="menu_k">
-              <template slot="title">
-                <i :class="menu_v.meta.icon"></i>
-                <span>{{menu_v.meta.title}}</span>
-              </template>
+          <template v-if="menu_v.path !== '*'">
+            <template v-if="menu_v.children && menu_v.isRoute === '1' && menu_v.isShow ==='0'">
+              <el-submenu :index="menu_v.path" :key="menu_k">
+                <template slot="title">
+                  <i :class="menu_v.meta.icon"></i>
+                  <span>{{menu_v.meta.title}}</span>
+                </template>
+                <template v-for="(menuChildren_v, menuChildren_k) in menu_v.children">
+                  <el-submenu
+                    v-if="menuChildren_v.children && menuChildren_v.isRoute === '1' && menuChildren_v.isShow ==='0'"
+                    :index="menuChildren_v.path"
+                    :key="menuChildren_k"
+                  >
+                    <template slot="title">
+                      <i :class="menuChildren_v.meta.icon"></i>
+                      <span>{{menuChildren_v.meta.title}}</span>
+                    </template>
+                    <el-menu-item
+                      v-for="itemChild_Child in menuChildren_v.children"
+                      :index="itemChild_Child.path"
+                      :key="itemChild_Child.path"
+                    >
+                      <template
+                        v-if="itemChild_Child.isRoute === '1' && itemChild_Child.isShow ==='0'"
+                      >
+                        <i :class="itemChild_Child.meta.icon"></i>
+                        <span slot="title">{{itemChild_Child.meta.title}}</span>
+                      </template>
+                    </el-menu-item>
+                  </el-submenu>
+                  <el-menu-item
+                    v-else-if="menuChildren_v.isRoute === '1' && menuChildren_v.isShow ==='0'"
+                    :index="menuChildren_v.path"
+                    :key="menuChildren_k"
+                  >
+                    <i :class="menuChildren_v.meta.icon"></i>
+                    <span slot="title">{{menuChildren_v.meta.title}}</span>
+                  </el-menu-item>
+                </template>
+              </el-submenu>
+            </template>
+            <template v-else-if="menu_v.children && menu_v.isRoute === '0'">
               <template v-for="(menuChildren_v, menuChildren_k) in menu_v.children">
                 <el-submenu
-                  v-if="menuChildren_v.children && menuChildren_v.meta && menuChildren_v.isShow ==='0'"
+                  v-if="menuChildren_v.children && menuChildren_v.isRoute === '1' && menuChildren_v.isShow ==='0'"
                   :index="menuChildren_v.path"
                   :key="menuChildren_k"
                 >
@@ -35,14 +71,16 @@
                     :index="itemChild_Child.path"
                     :key="itemChild_Child.path"
                   >
-                    <template v-if="itemChild_Child.meta && itemChild_Child.isShow ==='0'">
+                    <template
+                      v-if="itemChild_Child.isRoute === '1' && itemChild_Child.isShow ==='0'"
+                    >
                       <i :class="itemChild_Child.meta.icon"></i>
                       <span slot="title">{{itemChild_Child.meta.title}}</span>
                     </template>
                   </el-menu-item>
                 </el-submenu>
                 <el-menu-item
-                  v-else-if="menuChildren_v.meta && menuChildren_v.isShow ==='0'"
+                  v-else-if="menuChildren_v.isRoute === '1' && menuChildren_v.isShow ==='0'"
                   :index="menuChildren_v.path"
                   :key="menuChildren_k"
                 >
@@ -50,49 +88,17 @@
                   <span slot="title">{{menuChildren_v.meta.title}}</span>
                 </el-menu-item>
               </template>
-            </el-submenu>
-          </template>
-          <template v-else-if="menu_v.children && !menu_v.meta">
-            <template v-for="(menuChildren_v, menuChildren_k) in menu_v.children">
-              <el-submenu
-                v-if="menuChildren_v.children && menuChildren_v.meta && menuChildren_v.isShow ==='0'"
-                :index="menuChildren_v.path"
-                :key="menuChildren_k"
-              >
-                <template slot="title">
-                  <i :class="menuChildren_v.meta.icon"></i>
-                  <span>{{menuChildren_v.meta.title}}</span>
-                </template>
-                <el-menu-item
-                  v-for="itemChild_Child in menuChildren_v.children"
-                  :index="itemChild_Child.path"
-                  :key="itemChild_Child.path"
-                >
-                  <template v-if="itemChild_Child.meta && itemChild_Child.isShow ==='0'">
-                    <i :class="itemChild_Child.meta.icon"></i>
-                    <span slot="title">{{itemChild_Child.meta.title}}</span>
-                  </template>
-                </el-menu-item>
-              </el-submenu>
+            </template>
+            <template v-else>
               <el-menu-item
-                v-else-if="menuChildren_v.meta && menuChildren_v.isShow ==='0'"
-                :index="menuChildren_v.path"
-                :key="menuChildren_k"
+                v-if="menu_v.isRoute === '1' && menu_v.isShow ==='0'"
+                :index="menu_v.path"
+                :key="menu_k"
               >
-                <i :class="menuChildren_v.meta.icon"></i>
-                <span slot="title">{{menuChildren_v.meta.title}}</span>
+                <i :class="menu_v.meta.icon"></i>
+                <span slot="title">{{menu_v.meta.title}}</span>
               </el-menu-item>
             </template>
-          </template>
-          <template v-else>
-            <el-menu-item
-              v-if="menu_v.meta && menu_v.isShow ==='0'"
-              :index="menu_v.path"
-              :key="menu_k"
-            >
-              <i :class="menu_v.meta.icon"></i>
-              <span slot="title">{{menu_v.meta.title}}</span>
-            </el-menu-item>
           </template>
         </template>
       </el-menu>
