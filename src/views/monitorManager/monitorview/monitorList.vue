@@ -127,7 +127,7 @@
         </template>
       </el-table-column>
       <el-table-column label="业务名称" prop="businessName" min-width="12%" v-if="datashow"></el-table-column>
-      <el-table-column label="IP" prop="hostIp" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="IP" prop="hostIp" min-width="7%" :resizable="false"></el-table-column>
       <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
         <template slot-scope="scope">
           <el-switch
@@ -141,7 +141,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="监控状态" prop="monitorType" min-width="17%" :resizable="false">
+      <el-table-column label="监控状态" prop="monitorType" min-width="14%" :resizable="false">
         <template slot-scope="scope">
           <el-tag
             v-for="item in makeMonitorTypeItems(scope.row)"
@@ -155,21 +155,21 @@
       </el-table-column>
       <el-table-column label="类型" prop="type" min-width="6%" :resizable="false"></el-table-column>
       <el-table-column label="子类型" prop="subtype" min-width="6%" :resizable="false" v-if="datashow"></el-table-column>
-      <el-table-column label="备注" prop="remark" min-width="12%" :resizable="false" v-if="datashow"></el-table-column>
-      <el-table-column label="分组" prop="groupId" min-width="6%" :resizable="false">
+      <el-table-column label="备注" prop="remark" min-width="10%" :resizable="false" v-if="datashow"></el-table-column>
+      <el-table-column label="分组" prop="groupId" min-width="4%" :resizable="false">
         <template slot-scope="scope">
           <el-popover trigger="click" placement="top">
             <p
               style="width:200px;white-space: pre-line"
             >{{groupIdformatType(scope.$index, scope.row)}}</p>
             <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">查看分组</el-tag>
+              <el-tag size="medium">查看</el-tag>
             </div>
           </el-popover>
         </template>
       </el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
-      <el-table-column align="center" label="操作" min-width="15%">
+      <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
