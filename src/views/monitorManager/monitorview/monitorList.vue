@@ -141,7 +141,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="监控状态" prop="monitorType" min-width="14%" :resizable="false">
+      <el-table-column label="监控状态" prop="monitorType" min-width="15%" :resizable="false">
         <template slot-scope="scope">
           <el-tag
             v-for="item in makeMonitorTypeItems(scope.row)"
@@ -169,7 +169,7 @@
         </template>
       </el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
-      <el-table-column align="center" label="操作" min-width="20%">
+      <el-table-column align="center" label="操作" min-width="23%">
         <template slot-scope="scope">
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
