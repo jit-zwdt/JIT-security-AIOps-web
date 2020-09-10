@@ -199,7 +199,7 @@ const api = {
     findUserById: '/sys/user/findUserById/',
     getUserInfo: '/sys/user/getUserInfo',
     uploadPic: '/sys/user/uploadPic',
-    getPicBase64: '/sys/user/getPicBase64'
+    getPicBase64: '/sys/user/getPicBase64/'
   },
   main: {
     // Index.vue

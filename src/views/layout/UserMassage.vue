@@ -107,7 +107,7 @@ export default {
       const birth = formatTodate(new Date(this.userForm.birth), 'YYYY-MM-DD')
       this.user.birth = birth
       if (this.userForm.picUrl !== null && this.userForm.picUrl !== '') {
-        this.axios.post(this.$api.sysManager.getPicBase64, this.userForm.picUrl).then((resp) => {
+        this.axios.post(this.$api.sysManager.getPicBase64 + this.userForm.picUrl).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
