@@ -15,6 +15,7 @@
                   </el-col>
                   <el-col :span="16">
                       <img v-if="user.picUrl" :src="url" class="avatar" style=" height:100px;width:100px">
+                      <el-avatar  v-else size=small :src="emptyUrl"></el-avatar>
                   </el-col>
               </el-row>
               <el-row :gutter="30">
@@ -98,6 +99,7 @@ export default {
       // 图片的 URL
       userForm: {},
       url: '',
+      emptyUrl: '',
       departments: []
     }
   },
@@ -111,7 +113,7 @@ export default {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
-              var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.'), this.userForm.picUrl.length)
+              var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.') + 1, this.userForm.picUrl.length)
               if (prefix === 'jpg') {
                 this.url = 'data:image/jpg;base64,' + json.data
               } else if (prefix === 'png') {
@@ -123,7 +125,7 @@ export default {
           }
         })
       } else {
-        this.url = 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
+        this.emptyUrl = 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
       }
       // 获取所有的部门信息
       this.axios.get(this.$api.sysManager.getAllDepartment).then(resp => {

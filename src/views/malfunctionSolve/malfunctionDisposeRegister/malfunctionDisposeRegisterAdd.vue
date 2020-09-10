@@ -235,7 +235,8 @@ export default {
     reloadData () {
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      // this.$router.go(-1)
+      this.$router.push('/malfunctionDisposeRegister')
     },
     clearform () {
       resetObject(this.registerForm)
