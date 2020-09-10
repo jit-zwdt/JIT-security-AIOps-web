@@ -1,79 +1,81 @@
 <template>
   <!-- 显示用户信息的 Dialong -->
   <el-dialog
-          title="用户中心"
-          :width="dialogWidth"
-          :visible.sync="showUserMassage"
-          @opened="preShow"
-          :before-close="handleclosebind"
-          :show-close="true"
-          :close-on-click-modal="false">
-      <div>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>头像：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <img v-if="user.picUrl" :src="url" class="avatar" style=" height:100px;width:100px">
-                      <el-avatar  v-else size=small :src="emptyUrl"></el-avatar>
-                  </el-col>
-              </el-row>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>姓名：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <span>{{ user.name }}</span>
-                  </el-col>
-              </el-row>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>部门：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <span v-for="(department , index) in departments" v-bind:key="index">
-                            <template v-if="user.departmentId === department.id">
-                              {{ department.departName }}
-                            </template>
-                          </span>
-                  </el-col>
-              </el-row>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>性别：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <span v-if="user.sex === 0">男</span>
-                      <span v-if="user.sex === 1">女</span>
-                  </el-col>
-              </el-row>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>生日：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <span>{{ user.birth }}</span>
-                  </el-col>
-              </el-row>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>手机号码：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <span>{{ user.mobile }}</span>
-                  </el-col>
-              </el-row>
-              <el-row :gutter="30">
-                  <el-col :span="8" :push="4">
-                      <span>邮箱：</span>
-                  </el-col>
-                  <el-col :span="16">
-                      <span>{{ user.email }}</span>
-                  </el-col>
-              </el-row>
-      </div>
+    title="用户中心"
+    :width="dialogWidth"
+    :visible.sync="showUserMassage"
+    @opened="preShow"
+    :before-close="handleclosebind"
+    :show-close="true"
+    :close-on-click-modal="false"
+  >
+    <div>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>头像：</span>
+        </el-col>
+        <el-col :span="16">
+          <div v-if="url">
+            <img :src="url" class="avatar" style=" height:100px;width:100px" />
+          </div>
+          <div v-else class="emptyimg">
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>姓名：</span>
+        </el-col>
+        <el-col :span="16">
+          <span>{{ user.name }}</span>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>部门：</span>
+        </el-col>
+        <el-col :span="16">
+          <span v-for="(department , index) in departments" v-bind:key="index">
+            <template v-if="user.departmentId === department.id">{{ department.departName }}</template>
+          </span>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>性别：</span>
+        </el-col>
+        <el-col :span="16">
+          <span v-if="user.sex === 0">男</span>
+          <span v-if="user.sex === 1">女</span>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>生日：</span>
+        </el-col>
+        <el-col :span="16">
+          <span>{{ user.birth }}</span>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>手机号码：</span>
+        </el-col>
+        <el-col :span="16">
+          <span>{{ user.mobile }}</span>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="8" :push="4">
+          <span>邮箱：</span>
+        </el-col>
+        <el-col :span="16">
+          <span>{{ user.email }}</span>
+        </el-col>
+      </el-row>
+    </div>
     <!--<div slot="footer" class="dialog-footer">-->
-      <!--<el-button type="primary" @click="$emit('success')">确 定</el-button>-->
+    <!--<el-button type="primary" @click="$emit('success')">确 定</el-button>-->
     <!--</div>-->
   </el-dialog>
 </template>
@@ -124,8 +126,6 @@ export default {
             }
           }
         })
-      } else {
-        this.emptyUrl = 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
       }
       // 获取所有的部门信息
       this.axios.get(this.$api.sysManager.getAllDepartment).then(resp => {
@@ -156,13 +156,18 @@ export default {
 </script>
 
 <style scoped>
-  .el-row {
-    margin-bottom: 20px;
-  }
-  .el-col {
-    border-radius: 4px;
-  }
-  .el-dialog__body {
-    margin-left: -70px;
-  }
+.el-row {
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 4px;
+}
+.el-dialog__body {
+  margin-left: -70px;
+}
+.emptyimg {
+   background: url('~@/assets/img/dpng.png') center center no-repeat;
+   height: 100px;
+   width: 100px;
+}
 </style>

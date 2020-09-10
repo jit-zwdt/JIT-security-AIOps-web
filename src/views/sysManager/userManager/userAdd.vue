@@ -29,7 +29,9 @@
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <img v-if="userForm.picUrl" :src="image" class="avatar" />
+                  <div v-if="userForm.picUrl">
+                    <img :src="image" class="avatar" />
+                  </div>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
