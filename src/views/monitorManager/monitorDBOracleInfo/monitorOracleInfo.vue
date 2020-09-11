@@ -893,10 +893,17 @@ export default {
       this.nameTop = ''
     },
     backfrom () {
-      this.$router.push({
-        name: 'monitorDBIndex'
-      })
       // 返回上一层
+      var identification = this.$route.query.identification
+      if (identification != null && identification === '1') {
+        this.$router.push({
+          name: 'monitorList'
+        })
+      } else {
+        this.$router.push({
+          name: 'monitorDBIndex'
+        })
+      }
     },
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {

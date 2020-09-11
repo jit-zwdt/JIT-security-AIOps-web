@@ -227,7 +227,7 @@ export default {
       timer: '',
       show: false,
       groupName: '',
-      //分组信息
+      // 分组信息
       hostGroupOptions: [],
       memoryTop5: [],
       exceptionTop5: [],
@@ -395,13 +395,13 @@ export default {
       }
     }
   },
-  //创建完毕时间调用的方法
+  // 创建完毕时间调用的方法
   mounted () {
   },
-  //销毁时调用的方法
+  // 销毁时调用的方法
   destroyed () {
   },
-  //组件的添加
+  // 组件的添加
   components: {}
 }
 </script>
