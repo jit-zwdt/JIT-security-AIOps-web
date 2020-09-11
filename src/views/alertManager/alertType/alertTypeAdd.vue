@@ -433,7 +433,9 @@ export default {
     reloadData () {
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      this.$router.push({
+        name: 'alertType'
+      })// 返回上一层
     },
     changeType (val) {
       this.showSMTP = false
