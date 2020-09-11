@@ -838,7 +838,10 @@ export default {
       this.nameTop = ''
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      this.$router.push({
+        name: 'monitorDBIndex'
+      })
+      // 返回上一层
     },
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {

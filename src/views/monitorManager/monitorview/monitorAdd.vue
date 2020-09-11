@@ -738,7 +738,19 @@ export default {
       this.$refs.serverListForm.resetFields()
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      var typeId = this.$route.query.templateTypeId
+      var identification = this.$route.query.identification
+      if (!identification) {
+        this.$router.push({ name: 'monitorAddList', query: { typeId: typeId } })
+      } else {
+        if (identification === '1') {
+          this.$router.push({ name: 'monitorAddList' })
+        } else {
+          this.$router.push({
+            name: 'monitorList'
+          })
+        }
+      }
     }
   },
   actions: {

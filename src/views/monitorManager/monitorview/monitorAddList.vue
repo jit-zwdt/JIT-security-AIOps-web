@@ -109,6 +109,7 @@ import HelpTemplates from '@/views/monitorManager/helpTemplates/helpTemplates.vu
 export default {
   data () {
     return {
+      identification: '',
       show: false,
       hostObjectName: '',
       hostType: '',
@@ -205,10 +206,31 @@ export default {
       this.titleType = ''
     },
     showAssetsAdd (id, typeId, subtypeIds, name) {
-      this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name, id: '', groupIds: '' } })
+      if (this.$route.query.identification) {
+        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name, id: '', groupIds: '', identification: this.$route.query.identification } })
+      } else {
+        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name, id: '', groupIds: '' } })
+      }
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      var typeId = this.$route.query.typeId // 返回上一层
+      if (typeId != null && typeId === '2') {
+        this.$router.push({
+          name: 'monitorDBIndex'
+        })
+      } else if (typeId != null && typeId === '1') {
+        this.$router.push({
+          name: 'monitorSystemIndex'
+        })
+      } else if (typeId != null && typeId === '3') {
+        this.$router.push({
+          name: 'monitorMiddlewareIndex'
+        })
+      } else {
+        this.$router.push({
+          name: 'monitorList'
+        })
+      }
     },
     showTempHelp (url, name, ico) {
       this.helpform.url = url
