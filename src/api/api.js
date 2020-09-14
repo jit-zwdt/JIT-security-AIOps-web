@@ -83,7 +83,7 @@ const api = {
     findByProblemId: '/problem/findByProblemId',
     findBySeverityLevel: '/problem/findBySeverityLevel',
     findUserByRole: '/user/findUserByRole',
-    findAllRole: '/role/findAllRole',
+    findAllRole: '/sys/role/findAllRole',
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
     problemSolveReport: '/problem/problemSolveReport'
@@ -145,6 +145,7 @@ const api = {
     checkDepartCode: '/sys/department/checkDepartCode/',
     // dictionaryManager/dictionary
     getDictionary: '/sys/dictionary/getDictionary',
+    getDictionaryByCode: '/sys/dictionary/getDictionaryByCode/',
     deleteDictionary: '/sys/dictionary/deleteDictionary/',
     deleteDictionaryItem: '/sys/dictionary/deleteDictionaryItem/',
     findDictionaryItemByDicId: '/sys/dictionary/findDictionaryItemByDicId',

@@ -80,9 +80,9 @@
                                     >
                                         <el-option
                                                 v-for="item in options"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value"
+                                                :key="item.itemValue"
+                                                :label="item.itemText"
+                                                :value="item.itemValue"
                                         ></el-option>
                                     </el-select>
                                 </el-form-item>
@@ -150,19 +150,7 @@ export default {
       },
       showTable: false,
       show: false,
-      options: [{
-        value: 0,
-        label: '类型一'
-      }, {
-        value: 1,
-        label: '类型二'
-      }, {
-        value: 2,
-        label: '类型三'
-      }, {
-        value: 3,
-        label: '类型四'
-      }],
+      options: [],
       RegisterRules: {
         problemType: [
           { required: true, message: '请选择故障类型' }
@@ -184,6 +172,12 @@ export default {
     this.loading = true
     this.tableData = this.tableDataclear
     this.showInfo(this.$route.query.claimId)
+    this.axios.post(this.$api.sysManager.getDictionaryByCode + 'gzlx').then(resp => {
+      var json = resp.data
+      if (json.code === 1) {
+        this.options = json.data
+      }
+    })
   },
   mounted () {
   },
@@ -209,14 +203,10 @@ export default {
       })
     },
     problemTypeFormat (val) {
-      if (val.problemType === '0') {
-        return '类型一'
-      } else if (val.problemType === '1') {
-        return '类型二'
-      } else if (val.problemType === '2') {
-        return '类型三'
-      } else if (val.problemType === '3') {
-        return '类型四'
+      for (var i = 0; i < this.options.length; i++) {
+        if (val.problemType === this.options[i].itemValue) {
+          return this.options[i].itemText
+        }
       }
     },
     gmtCreateFormat (val) {
