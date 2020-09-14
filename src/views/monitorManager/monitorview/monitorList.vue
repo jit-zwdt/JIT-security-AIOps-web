@@ -605,7 +605,7 @@ export default {
       this.showTriggerDialog = false
     },
     confirmupdate (index, row) {
-      this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId, identification: '2' } })
+      this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId, objectName: '编辑' + row.objectName, identification: '2' } })
     },
     showPossessionInfo (row) {
       console.log(row.typeId)
@@ -615,6 +615,8 @@ export default {
         this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
       } else if (row.typeId === '3') {
         this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+      } else if (row.typeId === '28') {
+        this.$router.push({ name: 'monitorPossessionJvmInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
       }
     }
   },

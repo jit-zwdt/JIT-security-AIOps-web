@@ -11,6 +11,7 @@ import MonitorPossessionJmxInfo from '@/views/monitorManager/monitorPossessionIn
 import MonitorPossessionOSInfo from '@/views/monitorManager/monitorPossessionInfo/monitorPossessionOSInfo.vue'
 import MonitorMysqlInfo from '@/views/monitorManager/monitorDBMysqlInfo/monitorMysqlInfo.vue'
 import MonitorOracleInfo from '@/views/monitorManager/monitorDBOracleInfo/monitorOracleInfo.vue'
+import MonitorPossessionJvmInfo from '@/views/monitorManager/monitorJVMInfo/monitorPossessionJvmInfo.vue'
 
 export default [
   {
@@ -119,6 +120,14 @@ export default [
     component: MonitorPossessionOSInfo,
     meta: {
       title: '主机监控项所拥有信息'
+    }
+  },
+  {
+    path: 'monitorPossessionJvmInfo',
+    name: 'monitorPossessionJvmInfo',
+    component: MonitorPossessionJvmInfo,
+    meta: {
+      title: 'JVM虚拟机所拥有信息'
     }
   }
 ]

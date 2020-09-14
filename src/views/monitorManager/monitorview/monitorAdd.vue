@@ -2,7 +2,7 @@
   <div>
     <ToolBar>
       <div class="queryleft">
-        <span>新增&#12288;&#12288;&#12288;&#12288;{{this.$route.query.templateTypeName}}</span>
+        <span>{{this.$route.query.objectName}}&#12288;&#12288;&#12288;&#12288;{{this.$route.query.templateTypeName}}</span>
       </div>
     </ToolBar>
     <ToolBar>
