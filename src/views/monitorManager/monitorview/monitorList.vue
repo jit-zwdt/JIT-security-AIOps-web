@@ -225,6 +225,7 @@ import qs from 'qs'
 export default {
   data () {
     return {
+      identification: '',
       show: false,
       datashow: false,
       hostObjectName: '',
@@ -431,7 +432,7 @@ export default {
     },
     showAssetsAdd () {
       // this.$router.push({ name: 'monitorAddList', query: { id: this.hostObjectName } })
-      this.$router.push({ name: 'monitorAddList' })
+      this.$router.push({ name: 'monitorAddList', query: { identification: '1' } })
     },
     getTypes () {
       this.axios.post(this.$api.monitorManager.getMonitorTypes).then((resp) => {
@@ -604,10 +605,17 @@ export default {
       this.showTriggerDialog = false
     },
     confirmupdate (index, row) {
-      this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId } })
+      this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId, identification: '2' } })
     },
     showPossessionInfo (row) {
-      this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName } })
+      console.log(row.typeId)
+      if (row.typeId === '2') {
+        this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+      } else if (row.typeId === '1') {
+        this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+      } else if (row.typeId === '3') {
+        this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+      }
     }
   },
   mounted () {
