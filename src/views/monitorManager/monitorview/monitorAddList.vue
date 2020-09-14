@@ -137,16 +137,16 @@ export default {
           label: '中间件'
         },
         {
+          value: '28',
+          label: 'JVM'
+        },
+        {
           value: '4',
           label: '网络设备'
         },
         {
           value: '5',
           label: '硬件'
-        },
-        {
-          value: '28',
-          label: 'JVM'
         }
         /* ,
         {
