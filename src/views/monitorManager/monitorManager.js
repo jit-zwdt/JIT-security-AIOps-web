@@ -12,6 +12,7 @@ import MonitorPossessionOSInfo from '@/views/monitorManager/monitorPossessionInf
 import MonitorMysqlInfo from '@/views/monitorManager/monitorDBMysqlInfo/monitorMysqlInfo.vue'
 import MonitorOracleInfo from '@/views/monitorManager/monitorDBOracleInfo/monitorOracleInfo.vue'
 import MonitorPossessionJvmInfo from '@/views/monitorManager/monitorJVMInfo/monitorPossessionJvmInfo.vue'
+import MonitorJVMInfo from '@/views/monitorManager/monitorJVMInfo/monitorIndex.vue'
 
 export default [
   {
@@ -72,6 +73,15 @@ export default [
     meta: {
       title: '操作系统',
       typeId: '1'
+    }
+  },
+  {
+    path: 'monitorJVMInfo',
+    name: 'monitorJVMInfo',
+    component: MonitorJVMInfo,
+    meta: {
+      title: '监控JVM应用',
+      typeId: '28'
     }
   },
   {
