@@ -143,6 +143,10 @@ export default {
         {
           value: '5',
           label: '硬件'
+        },
+        {
+          value: '28',
+          label: 'JVM'
         }
         /* ,
         {
@@ -207,9 +211,9 @@ export default {
     },
     showAssetsAdd (id, typeId, subtypeIds, name) {
       if (this.$route.query.identification) {
-        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name, id: '', groupIds: '', identification: this.$route.query.identification } })
+        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增' + name, id: '', groupIds: '', identification: this.$route.query.identification } })
       } else {
-        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: name, id: '', groupIds: '' } })
+        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增' + name, id: '', groupIds: '' } })
       }
     },
     backfrom () {

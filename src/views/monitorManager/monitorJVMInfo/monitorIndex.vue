@@ -34,7 +34,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>严重告警 Top5</span>
+                  <span>Tomcat 异常数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -69,7 +69,7 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ scope.row.value }} qps</template>
+                    <template slot-scope="scope">{{ scope.row.value }}</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -78,7 +78,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>CPU 占用率 Top5</span>
+                  <span>Tomcat 当前线程数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -98,9 +98,9 @@
                   </span>
                 </div>
                 <el-table
-                  :data="cpuRateTop5"
+                  :data="threadTop5"
                   :show-header="false"
-                  v-loading="cpuRateloading"
+                  v-loading="threadloading"
                   style="width: 100%"
                 >
                   <el-table-column width="530">
@@ -113,7 +113,7 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ scope.row.value }} %</template>
+                    <template slot-scope="scope">{{ scope.row.value }}</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -124,7 +124,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>内存占有率 Top5</span>
+                  <span>Apache 缓存使用 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -159,7 +159,9 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ scope.row.value }} %</template>
+                    <template
+                      slot-scope="scope"
+                    >{{ Math.round(scope.row.value/1024/1024*100)/100 }} MB</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -168,7 +170,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>IO 读写率 Top5</span>
+                  <span>Tomcat 每秒请求数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -188,9 +190,9 @@
                   </span>
                 </div>
                 <el-table
-                  :data="ioRateTop5"
+                  :data="requestNumTop5"
                   :show-header="false"
-                  v-loading="ioRateloading"
+                  v-loading="requestNumloading"
                   style="width: 100%"
                 >
                   <el-table-column width="530">
@@ -203,7 +205,7 @@
                   </el-table-column>
                   <el-table-column prop="clock" width="220" v-if="show"></el-table-column>
                   <el-table-column prop="value">
-                    <template slot-scope="scope">{{ scope.row.value }} %</template>
+                    <template slot-scope="scope">{{ scope.row.value }}</template>
                   </el-table-column>
                   <el-table-column prop="hostId" v-if="show"></el-table-column>
                 </el-table>
@@ -222,47 +224,41 @@ export default {
     return {
       memoryloading: true,
       exceptionloading: true,
-      ioRateloading: true,
-      cpuRateloading: true,
+      requestNumloading: true,
+      threadloading: true,
       timer: '',
       show: false,
       groupName: '',
-      // 分组信息
       hostGroupOptions: [],
       memoryTop5: [],
       exceptionTop5: [],
-      ioRateTop5: [],
-      cpuRateTop5: [],
+      requestNumTop5: [],
+      threadTop5: [],
       currentTime: '', // 获取当前时间
-      metaTypeId: '5'
+      metaTypeId: '3'
     }
   },
-  // 创建的时候
   created () {
     this.groupName = ''
     this.getGroups()
     this.getmemoryTop5ByItem()
     this.getExceptionTop5ByItem()
-    this.getcpuRateTop5ByItem()
-    this.getioRateTop5ByItem()
+    this.getthreadTop5ByItem()
+    this.getrequestNumTop5ByItem()
     this.currentTimefunction()
   },
-  // 销毁之前
   beforeDestroy () {
     if (this.timer) {
       clearInterval(this.timer) // 在Vue实例销毁前，清除我们的定时器
     }
   },
   methods: {
-    // 截取当前的时间
     currentTimefunction () {
       this.timer = setInterval(this.getDate, 500)
     },
-    // 获取当前的时间
     getDate () {
       this.currentTime = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
     },
-    // 获取左面的分组信息
     getGroups () {
       this.axios.post(this.$api.monitorManager.getZabbixHostGroupByHostType, qs.stringify({
         typeId: this.metaTypeId,
@@ -281,21 +277,18 @@ export default {
         }
       })
     },
-    // 跳转到对应的添加硬件系统的模板页面
     gotoAdd () {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.metaTypeId } })
     },
-    // 跳转到对应添加信息的模板中
     showhostIdInfo (row) {
-      this.$router.push({ name: 'monitorHardInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+      this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
-    // 刷新 严重告警 Top5 调用的方法
     getmemoryTop5ByItem () {
       this.memoryloading = true
       const param = {
         typeId: this.metaTypeId,
         itemKey: '3',
-        valueType: '0',
+        valueType: '3',
         method: 'top5ByItem'
       }
       this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
@@ -316,7 +309,6 @@ export default {
         }
       })
     },
-    // 刷新CPU 占用率 Top5 调用的方法
     getExceptionTop5ByItem () {
       this.exceptionloading = true
       const param = {
@@ -340,13 +332,12 @@ export default {
         }
       })
     },
-    // 刷新内存占有率 Top5 调用的方法
-    getcpuRateTop5ByItem () {
-      this.cpuRateloading = true
+    getthreadTop5ByItem () {
+      this.threadloading = true
       const param = {
         typeId: this.metaTypeId,
         itemKey: '2',
-        valueType: '0',
+        valueType: '3',
         method: 'top5ByItem'
       }
       this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
@@ -354,10 +345,10 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             console.log(json.data)
-            this.cpuRateTop5 = json.data
-            this.cpuRateloading = false
+            this.threadTop5 = json.data
+            this.threadloading = false
           } else {
-            this.cpuRateloading = false
+            this.threadloading = false
           }
         } else {
           this.$message({
@@ -367,12 +358,33 @@ export default {
         }
       })
     },
-    // 刷新 IO 读写率 Top5 调用的方法
-    getioRateTop5ByItem () {
-      this.ioRateloading = true
-      this.ioRateloading = false
+    getrequestNumTop5ByItem () {
+      this.requestNumloading = true
+      const param = {
+        typeId: this.metaTypeId,
+        itemKey: '4',
+        valueType: '0',
+        method: 'top5ByItem'
+      }
+      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.requestNumTop5 = json.data
+            this.requestNumloading = false
+          } else {
+            this.requestNumloading = false
+            this.requestNumTop5 = []
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
     },
-    // 跳转到查询所有相关硬件的列表页面 传输的参数为 5 查询的是硬件的信息
     gotoList (groupId) {
       this.$router.push({
         name: 'monitorList',
@@ -382,26 +394,22 @@ export default {
         }
       })
     },
-    // 四个框框的刷新方法
     refreshCard (str) {
       if (str === '1') {
         this.getExceptionTop5ByItem()
       } else if (str === '2') {
-        this.getcpuRateTop5ByItem()
+        this.getthreadTop5ByItem()
       } else if (str === '3') {
         this.getmemoryTop5ByItem()
       } else if (str === '4') {
-        this.getioRateTop5ByItem()
+        this.getrequestNumTop5ByItem()
       }
     }
   },
-  // 创建完毕时间调用的方法
   mounted () {
   },
-  // 销毁时调用的方法
   destroyed () {
   },
-  // 组件的添加
   components: {}
 }
 </script>
