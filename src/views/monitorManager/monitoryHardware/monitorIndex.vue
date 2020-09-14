@@ -227,7 +227,7 @@ export default {
       timer: '',
       show: false,
       groupName: '',
-      //分组信息
+      // 分组信息
       hostGroupOptions: [],
       memoryTop5: [],
       exceptionTop5: [],
@@ -287,7 +287,7 @@ export default {
     },
     // 跳转到对应添加信息的模板中
     showhostIdInfo (row) {
-      this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+      this.$router.push({ name: 'monitorHardInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
     // 刷新 严重告警 Top5 调用的方法
     getmemoryTop5ByItem () {
@@ -395,13 +395,13 @@ export default {
       }
     }
   },
-  //创建完毕时间调用的方法
+  // 创建完毕时间调用的方法
   mounted () {
   },
-  //销毁时调用的方法
+  // 销毁时调用的方法
   destroyed () {
   },
-  //组件的添加
+  // 组件的添加
   components: {}
 }
 </script>
