@@ -2,10 +2,10 @@
   <div>
     <ToolBar>
       <div class="queryleft">
-        <el-col :span="4">
+        <el-col :span="10">
           <el-input type="text" v-model="jobClassName" size="small" placeholder="任务类名" clearable></el-input>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="5">
           <el-select
               v-model="status"
               class="datetop"
@@ -44,10 +44,13 @@
         :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
-      <el-table-column label="任务名称" prop="QuartzJobName"></el-table-column>
-      <el-table-column label="任务标识" prop="QuartzJobSign"></el-table-column>
-      <el-table-column label="备注" prop="remark"></el-table-column>
-      <el-table-column align="center" label="操作" min-width="150">
+      <el-table-column label="任务类名" prop="jobClassName" min-width="100"></el-table-column>
+      <el-table-column label="cron表达式" prop="cronExpression"></el-table-column>
+      <el-table-column label="传递参数（json串格式）" prop="jsonParam" min-width="150"></el-table-column>
+      <el-table-column label="分组" prop="jobGroup" min-width="30"></el-table-column>
+      <el-table-column label="状态" prop="status" min-width="30" :formatter="statusFormat"></el-table-column>
+      <el-table-column label="描述" prop="description" min-width="100"></el-table-column>
+      <el-table-column align="center" label="操作" min-width="80">
         <template slot-scope="scope">
           <el-button
               size="mini"
@@ -56,22 +59,6 @@
               icon="el-icon-edit-outline"
               @click="modifyQuartzJob(scope.row.id)"
           >编辑
-          </el-button>
-          <el-button
-              size="mini"
-              type="primary"
-              slot="reference"
-              icon="el-icon-user"
-              @click="QuartzJobAndUser(scope.row.id,scope.row.QuartzJobName)"
-          >绑定人员
-          </el-button>
-          <el-button
-              size="mini"
-              type="primary"
-              slot="reference"
-              icon="el-icon-paperclip"
-              @click="QuartzJobAndMenu(scope.row.id,scope.row.QuartzJobName)"
-          >绑定菜单
           </el-button>
           <el-popconfirm title="确定删除吗？" @onConfirm="deleteQuartzJob(scope.row.id)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
@@ -97,6 +84,7 @@ export default {
   data () {
     return {
       jobClassName: '',
+      status: '',
       statusList: [{
         value: 0,
         label: '正常'
@@ -139,7 +127,8 @@ export default {
     showInfoTimeout () {
       this.axios.post(this.$api.sysManager.getQuartzJobs, {
         param: {
-          QuartzJobName: this.QuartzJobName
+          jobClassName: this.jobClassName,
+          status: this.status
         },
         page: this.currentPage,
         size: this.pageSize
@@ -160,7 +149,8 @@ export default {
       this.showInfo()
     },
     showClear () {
-      this.QuartzJobName = ''
+      this.jobClassName = ''
+      this.status = ''
     },
     quartzJobAdd () {
       this.title = '添加任务'
@@ -194,6 +184,16 @@ export default {
         }
         this.showInfo()
       })
+    },
+    statusFormat (row, column) {
+      const data = row[column.property]
+      if (data === 0) {
+        return '正常'
+      } else if (data === 1) {
+        return '停止'
+      } else {
+        return data
+      }
     }
   },
   components: { Pagination }
