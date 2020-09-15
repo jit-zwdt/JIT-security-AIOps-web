@@ -32,7 +32,7 @@
                   >{{this.monitorTypeValue}}</span>
                 </td>
                 <th class="darkmainborderth">ip地址</th>
-                <td class="darkmainbordertd">{{this.serverForm.agentIp}}</td>
+                <td class="darkmainbordertd">{{this.serverForm.snmpIp}}</td>
               </tr>
               <tr style="height:40px">
                 <th class="darkmainborderth">操作系统</th>
@@ -750,7 +750,7 @@ export default {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: systemName.startsWith('Window') ? 'system.uname' : 'linux.name.version'
+        key_: systemName.startsWith('服务器') ? 'sysName.0' : 'hrSystemUptime.0'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
@@ -774,7 +774,7 @@ export default {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: 'system.uptime'
+        key_: 'hrSystemUptime.0'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
