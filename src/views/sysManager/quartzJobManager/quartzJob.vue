@@ -11,7 +11,6 @@
               class="datetop"
               filterable
               placeholder="任务状态"
-              @change="current_hostType"
               clearable
           >
             <el-option
@@ -50,7 +49,7 @@
       <el-table-column label="分组" prop="jobGroup" min-width="30"></el-table-column>
       <el-table-column label="状态" prop="status" min-width="30" :formatter="statusFormat"></el-table-column>
       <el-table-column label="描述" prop="description" min-width="100"></el-table-column>
-      <el-table-column align="center" label="操作" min-width="80">
+      <el-table-column align="center" label="操作" min-width="100">
         <template slot-scope="scope">
           <el-button
               size="mini"
@@ -79,12 +78,15 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
+import QuartzJobAdd from '@/views/sysManager/quartzJobManager/quartzJobAdd.vue'
 
 export default {
   data () {
     return {
       jobClassName: '',
       status: '',
+      title: '',
+      showEditDialog: false,
       statusList: [{
         value: 0,
         label: '正常'
@@ -92,6 +94,9 @@ export default {
         value: 1,
         label: '停止'
       }],
+      requestData: {
+        id: ''
+      },
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
@@ -196,7 +201,7 @@ export default {
       }
     }
   },
-  components: { Pagination }
+  components: { Pagination, QuartzJobAdd }
 }
 </script>
 <style lang="scss" scoped>
