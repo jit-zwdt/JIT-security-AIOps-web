@@ -200,7 +200,11 @@ const api = {
     findUserById: '/sys/user/findUserById/',
     getUserInfo: '/sys/user/getUserInfo',
     uploadPic: '/sys/user/uploadPic',
-    getPicBase64: '/sys/user/getPicBase64/'
+    getPicBase64: '/sys/user/getPicBase64/',
+    // quartzJobManager
+    getQuartzJobs: '/sys/quartzJob/getQuartzJobs',
+    addQuartzJob: '/sys/quartzJob/addQuartzJob',
+    delQuartzJob: '/sys/quartzJob/delQuartzJob/'
   },
   main: {
     // Index.vue

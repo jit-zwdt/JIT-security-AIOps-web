@@ -436,6 +436,12 @@ export default {
       this.serverListForm.jmxType = '1'
       this.serverListForm.jmxPort = '12345'
       this.editFormRules.jmxDnsName[0].required = false
+    } else if (templateSubTypeId === '28') {
+      this.serverListForm.jmxMacro = 'path'
+      this.jmxShow = true
+      this.serverListForm.jmxType = '1'
+      this.serverListForm.jmxPort = '12345'
+      this.editFormRules.jmxDnsName[0].required = false
     } else if (templateSubTypeId === '14') {
       this.serverListForm.jmxMacro = 'context'
       this.jmxShow = true
