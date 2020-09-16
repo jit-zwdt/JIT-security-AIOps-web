@@ -21,9 +21,9 @@ const constantRouterMap = [
   }
 ]
 const router = new Router({
-  routes: constantRouterMap,
-  // base: '/projectName/',
-  mode: 'history'
+  routes: constantRouterMap
+  // // base: '/projectName/',
+  // mode: 'history'
 })
 
 export default router
