@@ -206,6 +206,9 @@ const api = {
     addQuartzJob: '/sys/quartzJob/addQuartzJob',
     delQuartzJob: '/sys/quartzJob/delQuartzJob/'
   },
+  inspectionManager: {
+    makePdf: '/inspection/makePdf'
+  },
   main: {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
