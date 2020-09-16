@@ -211,9 +211,9 @@ export default {
     },
     showAssetsAdd (id, typeId, subtypeIds, name) {
       if (this.$route.query.identification) {
-        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增' + name, id: '', groupIds: '', identification: this.$route.query.identification } })
+        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增    ' + name, id: '', groupIds: '', identification: this.$route.query.identification } })
       } else {
-        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增' + name, id: '', groupIds: '' } })
+        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增    ' + name, id: '', groupIds: '' } })
       }
     },
     backfrom () {
@@ -229,6 +229,10 @@ export default {
       } else if (typeId != null && typeId === '3') {
         this.$router.push({
           name: 'monitorMiddlewareIndex'
+        })
+      } else if (typeId != null && typeId === '28') {
+        this.$router.push({
+          name: 'monitorJVMInfo'
         })
       } else {
         this.$router.push({

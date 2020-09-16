@@ -764,7 +764,7 @@ export default {
         })
       } else {
         this.$router.push({
-          name: 'monitorMiddlewareIndex'
+          name: 'monitorJVMInfo'
         })
       }
     },

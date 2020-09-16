@@ -132,7 +132,9 @@ const api = {
     getTemplates: '/monitorTemplates/getTemplates',
     deleteHost: '/host/deleteHost/',
     hostinfo: '/host/hostinfo',
-    getMonitorSubTypes: '/monitorType/getMonitorSubTypes'
+    getMonitorSubTypes: '/monitorType/getMonitorSubTypes',
+    checkObjectName: '/host/checkObjectName',
+    checkBusinessName: '/host/checkBusinessName'
   },
   sysManager: {
     // departmentManager/department
