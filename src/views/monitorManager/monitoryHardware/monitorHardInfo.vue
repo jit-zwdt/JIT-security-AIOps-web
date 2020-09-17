@@ -751,11 +751,11 @@ export default {
       return this.monitorTypeTitle
     },
     getOperateSystem () {
-      var systemName = this.$route.query.hostName
+      // var systemName = this.$route.query.hostName
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: systemName.startsWith('服务器') ? 'sysName.0' : 'hrSystemUptime.0'
+        key_: 'sysName.0'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
@@ -817,15 +817,15 @@ export default {
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {
         var monitorTypeValue = ''
-        if (element.available === 0) {
+        if (element.snmp_available === 0) {
           monitorTypeValue = '未检测'
           this.spanChangeColor = false
           this.spanredChangeColor = false
-        } else if (element.available === 1) {
+        } else if (element.snmp_available === 1) {
           monitorTypeValue = '正常'
           this.spanChangeColor = true
           this.spanredChangeColor = false
-        } else if (element.available === 2) {
+        } else if (element.snmp_available === 2) {
           monitorTypeValue = '异常'
           this.spanChangeColor = false
           this.spanredChangeColor = true
