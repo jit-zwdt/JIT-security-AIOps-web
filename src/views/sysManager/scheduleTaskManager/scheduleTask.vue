@@ -29,7 +29,7 @@
             type="primary"
             size="small"
             icon="el-icon-plus"
-            @click="quartzJobAdd()"
+            @click="scheduleTaskAdd()"
         >新增
         </el-button>
       </div>
@@ -44,6 +44,7 @@
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
       <el-table-column label="任务类名" prop="jobClassName" min-width="100"></el-table-column>
+      <el-table-column label="任务方法名" prop="jobMethodName" min-width="100"></el-table-column>
       <el-table-column label="cron表达式" prop="cronExpression"></el-table-column>
       <el-table-column label="传递参数（json串格式）" prop="jsonParam" min-width="150"></el-table-column>
       <el-table-column label="分组" prop="jobGroup" min-width="30"></el-table-column>
@@ -56,29 +57,29 @@
               type="primary"
               slot="reference"
               icon="el-icon-edit-outline"
-              @click="modifyQuartzJob(scope.row.id)"
+              @click="modifyScheduleTask(scope.row.id)"
           >编辑
           </el-button>
-          <el-popconfirm title="确定删除吗？" @onConfirm="deleteQuartzJob(scope.row.id)">
+          <el-popconfirm title="确定删除吗？" @onConfirm="deleteScheduleTask(scope.row.id)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
-    <QuartzJobAdd
+    <ScheduleTaskAdd
         :title="title"
         :showEditDialog="showEditDialog"
         @close="showEditDialog = false"
         :requestData="requestData"
         @success="reloadData"
         @error="reloadData"
-    ></QuartzJobAdd>
+    ></ScheduleTaskAdd>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
-import QuartzJobAdd from '@/views/sysManager/quartzJobManager/quartzJobAdd.vue'
+import ScheduleTaskAdd from '@/views/sysManager/scheduleTaskManager/scheduleTaskAdd.vue'
 
 export default {
   data () {
@@ -130,7 +131,7 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post(this.$api.sysManager.getQuartzJobs, {
+      this.axios.post(this.$api.sysManager.getScheduleTasks, {
         param: {
           jobClassName: this.jobClassName,
           status: this.status
@@ -146,6 +147,7 @@ export default {
             this.loading = false
           }
         }
+        this.loading = false
       })
     },
     pageChange (item) {
@@ -157,17 +159,17 @@ export default {
       this.jobClassName = ''
       this.status = ''
     },
-    quartzJobAdd () {
+    scheduleTaskAdd () {
       this.title = '添加任务'
       this.showEditDialog = true
     },
-    modifyQuartzJob (id) {
+    modifyScheduleTask (id) {
       this.requestData.id = id
       this.title = '修改任务'
       this.showEditDialog = true
     },
-    deleteQuartzJob (id) {
-      this.axios.delete(this.$api.sysManager.delQuartzJob + id).then((resp) => {
+    deleteScheduleTask (id) {
+      this.axios.delete(this.$api.sysManager.delScheduleTask + id).then((resp) => {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {
@@ -201,7 +203,7 @@ export default {
       }
     }
   },
-  components: { Pagination, QuartzJobAdd }
+  components: { Pagination, ScheduleTaskAdd }
 }
 </script>
 <style lang="scss" scoped>

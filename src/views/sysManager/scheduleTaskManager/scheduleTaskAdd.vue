@@ -27,6 +27,13 @@
           </el-row>
           <el-row>
             <el-col :span="24">
+              <el-form-item label="任务方法名：" prop="jobMethodName">
+                <el-input v-model="form.jobMethodName" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
               <el-form-item label="cron表达式：" prop="cronExpression">
                 <el-input v-model="form.cronExpression" clearable></el-input>
               </el-form-item>
@@ -103,6 +110,7 @@ export default {
       form: {
         id: '',
         jobClassName: '',
+        jobMethodName: '',
         cronExpression: '',
         jsonParam: '',
         jobGroup: '',
@@ -112,6 +120,9 @@ export default {
       rules: {
         jobClassName: [
           { required: true, message: '请填写任务类名' }
+        ],
+        jobMethodName: [
+          { required: true, message: '请填写任务方法名' }
         ],
         cronExpression: [
           { required: true, message: '请填写cron表达式' }
@@ -158,7 +169,7 @@ export default {
       this.isDisable = true
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.axios.post(this.$api.sysManager.addQuartzJob, this.form).then((resp) => {
+          this.axios.post(this.$api.sysManager.addScheduleTask, this.form).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
               console.log(json)

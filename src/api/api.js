@@ -201,10 +201,10 @@ const api = {
     getUserInfo: '/sys/user/getUserInfo',
     uploadPic: '/sys/user/uploadPic',
     getPicBase64: '/sys/user/getPicBase64/',
-    // quartzJobManager
-    getQuartzJobs: '/sys/quartzJob/getQuartzJobs',
-    addQuartzJob: '/sys/quartzJob/addQuartzJob',
-    delQuartzJob: '/sys/quartzJob/delQuartzJob/'
+    // scheduleTaskManager
+    getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
+    addScheduleTask: '/sys/scheduleTask/addScheduleTask',
+    delScheduleTask: '/sys/scheduleTask/delScheduleTask/'
   },
   main: {
     // Index.vue
