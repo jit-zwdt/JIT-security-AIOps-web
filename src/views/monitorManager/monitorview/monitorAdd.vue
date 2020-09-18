@@ -246,6 +246,34 @@
 <script>
 export default {
   data () {
+    // 主机名称不重复
+    var validationObjectName = (rule, value, callback) => {
+      this.axios.get(this.$api.monitorManager.checkObjectName, { params: { objectName: value, odlObjectName: this.odlObjectName } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个主机名称已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
+    // 业务名称不可重复'',businessName: '',
+    var validationBusinessName = (rule, value, callback) => {
+      this.axios.get(this.$api.monitorManager.checkBusinessName, { params: { businessName: value, odlBusinessName: this.odlBusinessName } }).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          console.log(json.data)
+          if (json.data === false) {
+            return callback(new Error('这个业务名称已经存在了'))
+          } else {
+            return callback()
+          }
+        }
+      })
+    }
     return {
       show: false,
       sqlserverShow: false,
@@ -304,6 +332,8 @@ export default {
       },
       tableDataclear: [],
       setTimeoutster: '',
+      odlObjectName: '',
+      odlBusinessName: '',
       proxyMonitorOptions: [
         {
           value: '',
@@ -335,13 +365,17 @@ export default {
             message: '请输入对象名称',
             trigger: 'blur'
           },
-          { pattern: /^(\w){1,100}$/, message: '只能输入字母、数字、下划线' }
+          { pattern: /^(\w){1,100}$/, message: '只能输入字母、数字、下划线' },
+          { validator: validationObjectName, trigger: 'blur' }
         ],
-        businessName: [{
-          required: true,
-          message: '请输入业务名称',
-          trigger: 'blur'
-        }],
+        businessName: [
+          {
+            required: true,
+            message: '请输入业务名称',
+            trigger: 'blur'
+          },
+          { validator: validationBusinessName, trigger: 'blur' }
+        ],
         subtypeId: [{
           required: true,
           message: '请选择类型',
@@ -495,6 +529,8 @@ export default {
             var groupIds = this.$route.query.groupIds
             groupIds = groupIds.split(',')
             this.serverListForm.groupId = groupIds
+            this.odlObjectName = json.data.objectName
+            this.odlBusinessName = json.data.businessName
           } else {
             this.$message({
               message: '查询失败',
@@ -742,6 +778,8 @@ export default {
     },
     clearform () {
       this.$refs.serverListForm.resetFields()
+      this.oldObjectName = ''
+      this.oldBusinessName = ''
     },
     backfrom () {
       var typeId = this.$route.query.templateTypeId

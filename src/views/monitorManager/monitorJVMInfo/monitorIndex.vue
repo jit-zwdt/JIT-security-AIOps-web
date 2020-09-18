@@ -34,7 +34,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>Tomcat 异常数 Top5</span>
+                  <span>JVM 异常数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -78,7 +78,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>Tomcat 当前线程数 Top5</span>
+                  <span>JVM 当前线程数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -170,7 +170,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>Tomcat 每秒请求数 Top5</span>
+                  <span>JVM 每秒请求数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"
@@ -235,7 +235,7 @@ export default {
       requestNumTop5: [],
       threadTop5: [],
       currentTime: '', // 获取当前时间
-      metaTypeId: '3'
+      metaTypeId: '28'
     }
   },
   created () {
@@ -281,7 +281,7 @@ export default {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.metaTypeId } })
     },
     showhostIdInfo (row) {
-      this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+      this.$router.push({ name: 'monitorPossessionJvmInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
     getmemoryTop5ByItem () {
       this.memoryloading = true

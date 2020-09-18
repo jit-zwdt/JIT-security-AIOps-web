@@ -132,7 +132,9 @@ const api = {
     getTemplates: '/monitorTemplates/getTemplates',
     deleteHost: '/host/deleteHost/',
     hostinfo: '/host/hostinfo',
-    getMonitorSubTypes: '/monitorType/getMonitorSubTypes'
+    getMonitorSubTypes: '/monitorType/getMonitorSubTypes',
+    checkObjectName: '/host/checkObjectName',
+    checkBusinessName: '/host/checkBusinessName'
   },
   sysManager: {
     // departmentManager/department
@@ -205,6 +207,9 @@ const api = {
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
     delScheduleTask: '/sys/scheduleTask/delScheduleTask/'
+  },
+  inspectionManager: {
+    makePdf: '/inspection/makePdf'
   },
   main: {
     // Index.vue

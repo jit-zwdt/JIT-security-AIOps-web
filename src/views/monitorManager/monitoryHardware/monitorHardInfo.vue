@@ -32,7 +32,7 @@
                   >{{this.monitorTypeValue}}</span>
                 </td>
                 <th class="darkmainborderth">ip地址</th>
-                <td class="darkmainbordertd">{{this.serverForm.agentIp}}</td>
+                <td class="darkmainbordertd">{{this.serverForm.snmpIp}}</td>
               </tr>
               <tr style="height:40px">
                 <th class="darkmainborderth">操作系统</th>
@@ -751,11 +751,11 @@ export default {
       return this.monitorTypeTitle
     },
     getOperateSystem () {
-      var systemName = this.$route.query.hostName
+      // var systemName = this.$route.query.hostName
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: systemName.startsWith('Window') ? 'system.uname' : 'linux.name.version'
+        key_: 'sysName.0'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
@@ -779,7 +779,7 @@ export default {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: 'system.uptime'
+        key_: 'hrSystemUptime.0'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
@@ -803,20 +803,29 @@ export default {
       this.nameTop = ''
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      var identification = this.$route.query.identification
+      if (identification != null && identification === '1') {
+        this.$router.push({
+          name: 'monitorList'
+        })
+      } else {
+        this.$router.push({
+          name: 'monitoryHardwareIndex'
+        })
+      }
     },
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {
         var monitorTypeValue = ''
-        if (element.available === 0) {
+        if (element.snmp_available === 0) {
           monitorTypeValue = '未检测'
           this.spanChangeColor = false
           this.spanredChangeColor = false
-        } else if (element.available === 1) {
+        } else if (element.snmp_available === 1) {
           monitorTypeValue = '正常'
           this.spanChangeColor = true
           this.spanredChangeColor = false
-        } else if (element.available === 2) {
+        } else if (element.snmp_available === 2) {
           monitorTypeValue = '异常'
           this.spanChangeColor = false
           this.spanredChangeColor = true
