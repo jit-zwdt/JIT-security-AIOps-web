@@ -43,15 +43,31 @@
         :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
-      <el-table-column label="任务类名" prop="jobClassName" min-width="100"></el-table-column>
-      <el-table-column label="任务方法名" prop="jobMethodName" min-width="100"></el-table-column>
-      <el-table-column label="cron表达式" prop="cronExpression"></el-table-column>
-      <el-table-column label="传递参数（json串格式）" prop="jsonParam" min-width="150"></el-table-column>
+      <el-table-column label="任务类名" prop="jobClassName" min-width="120"></el-table-column>
+      <el-table-column label="任务方法名" prop="jobMethodName" min-width="80"></el-table-column>
+      <el-table-column label="cron表达式" prop="cronExpression" min-width="55"></el-table-column>
+      <el-table-column label="传递参数（json串格式）" prop="jsonParam" min-width="100"></el-table-column>
       <el-table-column label="分组" prop="jobGroup" min-width="30"></el-table-column>
-      <el-table-column label="状态" prop="status" min-width="30" :formatter="statusFormat"></el-table-column>
-      <el-table-column label="描述" prop="description" min-width="100"></el-table-column>
-      <el-table-column align="center" label="操作" min-width="100">
+      <el-table-column label="状态" prop="status" min-width="35" :formatter="statusFormat"></el-table-column>
+      <el-table-column label="描述" prop="description" min-width="70"></el-table-column>
+      <el-table-column align="center" label="操作" min-width="160">
         <template slot-scope="scope">
+          <el-button v-if="scope.row.status === 0"
+                     size="mini"
+                     type="warning"
+                     slot="reference"
+                     icon="el-icon-switch-button"
+                     @click="changeStatus(scope.row.id)"
+          >停止
+          </el-button>
+          <el-button v-if="scope.row.status === 1"
+                     size="mini"
+                     type="success"
+                     slot="reference"
+                     icon="el-icon-switch-button"
+                     @click="changeStatus(scope.row.id)"
+          >启动
+          </el-button>
           <el-button
               size="mini"
               type="primary"
@@ -163,6 +179,30 @@ export default {
       this.title = '添加任务'
       this.showEditDialog = true
     },
+    changeStatus (id) {
+      this.axios.put(this.$api.sysManager.changeStatus + id).then((resp) => {
+        if (resp.status === 200) {
+          const json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '删除失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+        }
+        this.showInfo()
+      })
+    },
     modifyScheduleTask (id) {
       this.requestData.id = id
       this.title = '修改任务'
@@ -195,9 +235,9 @@ export default {
     statusFormat (row, column) {
       const data = row[column.property]
       if (data === 0) {
-        return '正常'
+        return '已启动'
       } else if (data === 1) {
-        return '停止'
+        return '已停止'
       } else {
         return data
       }

@@ -172,7 +172,6 @@ export default {
           this.axios.post(this.$api.sysManager.addScheduleTask, this.form).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
-              console.log(json)
               if (json.code === 1) {
                 this.$message({
                   message: '修改成功',

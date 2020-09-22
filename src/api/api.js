@@ -206,7 +206,8 @@ const api = {
     // scheduleTaskManager
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
-    delScheduleTask: '/sys/scheduleTask/delScheduleTask/'
+    delScheduleTask: '/sys/scheduleTask/delScheduleTask/',
+    changeStatus: '/sys/scheduleTask/changeStatus/'
   },
   inspectionManager: {
     makePdf: '/inspection/makePdf'
