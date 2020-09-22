@@ -106,10 +106,10 @@ export default {
       showEditDialog: false,
       statusList: [{
         value: 0,
-        label: '正常'
+        label: '已启动'
       }, {
         value: 1,
-        label: '停止'
+        label: '已停止'
       }],
       requestData: {
         id: ''
