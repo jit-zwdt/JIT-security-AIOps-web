@@ -185,18 +185,18 @@ export default {
           const json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '删除成功',
+              message: '操作成功',
               type: 'success'
             })
           } else {
             this.$message({
-              message: '删除失败',
+              message: '操作失败',
               type: 'error'
             })
           }
         } else {
           this.$message({
-            message: '删除失败',
+            message: '操作失败',
             type: 'error'
           })
         }

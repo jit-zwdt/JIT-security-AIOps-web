@@ -57,9 +57,9 @@
                 <el-switch
                     class="switchStyle"
                     v-model="form.status"
-                    active-value=0
+                    :active-value=0
                     active-text="正常"
-                    inactive-value=1
+                    :inactive-value=1
                     inactive-text="停止"
                 ></el-switch>
               </el-form-item>
@@ -134,22 +134,20 @@ export default {
     openDialog () {
       const id = this.requestData.id
       if (id !== undefined && id !== '') {
-        this.axios.get(this.$api.sysManager.getRole + id).then((resp) => {
+        this.axios.get(this.$api.sysManager.getScheduleTask + id).then((resp) => {
           if (resp.status === 200) {
             const json = resp.data
             if (json.code === 1) {
               this.form = json.data
-              this.rules.roleName[1].extend = json.data.roleName
-              this.rules.roleSign[1].extend = json.data.roleSign
             } else {
               this.$message({
-                message: '获取角色信息失败！',
+                message: '获取任务信息失败！',
                 type: 'error'
               })
             }
           } else {
             this.$message({
-              message: '获取角色信息失败！',
+              message: '获取任务信息失败！',
               type: 'error'
             })
           }
@@ -164,6 +162,7 @@ export default {
     clearform () {
       this.$refs.form.resetFields()
       this.form.id = ''
+      this.requestData.id = ''
     },
     submitOrUpdate () {
       this.isDisable = true

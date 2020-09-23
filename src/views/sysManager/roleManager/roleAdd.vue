@@ -138,6 +138,7 @@ export default {
       }
       this.$refs.form.resetFields()
       this.form.id = ''
+      this.requestData.id = ''
     },
     submitOrUpdate () {
       this.isDisable = true
