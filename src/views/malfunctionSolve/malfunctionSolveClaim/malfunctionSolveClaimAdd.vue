@@ -32,7 +32,7 @@
                     </el-row>
                     <el-row>
                         <el-col>
-                            <el-form-item label="认领人选择：" prop="claimUserId">
+                            <el-form-item label="处理人选择：" prop="claimUserId">
                                 <el-select v-model="serverListForm.claimUserId" placeholder="请选择" style="width:100%">
                                     <el-option
                                             v-for="item in optionsUser"
@@ -82,7 +82,7 @@ export default {
     },
     title: {
       type: String,
-      default: '信息添加'
+      default: '故障认领'
     },
     labelWidth: {
       type: String,
@@ -116,7 +116,7 @@ export default {
           { required: true, message: '请选择角色' }
         ],
         claimUserId: [
-          { required: true, message: '请选择认领人' }
+          { required: true, message: '请选择处理人' }
         ],
         claimOpinion: [
           { required: true, message: '请填写认领意见' }

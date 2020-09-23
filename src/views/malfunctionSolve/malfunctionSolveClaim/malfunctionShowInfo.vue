@@ -43,7 +43,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="认领人：" prop="assetNumber">
+                            <el-form-item label="处理人：" prop="assetNumber">
                                 {{user}}
                             </el-form-item>
                         </el-col>
@@ -84,7 +84,7 @@ export default {
     },
     title: {
       type: String,
-      default: '信息添加'
+      default: '故障认领'
     },
     labelWidth: {
       type: String,
