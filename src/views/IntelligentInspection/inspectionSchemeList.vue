@@ -3,13 +3,7 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="13">
-          <el-input
-            type="text"
-            v-model="hostObjectName"
-            size="small"
-            placeholder="业务名称"
-            clearable
-          ></el-input>
+          <el-input type="text" v-model="hostObjectName" size="small" placeholder="业务名称" clearable></el-input>
         </el-col>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
@@ -44,7 +38,13 @@
       <el-table-column label="业务名称" prop="businessName" min-width="20%" v-if="datashow"></el-table-column>
       <el-table-column label="IP" prop="hostIp" min-width="20%" :resizable="false"></el-table-column>
       <el-table-column label="类型" prop="type" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="子类型" prop="subtype" min-width="10%" :resizable="false" v-if="datashow"></el-table-column>
+      <el-table-column
+        label="子类型"
+        prop="subtype"
+        min-width="10%"
+        :resizable="false"
+        v-if="datashow"
+      ></el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
       <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="scope">
@@ -68,20 +68,20 @@
         </template>
       </el-table-column>
     </el-table>
-    <ItemList
-      :title="'【对象名称】'+titleType"
-      :showEditform="showEditform"
+    <InspectionSchemeAdd
+      :title="'巡检计划'+titleType"
+      :dataform="dataform"
       :showEditDialog="showEditDialog"
       @close="showEditDialog = false"
       @success="reloadData"
       @error="reloadData"
-    ></ItemList>
+    ></InspectionSchemeAdd>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
-import ItemList from '@/views/monitorManager/monitorview/item/itemList.vue'
+import InspectionSchemeAdd from '@/views/IntelligentInspection/inspectionSchemeAdd.vue'
 export default {
   data () {
     return {
@@ -116,7 +116,11 @@ export default {
       showEditform: {
         hostid: ''
       },
-      titleType: ''
+      titleType: '',
+      dataform: {
+        id: '',
+        flag: ''
+      }
     }
   },
   created () {
@@ -219,8 +223,9 @@ export default {
       this.hostObjectName = ''
     },
     showAssetsAdd () {
-      // this.$router.push({ name: 'monitorAddList', query: { id: this.hostObjectName } })
-      this.$router.push({ name: 'monitorAddList', query: { } })
+      this.showEditDialog = true
+      this.titleType = '添加'
+      this.dataform.flag = '1'
     },
     confirmItemList (index, row) {
       this.showEditDialog = true
@@ -245,7 +250,7 @@ export default {
   destroyed () {
     clearInterval(this.timer)
   },
-  components: { Pagination, ItemList }
+  components: { Pagination, InspectionSchemeAdd }
 }
 </script>
 <style lang="scss" scoped>
