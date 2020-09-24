@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="15">
-      <el-col :span="4">
+      <!-- <el-col :span="4">
         <div class="grid-left">
           <div>
             <el-input placeholder="分组名搜索" v-model="groupName" class="input-with-select" size="mini">
@@ -18,8 +18,8 @@
             >{{item.name}}</li>
           </ul>
         </div>
-      </el-col>
-      <el-col :span="20">
+      </el-col> -->
+      <el-col :span="24">
         <div class="grid-content">
           <el-row :gutter="15">
             <el-col :span="24">
@@ -34,7 +34,7 @@
             <el-col :span="12">
               <el-card class="grid-content-panel">
                 <div slot="header" class="grid-content-panel-head">
-                  <span>Tomcat 异常数 Top5</span>
+                  <span>中间件 异常数 Top5</span>
                   <el-button
                     style="float: right; padding: 0px; margin-left: 5px;"
                     type="text"

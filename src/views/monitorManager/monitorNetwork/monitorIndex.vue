@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="15">
-      <el-col :span="4">
+      <!-- <el-col :span="4">
         <div class="grid-left">
           <div>
             <el-input placeholder="分组名搜索" v-model="groupName" class="input-with-select" size="mini">
@@ -14,8 +14,8 @@
             <li v-for="item in hostGroupOptions" @click="gotoList(item.groupid)" :key="item.groupid">{{item.name}}</li>
           </ul>
         </div>
-      </el-col>
-      <el-col :span="20">
+      </el-col> -->
+      <el-col :span="24">
         <div class="grid-content">
           <el-row :gutter="15">
             <el-col :span="24">
