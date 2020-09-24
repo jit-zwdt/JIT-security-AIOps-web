@@ -37,7 +37,7 @@
                 >
                     <div class="queryleft">
                         <p class="title-bar-description" style>
-                            <span>登记信息</span>
+                            <span>处理过程</span>
                         </p>
                     </div>
                 </div>
