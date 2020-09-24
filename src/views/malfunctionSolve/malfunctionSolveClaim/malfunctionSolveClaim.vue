@@ -39,7 +39,7 @@
                 <!--</template>-->
             </el-table-column>
             <el-table-column
-                label="处理人monitorTemplateList"
+                label="处理人"
                 prop="zabbixProblemDTO.ns"
                 min-width="10%"
                 :resizable="false"

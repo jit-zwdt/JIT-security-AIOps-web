@@ -119,7 +119,7 @@ export default {
           { required: true, message: '请选择处理人' }
         ],
         claimOpinion: [
-          { required: true, message: '请填写认领意见' }
+          { required: true, message: '请填写指派意见' }
         ]
       }
     }
