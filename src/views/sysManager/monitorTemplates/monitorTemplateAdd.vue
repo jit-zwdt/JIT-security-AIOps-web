@@ -1,41 +1,41 @@
 <template>
   <el-dialog
-    @opened="openDialog"
-    :width="dialogWidth"
-    :title="title"
-    :visible.sync="showEditDialog"
-    :show-close="false"
-    :close-on-click-modal="false"
+      @opened="openDialog"
+      :width="dialogWidth"
+      :title="title"
+      :visible.sync="showEditDialog"
+      :show-close="false"
+      :close-on-click-modal="false"
   >
     <div>
       <ToolBar>
         <el-form
-          :model="tempform"
-          ref="tempform"
-          class="edit-forms fromadd"
-          label-position="right"
-          :label-width="labelWidth"
-          :disabled="!editform.buttonflag"
-          :rules="rules"
+            :model="tempform"
+            ref="tempform"
+            class="edit-forms fromadd"
+            label-position="right"
+            :label-width="labelWidth"
+            :disabled="!editform.buttonflag"
+            :rules="rules"
         >
           <el-row :gutter="40">
             <el-col :span="100">
               <el-form-item label="监控模版：" prop="templates">
                 <el-select
-                  v-model="tempform.templates"
-                  placeholder="请选择"
-                  multiple
-                  clearable
-                  filterable
-                  class="selectSize"
-                  @visible-change="setSelectedVal"
-                  @change="checkItem"
+                    v-model="tempform.templates"
+                    placeholder="请选择"
+                    multiple
+                    clearable
+                    filterable
+                    class="selectSize"
+                    @visible-change="setSelectedVal"
+                    @change="checkItem"
                 >
                   <el-option
-                    v-for="template in templateData"
-                    :key="template.templateid"
-                    :label="template.name"
-                    :value="template.templateid"
+                      v-for="template in templateData"
+                      :key="template.templateid"
+                      :label="template.name"
+                      :value="template.templateid"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -55,7 +55,7 @@ export default {
   props: {
     editform: {
       id: '',
-      templates: ''
+      templateIds: ''
     },
     showEditDialog: Boolean,
     dialogWidth: {
@@ -108,10 +108,22 @@ export default {
         }
       })
     },
-    submit () {
+    submit: function () {
+      const templates = []
+      // eslint-disable-next-line no-cond-assign
+      for (var j = 0, id; id = this.tempform.templates[j++];) {
+        // eslint-disable-next-line no-cond-assign
+        for (var i = 0, temp; temp = this.templateData[i++];) {
+          if (temp.templateid === id) {
+            templates.push(temp.name)
+            break
+          }
+        }
+      }
       const param = new URLSearchParams()
       param.append('id', this.editform.id)
-      param.append('templates', this.tempform.templates)
+      param.append('templateIds', this.tempform.templates)
+      param.append('templates', templates)
       this.axios.post(this.$api.alertManager.alertTemplate.alertTemplate.bindTemplates, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -151,8 +163,8 @@ export default {
       })
     },
     setExitSelect () {
-      if (this.editform.templates !== null && this.editform.templates !== '') {
-        this.tempform.templates = this.editform.templates.split(',')
+      if (this.editform.templateIds !== null && this.editform.templateIds !== '') {
+        this.tempform.templates = this.editform.templateIds.split(',')
       }
     },
     checkItem (value) {
@@ -187,7 +199,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-/deep/.selectSize {
-  width: 600px !important;
-}
+  /deep/ .selectSize {
+    width: 600px !important;
+  }
 </style>

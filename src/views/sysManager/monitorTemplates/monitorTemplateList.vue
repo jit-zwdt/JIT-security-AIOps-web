@@ -40,6 +40,7 @@
         </template>
       </el-table-column>
       <el-table-column label="使用模版" prop="templates" min-width="25%" :resizable="false"></el-table-column>
+      <el-table-column label="使用模版id" prop="templateIds" min-width="25%" :resizable="false" v-if="false"></el-table-column>
       <el-table-column
         label="创建时间"
         prop="gmtCreate"
@@ -168,7 +169,7 @@ export default {
     confirmupdate (index, row) {
       this.showEditDialog = true
       this.editform.id = row.id
-      this.editform.templates = row.templates
+      this.editform.templateIds = row.templateIds
       this.editform.buttonflag = true
       this.titleType = row.name
     },
