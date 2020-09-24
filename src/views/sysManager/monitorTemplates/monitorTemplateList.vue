@@ -73,7 +73,7 @@
 </template>
 <script>
 import { formatTodate } from '@/utils/format.js'
-import monitorTemplateAdd from '@/views/monitorManager/monitorTemplates/monitorTemplateAdd.vue'
+import monitorTemplateAdd from '@/views/sysManager/monitorTemplates/monitorTemplateAdd.vue'
 import Pagination from '@/components/Pagination.vue'
 import HelpTemplates from '@/views/monitorManager/helpTemplates/helpTemplates.vue'
 export default {

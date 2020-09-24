@@ -38,6 +38,12 @@
                 <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
                 <!--</template>-->
             </el-table-column>
+            <el-table-column
+                label="处理人monitorTemplateList"
+                prop="zabbixProblemDTO.ns"
+                min-width="10%"
+                :resizable="false"
+            ></el-table-column>
             <el-table-column align="center" label="操作" min-width="15%">
                 <template slot-scope="scope">
                     <el-button
