@@ -41,7 +41,7 @@
       <el-table-column label="手机号" prop="mobile"></el-table-column>
       <el-table-column label="邮箱" prop="email" min-width="150"></el-table-column>
       <el-table-column label="状态" prop="status" :formatter="statusFormat"></el-table-column>
-      <el-table-column label="允许登录zabbix" prop="isZabbixActive" :formatter="isZabbixActiveFormat"></el-table-column>
+      <!--<el-table-column label="允许登录zabbix" prop="isZabbixActive" :formatter="isZabbixActiveFormat"></el-table-column>-->
       <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button
@@ -271,7 +271,7 @@ export default {
         return data
       }
     },
-    isZabbixActiveFormat (row, column) {
+    /* isZabbixActiveFormat (row, column) {
       const data = row[column.property]
       if (data === 0) {
         return '不允许'
@@ -280,7 +280,7 @@ export default {
       } else {
         return data
       }
-    },
+    }, */
     showUserAdd () {
       this.titleType = '添加'
       this.id = -1

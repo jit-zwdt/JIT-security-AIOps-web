@@ -139,7 +139,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!--<el-row>
             <el-col :span="12">
               <el-form-item label="Zabbix用户名：" prop="zabbixUsername">
                 <el-input
@@ -163,9 +163,9 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row>-->
           <el-row>
-            <el-col :span="12">
+            <!--<el-col :span="12">
               <el-form-item label="zabbix登录：" prop="isZabbixActive">
                 <el-switch
                   class="switchStyle1"
@@ -177,7 +177,7 @@
                   :disabled="disabled"
                 ></el-switch>
               </el-form-item>
-            </el-col>
+            </el-col>-->
             <el-col :span="12">
               <el-form-item label="状态：" prop="status">
                 <el-switch
@@ -330,9 +330,9 @@ export default {
         sex: 0,
         email: '',
         mobile: '',
-        zabbixUsername: '',
+        /* zabbixUsername: '',
         zabbixPassword: '',
-        isZabbixActive: 1,
+        isZabbixActive: 1, */
         province: '',
         city: '',
         liveAddress: '',
