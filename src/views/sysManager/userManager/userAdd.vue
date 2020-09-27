@@ -106,6 +106,7 @@
                   v-model="userForm.birth"
                   type="date"
                   placeholder="选择日期"
+                  value-format="yyyy-MM-dd"
                   :readonly="isReadOnly"
                 ></el-date-picker>
               </el-form-item>
