@@ -2,94 +2,116 @@
   <div>
     <ToolBar>
       <div class="queryleft">
-        <el-col :span="12">
-          <el-input type="text" v-model="problemName" size="small" placeholder="故障名称" clearable></el-input>
-        </el-col>
-        <el-select v-model="problemType" class="datetop" filterable placeholder="故障类型" clearable>
-          <el-option
-                  v-for="status in statusList"
-                  :key="status.value"
-                  :label="status.label"
-                  :value="status.value"
-          ></el-option>
-        </el-select>
+        <el-date-picker
+            v-model="resolveTimeStart"
+            type="date"
+            placeholder="解决开始时间"
+            class="datetop"
+            value-format="yyyy-MM-dd"
+            :clearable="false"
+            @change="changeDate"
+        ></el-date-picker>
+        <el-date-picker
+            v-model="resolveTimeEnd"
+            type="date"
+            placeholder="解决结束时间"
+            value-format="yyyy-MM-dd"
+            class="datetop"
+            :clearable="false"
+            @change="changeDate"
+        ></el-date-picker>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright">
+        <el-button type="primary" size="small" @click="showClear() == false">打印</el-button>
+        <el-button type="primary" size="small" @click="showClear() == false">导出</el-button>
       </div>
     </ToolBar>
-    <div style="text-align: center">
-      <h1>故障解决统计报表</h1>
-    </div>
-    <el-table
+    <div style="background-color: white;">
+      <div style="text-align: center;">
+        <h2 style="padding-top: 5px">故障解决统计报表</h2>
+      </div>
+      <div style="text-align: right">
+        <span>日期：{{this.nowDate}}</span>
+      </div>
+      <div style="border: 2px solid #000000;width: 100%">
+        <el-table
             :data="tableData"
             border
             v-loading="loading"
             style="width: 100%"
-            :row-style="tableRowStyle"
             :header-cell-style="tableHeaderColor"
-    >
-      <el-table-column label="序号" prop="index" min-width="2%" :resizable="false"></el-table-column>
-      <el-table-column label="故障名称" prop="claim.problemName" min-width="20%" :resizable="false"></el-table-column>
-      <el-table-column
+            :cell-style="tableCellStyle"
+        >
+          <el-table-column label="序号" prop="index" min-width="3%" :resizable="false"></el-table-column>
+          <el-table-column label="故障解决日期" prop="claim.resolveTime" min-width="9%" :resizable="false"></el-table-column>
+          <el-table-column label="故障名称" prop="claim.problemName" min-width="20%" :resizable="false"></el-table-column>
+          <el-table-column
               label="故障类型"
               prop="register.problemType"
               min-width="5%"
               :resizable="false"
               :formatter="problemTypeFormat"
-      ></el-table-column>
-      <el-table-column label="处理角色" prop="role" min-width="5%" :resizable="false"></el-table-column>
-      <el-table-column label="处理人" prop="user" min-width="5%" :resizable="false"></el-table-column>
-      <el-table-column label="故障原因" prop="register.problemReason" min-width="13%" :resizable="false"></el-table-column>
-      <el-table-column label="处理过程" prop="register.problemProcess" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="处理方式" prop="register.problemSolution" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column label="故障持续时间" prop="claim.ns" min-width="7%" :resizable="false"></el-table-column>
-      <el-table-column label="故障处理时长" prop="claim.problemHandleTime" min-width="8%" :resizable="false"></el-table-column>
-    </el-table>
+          ></el-table-column>
+          <el-table-column label="处理角色" prop="role" min-width="5%" :resizable="false"></el-table-column>
+          <el-table-column label="处理人" prop="user" min-width="5%" :resizable="false"></el-table-column>
+          <el-table-column label="故障原因" prop="register.problemReason" min-width="13%"
+                           :resizable="false"></el-table-column>
+          <el-table-column label="处理过程" prop="register.problemProcess" min-width="10%"
+                           :resizable="false"></el-table-column>
+          <el-table-column label="处理方式" prop="register.problemSolution" min-width="10%"
+                           :resizable="false"></el-table-column>
+          <el-table-column label="故障持续时间" prop="claim.ns" min-width="7%" :resizable="false"></el-table-column>
+          <el-table-column label="故障处理时长" prop="claim.problemHandleTime" min-width="8%"
+                           :resizable="false"></el-table-column>
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import qs from 'qs'
+
 export default {
-  data () {
-    return {
-      showEditDialog: false,
-      problemType: '',
-      problemName: '',
-      statusList: [{
-        value: 0,
-        label: '类型一'
-      }, {
-        value: 1,
-        label: '类型二'
-      }, {
-        value: 2,
-        label: '类型三'
-      }, {
-        value: 3,
-        label: '类型四'
-      }],
-      loading: true
-    }
-  },
-  created () {
-    this.showInfo()
-  },
   methods: {
-    // 修改table tr行的背景色
-    tableRowStyle ({ row, column, rowIndex, columnIndex }) {
-    },
     // 修改table header的背景色
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return 'background-color: #93cdff;color: #FFFFFF;font-weight: 500;font-size:15px'
+      const strClass = 'color: #000000;font-weight: 1000;font-size:15px;'
+      if (columnIndex === 0) {
+        return strClass
+      } else {
+        return 'border-left: 1px solid #000000;' + strClass
+      }
+    },
+    // 修改table tr行的背景色
+    tableCellStyle ({ row, column, rowIndex, columnIndex }) {
+      const strClass = 'border-top: 1px solid #000000;color: #000000;'
+      if (columnIndex === 0) {
+        return strClass
+      } else {
+        return 'border-left: 1px solid #000000;' + strClass
       }
     },
     reloadData () {
       this.showInfo()
     },
     showInfo () {
+      if (this.resolveTimeStart === '' || this.resolveTimeStart === null) {
+        this.$message({
+          message: '开始时间不能为空',
+          type: 'error'
+        })
+        return false
+      }
+      if (this.resolveTimeEnd === '' || this.resolveTimeEnd === null) {
+        this.$message({
+          message: '结束时间不能为空',
+          type: 'error'
+        })
+        return false
+      }
+
       this.loading = true
       this.tableData = this.tableDataclear
       const _this = this
@@ -100,8 +122,10 @@ export default {
     showInfoTimeout () {
       this.axios
         .post(this.$api.malfunctionSolve.problemSolveReport, qs.stringify({
-          problemType: this.problemType,
-          problemName: this.problemName
+          problemType: '',
+          problemName: '',
+          resolveTimeStart: this.resolveTimeStart,
+          resolveTimeEnd: this.resolveTimeEnd
         }))
         .then(resp => {
           if (resp.status === 200) {
@@ -114,8 +138,10 @@ export default {
         })
     },
     showClear () {
-      this.problemType = ''
-      this.problemName = ''
+      this.resolveTimeStart = ''
+      this.resolveTimeEnd = ''
+      this.getDate()
+      this.getCurrentMonthFirst()
     },
     problemTypeFormat (val) {
       if (val.register.problemType === '0') {
@@ -127,9 +153,53 @@ export default {
       } else if (val.register.problemType === '3') {
         return '类型四'
       }
+    },
+    getDate: function () {
+      const _this = this
+      let date = ''
+      const yy = new Date().getFullYear()
+      let mm = new Date().getMonth() + 1
+      mm = mm < 10 ? '0' + mm : mm
+      let dd = new Date().getDate()
+      dd = dd < 10 ? '0' + dd : dd
+      date = yy + '-' + mm + '-' + dd
+      _this.nowDate = date
+      _this.resolveTimeEnd = date
+    },
+    getCurrentMonthFirst: function () {
+      const _this = this
+      var date = new Date()
+      date.setDate(1)
+      const yy = date.getFullYear()
+      let mm = date.getMonth() + 1
+      mm = mm < 10 ? '0' + mm : mm
+      let dd = date.getDate()
+      dd = dd < 10 ? '0' + dd : dd
+      date = yy + '-' + mm + '-' + dd
+      _this.resolveTimeStart = date
+    },
+    changeDate: function (val) {
+      if (this.resolveTimeStart > this.resolveTimeEnd) {
+        this.resolveTimeStart = this.resolveTimeEnd
+      }
     }
   },
-  actions: {}
+  data () {
+    return {
+      showEditDialog: false,
+      resolveTimeStart: '',
+      resolveTimeEnd: '',
+      nowDate: '',
+      loading: true
+    }
+  },
+  created () {
+    this.getDate()
+    this.getCurrentMonthFirst()
+    this.showInfo()
+  },
+  actions: {
+  }
 }
 </script>
 <style lang="scss" scoped>

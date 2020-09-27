@@ -39,7 +39,7 @@
       <el-table-column align="center" label="操作" min-width="15%">
         <template slot-scope="scope">
           <el-button v-if="scope.row.isRegister === 1 && scope.row.isResolve === 1" size="mini" type="primary" slot="reference" @click="malfunctionDisposeRegister(scope.$index, scope.row)">已解决</el-button>
-          <el-button v-else-if="scope.row.isRegister === 1 && scope.row.isResolve !== 1" size="mini" type="primary" slot="reference" @click="malfunctionDisposeRegister(scope.$index, scope.row)">已登记</el-button>
+          <el-button v-else-if="scope.row.isRegister === 1 && scope.row.isResolve !== 1" size="mini" type="primary" slot="reference" @click="malfunctionDisposeRegister(scope.$index, scope.row)">再次登记</el-button>
           <el-button  v-else-if="scope.row.isRegister !==1" size="mini" type="primary" slot="reference" @click="malfunctionDisposeRegister(scope.$index, scope.row)">登记</el-button>
         </template>
       </el-table-column>
