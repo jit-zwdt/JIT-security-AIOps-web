@@ -4,48 +4,71 @@
       <div class="card dark-main-background">
         <div
           class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:40px"
+          style="margin-top: -10px !important; height: 40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
-              <span>{{this.$route.query.hostName}}\{{this.serverForm.agentIp}}</span>
+              <span
+                >{{ this.$route.query.hostName }}\{{
+                  this.serverForm.agentIp
+                }}</span
+              >
             </p>
           </div>
-          <div class="queryright" style="margin-top:-5px !important;height:40px">
+          <div
+            class="queryright"
+            style="margin-top: -5px !important; height: 40px"
+          >
             <el-button @click="backfrom()" size="mini">返回</el-button>
           </div>
         </div>
         <div class="tempList card-body">
           <div>
-            <table class="dark-main-background" style="width:100%;margin-top:-5px">
-              <tr style="height:40px">
+            <table
+              class="dark-main-background"
+              style="width: 100%; margin-top: -5px"
+            >
+              <tr style="height: 40px">
                 <th class="darkmainborderth">名称</th>
-                <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
+                <td class="darkmainbordertd">
+                  {{ this.$route.query.hostName }}
+                </td>
                 <th class="darkmainborderth">监控状态</th>
                 <td class="darkmainbordertd">
                   <span
                     class="label label-danger"
                     data-toggle="tooltip"
                     ata-placement="bottom"
-                    v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
+                    v-bind:class="{
+                      changeColor: spanChangeColor,
+                      redchangeColor: spanredChangeColor,
+                    }"
                     :title="makeMonitorTypeTitle()"
-                  >{{this.monitorTypeValue}}</span>
+                    >{{ this.monitorTypeValue }}</span
+                  >
                 </td>
                 <th class="darkmainborderth">ip地址</th>
-                <td class="darkmainbordertd">{{this.serverForm.agentIp}}</td>
+                <td class="darkmainbordertd">{{ this.serverForm.agentIp }}</td>
               </tr>
-              <tr style="height:40px">
+              <tr style="height: 40px">
                 <th class="darkmainborderth">操作系统</th>
-                <td class="darkmainbordertd" colspan="5">{{this.operateSystem}}</td>
+                <td class="darkmainbordertd" colspan="5">
+                  {{ this.operateSystem }}
+                </td>
                 <th class="darkmainborderth">运行时间</th>
-                <td class="darkmainbordertd" colspan="5">{{this.runTime}}</td>
+                <td class="darkmainbordertd" colspan="5">{{ this.runTime }}</td>
               </tr>
             </table>
           </div>
         </div>
       </div>
     </template>
-    <el-tabs type="border-card" style="margin-top:5px" v-model="activeName" id="pieEcharts">
+    <el-tabs
+      type="border-card"
+      style="margin-top: 5px"
+      v-model="activeName"
+      id="pieEcharts"
+    >
       <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
           <div
@@ -55,75 +78,97 @@
           >
             <div
               class="title-bar card-header dark-main-background dark-white-color"
-              style="height:40px;width:100%"
+              style="height: 40px; width: 100%"
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>{{formatitemName(items.itemName)}}</span>
+                  <span>{{ formatitemName(items.itemName) }}</span>
                 </p>
               </div>
-              <div class="queryright" style="margin-top:-5px !important;height:40px">
+              <div
+                class="queryright"
+                style="margin-top: -5px !important; height: 40px"
+              >
                 <el-button
-                  style="float: right; padding: 0px; margin-left: 5px;"
+                  style="float: right; padding: 0px; margin-left: 5px"
                   type="text"
                   @click="removeItems(items)"
                 >
-                  <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
+                  <i
+                    class="fa fa-remove"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
+                  ></i>
                 </el-button>
                 <el-button
-                  style="float: right; padding: 0px; margin-left: 5px;"
+                  style="float: right; padding: 0px; margin-left: 5px"
                   type="text"
-                  @click="refreshItems(items,index)"
+                  @click="refreshItems(items, index)"
                 >
                   <i
                     class="el-icon-refresh"
-                    style="font-size: 18px;color: #979899;font-weight: 400;"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
                   ></i>
                 </el-button>
               </div>
             </div>
             <div class="tempList card-body">
-              <div :id="getID(index)" class="echart" :onchange="getItemsData(items.itemId,index)"></div>
+              <div
+                :id="getID(index)"
+                class="echart"
+                :onchange="getItemsData(items.itemId, index, items.units)"
+              ></div>
             </div>
           </div>
           <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
           <div
-                  class="card dark-main-background queryleft"
-                  style="width:32.5%;margin-left:10px"
-                  v-for="(items, index1) in graphstableData"
-                  v-bind:key="index1 + 1000"
+            class="card dark-main-background queryleft"
+            style="width: 32.5%; margin-left: 10px"
+            v-for="(items, index1) in graphstableData"
+            v-bind:key="index1 + 1000"
           >
             <div
-                    class="title-bar card-header dark-main-background dark-white-color"
-                    style="height:40px;width:100%"
+              class="title-bar card-header dark-main-background dark-white-color"
+              style="height: 40px; width: 100%"
             >
               <div class="queryleft">
                 <p class="title-bar-description" style>
-                  <span>{{formatitemName(items.graphName)}}</span>
+                  <span>{{ formatitemName(items.graphName) }}</span>
                 </p>
               </div>
-              <div class="queryright" style="margin-top:-5px !important;height:40px">
+              <div
+                class="queryright"
+                style="margin-top: -5px !important; height: 40px"
+              >
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px;"
-                        type="text"
-                        @click="removeGraphs(items)"
-                >
-                  <i class="fa fa-remove" style="font-size: 18px;color: #979899;font-weight: 400;"></i>
-                </el-button>
-                <el-button
-                        style="float: right; padding: 0px; margin-left: 5px;"
-                        type="text"
-                        @click="refreshGraphs(items,index1)"
+                  style="float: right; padding: 0px; margin-left: 5px"
+                  type="text"
+                  @click="removeGraphs(items)"
                 >
                   <i
-                          class="el-icon-refresh"
-                          style="font-size: 18px;color: #979899;font-weight: 400;"
+                    class="fa fa-remove"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
+                  ></i>
+                </el-button>
+                <el-button
+                  style="float: right; padding: 0px; margin-left: 5px"
+                  type="text"
+                  @click="refreshGraphs(items, index1)"
+                >
+                  <i
+                    class="el-icon-refresh"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
                   ></i>
                 </el-button>
               </div>
             </div>
             <div class="tempList card-body">
-              <div :id="getGraphID(index1)" class="echart" :onchange="getGraphsData(items.graphId,items.graphName, index1)"></div>
+              <div
+                :id="getGraphID(index1)"
+                class="echart"
+                :onchange="
+                  getGraphsData(items.graphId, items.graphName, index1)
+                "
+              ></div>
             </div>
           </div>
           <!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
@@ -132,10 +177,19 @@
               href="javascript:void(0);"
               @click="addItems()"
               class="card card-body dark-main-background"
-              style="height:392px;display: flex; justify-content: center; align-items: center; cursor: pointer;text-decoration:none;"
+              style="
+                height: 392px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                text-decoration: none;
+              "
             >
-              <div class="fa fa-plus" style="font-size: 75px;">
-                <p class="text-center" style="color: #0296FE;font-size: 16px;">添加</p>
+              <div class="fa fa-plus" style="font-size: 75px">
+                <p class="text-center" style="color: #0296fe; font-size: 16px">
+                  添加
+                </p>
               </div>
             </a>
           </div>
@@ -144,38 +198,73 @@
       <el-tab-pane label="指标列表" name="second" :key="'second'">
         <div>
           <ToolBar>
-            <div class="queryleft" style="width:100%">
+            <div class="queryleft" style="width: 100%">
               <el-col :span="6">
-                <el-input type="text" v-model="nameTop" size="small" placeholder="名称" clearable></el-input>
+                <el-input
+                  type="text"
+                  v-model="nameTop"
+                  size="small"
+                  placeholder="名称"
+                  clearable
+                ></el-input>
               </el-col>
               <el-button
                 type="primary"
                 size="small"
                 @click="showInfo() == false"
                 icon="el-icon-search"
-              >查询</el-button>
+                >查询</el-button
+              >
               <el-button
                 type="primary"
                 size="small"
                 @click="showClear() == false"
                 icon="el-icon-refresh-left"
-              >重置</el-button>
+                >重置</el-button
+              >
             </div>
           </ToolBar>
           <el-table
-            :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            :data="
+              tableData.slice(
+                (currentPage - 1) * pageSize,
+                currentPage * pageSize
+              )
+            "
             v-loading="loading"
             border
             style="width: 100%"
             :row-style="tableRowStyle"
-            :row-key="getRowKey"
+            :row-key="getRowKey1"
             :header-cell-style="tableHeaderColor"
           >
-            <el-table-column label="itemid" prop="itemid" :resizable="false" v-if="show"></el-table-column>
-            <el-table-column label="监控项名称" prop="name" min-width="70%"></el-table-column>
-            <el-table-column label="应用集" prop="value_type" min-width="15%"></el-table-column>
-            <el-table-column label="间隔" prop="delay" min-width="15%"></el-table-column>
-            <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
+            <el-table-column
+              label="itemid"
+              prop="itemid"
+              :resizable="false"
+              v-if="show"
+            ></el-table-column>
+            <el-table-column
+              label="监控项名称"
+              prop="name"
+              min-width="70%"
+            ></el-table-column>
+            <el-table-column
+              label="应用集"
+              prop="value_type"
+              min-width="15%"
+            ></el-table-column>
+            <el-table-column
+              label="间隔"
+              prop="delay"
+              min-width="15%"
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              label="操作"
+              min-width="15%"
+              :resizable="false"
+            >
               <template slot-scope="scope">
                 <el-popconfirm
                   title="是否添加指标到概况？"
@@ -193,7 +282,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="block" style="margin-top:15px;">
+          <div class="block" style="margin-top: 15px">
             <el-pagination
               align="left"
               @size-change="handleSizeChange"
@@ -210,252 +299,379 @@
       <el-tab-pane label="图形" name="third" :key="'third'">
         <div>
           <ToolBar>
-            <div class="queryleft" style="width:100%">
+            <div class="queryleft" style="width: 100%">
               <el-col :span="6">
-                <el-input type="text" v-model="nameTop" size="small" placeholder="名称" clearable></el-input>
+                <el-input
+                  type="text"
+                  v-model="nameTop"
+                  size="small"
+                  placeholder="名称"
+                  clearable
+                ></el-input>
               </el-col>
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showGraphsInfo() == false"
-                      icon="el-icon-search"
-              >查询</el-button>
+                type="primary"
+                size="small"
+                @click="showGraphsInfo() == false"
+                icon="el-icon-search"
+                >查询</el-button
+              >
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showClear() == false"
-                      icon="el-icon-refresh-left"
-              >重置</el-button>
+                type="primary"
+                size="small"
+                @click="showClear() == false"
+                icon="el-icon-refresh-left"
+                >重置</el-button
+              >
               <div style="margin-left: 58%">
                 <el-popover
-                        placement="left"
-                        width="1200"
-                        trigger="click"
-                        ref="gPopover"
+                  placement="left"
+                  width="1200"
+                  trigger="click"
+                  ref="gPopover"
                 >
-                  <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="名称">
-                      <el-input v-model="form.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="图形类型">
-                      <el-select v-model="form.graphtype">
-                        <el-option v-for="item in graphtypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                      </el-select>
-                    </el-form-item>
+                  <el-form ref="form" :model="form" label-width="90px">
+                    <el-row :gutter="40">
+                      <el-col>
+                        <el-form-item label="名称">
+                          <el-input v-model="form.name"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="40">
+                      <el-col :span="200">
+                        <el-form-item label="图形类型">
+                          <el-select v-model="form.graphtype">
+                            <el-option
+                              v-for="item in graphtypeOptions"
+                              :key="item.value"
+                              :value="item.value"
+                              :label="item.label"
+                            ></el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="200">
+                        <el-form-item label="纵轴最小值">
+                          <el-select v-model="form.ymin_type">
+                            <el-option
+                              v-for="item in yOptions"
+                              :key="item.value"
+                              :value="item.value"
+                              :label="item.label"
+                            ></el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="200">
+                        <el-form-item label="纵轴最大值">
+                          <el-select v-model="form.ymax_type">
+                            <el-option
+                              v-for="item in yOptions"
+                              :key="item.value"
+                              :value="item.value"
+                              :label="item.label"
+                            ></el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                     <!--<el-form-item label="查看触发器">-->
                     <!--<el-checkbox v-model="form.show_legend">查看图例</el-checkbox>-->
                     <!--</el-form-item>-->
-                    <el-form-item label="百分比线(左)">
+                    <!-- <el-form-item label="百分比线(左)">
                       <el-checkbox v-model="leftOption"></el-checkbox>
                       <el-input v-model="form.percent_left" v-if="leftOption === true"></el-input>
                     </el-form-item>
                     <el-form-item label="百分比线(右)">
                       <el-checkbox v-model="rightOption"></el-checkbox>
                       <el-input v-model="form.percent_right" v-if="rightOption === true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="纵轴最小值">
-                      <el-select v-model="form.ymin_type">
-                        <el-option v-for="item in yOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="纵轴最大值">
-                      <el-select v-model="form.ymax_type">
-                        <el-option v-for="item in yOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="监控项">
-                      <div>
-                        <el-table
-                                :data="form.gitems"
-                                :row-key="getRowKey"
-                                style="width: 100%">
-                          <el-table-column
-                                  label="监控项id"
-                                  width="180"
-                                  prop="itemid"
-                                  v-if="show">
-                          </el-table-column>
-                          <el-table-column
-                                  prop="name"
-                                  label="名称"
-                                  width="210"
-                                  show-overflow-tooltip>
-                          </el-table-column>
-                          <el-table-column
-                                  label="功能"
-                                  width="180">
-                            <template slot-scope="scope" >
-                              <el-form-item  :prop="'gitems.' + scope.$index + '.calc_fnc'">
-                                <el-select v-model="scope.row.calc_fnc">
-                                  <el-option v-for="item in fncOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                                </el-select>
-                              </el-form-item>
-                            </template>
-                          </el-table-column>
-                          <el-table-column
-                                  label="绘图风格"
-                                  width="180">
-                            <template slot-scope="scope" >
-                              <el-form-item  :prop="'gitems.' + scope.$index + '.drawtype'">
-                                <el-select v-model="scope.row.drawtype">
-                                  <el-option v-for="item in drawTypeOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                                </el-select>
-                              </el-form-item>
-                            </template>
-                          </el-table-column>
-                          <el-table-column
-                                  label="纵轴Y线"
-                                  width="180">
-                            <template slot-scope="scope" >
-                              <el-form-item  :prop="'gitems.' + scope.$index + '.yaxisside'">
-                                <el-select v-model="scope.row.yaxisside">
-                                  <el-option v-for="item in yAxisOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
-                                </el-select>
-                              </el-form-item>
-                            </template>
-                          </el-table-column>
-                          <el-table-column
-                                  label="颜色"
-                                  width="180">
-                            <template slot-scope="scope" >
-                              <el-form-item  :prop="'gitems.' + scope.$index + '.color'">
-                                <el-color-picker  v-model="scope.row.color"></el-color-picker>
-                              </el-form-item>
-                            </template>
-                          </el-table-column>
-                          <el-table-column
-                                  label="操作"
-                                  width="180">
-                            <template slot-scope="scope">
-                              <el-button
-                                      size="mini"
-                                      type="danger"
-                                      icon="el-icon-delete"
-                                      @click="handleDelete(scope.$index, scope.row)">
-                                移除
-                              </el-button>
-                            </template>
-                          </el-table-column>
-                        </el-table>
-                      </div>
-                      <el-popover
-                              placement="right"
-                              width="1000"
-                              trigger="click"
-                              ref="gList"
-                      >
-                        <el-table
-                                :data="forShowData.slice((currentInsidePage-1)*pageSize,currentInsidePage*pageSize)"
-                                v-loading="loading"
-                                border
-                                style="width: 100%"
-                                :row-style="tableRowStyle"
-                                :header-cell-style="tableHeaderColor"
-                                ref="multipleTable"
-                                tooltip-effect="dark"
-                                :row-key="getRowKey"
-                                @selection-change="handleSelectionChange">
-                          <el-table-column
-                                  type="selection"
-                                  width="55"
-                                  :reserve-selection="true">
-                          </el-table-column>
-                          <el-table-column
-                                  prop="name"
-                                  label="名称"
-                                  show-overflow-tooltip>
-                          </el-table-column>
-                          <el-table-column
-                                  prop="key_"
-                                  label="键值"
-                                  show-overflow-tooltip>
-                          </el-table-column>
-                          <el-table-column
-                                  prop="type"
-                                  label="类型"
-                                  width="120">
-                          </el-table-column>
-                          <el-table-column
-                                  prop="value_type"
-                                  label="信息类型"
-                                  width="120">
-                          </el-table-column>
-                          <el-table-column
-                                  prop="status"
-                                  label="状态"
-                                  width="120">
-                          </el-table-column>
-                        </el-table>
-                        <div class="block" style="margin-top:15px;">
-                          <el-pagination
-                                  align="left"
-                                  @size-change="handleSizeInsideChange"
-                                  @current-change="handleCurrentInsideChange"
-                                  :current-page="currentInsidePage"
-                                  :page-sizes="[10, 30, 50, 100]"
-                                  :page-size="pageSize"
-                                  layout="total, sizes, prev, pager, next, jumper"
-                                  :total="forShowData.length"
-                          ></el-pagination>
-                        </div>
-                        <div style="margin-top: 20px">
-                          <el-button @click="rightChose">确定选择</el-button>
-                          <el-button @click="toggleSelection()">取消选择</el-button>
-                        </div>
-                        <el-button type="text" slot="reference">新增</el-button>
-                      </el-popover>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="onSubmit">提交</el-button>
-                      <el-button @click="closePopover">取消</el-button>
-                    </el-form-item>
+                    </el-form-item> -->
+                    <el-row :gutter="40">
+                      <el-col>
+                        <el-form-item label="监控项">
+                          <div style="border: 1px solid #dcdfe6">
+                            <el-table
+                              :data="form.gitems"
+                              :row-key="getRowKey2"
+                              style="width: 100%"
+                            >
+                              <el-table-column
+                                label="监控项id"
+                                width="180"
+                                prop="itemid"
+                                v-if="show"
+                              ></el-table-column>
+                              <el-table-column
+                                prop="name"
+                                label="名称"
+                                width="310"
+                                show-overflow-tooltip
+                              ></el-table-column>
+                              <el-table-column label="功能" width="180">
+                                <template slot-scope="scope">
+                                  <el-form-item
+                                    :prop="
+                                      'gitems.' + scope.$index + '.calc_fnc'
+                                    "
+                                  >
+                                    <el-select v-model="scope.row.calc_fnc">
+                                      <el-option
+                                        v-for="item in fncOptions"
+                                        :key="item.value"
+                                        :value="item.value"
+                                        :label="item.label"
+                                      ></el-option>
+                                    </el-select>
+                                  </el-form-item>
+                                </template>
+                              </el-table-column>
+                              <el-table-column label="绘图风格" width="180">
+                                <template slot-scope="scope">
+                                  <el-form-item
+                                    :prop="
+                                      'gitems.' + scope.$index + '.drawtype'
+                                    "
+                                  >
+                                    <el-select v-model="scope.row.drawtype">
+                                      <el-option
+                                        v-for="item in drawTypeOptions"
+                                        :key="item.value"
+                                        :value="item.value"
+                                        :label="item.label"
+                                      ></el-option>
+                                    </el-select>
+                                  </el-form-item>
+                                </template>
+                              </el-table-column>
+                              <el-table-column label="纵轴Y线" width="180">
+                                <template slot-scope="scope">
+                                  <el-form-item
+                                    :prop="
+                                      'gitems.' + scope.$index + '.yaxisside'
+                                    "
+                                  >
+                                    <el-select v-model="scope.row.yaxisside">
+                                      <el-option
+                                        v-for="item in yAxisOptions"
+                                        :key="item.value"
+                                        :value="item.value"
+                                        :label="item.label"
+                                      ></el-option>
+                                    </el-select>
+                                  </el-form-item>
+                                </template>
+                              </el-table-column>
+                              <el-table-column label="颜色" width="80">
+                                <template slot-scope="scope">
+                                  <el-form-item
+                                    :prop="'gitems.' + scope.$index + '.color'"
+                                  >
+                                    <el-color-picker
+                                      v-model="scope.row.color"
+                                    ></el-color-picker>
+                                  </el-form-item>
+                                </template>
+                              </el-table-column>
+                              <el-table-column label="操作" width="150">
+                                <template slot-scope="scope">
+                                  <el-button
+                                    size="mini"
+                                    type="danger"
+                                    icon="el-icon-delete"
+                                    @click="
+                                      handleDelete(scope.$index, scope.row)
+                                    "
+                                    >移除</el-button
+                                  >
+                                </template>
+                              </el-table-column>
+                            </el-table>
+                          </div>
+                          <el-popover
+                            placement="right"
+                            width="100%"
+                            trigger="click"
+                            ref="gList"
+                          >
+                            <el-table
+                              :data="
+                                forShowData.slice(
+                                  (currentInsidePage - 1) * pageSize,
+                                  currentInsidePage * pageSize
+                                )
+                              "
+                              v-loading="loading"
+                              border
+                              style="width: 100%"
+                              :row-style="tableRowStyle"
+                              :header-cell-style="tableHeaderColor"
+                              ref="multipleTable"
+                              tooltip-effect="dark"
+                              :row-key="getRowKey3"
+                              @selection-change="handleSelectionChange"
+                            >
+                              <el-table-column
+                                type="selection"
+                                width="55"
+                                :reserve-selection="true"
+                              ></el-table-column>
+                              <el-table-column
+                                prop="name"
+                                label="名称"
+                                width="300"
+                                show-overflow-tooltip
+                              ></el-table-column>
+                              <el-table-column
+                                prop="key_"
+                                label="键值"
+                                width="250"
+                                show-overflow-tooltip
+                              ></el-table-column>
+                              <!-- <el-table-column
+                                prop="type"
+                                label="类型"
+                                width="120"
+                              ></el-table-column> -->
+                              <el-table-column
+                                prop="value_type"
+                                label="信息类型"
+                                width="100"
+                                :formatter="valuetypeformatter"
+                              ></el-table-column>
+                              <el-table-column
+                                prop="status"
+                                label="状态"
+                                width="60"
+                              >
+                                <template slot-scope="scope">
+                                  <div v-html="statusformat(scope.row)"></div>
+                                </template>
+                              </el-table-column>
+                              <el-table-column
+                                prop="units"
+                                label="单位"
+                                width="60"
+                              ></el-table-column>
+                            </el-table>
+                            <div class="block" style="margin-top: 15px">
+                              <el-pagination
+                                align="left"
+                                @size-change="handleSizeInsideChange"
+                                @current-change="handleCurrentInsideChange"
+                                :current-page="currentInsidePage"
+                                :page-sizes="[10, 30, 50, 100]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="forShowData.length"
+                              ></el-pagination>
+                            </div>
+                            <div style="margin-top: 20px">
+                              <el-button @click="rightChose"
+                                >确定选择</el-button
+                              >
+                              <el-button @click="toggleSelection()"
+                                >取消选择</el-button
+                              >
+                            </div>
+                            <el-button type="text" slot="reference" @click="popoverFormInfo()"
+                              >新增</el-button
+                            >
+                          </el-popover>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" @click="onSubmit"
+                            >提交</el-button
+                          >
+                          <el-button @click="closePopover">取消</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                   </el-form>
-                  <el-button type="danger" size="small" slot="reference" icon="el-icon-plus">新增</el-button>
+                  <el-button
+                    type="danger"
+                    size="small"
+                    slot="reference"
+                    icon="el-icon-plus"
+                    >新增</el-button
+                  >
                 </el-popover>
               </div>
             </div>
           </ToolBar>
           <el-table
-                  :data="graphData.slice((currentGraphPage-1)*pageSize,currentGraphPage*pageSize)"
-                  v-loading="loading"
-                  border
-                  style="width: 100%"
-                  :row-style="tableRowStyle"
-                  :row-key="getRowKey"
-                  :header-cell-style="tableHeaderColor"
+            :data="
+              graphData.slice(
+                (currentGraphPage - 1) * pageSize,
+                currentGraphPage * pageSize
+              )
+            "
+            v-loading="loading"
+            border
+            style="width: 100%"
+            :row-style="tableRowStyle"
+            :row-key="getRowKey4"
+            :header-cell-style="tableHeaderColor"
           >
-            <el-table-column label="graphid" prop="graphid" :resizable="false" v-if="show"></el-table-column>
-            <el-table-column label="图形名称" prop="name" min-width="70%"></el-table-column>
-            <el-table-column label="高" prop="height" min-width="15%"></el-table-column>
-            <el-table-column label="宽" prop="width" min-width="15%"></el-table-column>
-            <el-table-column label="图形类型" prop="graphtype" min-width="15%" :formatter="typeFormat"></el-table-column>
-            <el-table-column align="center" label="操作" min-width="15%" :resizable="false">
+            <el-table-column
+              label="graphid"
+              prop="graphid"
+              :resizable="false"
+              v-if="show"
+            ></el-table-column>
+            <el-table-column
+              label="图形名称"
+              prop="name"
+              min-width="70%"
+            ></el-table-column>
+            <el-table-column
+              label="高"
+              prop="height"
+              min-width="15%"
+            ></el-table-column>
+            <el-table-column
+              label="宽"
+              prop="width"
+              min-width="15%"
+            ></el-table-column>
+            <el-table-column
+              label="图形类型"
+              prop="graphtype"
+              min-width="15%"
+              :formatter="typeFormat"
+            ></el-table-column>
+            <el-table-column
+              align="center"
+              label="操作"
+              min-width="15%"
+              :resizable="false"
+            >
               <template slot-scope="scope">
                 <el-popconfirm
-                        title="是否添加指标到概况？"
-                        @onConfirm="confirmGraphSaveTrend(scope.$index, scope.row)"
+                  title="是否添加指标到概况？"
+                  @onConfirm="confirmGraphSaveTrend(scope.$index, scope.row)"
                 >
                   <el-button
-                          size="mini"
-                          type="primary"
-                          slot="reference"
-                          icon="fa fa-external-link"
-                          circle
+                    size="mini"
+                    type="primary"
+                    slot="reference"
+                    icon="fa fa-external-link"
+                    circle
                   ></el-button>
                 </el-popconfirm>
               </template>
             </el-table-column>
           </el-table>
-          <div class="block" style="margin-top:15px;">
+          <div class="block" style="margin-top: 15px">
             <el-pagination
-                    align="left"
-                    @size-change="handleSizeGraphChange"
-                    @current-change="handleCurrentGraphChange"
-                    :current-page="currentGraphPage"
-                    :page-sizes="[10, 30, 50, 100]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="graphData.length"
+              align="left"
+              @size-change="handleSizeGraphChange"
+              @current-change="handleCurrentGraphChange"
+              :current-page="currentGraphPage"
+              :page-sizes="[10, 30, 50, 100]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="graphData.length"
             ></el-pagination>
           </div>
         </div>
@@ -708,6 +924,7 @@ export default {
             this.tableData = json.data
             json.data.forEach(element => {
               if (element.value_type !== 1 && element.value_type !== 2 && element.value_type !== 4) {
+                console.log(element)
                 this.forShowData.push(element)
               }
             })
@@ -878,7 +1095,7 @@ export default {
     getID (index) {
       return 'charts-demo-' + index
     },
-    getItemsData (itemid, index) {
+    getItemsData (itemid, index, units) {
       var starttime = timesMethod.fun_date(-3)
       var timefrom = timesMethod.getDatestamp(starttime)
       var endtime = timesMethod.fun_date(3)
@@ -911,7 +1128,7 @@ export default {
                 data: returndataclock,
                 // 设置字体倾斜
                 axisLabel: {
-                  interval: 0,
+                  interval: 2,
                   rotate: 45, // 倾斜度-90至90默认为0
                   margin: 2,
                   textStyle: {
@@ -921,8 +1138,17 @@ export default {
                   }
                 }
               },
+              grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '2%',
+                containLabel: true
+              },
               yAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel: {
+                  formatter: '{value} ' + units
+                }
               },
               tooltip: {
                 trigger: 'axis'
@@ -1014,7 +1240,8 @@ export default {
       const region = {
         hostId: row.hostid,
         itemId: row.itemid,
-        itemName: row.name
+        itemName: row.name,
+        units: row.units
       }
       this.axios.post(this.$api.monitorManager.addHostDetailItem, region).then((resp) => {
         if (resp.status === 200) {
@@ -1063,7 +1290,7 @@ export default {
       if (this.setTimeoutItems === '') {
         const _this = this
         this.openloading(index)
-        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(items.itemId, index) }, 300)
+        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(items.itemId, index, items.units) }, 300)
       }
     },
     openloading (index) {
@@ -1139,11 +1366,9 @@ export default {
         hostId: this.$route.query.hostId,
         graphId: row.graphid
       }
-      console.log(region)
       this.axios.post(this.$api.monitorManager.checkHostDetailGraph, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          console.log(json.data)
           if (!json.data) {
             this.saveGraphTrend(row)
           } else {
@@ -1196,7 +1421,9 @@ export default {
           })
         }
       })
+      var units = ''
       itemData.forEach(element => {
+        units = element.units
         legendData.push(element.name)
       })
       if (graphData[0].graphtype === 2) {
@@ -1205,11 +1432,11 @@ export default {
           var value
           var name
           switch (gItemData[a].calc_fnc) {
-            case 1 : value = trendData[trendData.length - 1].value_min
+            case 1: value = trendData[trendData.length - 1].value_min
               break
-            case 2 : value = trendData[trendData.length - 1].value_avg
+            case 2: value = trendData[trendData.length - 1].value_avg
               break
-            case 4 : value = trendData[trendData.length - 1].value_max
+            case 4: value = trendData[trendData.length - 1].value_max
               break
           }
           name = legendData[a]
@@ -1219,7 +1446,6 @@ export default {
           })
           colorData.push('#' + gItemData[a].color)
         }
-        console.log(seriesData)
         const pieCharts = document.getElementById('charts-graph-demo-' + index1)
         const pieEcharts = document.getElementById('pieEcharts')
         pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
@@ -1266,11 +1492,11 @@ export default {
               returndataclock.push(clock)
             }
             switch (gItemData[i].calc_fnc) {
-              case 1 : data.push(trendData[j].value_min)
+              case 1: data.push(trendData[j].value_min)
                 break
-              case 2 : data.push(trendData[j].value_avg)
+              case 2: data.push(trendData[j].value_avg)
                 break
-              case 4 : data.push(trendData[j].value_max)
+              case 4: data.push(trendData[j].value_max)
                 break
             }
           }
@@ -1320,7 +1546,6 @@ export default {
           }
           series.data = data
           seriesData.push(series)
-          console.log(seriesData)
         }
         const pieCharts = document.getElementById('charts-graph-demo-' + index1)
         const pieEcharts = document.getElementById('pieEcharts')
@@ -1357,7 +1582,7 @@ export default {
               type: 'category',
               data: returndataclock,
               axisLabel: {
-                interval: 0,
+                interval: 2,
                 rotate: 45, // 倾斜度-90至90默认为0
                 margin: 2,
                 textStyle: {
@@ -1370,7 +1595,10 @@ export default {
           ],
           yAxis: [
             {
-              type: 'value'
+              type: 'value',
+              axisLabel: {
+                formatter: '{value} ' + units
+              }
             }
           ],
           series: seriesData
@@ -1439,7 +1667,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(resp.data)
             this.$message({
               message: '新增成功',
               type: 'success'
@@ -1460,9 +1687,52 @@ export default {
       this.$refs.gPopover.doClose()
       this.showGraphsInfo()
     },
+    valuetypeformatter (row) {
+      var name = ''
+      switch (row.value_type) {
+        case 0:
+          name = 'Float'
+          break
+        case 1:
+          name = 'Char'
+          break
+        case 2:
+          name = 'log'
+          break
+        case 3:
+          name = 'Numeric'
+          break
+        case 4:
+          name = 'Text'
+          break
+        default:
+          name = ''
+          break
+      }
+      return name
+    },
+    statusformat (row) {
+      var name = ''
+      switch (row.status) {
+        case 0:
+          name = '启用'
+          break
+        default:
+          name = '<span style="color:red">停用</span>'
+          break
+      }
+      return name
+    },
+    popoverFormInfo () {
+      this.multipleSelection1.forEach(row => {
+        this.$refs.multipleTable.toggleRowSelection(row, true) // 回显
+      })
+    },
     closePopover () {
       this.$refs.gPopover.doClose()
       this.form.gitems = []
+      this.form.name = ''
+      this.$refs.multipleTable.clearSelection()
     },
     handleDelete (index, row) {
       this.form.gitems.splice(index, 1)
@@ -1498,10 +1768,48 @@ export default {
       }
       return num
     },
-    rightChose () {
-      var _this = this.multipleSelection1
+    changeItemCheck (_this) {
+      var flag = true
       for (var i = 0; i < _this.length; i++) {
-        console.log(this.showRandomColor())
+        if (_this[i].status === 1) {
+          flag = false
+          return
+        }
+      }
+      return flag
+    },
+    changeItemCheckUnits (_this) {
+      var flag = true
+      for (var i = 0; i < _this.length; i++) {
+        var j = 0
+        if (i - 1 >= _this.length) {
+          j = i + 1
+        }
+        if (_this[i].units !== _this[j].units) {
+          flag = false
+          return
+        }
+      }
+      return flag
+    },
+    rightChose () {
+      console.log(this.multipleSelection1)
+      var _this = this.multipleSelection1
+      if (!this.changeItemCheck(_this)) {
+        this.$message({
+          message: '请选择启用项',
+          type: 'error'
+        })
+        return
+      }
+      if (!this.changeItemCheckUnits(_this)) {
+        this.$message({
+          message: '请选择相同单位项',
+          type: 'error'
+        })
+        return
+      }
+      for (var i = 0; i < _this.length; i++) {
         var breaked = false
         var gitems = {
           name: '',
@@ -1525,16 +1833,18 @@ export default {
         gitems.itemid = _this[i].itemid
         this.form.gitems.push(gitems)
       }
+      console.log(this.multipleSelection1)
+      // this.$refs.multipleTable.clearSelection()
       this.$refs.gList.doClose()
     },
     toggleSelection (rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
-        })
-      } else {
-        this.$refs.multipleTable.clearSelection()
-      }
+      // if (rows) {
+      //   rows.forEach(row => {
+      //     this.$refs.multipleTable.toggleRowSelection(row)
+      //   })
+      // } else {
+      //   this.$refs.multipleTable.clearSelection()
+      // }
       this.$refs.gList.doClose()
     },
     handleSelectionChange (val) {
@@ -1581,9 +1891,37 @@ export default {
     handleCurrentGraphChange (val) {
       this.currentGraphPage = val
     },
-    getRowKey (row) {
+    getRowKey1 (row) {
       return row.id
+    },
+    getRowKey2 (row) {
+      return row.id
+    },
+    getRowKey3 (row) {
+      return row.itemid
+    },
+    getRowKey4 (row) {
+      return row.id
+    },
+    refreshInfo () {
+      this.getShowData()
+      this.getGraphData()
+      this.form.ymax_type = this.yOptions[0].value
+      this.form.ymin_type = this.yOptions[0].value
+      this.form.graphtype = this.graphtypeOptions[0].value
     }
+  },
+  mounted () {
+    if (this.timer) {
+      clearInterval(this.timer)
+    } else {
+      this.timer = setInterval(() => {
+        this.refreshInfo()
+      }, 1000 * 10 * 1)
+    }
+  },
+  destroyed () {
+    clearInterval(this.timer)
   },
   actions: {
   },
