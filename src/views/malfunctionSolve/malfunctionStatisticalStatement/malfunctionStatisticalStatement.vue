@@ -24,11 +24,11 @@
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright">
-        <el-button type="primary" size="small" @click="showClear() == false">打印</el-button>
+        <el-button type="primary" size="small" v-print="'#print'">打印</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">导出</el-button>
       </div>
     </ToolBar>
-    <div style="background-color: white;">
+    <div style="background-color: white;" id="print">
       <div style="text-align: center;">
         <h2 style="padding-top: 5px">故障解决统计报表</h2>
       </div>
@@ -72,7 +72,6 @@
 </template>
 <script>
 import qs from 'qs'
-
 export default {
   methods: {
     // 修改table header的背景色

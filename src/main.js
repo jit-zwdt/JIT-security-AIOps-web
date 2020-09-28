@@ -15,6 +15,7 @@ import ToolBar from '@/components/ToolBar.vue'
 import echarts from 'echarts'
 import api from '@/api/api'
 import './promission'// 这里进行路由后台获取的模拟
+import Print from 'vue-print-nb'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)
@@ -24,13 +25,13 @@ Vue.use(ElementUI)
 Vue.use(ToolBar)
 Vue.prototype.GlobalCfg = Config
 Vue.component('ToolBar', ToolBar)
+Vue.use(Print)
 router.beforeResolve((to, from, next) => {
   if (to.name) {
     NProgress.start()
   }
   next()
 })
-
 router.afterEach(() => {
   NProgress.done()
 })
