@@ -71,6 +71,24 @@
     >
       <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
+          <div style="width: 100%; height: 3rem">
+            <div style="float: right">
+              刷新时间：
+              <el-select
+                v-model="selecttimevalue"
+                style="width: 6rem; margin-left: 20px"
+                @change="selecttimevalueAction()"
+              >
+                <el-option
+                  v-for="item in selecttimevalueoptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+          </div>
           <div
             class="card dark-main-background queryleft card-width"
             v-for="(items, index) in itemstableData"
@@ -574,7 +592,10 @@
                                 >取消选择</el-button
                               >
                             </div>
-                            <el-button type="text" slot="reference" @click="popoverFormInfo()"
+                            <el-button
+                              type="text"
+                              slot="reference"
+                              @click="popoverFormInfo()"
                               >新增</el-button
                             >
                           </el-popover>
@@ -869,7 +890,22 @@ export default {
         graphtype: ''
       }],
       setTimeoutGraphs: '',
-      graphsloading: ''
+      graphsloading: '',
+      selecttimevalue: '1',
+      selecttimevalueoptions: [
+        {
+          label: '5分钟',
+          value: '1'
+        },
+        {
+          label: '10分钟',
+          value: '2'
+        },
+        {
+          label: '30分钟',
+          value: '3'
+        }
+      ]
     }
   },
   created () {
@@ -924,7 +960,6 @@ export default {
             this.tableData = json.data
             json.data.forEach(element => {
               if (element.value_type !== 1 && element.value_type !== 2 && element.value_type !== 4) {
-                console.log(element)
                 this.forShowData.push(element)
               }
             })
@@ -1909,6 +1944,25 @@ export default {
       this.form.ymax_type = this.yOptions[0].value
       this.form.ymin_type = this.yOptions[0].value
       this.form.graphtype = this.graphtypeOptions[0].value
+    },
+    selecttimevalueAction () {
+      var time = this.selecttimevalue
+      if (time === '1') {
+        clearInterval(this.timer)
+        this.timer = setInterval(() => {
+          this.refreshInfo()
+        }, 1000 * 60 * 5)
+      } else if (time === '2') {
+        clearInterval(this.timer)
+        this.timer = setInterval(() => {
+          this.refreshInfo()
+        }, 1000 * 60 * 10)
+      } else if (time === '3') {
+        clearInterval(this.timer)
+        this.timer = setInterval(() => {
+          this.refreshInfo()
+        }, 1000 * 60 * 30)
+      }
     }
   },
   mounted () {
@@ -1917,7 +1971,7 @@ export default {
     } else {
       this.timer = setInterval(() => {
         this.refreshInfo()
-      }, 1000 * 10 * 1)
+      }, 1000 * 60 * 5)
     }
   },
   destroyed () {
@@ -2079,6 +2133,9 @@ a:hover {
   width: 32.5%;
   margin-left: 10px;
   margin-top: 0px;
+}
+/deep/.el-input--suffix {
+  margin-left: -10px;
 }
 @media screen and (max-width: 1500px) {
   .card-width {
