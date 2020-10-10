@@ -327,7 +327,6 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
-            console.log(this.tableData)
           }
         } else {
           this.$message({
@@ -368,14 +367,11 @@ export default {
       return formatTodate(str.zabbixProblemDTO.clock, 'YYYY-MM-DD HH:mm:ss')
     },
     formattercontinuous (str) {
-      console.log(str)
-      // return formatTodate(this.continuousTime, 'YYYY-MM-DD HH:mm:ss')
       return this.getTimedata(str)
     },
     getTimedata (str) {
       var date1 = formatTodate(str.zabbixProblemDTO.clock, 'YYYY-MM-DD HH:mm:ss') // 开始时间
       var date2 = new Date() // 当前时间
-      console.log(date2)
       var date3 = date2.getTime() - new Date(date1).getTime() // 时间差的毫秒数
       // 计算出相差天数
       var days = Math.floor(date3 / (24 * 3600 * 1000))

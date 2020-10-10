@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column
                 label="处理人"
-                prop="zabbixProblemDTO.ns"
+                prop="claimUser"
                 min-width="10%"
                 :resizable="false"
             ></el-table-column>
@@ -112,6 +112,7 @@ export default {
         label: '已认领'
       }],
       tableData: [{
+        claimUser: '',
         name: '',
         ns: '',
         severity: '',
@@ -120,6 +121,7 @@ export default {
       assetform: {
         eventid: '',
         name: '',
+        claimUser: '',
         ns: '',
         severity: '',
         objectid: '',
