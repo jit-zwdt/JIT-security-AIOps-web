@@ -16,7 +16,6 @@ router.beforeEach((to, from, next) => {
           axios.get(api.sysManager.getMenus).then(res => {
             if (res.status === 200) {
               if (res.data.code === 1) {
-                console.log(res.data.data)
                 getRouter = res.data.data
                 saveObjArr('router', getRouter)
                 routerGo(to, next)
