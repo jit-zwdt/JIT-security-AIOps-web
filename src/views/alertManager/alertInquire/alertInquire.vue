@@ -60,6 +60,18 @@
           type="primary"
           size="small"
           style="
+            background-color: #8E8E8E;
+            border: none;
+            color: #ffffff;
+            weight: 10;
+            font-size: 15px;
+          "
+          >未定义</el-button
+        >
+        <el-button
+          type="primary"
+          size="small"
+          style="
             background-color: #81c0c0;
             border: none;
             color: #ffffff;
@@ -108,7 +120,7 @@
           type="primary"
           size="small"
           style="
-            background-color: #ea0000;
+            background-color: #800000;
             border: none;
             color: #ffffff;
             weight: 10;
@@ -265,7 +277,7 @@ export default {
       } else if (row.zabbixProblemDTO.severity === 4) {
         return 'background-color: #ff2020;color: #FFFFFF'
       } else if (row.zabbixProblemDTO.severity === 5) {
-        return 'background-color: #EA0000;color: #FFFFFF'
+        return 'background-color: #800000;color: #FFFFFF'
       }
     },
     load () {
