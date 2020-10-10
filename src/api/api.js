@@ -42,9 +42,7 @@ const api = {
       }
     },
     alertInquire: {
-      alertInquire: {
-        findProblemHost: '/problem/findProblemHost'
-      }
+      findProblemHost: '/problem/findProblemHost'
     },
     alertTemplate: {
       alertTemplate: {

@@ -4,189 +4,196 @@
       <div class="queryleft">
         <el-col :span="8">
           <el-select
-            v-model="severity"
-            class="datetop"
-            filterable
-            placeholder="告警级别"
-            clearable
+              v-model="severity"
+              class="datetop"
+              filterable
+              placeholder="告警级别"
+              clearable
           >
             <el-option
-              v-for="item in severityOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+                v-for="item in severityOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
             >
             </el-option>
           </el-select>
         </el-col>
         <el-date-picker
-          v-model="timeFrom"
-          type="date"
-          placeholder="开始日期"
-          class="datetop"
+            v-model="timeFrom"
+            type="date"
+            placeholder="开始日期"
+            class="datetop"
         ></el-date-picker>
         <el-date-picker
-          v-model="timeTill"
-          type="date"
-          placeholder="结束日期"
-          class="datetop"
+            v-model="timeTill"
+            type="date"
+            placeholder="结束日期"
+            class="datetop"
         ></el-date-picker>
         <el-col :span="12">
           <el-input
-            type="text"
-            v-model="name"
-            size="small"
-            placeholder="告警标题"
-            clearable
+              type="text"
+              v-model="name"
+              size="small"
+              placeholder="告警标题"
+              clearable
           ></el-input>
         </el-col>
         <el-button
-          type="primary"
-          size="small"
-          @click="showInfo() == false"
-          icon="el-icon-search"
-          >查询</el-button
+            type="primary"
+            size="small"
+            @click="showInfo() == false"
+            icon="el-icon-search"
+        >查询
+        </el-button
         >
         <el-button
-          type="primary"
-          size="small"
-          @click="showClear() == false"
-          icon="el-icon-refresh-left"
-          >重置</el-button
+            type="primary"
+            size="small"
+            @click="showClear() == false"
+            icon="el-icon-refresh-left"
+        >重置
+        </el-button
         >
       </div>
       <div style="float: right">
         <el-button
-          type="primary"
-          size="small"
-          style="
+            type="primary"
+            size="small"
+            style="
             background-color: #8E8E8E;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-          >未定义</el-button
+        >未定义
+        </el-button
         >
         <el-button
-          type="primary"
-          size="small"
-          style="
+            type="primary"
+            size="small"
+            style="
             background-color: #81c0c0;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-          >信息</el-button
+        >信息
+        </el-button
         >
         <el-button
-          type="primary"
-          size="small"
-          style="
+            type="primary"
+            size="small"
+            style="
             background-color: #ffd306;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-          >警告</el-button
+        >警告
+        </el-button
         >
         <el-button
-          type="primary"
-          size="small"
-          style="
+            type="primary"
+            size="small"
+            style="
             background-color: #ea7500;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-          >一般严重</el-button
+        >一般严重
+        </el-button
         >
         <el-button
-          type="primary"
-          size="small"
-          style="
+            type="primary"
+            size="small"
+            style="
             background-color: #ff2020;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-          >严重</el-button
+        >严重
+        </el-button
         >
         <el-button
-          type="primary"
-          size="small"
-          style="
+            type="primary"
+            size="small"
+            style="
             background-color: #800000;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-          >灾难</el-button
+        >灾难
+        </el-button
         >
       </div>
       <div class="queryright"></div>
     </ToolBar>
     <el-table
-      :data="tableData"
-      v-loading="loading"
-      border
-      style="width: 100%"
-      :row-style="tableRowStyle"
-      :cell-style="yellowBg"
-      :header-cell-style="tableHeaderColor"
+        :data="tableData"
+        v-loading="loading"
+        border
+        style="width: 100%"
+        :row-style="tableRowStyle"
+        :cell-style="yellowBg"
+        :header-cell-style="tableHeaderColor"
     >
       <el-table-column
-        label="告警时间"
-        prop="zabbixProblemDTO.clock"
-        :resizable="false"
-        :formatter="formatterdata"
-        width="250"
+          label="告警时间"
+          prop="zabbixProblemDTO.clock"
+          :resizable="false"
+          :formatter="formatterdata"
+          width="250"
       ></el-table-column>
       <el-table-column
-        label="主机名称"
-        prop="hostName"
-        :resizable="false"
-        width="200"
+          label="主机名称"
+          prop="hostName"
+          :resizable="false"
+          width="200"
       ></el-table-column>
       <el-table-column
-        label="告警标题"
-        prop="zabbixProblemDTO.name"
-        :resizable="false"
+          label="主机IP"
+          prop="ip"
+          :resizable="false"
+          width="200"
       ></el-table-column>
-      <!-- <el-table-column
-        label="当前时间"
-        prop="currentTime"
-        :resizable="false"
-        :formatter="formattercurrent"
-        width="200"
-      ></el-table-column> -->
       <el-table-column
-        label="持续时间"
-        prop="continuousTime"
-        :resizable="false"
-        :formatter="formattercontinuous"
-        width="250"
+          label="告警标题"
+          prop="zabbixProblemDTO.name"
+          :resizable="false"
       ></el-table-column>
-      <!-- <el-table-column
-        label="级别"
-        prop="zabbixProblemDTO.severity"
-        min-width="10%"
-        :resizable="false"
-        :formatter="severityLevelFormat"
-        :v-show="false"
+      <el-table-column
+          label="持续时间"
+          prop="continuousTime"
+          :resizable="false"
+          :formatter="formattercontinuous"
+          width="250"
+      ></el-table-column>
+      <el-table-column
+          label="级别"
+          prop="zabbixProblemDTO.severity"
+          min-width="10%"
+          :resizable="false"
+          :formatter="severityLevelFormat"
+          :v-show="false"
       >
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <div>
       <ul
-        class="infinite-list"
-        v-infinite-scroll="load"
-        style="overflow: auto"
+          class="infinite-list"
+          v-infinite-scroll="load"
+          style="overflow: auto"
       ></ul>
     </div>
   </div>
@@ -287,7 +294,9 @@ export default {
       this.loading = true
       this.tableData = this.tableDataclear
       const _this = this
-      this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
+      this.setTimeoutster = window.setTimeout(() => {
+        _this.showInfoTimeout()
+      }, 300)
     },
     showInfoTimeout (str) {
       this.setTimeoutster = ''
@@ -313,11 +322,10 @@ export default {
         timeTill: endTimestr,
         name: this.name
       }
-      this.axios.post(api.alertManager.alertInquire.alertInquire.findProblemHost, region).then((resp) => {
+      this.axios.post(api.alertManager.alertInquire.findProblemHost, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            // console.log(json.data)
             this.tableData = json.data
             console.log(this.tableData)
           }
@@ -360,6 +368,7 @@ export default {
       return formatTodate(str.zabbixProblemDTO.clock, 'YYYY-MM-DD HH:mm:ss')
     },
     formattercontinuous (str) {
+      console.log(str)
       // return formatTodate(this.continuousTime, 'YYYY-MM-DD HH:mm:ss')
       return this.getTimedata(str)
     },
@@ -376,21 +385,15 @@ export default {
       // 计算相差分钟数
       var leave2 = leave1 % (3600 * 1000) // 计算小时数后剩余的毫秒数
       var minutes = Math.floor(leave2 / (60 * 1000))
-      // 计算相差秒数
-      // var leave3 = leave2 % (60 * 1000) // 计算分钟数后剩余的毫秒数
-      // var seconds = Math.round(leave3 / 1000)
-      return days + 'd ' + hours + 'h ' + minutes + 'm'
+      return days + '天 ' + hours + '小时 ' + minutes + '分'
     }
-    // formattercurrent () {
-    //   return formatTodate(this.currentTime, 'YYYY-MM-DD HH:mm:ss')
-    // }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.datetop /deep/ input {
-  height: 32px !important;
-  margin-top: 1px !important;
-}
+  .datetop /deep/ input {
+    height: 32px !important;
+    margin-top: 1px !important;
+  }
 </style>
