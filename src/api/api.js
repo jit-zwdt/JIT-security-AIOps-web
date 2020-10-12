@@ -14,7 +14,8 @@ const api = {
       assetsList: {
         deleteAssets: '/assets/deleteAssets/',
         findByCondition: '/assets/findByCondition'
-      }
+      },
+      getHardwareInfo: '/assets/getHardwareInfo/'
     }
   },
   alertManager: {
@@ -158,6 +159,7 @@ const api = {
     checkItemText: '/sys/dictionary/checkItemText',
     addDictionaryItem: '/sys/dictionary/addDictionaryItem',
     findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
+    getDictByCode: '/sys/dictionary/getDictByCode/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
     getMenusList: '/sys/menu/getMenusList',

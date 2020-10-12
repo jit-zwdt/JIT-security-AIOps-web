@@ -1,213 +1,240 @@
 <template>
   <el-dialog
-  @opened="openDialog"
-  :width="dialogWidth"
-  :title="title"
-  :visible.sync="showEditDialog"
-  :show-close="false"
-  :close-on-click-modal="false"
+      @opened="openDialog"
+      :width="dialogWidth"
+      :title="title"
+      :visible.sync="showEditDialog"
+      :show-close="false"
+      :close-on-click-modal="false"
   >
     <div>
       <ToolBar>
         <el-form
-          :model="serverListForm"
-          ref="serverListForm"
-          class="edit-forms fromadd"
-          label-position="right"
-          :label-width="labelWidth"
-          :disabled="!assetform.buttonflag"
-          :rules="rules"
+            :model="serverListForm"
+            ref="serverListForm"
+            class="edit-forms fromadd"
+            label-position="right"
+            :label-width="labelWidth"
+            :disabled="!assetform.buttonflag"
+            :rules="rules"
         >
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="资产名称：" prop="name">
-              <el-input v-model="serverListForm.name" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产编号：" prop="number">
-              <el-input v-model="serverListForm.number" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="资产类型：" prop="type">
-              <el-select v-model="serverListForm.type" placeholder="请选择" style="width: 100%">
-                <el-option
-                  v-for="item in typeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产状态：" prop="state">
-              <el-select v-model="serverListForm.state" placeholder="请选择" style="width: 100%">
-                <el-option
-                  v-for="item in stateOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="数量：" prop="amount">
-              <el-input v-model="serverListForm.amount" oninput="value=value.replace(/[^\d]/g,'')" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产位置：" prop="location">
-              <el-input v-model="serverListForm.location" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="资产国标大类：" prop="gbType">
-              <el-input v-model="serverListForm.gbType"  clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="价值：" prop="worth">
-              <el-input v-model="serverListForm.worth" oninput="value=value.replace(/[^\d]/g,'')" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="ip：" prop="ip">
-              <el-input v-model="serverListForm.ip"  clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="备用ip：" prop="backupIp">
-              <el-input v-model="serverListForm.backupIp" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="取得方式：" prop="acquisitionMode">
-              <el-input v-model="serverListForm.acquisitionMode"  clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="使用部门：" prop="userDepartment">
-              <el-input v-model="serverListForm.userDepartment" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="使用人：" prop="user">
-              <el-input v-model="serverListForm.user"  clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用途分类：" prop="objectClassification">
-              <el-input v-model="serverListForm.objectClassification" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="品牌：" prop="brand">
-              <el-input v-model="serverListForm.brand"  clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="型号：" prop="productModel">
-              <el-input v-model="serverListForm.productModel" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="资产所属人：" prop="belongsPerson">
-              <el-input v-model="serverListForm.belongsPerson" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产所属单位：" prop="belongsDept">
-              <el-input v-model="serverListForm.belongsDept" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="登记人：" prop="registrant">
-              <el-input v-model="serverListForm.registrant" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产登记时间：" prop="registerDate" >
-              <el-date-picker
-                v-model="serverListForm.registerDate"
-                type="date"
-                placeholder="资产登记时间"
-                class="datetop"
-                style="width: 100%">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="资产修改时间：" prop="updateDate">
-              <el-date-picker
-                v-model="serverListForm.updateDate"
-                type="date"
-                placeholder="资产修改时间"
-                class="datetop"
-                style="width: 100%">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="资产注销时间：" prop="logoutDate">
-              <el-date-picker
-                v-model="serverListForm.logoutDate"
-                type="date"
-                placeholder="资产注销时间"
-                class="datetop"
-                style="width: 100%">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40">
-          <el-col :span="12">
-            <el-form-item label="财务入账日期：" prop="dateRecorded">
-              <el-date-picker
-                      v-model="serverListForm.dateRecorded"
-                      type="date"
-                      placeholder="财务入账日期"
-                      class="datetop"
-                      style="width: 100%">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="资产名称：" prop="name">
+                <el-input v-model="serverListForm.name" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="资产编号：" prop="number">
+                <el-input v-model="serverListForm.number" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="资产类别：" prop="type">
+                <el-select v-model="serverListForm.type" placeholder="请选择" @change="changeType()" style="width: 100%">
+                  <el-option
+                      v-for="item in typeOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="资产状态：" prop="state">
+                <el-select v-model="serverListForm.state" placeholder="请选择" style="width: 100%">
+                  <el-option
+                      v-for="item in stateOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40" v-if="serverListForm.type === '1'">
+            <el-col :span="24">
+              <el-form-item label="所属硬件：" prop="parentId">
+                <el-select v-model="serverListForm.parentId" placeholder="请选择" filterable style="width: 100%">
+                  <el-option
+                      v-for="item in hardwareOptions"
+                      :key="item[0]"
+                      :label="item[1]+'('+item[2]+')'"
+                      :value="item[0]">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="ip：" prop="ip">
+                <el-input v-model="serverListForm.ip" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="备用ip：" prop="backupIp">
+                <el-input v-model="serverListForm.backupIp" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="资产分类：" prop="classify">
+                <el-select v-model="serverListForm.classify" placeholder="请选择" style="width: 100%">
+                  <el-option
+                      v-for="item in zcfl"
+                      :key="item.value"
+                      :label="item.text"
+                      :value="item.value"
+                      :disabled="item.status">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="资产位置：" prop="location">
+                <el-input v-model="serverListForm.location" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="序列号：" prop="sn">
+                <el-input v-model="serverListForm.sn" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="价格：" prop="worth">
+                <el-input v-model="serverListForm.worth" oninput="value=value.replace(/[^\d]/g,'')"
+                          clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="取得方式：" prop="acquisitionMode">
+                <el-input v-model="serverListForm.acquisitionMode" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="使用部门：" prop="userDepartment">
+                <el-input v-model="serverListForm.userDepartment" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="使用人：" prop="user">
+                <el-input v-model="serverListForm.user" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用途分类：" prop="objectClassification">
+                <el-input v-model="serverListForm.objectClassification" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="品牌：" prop="brand">
+                <el-input v-model="serverListForm.brand" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="型号：" prop="productModel">
+                <el-input v-model="serverListForm.productModel" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="资产所属人：" prop="belongsPerson">
+                <el-input v-model="serverListForm.belongsPerson" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="资产所属单位：" prop="belongsDept">
+                <el-input v-model="serverListForm.belongsDept" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="登记人：" prop="registrant">
+                <el-input v-model="serverListForm.registrant" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="资产登记时间：" prop="registerDate">
+                <el-date-picker
+                    v-model="serverListForm.registerDate"
+                    type="date"
+                    placeholder="资产登记时间"
+                    class="datetop"
+                    value-format="yyyy-MM-dd"
+                    style="width: 100%">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="资产修改时间：" prop="updateDate">
+                <el-date-picker
+                    v-model="serverListForm.updateDate"
+                    type="date"
+                    placeholder="资产修改时间"
+                    class="datetop"
+                    value-format="yyyy-MM-dd"
+                    style="width: 100%">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="资产注销时间：" prop="logoutDate">
+                <el-date-picker
+                    v-model="serverListForm.logoutDate"
+                    type="date"
+                    placeholder="资产注销时间"
+                    value-format="yyyy-MM-dd"
+                    class="datetop"
+                    style="width: 100%">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40">
+            <el-col :span="12">
+              <el-form-item label="财务入账日期：" prop="dateRecorded">
+                <el-date-picker
+                    v-model="serverListForm.dateRecorded"
+                    type="date"
+                    placeholder="财务入账日期"
+                    value-format="yyyy-MM-dd"
+                    class="datetop"
+                    style="width: 100%">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
       </ToolBar>
     </div>
-    <div slot="footer" class="dialog-footer" >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="closefrom()">取消</el-button>
-      <el-button type="primary" @click="submitOrUpdate('serverListForm')" v-if="assetform.buttonflag" >确认</el-button>
+      <el-button type="primary" @click="submitOrUpdate('serverListForm')" v-if="assetform.buttonflag">确认</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
 import { resetObject } from '@/utils/common'
-import { formatTodate } from '@/utils/format.js'
 import api from '@/api/api'
+
 export default {
   props: {
     assetform: {
@@ -235,12 +262,11 @@ export default {
         id: '',
         name: '',
         type: '',
+        classify: '',
         number: '',
         state: '',
-        gbType: '',
         ip: '',
         backupIp: '',
-        amount: '',
         belongsDept: '',
         belongsPerson: '',
         registerDate: '',
@@ -256,7 +282,8 @@ export default {
         objectClassification: '',
         sn: '',
         brand: '',
-        productModel: ''
+        productModel: '',
+        parentId: ''
       },
       stateOptions: [{
         value: '0',
@@ -268,20 +295,16 @@ export default {
         value: '2',
         label: '禁用'
       }],
+      hardwareOptions: [],
       typeOptions: [{
+        value: '0',
+        label: '硬件'
+      }, {
         value: '1',
-        label: '网络设备'
-      }, {
-        value: '2',
-        label: '通讯设备'
-      }, {
-        value: '3',
-        label: '服务器'
-      }, {
-        value: '4',
-        label: '云平台'
+        label: '软件'
       }],
       id: '',
+      zcfl: [],
       rules: {
         name: [
           { required: true, message: '请输入资产名称' }
@@ -290,7 +313,7 @@ export default {
           { required: true, message: '请输入资产编号' }
         ],
         type: [
-          { required: true, message: '请选择资产类型' }
+          { required: true, message: '请选择资产类别' }
         ],
         state: [
           { required: true, message: '请选择资产状态' }
@@ -353,7 +376,6 @@ export default {
             })
             this.clearform()
             this.$emit('success')
-            // this.$router.push({ path: '/assetsManager/assetsList' })
           }
         } else {
           this.$message({
@@ -396,7 +418,6 @@ export default {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
-              // console.log(json.data.dataList[0])
               this.serverListForm = json.data
             }
           } else {
@@ -410,31 +431,21 @@ export default {
       }
     },
     makeParam () {
-      var registerDate = this.serverListForm.registerDate
-      registerDate = formatTodate(registerDate, 'YYYY-MM-DD HH:mm:ss')
-      var updateDate = this.serverListForm.updateDate
-      updateDate = formatTodate(updateDate, 'YYYY-MM-DD HH:mm:ss')
-      var logoutDate = this.serverListForm.logoutDate
-      logoutDate = formatTodate(logoutDate, 'YYYY-MM-DD HH:mm:ss')
-      var dateRecorded = this.serverListForm.dateRecorded
-      dateRecorded = formatTodate(dateRecorded, 'YYYY-MM-DD HH:mm:ss')
       const region = {
         name: this.serverListForm.name,
         type: this.serverListForm.type,
         number: this.serverListForm.number,
         state: this.serverListForm.state,
-        gbType: this.serverListForm.gbType,
         ip: this.serverListForm.ip,
         backupIp: this.serverListForm.backupIp,
-        amount: this.serverListForm.amount,
         belongsDept: this.serverListForm.belongsDept,
         belongsPerson: this.serverListForm.belongsPerson,
-        registerDate: registerDate,
+        registerDate: this.serverListForm.registerDate,
         registrant: this.serverListForm.registrant,
-        updateDate: updateDate,
+        updateDate: this.serverListForm.updateDate,
         location: this.serverListForm.location,
-        logoutDate: logoutDate,
-        dateRecorded: dateRecorded,
+        logoutDate: this.serverListForm.logoutDate,
+        dateRecorded: this.serverListForm.dateRecorded,
         worth: this.serverListForm.worth,
         acquisitionMode: this.serverListForm.acquisitionMode,
         userDepartment: this.serverListForm.userDepartment,
@@ -442,10 +453,51 @@ export default {
         objectClassification: this.serverListForm.objectClassification,
         sn: this.serverListForm.sn,
         brand: this.serverListForm.brand,
-        productModel: this.serverListForm.productModel
+        productModel: this.serverListForm.productModel,
+        classify: this.serverListForm.classify,
+        parentId: this.serverListForm.parentId
       }
       return region
+    },
+    getDictByCode (code) {
+      this.axios.get(this.$api.sysManager.getDictByCode + code).then((resp) => {
+        if (resp.status === 200) {
+          const json = resp.data
+          if (json.code === 1) {
+            this.zcfl = json.data
+          }
+        } else {
+          this.$message({
+            message: '获取字典信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    changeType () {
+      if (this.serverListForm.type === '1') {
+        this.getHardwareInfo()
+      }
+    },
+    getHardwareInfo () {
+      this.axios.get(this.$api.assetsManager.assetsList.getHardwareInfo).then((resp) => {
+        if (resp.status === 200) {
+          const json = resp.data
+          if (json.code === 1) {
+            this.hardwareOptions = json.data
+          }
+        } else {
+          this.$message({
+            message: '获取硬件信息失败',
+            type: 'error'
+          })
+        }
+      })
     }
+  },
+  mounted () {
+    this.getDictByCode('zcfl')
+    this.getHardwareInfo()
   }
 }
 </script>
