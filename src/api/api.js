@@ -208,7 +208,12 @@ const api = {
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
     delScheduleTask: '/sys/scheduleTask/delScheduleTask/',
     changeStatus: '/sys/scheduleTask/changeStatus/',
-    getScheduleTask: '/sys/scheduleTask/getScheduleTask/'
+    getScheduleTask: '/sys/scheduleTask/getScheduleTask/',
+    // cronExpressionManager
+    getCronExpressions: '/sys/cronExpression/getCronExpressions',
+    addCronExpression: '/sys/cronExpression/addCronExpression',
+    delCronExpression: '/sys/cronExpression/delCronExpression/',
+    getCronExpression: '/sys/cronExpression/getCronExpression/'
   },
   inspectionManager: {
     makePdf: '/inspection/makePdf'

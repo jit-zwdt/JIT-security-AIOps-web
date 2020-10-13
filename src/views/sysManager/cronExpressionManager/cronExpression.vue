@@ -3,23 +3,7 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="10">
-          <el-input type="text" v-model="jobClassName" size="small" placeholder="任务类名" clearable></el-input>
-        </el-col>
-        <el-col :span="5">
-          <el-select
-              v-model="status"
-              class="datetop"
-              filterable
-              placeholder="任务状态"
-              clearable
-          >
-            <el-option
-                v-for="item in statusList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            ></el-option>
-          </el-select>
+          <el-input type="text" v-model="cronExpressionDesc" size="small" placeholder="表达式名称" clearable></el-input>
         </el-col>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
@@ -29,8 +13,15 @@
             type="primary"
             size="small"
             icon="el-icon-plus"
-            @click="scheduleTaskAdd()"
+            @click="cronExpressionAdd()"
         >新增
+        </el-button>
+        <el-button
+            type="primary"
+            size="small"
+            icon="el-icon-finished"
+            @click="testCronExpression()"
+        >测试
         </el-button>
       </div>
     </ToolBar>
@@ -43,39 +34,18 @@
         :header-cell-style="tableHeaderColor"
     >
       <el-table-column label="id" prop="id" v-if="false"></el-table-column>
-      <el-table-column label="任务类名" prop="jobClassName" min-width="120"></el-table-column>
-      <el-table-column label="任务方法名" prop="jobMethodName" min-width="80"></el-table-column>
-      <el-table-column label="cron表达式" prop="cronExpression" min-width="55"></el-table-column>
-      <el-table-column label="传递参数（json串格式）" prop="jsonParam" min-width="100"></el-table-column>
-      <el-table-column label="分组" prop="jobGroup" min-width="30"></el-table-column>
-      <el-table-column label="状态" prop="status" min-width="35" :formatter="statusFormat"></el-table-column>
-      <el-table-column label="描述" prop="description" min-width="70"></el-table-column>
-      <el-table-column align="center" label="操作" min-width="160">
+      <el-table-column label="表达式名称" prop="cronExpressionDesc" min-width="120"></el-table-column>
+      <el-table-column label="cron表达式" prop="cronExpression" min-width="120"></el-table-column>
+      <el-table-column align="center" label="操作" min-width="40">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.status === 0"
-                     size="mini"
-                     type="warning"
-                     slot="reference"
-                     icon="el-icon-switch-button"
-                     @click="changeStatus(scope.row.id)"
-          >停止
-          </el-button>
-          <el-button v-if="scope.row.status === 1"
-                     size="mini"
-                     type="success"
-                     slot="reference"
-                     icon="el-icon-switch-button"
-                     @click="changeStatus(scope.row.id)"
-          >启动
-          </el-button>
-          <el-button
+          <!--<el-button
               size="mini"
               type="primary"
               slot="reference"
               icon="el-icon-edit-outline"
               @click="modifyScheduleTask(scope.row.id)"
           >编辑
-          </el-button>
+          </el-button>-->
           <el-popconfirm title="确定删除吗？" @onConfirm="deleteScheduleTask(scope.row.id)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
           </el-popconfirm>
@@ -83,34 +53,26 @@
       </el-table-column>
     </el-table>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
-    <ScheduleTaskAdd
+    <CronExpressionAdd
         :title="title"
         :showEditDialog="showEditDialog"
         @close="showEditDialog = false"
         :requestData="requestData"
         @success="reloadData"
         @error="reloadData"
-    ></ScheduleTaskAdd>
+    ></CronExpressionAdd>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
-import ScheduleTaskAdd from '@/views/sysManager/scheduleTaskManager/scheduleTaskAdd.vue'
+import CronExpressionAdd from '@/views/sysManager/cronExpressionManager/cronExpressionAdd.vue'
 
 export default {
   data () {
     return {
-      jobClassName: '',
-      status: '',
+      cronExpressionDesc: '',
       title: '',
       showEditDialog: false,
-      statusList: [{
-        value: 0,
-        label: '已启动'
-      }, {
-        value: 1,
-        label: '已停止'
-      }],
       requestData: {
         id: ''
       },
@@ -147,10 +109,9 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post(this.$api.sysManager.getScheduleTasks, {
+      this.axios.post(this.$api.sysManager.getCronExpressions, {
         param: {
-          jobClassName: this.jobClassName,
-          status: this.status
+          cronExpressionDesc: this.cronExpressionDesc
         },
         page: this.currentPage,
         size: this.pageSize
@@ -172,36 +133,11 @@ export default {
       this.showInfo()
     },
     showClear () {
-      this.jobClassName = ''
-      this.status = ''
+      this.cronExpressionDesc = ''
     },
-    scheduleTaskAdd () {
-      this.title = '添加任务'
+    cronExpressionAdd () {
+      this.title = '添加时间表达式'
       this.showEditDialog = true
-    },
-    changeStatus (id) {
-      this.axios.put(this.$api.sysManager.changeStatus + id).then((resp) => {
-        if (resp.status === 200) {
-          const json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '操作成功',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '操作失败',
-              type: 'error'
-            })
-          }
-        } else {
-          this.$message({
-            message: '操作失败',
-            type: 'error'
-          })
-        }
-        this.showInfo()
-      })
     },
     modifyScheduleTask (id) {
       this.requestData.id = id
@@ -209,7 +145,7 @@ export default {
       this.showEditDialog = true
     },
     deleteScheduleTask (id) {
-      this.axios.delete(this.$api.sysManager.delScheduleTask + id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.delCronExpression + id).then((resp) => {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {
@@ -231,19 +167,9 @@ export default {
         }
         this.showInfo()
       })
-    },
-    statusFormat (row, column) {
-      const data = row[column.property]
-      if (data === 0) {
-        return '已启动'
-      } else if (data === 1) {
-        return '已停止'
-      } else {
-        return data
-      }
     }
   },
-  components: { Pagination, ScheduleTaskAdd }
+  components: { Pagination, CronExpressionAdd }
 }
 </script>
 <style lang="scss" scoped>
