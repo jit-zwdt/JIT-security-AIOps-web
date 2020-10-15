@@ -30,8 +30,18 @@
             <el-radio v-model="serverListForm.agentType" label="1">使用IP</el-radio>
             <el-radio v-model="serverListForm.agentType" label="2">使用DNS</el-radio>
           </el-form-item>
+          <el-form-item label="对应资产" prop="assetsId">
+            <el-select v-model="serverListForm.assetsId" placeholder="请选择" @change="changeAssetsId" filterable style="width: 100%">
+              <el-option
+                  v-for="item in assetOptions"
+                  :key="item[0]"
+                  :label="item[1]+'('+item[2]+')'"
+                  :value="item[0]">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="IP" prop="agentIp" v-if="agentShow">
-            <el-input v-model="serverListForm.agentIp" clearable></el-input>
+            <el-input v-model="serverListForm.agentIp" clearable :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="agentDnsName" v-if="agentShow">
             <el-input v-model="serverListForm.agentDnsName" clearable placeholder="域名"></el-input>
@@ -93,7 +103,7 @@
             <el-radio v-model="serverListForm.jmxType" label="2">使用DNS</el-radio>
           </el-form-item>
           <el-form-item label="JMXIP" prop="jmxIp" v-if="jmxShow">
-            <el-input v-model="serverListForm.jmxIp" clearable></el-input>
+            <el-input v-model="serverListForm.jmxIp" clearable :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="jmxDnsName" v-if="jmxShow">
             <el-input v-model="serverListForm.jmxDnsName" clearable placeholder="域名"></el-input>
@@ -111,7 +121,7 @@
             <el-radio v-model="serverListForm.snmpType" label="2">使用DNS</el-radio>
           </el-form-item>
           <el-form-item label="SNMP IP" prop="snmpIp" v-if="snmpShow">
-            <el-input v-model="serverListForm.snmpIp" clearable></el-input>
+            <el-input v-model="serverListForm.snmpIp" clearable :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="snmpDnsName" v-if="snmpShow">
             <el-input v-model="serverListForm.snmpDnsName" clearable placeholder="域名"></el-input>
@@ -129,7 +139,7 @@
             <el-radio v-model="serverListForm.ipmiType" label="2">使用DNS</el-radio>
           </el-form-item>
           <el-form-item label="IPMI IP" prop="ipmiIp" v-if="ipmiShow">
-            <el-input v-model="serverListForm.ipmiIp" clearable></el-input>
+            <el-input v-model="serverListForm.ipmiIp" clearable :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="ipmiDnsName" v-if="ipmiShow">
             <el-input v-model="serverListForm.ipmiDnsName" clearable placeholder="域名"></el-input>
@@ -215,16 +225,6 @@
                 :value="template.groupid"
               ></el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item label="资产" prop="assetsId">
-            <el-cascader
-              :options="assetOptions"
-              :show-all-levels="false"
-              v-model="serverListForm.assetsId"
-              :props="assetProps"
-              clearable
-              class="cascadercss"
-            ></el-cascader>
           </el-form-item>
           <el-form-item label="备注" prop="remark">
             <el-input v-model="serverListForm.remark" clearable></el-input>
@@ -409,6 +409,11 @@ export default {
           message: '请输入IP',
           trigger: 'blur'
         }],
+        assetsId: [{
+          required: true,
+          message: '请选择对应硬件资产',
+          trigger: 'blur'
+        }],
         jmxDnsName: [{
           required: true,
           message: '请输入DNS',
@@ -585,7 +590,6 @@ export default {
       this.axios.post(this.$api.monitorManager.findByConditionInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          // console.log(json.data)
           if (json.code === 1) {
             this.assetOptions = json.data
           }
@@ -793,6 +797,15 @@ export default {
           this.$router.push({
             name: 'monitorList'
           })
+        }
+      }
+    },
+    changeAssetsId () {
+      const assetOptions = this.assetOptions
+      for (let i = 0; i < assetOptions.length; i++) {
+        if (assetOptions[i][0] === this.serverListForm.assetsId) {
+          this.serverListForm.agentIp = this.serverListForm.jmxIp = this.serverListForm.snmpIp = this.serverListForm.ipmiIp = assetOptions[i][3]
+          break
         }
       }
     }

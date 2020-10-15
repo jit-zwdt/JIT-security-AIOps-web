@@ -14,7 +14,8 @@ const api = {
       assetsList: {
         deleteAssets: '/assets/deleteAssets/',
         findByCondition: '/assets/findByCondition'
-      }
+      },
+      getHardwareInfo: '/assets/getHardwareInfo/'
     }
   },
   alertManager: {
@@ -42,9 +43,7 @@ const api = {
       }
     },
     alertInquire: {
-      alertInquire: {
-        findProblemHost: '/problem/findProblemHost'
-      }
+      findProblemHost: '/problem/findProblemHost'
     },
     alertTemplate: {
       alertTemplate: {
@@ -160,6 +159,7 @@ const api = {
     checkItemText: '/sys/dictionary/checkItemText',
     addDictionaryItem: '/sys/dictionary/addDictionaryItem',
     findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
+    getDictByCode: '/sys/dictionary/getDictByCode/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
     getMenusList: '/sys/menu/getMenusList',
@@ -208,7 +208,12 @@ const api = {
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
     delScheduleTask: '/sys/scheduleTask/delScheduleTask/',
     changeStatus: '/sys/scheduleTask/changeStatus/',
-    getScheduleTask: '/sys/scheduleTask/getScheduleTask/'
+    getScheduleTask: '/sys/scheduleTask/getScheduleTask/',
+    // cronExpressionManager
+    getCronExpressions: '/sys/cronExpression/getCronExpressions',
+    addCronExpression: '/sys/cronExpression/addCronExpression',
+    delCronExpression: '/sys/cronExpression/delCronExpression/',
+    getCronExpression: '/sys/cronExpression/getCronExpression/'
   },
   inspectionManager: {
     makePdf: '/inspection/makePdf'

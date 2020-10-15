@@ -49,7 +49,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="资产类型"
+        label="资产类别"
         prop="type"
         min-width="10%"
         :resizable="false"
@@ -57,7 +57,7 @@
       ></el-table-column>
       <el-table-column label="资产编号" prop="number" min-width="15%" :resizable="false"></el-table-column>
       <el-table-column label="资产状态" prop="state" min-width="10%" :resizable="false" :formatter="stateformatType"></el-table-column>
-      <el-table-column label="数量" prop="amount" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column label="IP地址" prop="ip" min-width="10%" :resizable="false"></el-table-column>
       <el-table-column label="资产所属单位" prop="belongsDept" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="资产所属人" prop="belongsPerson" :resizable="false" v-if="show"></el-table-column>
       <el-table-column
@@ -264,14 +264,10 @@ export default {
     typeformatType (row, column) {
       let data = ''
       data = row[column.property]
-      if (data === '1') {
-        return '网络设备'
-      } else if (data === '2') {
-        return '通讯设备'
-      } else if (data === '3') {
-        return '服务器'
-      } else if (data === '4') {
-        return '云平台'
+      if (data === '0') {
+        return '硬件'
+      } else if (data === '1') {
+        return '软件'
       }
       return ''
     },
@@ -300,7 +296,7 @@ export default {
       if (data == null) {
         return ''
       }
-      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+      return formatTodate(data, 'YYYY-MM-DD')
     },
     showAssetsInfo (row) {
       this.showEditDialog = true

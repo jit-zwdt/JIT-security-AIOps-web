@@ -238,7 +238,6 @@ export default {
         problemCreate: this.assetform.clock.replace('T', ' '),
         hostId: this.assetform.hostId,
         hostName: this.assetform.hostName,
-        gmtCreate: (new Date()).getTime(),
         isRegister: 0,
         isResolve: 0
       }
