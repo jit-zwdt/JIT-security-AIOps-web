@@ -609,8 +609,10 @@ export default {
     },
     showPossessionInfo (row) {
       console.log(row.typeId)
-      if (row.typeId === '2') {
+      if (row.typeId === '2' && row.subtypeId === '12') {
         this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+      } else if (row.typeId === '2' && row.subtypeId === '11') {
+        this.$router.push({ name: 'monitorMysqlInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
       } else if (row.typeId === '1') {
         this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
       } else if (row.typeId === '3') {

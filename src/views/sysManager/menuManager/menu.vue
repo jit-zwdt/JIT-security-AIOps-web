@@ -637,20 +637,34 @@ export default {
       this.editorDrawer = true
       this.id = row.id
       this.axios.post(this.$api.sysManager.findBySysMenu + this.id).then(resp => {
-        var json = resp.data
-        if (json.code === 1) {
-          console.log(json.data)
-          this.itemEditor = json.data
-          this.oldPath = json.data.path
-          this.oldName = json.data.name
-          this.oldComponent = json.data.component
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.itemEditor = json.data
+            this.oldPath = json.data.path
+            this.oldName = json.data.name
+            this.oldComponent = json.data.component
+          }
+        } else {
+          this.$message({
+            message: '获取回显信息失败',
+            type: 'error'
+          })
         }
       })
       this.axios.get(this.$api.sysManager.getMenuTitle).then(resp => {
-        var json = resp.data
-        if (json.code === 1) {
-          console.log(json.data)
-          this.options1 = json.data
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.options1 = json.data
+          }
+        } else {
+          this.$message({
+            message: '获取信息失败',
+            type: 'error'
+          })
         }
       })
     },
@@ -693,13 +707,20 @@ export default {
         type: 'warning'
       }).then(() => {
         this.axios.post(this.$api.sysManager.judgeOfChild + id).then(resp => {
-          var json = resp.data
-          if (json.code === 1) {
-            if (json.data === true) {
-              this.$message.error('该菜单下含有子菜单，请先删除子菜单！')
-            } else {
-              this.deleteMenu(id)
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              if (json.data === true) {
+                this.$message.error('该菜单下含有子菜单，请先删除子菜单！')
+              } else {
+                this.deleteMenu(id)
+              }
             }
+          } else {
+            this.$message({
+              message: '获取信息失败',
+              type: 'error'
+            })
           }
         })
       }).catch(() => {
@@ -712,13 +733,15 @@ export default {
     // 调用后台逻辑删除的方法
     deleteMenu (id) {
       this.axios.post(this.$api.sysManager.delMenus + id).then(resp => {
-        var json = resp.data
-        if (json.code === 1) {
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-          this.showInfo()
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.showInfo()
+          }
         } else {
           this.$message({
             message: '删除失败',
