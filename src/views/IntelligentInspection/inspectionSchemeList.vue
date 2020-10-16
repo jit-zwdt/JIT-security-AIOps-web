@@ -154,6 +154,7 @@ export default {
       }
     },
     reloadData () {
+      this.showEditDialog = false
       this.showInfo()
     },
     confirmdelete (index, row) {
