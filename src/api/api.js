@@ -216,7 +216,9 @@ const api = {
     getCronExpression: '/sys/cronExpression/getCronExpression/'
   },
   inspectionManager: {
-    makePdf: '/inspection/makePdf'
+    makePdf: '/inspection/makePdf',
+    inspectionGetHostInfo: '/inspection/getHostInfo/',
+    addTimerTaskInfo: '/inspection/addTimerTaskInfo/'
   },
   main: {
     // Index.vue
