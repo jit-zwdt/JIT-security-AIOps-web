@@ -1,68 +1,5 @@
 <template>
   <div>
-    <template>
-      <div class="card dark-main-background">
-        <div
-          class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top: -10px !important; height: 40px"
-        >
-          <div class="queryleft">
-            <p class="title-bar-description" style>
-              <span
-                >{{ this.$route.query.hostName }}\{{
-                  this.serverForm.agentIp
-                }}</span
-              >
-            </p>
-          </div>
-          <div
-            class="queryright"
-            style="margin-top: -5px !important; height: 40px"
-          >
-            <el-button @click="backfrom()" size="mini">返回</el-button>
-          </div>
-        </div>
-        <div class="tempList card-body">
-          <div>
-            <table
-              class="dark-main-background"
-              style="width: 100%; margin-top: -5px"
-            >
-              <tr style="height: 40px">
-                <th class="darkmainborderth">名称</th>
-                <td class="darkmainbordertd">
-                  {{ this.$route.query.hostName }}
-                </td>
-                <th class="darkmainborderth">监控状态</th>
-                <td class="darkmainbordertd">
-                  <span
-                    class="label label-danger"
-                    data-toggle="tooltip"
-                    ata-placement="bottom"
-                    v-bind:class="{
-                      changeColor: spanChangeColor,
-                      redchangeColor: spanredChangeColor,
-                    }"
-                    :title="makeMonitorTypeTitle()"
-                    >{{ this.monitorTypeValue }}</span
-                  >
-                </td>
-                <th class="darkmainborderth">ip地址</th>
-                <td class="darkmainbordertd">{{ this.serverForm.agentIp }}</td>
-              </tr>
-              <tr style="height: 40px">
-                <th class="darkmainborderth">操作系统</th>
-                <td class="darkmainbordertd" colspan="5">
-                  {{ this.operateSystem }}
-                </td>
-                <th class="darkmainborderth">运行时间</th>
-                <td class="darkmainbordertd" colspan="5">{{ this.runTime }}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </template>
     <el-tabs
       type="border-card"
       style="margin-top: 5px"
@@ -357,7 +294,7 @@
                       </el-col>
                     </el-row>
                     <el-row :gutter="40">
-                      <el-col :span="200">
+                      <el-col :span="200" style="padding-left: 30px">
                         <el-form-item label="图形类型">
                           <el-select v-model="form.graphtype">
                             <el-option
@@ -369,7 +306,7 @@
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="200">
+                      <el-col :span="200" :push="1">
                         <el-form-item label="纵轴最小值">
                           <el-select v-model="form.ymin_type">
                             <el-option
@@ -381,7 +318,7 @@
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="200">
+                      <el-col :span="200" :push="1">
                         <el-form-item label="纵轴最大值">
                           <el-select v-model="form.ymax_type">
                             <el-option
@@ -397,14 +334,22 @@
                     <!--<el-form-item label="查看触发器">-->
                     <!--<el-checkbox v-model="form.show_legend">查看图例</el-checkbox>-->
                     <!--</el-form-item>-->
-                    <!-- <el-form-item label="百分比线(左)">
+                    <el-row :gutter="40" v-show="show1">
+                    <el-col :span="200">
+                    <el-form-item label="百分比线(左)">
                       <el-checkbox v-model="leftOption"></el-checkbox>
                       <el-input v-model="form.percent_left" v-if="leftOption === true"></el-input>
                     </el-form-item>
+                    </el-col>
+                    </el-row>
+                    <el-row :gutter="40" v-show="show1">
+                    <el-col :span="200">
                     <el-form-item label="百分比线(右)">
                       <el-checkbox v-model="rightOption"></el-checkbox>
                       <el-input v-model="form.percent_right" v-if="rightOption === true"></el-input>
-                    </el-form-item> -->
+                    </el-form-item>
+                    </el-col>
+                    </el-row>
                     <el-row :gutter="40">
                       <el-col>
                         <el-form-item label="监控项">
@@ -703,60 +648,14 @@
 <script>
 import { timesMethod } from '@/utils/formatDate.js'
 export default {
+  props: {
+    hostid: String,
+    show1: Boolean
+  },
   data () {
     return {
       itemsloading: '',
       show: false,
-      serverForm: {
-        objectName: '',
-        businessName: '',
-        agentIp: '',
-        agentDnsName: '',
-        agentPort: '',
-        proxyMonitor: '',
-        enableMonitor: true,
-        subtypeId: '',
-        subtypeIds: '',
-        templatesId: '',
-        typeId: '',
-        groupId: [],
-        remark: '',
-        label: '',
-        mssqlMacroInstance: '',
-        mssqlMacroOdbc: '',
-        mssqlMacroPassword: '',
-        mssqlMacroUsername: '',
-        oracleMacroIp: '',
-        oracleMacroAsm: '',
-        oracleMacroDbname: '',
-        oracleMacroPassword: '',
-        oracleMacroUsername: '',
-        jmxType: '',
-        jmxIp: '',
-        jmxDnsName: '',
-        jmxPort: '',
-        jmxMacro: '',
-        snmpType: '',
-        snmpIp: '',
-        snmpDnsName: '',
-        snmpPort: '',
-        snmpMacro: '',
-        ipmiType: '',
-        ipmiIp: '',
-        ipmiDnsName: '',
-        ipmiPort: '',
-        ipmiMacro: '',
-        vmMacroCpuFrequency: '',
-        vmMacroPassword: '',
-        vmMacroSdkLink: '',
-        vmMacroUsername: '',
-        assetsId: '',
-        hostId: ''
-      },
-      runTime: '',
-      operateSystem: '',
-      monitorTypeValue: '',
-      monitorTypeTitle: '',
       spanChangeColor: '',
       spanredChangeColor: '',
       tableData: [{
@@ -911,10 +810,6 @@ export default {
   created () {
     this.showInfo()
     this.showGraphsInfo()
-    this.getOperateSystem()
-    this.getRunTime()
-    this.getMonitorTypeItems()
-    this.findHostIdinfo()
     this.getShowData()
     this.getGraphData()
     this.form.ymax_type = this.yOptions[0].value
@@ -934,7 +829,6 @@ export default {
     reloadData () {
       this.pageSize = 10
       this.showInfo()
-      this.findHostIdinfo()
     },
     showInfo (str) {
       this.loading = true
@@ -974,131 +868,8 @@ export default {
         this.loading = false
       })
     },
-    findHostIdinfo () {
-      this.axios.post(this.$api.monitorManager.findHostIdinfo + this.$route.query.hostId).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.serverForm = json.data
-          } else {
-            this.$message({
-              message: '查询失败',
-              type: 'error'
-            })
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
-    },
-    makeMonitorTypeTitle () {
-      return this.monitorTypeTitle
-    },
-    getOperateSystem () {
-      var systemName = this.$route.query.hostName
-      const region = {
-        hostids: [this.$route.query.hostId],
-        status: '',
-        key_: systemName.startsWith('Window') ? 'system.uname' : 'linux.name.version'
-      }
-      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            if (json.data[0].lastvalue === '') {
-              this.operateSystem = '获取失败'
-            } else {
-              this.operateSystem = json.data[0].lastvalue
-            }
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
-    },
-    getRunTime () {
-      const region = {
-        hostids: [this.$route.query.hostId],
-        status: '',
-        key_: 'system.uptime'
-      }
-      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            if (json.data[0].lastvalue === '') {
-              this.runTime = '运行时间获取失败'
-            } else {
-              this.runTime = timesMethod.formattedTime(json.data[0].lastvalue)
-            }
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
-    },
     showClear () {
       this.nameTop = ''
-    },
-    // 返回
-    backfrom () {
-      var identification = this.$route.query.identification
-      if (identification != null && identification === '1') {
-        this.$router.push({
-          name: 'monitorList'
-        })
-      } else {
-        this.$router.push({
-          name: 'monitorSystemIndex'
-        })
-      }
-    },
-    makeMonitorTypeItems () {
-      this.monitorTypeItems.forEach(element => {
-        var monitorTypeValue = ''
-        if (element.available === 0) {
-          monitorTypeValue = '未检测'
-          this.spanChangeColor = false
-          this.spanredChangeColor = false
-        } else if (element.available === 1) {
-          monitorTypeValue = '正常'
-          this.spanChangeColor = true
-          this.spanredChangeColor = false
-        } else if (element.available === 2) {
-          monitorTypeValue = '异常'
-          this.spanChangeColor = false
-          this.spanredChangeColor = true
-        }
-        this.monitorTypeTitle = element.error
-        this.monitorTypeValue = monitorTypeValue
-      })
-    },
-    getMonitorTypeItems () {
-      const hostIds = []
-      hostIds.push(this.$route.query.hostId)
-      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.monitorTypeItems = json.data
-            this.makeMonitorTypeItems()
-          }
-        } else {
-          this.$message({
-            message: '获取分组信息失败',
-            type: 'error'
-          })
-        }
-      })
     },
     drawLine () {
     },
@@ -1869,17 +1640,17 @@ export default {
         this.form.gitems.push(gitems)
       }
       console.log(this.multipleSelection1)
-      // this.$refs.multipleTable.clearSelection()
+      this.$refs.multipleTable.clearSelection()
       this.$refs.gList.doClose()
     },
     toggleSelection (rows) {
-      // if (rows) {
-      //   rows.forEach(row => {
-      //     this.$refs.multipleTable.toggleRowSelection(row)
-      //   })
-      // } else {
-      //   this.$refs.multipleTable.clearSelection()
-      // }
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
       this.$refs.gList.doClose()
     },
     handleSelectionChange (val) {

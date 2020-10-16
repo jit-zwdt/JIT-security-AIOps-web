@@ -10,7 +10,21 @@
       <span v-else>{{ GlobalCfg.siteName }}</span>
     </div>
     <div class="sidebar-top-user">
-      <UserTop></UserTop>
+      <el-row>
+        <el-col class="width-style">
+          <div v-if="imageurl">
+            <el-avatar shape="square" :size="100" :src="imageurl"></el-avatar>
+          </div>
+          <div v-else class="emptyimg"></div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <div style="text-align: center;">
+            <span>部门：{{ this.department }}</span>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <div class="sidebar-menu">
       <el-menu
@@ -153,19 +167,61 @@
 
 <script>
 import { mapState } from 'vuex'
-import UserTop from '@/views/layout/UserTop.vue'
 export default {
   name: 'Sidebar',
   data () {
     return {
-      routes: global.antRouter
+      routes: global.antRouter,
+      imageurl: '',
+      department: ''
     }
   },
   created () {
+    this.showinfo()
   },
-  methods: {},
+  methods: {
+    showinfo () {
+      this.axios.get(this.$api.sysManager.getUserInfo).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          this.preShow(json.data)
+        }
+      })
+    },
+    preShow (user) {
+      if (user.picUrl !== null && user.picUrl !== '') {
+        this.axios.post(this.$api.sysManager.getPicBase64 + user.picUrl).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              var prefix = user.picUrl.substring(user.picUrl.lastIndexOf('.') + 1, user.picUrl.length)
+              if (prefix === 'jpg') {
+                this.imageurl = 'data:image/jpg;base64,' + json.data
+              } else if (prefix === 'png') {
+                this.imageurl = 'data:image/png;base64,' + json.data
+              } else {
+                this.imageurl = 'data:image/jpeg;base64,' + json.data
+              }
+            }
+          }
+        })
+      }
+      // 获取所有的部门信息
+      this.axios.get(this.$api.sysManager.getAllDepartment).then(resp => {
+        var json = resp.data
+        if (json.code === 1) {
+          json.data.forEach(element => {
+            if (element.id === user.departmentId) {
+              this.department = element.departName
+            }
+          })
+        }
+      })
+    }
+  },
   computed: mapState(['system']),
-  components: { UserTop }
+  components: {
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -193,12 +249,23 @@ export default {
     width: 100%;
     color: #fff;
     background-color: mix(#000, $--color-primary, 10%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 15rem;
-    span {
-      width: 8rem;
+    .el-row {
+      margin-bottom: 30px;
+    }
+    .el-col {
+      border-radius: 4px;
+    }
+    .emptyimg {
+      background: url('~@/assets/img/dpng.png') center center no-repeat;
+      height: 100px;
+      width: 100px;
+    }
+    .width-style {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 45px;
     }
   }
   .sidebar-menu {

@@ -4,31 +4,99 @@
     :width="dialogWidth"
     :title="title"
     :visible.sync="showEditDialog"
+    :before-close="handleclosebind"
     :show-close="true"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
   >
     <div>
       <ToolBar>
         <el-form
-          :model="serverListForm"
-          ref="serverListForm"
+          :model="serverForm"
+          ref="serverForm"
           class="edit-forms fromadd"
           label-position="right"
           :label-width="labelWidth"
           :rules="rules"
         >
-          <el-row :gutter="40">
-            <el-col :span="12">
-              <el-form-item label="名称：" prop="name">
-                <el-select v-model="serverListForm.name" placeholder="请选择">
-                  <el-option
-                    v-for="item in nameOptions"
-                    :key="item.id"
-                    :label="item.type"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
+          <el-row>
+            <el-form-item label="巡检计划名称:" prop="schemeName">
+              <el-input
+                v-model="serverForm.schemeName"
+                placeholder="请输入巡检计划名称"
+                clearable
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="定时巡检时间:" prop="timerTask">
+              <el-select
+                v-model="serverForm.timerTask"
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in timerTaskoptionsType"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-table
+                :data="tableData"
+                style="width: 100%; border: 1px solid #ebeef5"
+                min-height="40"
+              >
+                <el-table-column
+                  prop="hostid"
+                  label="hostid"
+                  v-if="show"
+                ></el-table-column>
+                <el-table-column
+                  prop="triggerid"
+                  label="triggerid"
+                  v-if="show"
+                ></el-table-column>
+                <el-table-column
+                  prop="hostname"
+                  label="主机名称"
+                  min-width="30%"
+                >
+                  <template slot-scope="scope">
+                    {{ showHostname(scope.row.hostid) }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="description"
+                  label="告警项名称"
+                  :show-overflow-tooltip="true"
+                  min-width="60%"
+                ></el-table-column>
+                <el-table-column label="操作" min-width="10%">
+                  <template slot-scope="scope">
+                    <el-button
+                      @click="deleteRow(scope.$index)"
+                      type="text"
+                      size="small"
+                      >移除</el-button
+                    >
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="queryleft" style="margin-left: 10px">
+                <el-button @click="addItem()" type="text" size="small"
+                  >添加</el-button
+                >
+              </div>
+              <InspectionSchemeItemAdd
+                :addItemDialog="addItemDialog"
+                @close="addItemDialog = false"
+                @success="reloadData"
+                @error="reloadData"
+              ></InspectionSchemeItemAdd>
             </el-col>
           </el-row>
         </el-form>
@@ -36,13 +104,15 @@
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="closefrom()">取消</el-button>
-      <el-button type="primary" @click="submitOrUpdate('serverListForm')">确认</el-button>
+      <el-button type="primary" @click="submitOrUpdate('serverForm')"
+        >确认</el-button
+      >
     </div>
   </el-dialog>
 </template>
 <script>
 import { resetObject } from '@/utils/common'
-import api from '@/api/api'
+import InspectionSchemeItemAdd from '@/views/IntelligentInspection/inspectionSchemeItemAdd.vue'
 export default {
   props: {
     dataform: {
@@ -64,29 +134,52 @@ export default {
   },
   data () {
     return {
-      serverListForm: {
-        id: ''
+      addItemDialog: false,
+      show: false,
+      serverForm: {
+        id: '',
+        timerTask: '',
+        schemeName: ''
       },
-      id: '',
-      nameOptions: [
-        {
-          id: '',
-          type: ''
-        }
-      ],
       rules: {
-        name: [
-          { required: true, message: '请输入名称' }
+        schemeName: [
+          { required: true, message: '请输入巡检计划名称' }
+        ],
+        timerTask: [
+          { required: true, message: '请选择定时巡检时间' }
         ]
       },
+      tableData: [],
       handleclosebind () {
         this.$parent.$parent.noReloadData()
-      }
+      },
+      hostinfotbale: [],
+      timerTaskoptionsType: [
+        {
+          id: '0/5 * * * * ?',
+          name: '按每5分钟巡检一次'
+        },
+        {
+          id: '0/10 * * * * ?',
+          name: '按每10分钟巡检一次'
+        },
+        {
+          id: '0/30 * * * * ?',
+          name: '按每30分钟巡检一次'
+        }
+      ]
     }
+  },
+  components: { InspectionSchemeItemAdd },
+  created () {
+    this.showInfo()
   },
   methods: {
     openDialog () {
-      // this.showInfo(this.dataform.id)
+      // this.showInfo()
+    },
+    addItem () {
+      this.addItemDialog = true
     },
     closefrom () {
       // this.showfooter = true
@@ -94,12 +187,19 @@ export default {
       this.$emit('close')
     },
     clearform () {
-      resetObject(this.serverListForm)
-      this.$refs.serverListForm.resetFields()
+      resetObject(this.serverForm)
+      this.$refs.serverForm.resetFields()
     },
     submitOrUpdate (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if (this.tableData.length === 0) {
+            this.$message({
+              message: '请添加巡检对象信息',
+              type: 'error'
+            })
+            return false
+          }
           if (this.dataform.flag === '1') {
             this.submit()
           } else if (this.dataform.flag === '2') {
@@ -111,71 +211,89 @@ export default {
       })
     },
     submit () {
-      const region = this.makeParam()
-      this.axios.post(api.assetsManager.assetsList.assetsAdd.addAssets, region).then((resp) => {
+      const paramInfo = {
+        schemeName: this.serverForm.schemeName,
+        timerTask: this.serverForm.timerTask,
+        info: this.tableData
+      }
+      console.log(paramInfo)
+      const param = new URLSearchParams()
+      param.append('param', JSON.stringify(paramInfo))
+      this.axios.post(this.$api.inspectionManager.addTimerTaskInfo, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: '保存成功',
               type: 'success'
             })
-            this.clearform()
             this.$emit('success')
-            // this.$router.push({ path: '/assetsManager/assetsList' })
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: '保存失败',
             type: 'error'
           })
-          this.clearform()
           this.$emit('error')
         }
       })
     },
     update () {
-      const region = ''
-      this.axios.put(api.assetsManager.assetsList.assetsAdd.updateAssets + this.assetform.id, region).then((resp) => {
+      alert('修改')
+    },
+    showInfo () {
+      const param = new URLSearchParams()
+      param.append('id', '')
+      this.axios.post(this.$api.inspectionManager.inspectionGetHostInfo, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            })
-            this.clearform()
-            this.$emit('success')
+            this.hostinfotbale = json.data
           }
         } else {
           this.$message({
-            message: '修改失败',
+            message: '查询失败',
             type: 'error'
           })
-          this.clearform()
           this.$emit('error')
         }
       })
     },
-    showInfo (id) {
-      if (id != null && id !== '') {
-        this.axios.post('/getHostInfo', '', {
-          id: this.id
-        }).then((resp) => {
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              this.nameOptions = json.data
-            }
-          } else {
-            this.$message({
-              message: '查询失败',
-              type: 'error'
-            })
-            this.$emit('error')
-          }
+    reloadData (value) {
+      console.log(value)
+      value.forEach(element => {
+        this.tableData.push({
+          hostid: element.hostid,
+          triggerid: element.triggerid,
+          description: element.description
         })
-      }
+      })
+      this.addItemDialog = false
+      this.tableData = this.unique(this.tableData)
+      this.sortList(this.tableData)
+    },
+    unique (arr) {
+      const res = new Map()
+      const newarr = arr.filter((arr) => !res.has(arr.triggerid) && res.set(arr.triggerid, 1))
+      return newarr
+    },
+    sortList (lists) {
+      return lists.sort((a, b) => {
+        // return a['hostid'].localeCompare(b['hostid'])
+        return a.triggerid - b.triggerid
+      })
+    },
+    showHostname (id) {
+      var name = ''
+      this.hostinfotbale.forEach(element => {
+        if (element.hostId === id) {
+          name = element.objectName
+        }
+      })
+      return name
+    },
+    deleteRow (index) {
+      this.tableData.splice(index, 1)
     }
   }
 }
