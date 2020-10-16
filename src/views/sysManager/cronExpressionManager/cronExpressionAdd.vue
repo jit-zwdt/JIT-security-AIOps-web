@@ -359,115 +359,114 @@
   </el-dialog>
 </template>
 <script>
-
-    export default {
-        props: {
-            showEditDialog: Boolean,
-            requestData: {
-                id: String
-            },
-            dialogWidth: {
-                type: String,
-                default: '600px'
-            },
-            title: {
-                type: String,
-                default: ''
-            },
-            labelWidth: {
-                type: String,
-                default: '125px'
-            }
-        },
-        data() {
-            return {
-                loading: true,
-                showfooter: true,
-                isDisable: false,
-                form: {
-                    id: '',
-                    cronExpressionDesc: ''
-                },
-                rules: {
-                    cronExpressionDesc: [
-                        {required: true, message: '请填写表达式名称'}
-                    ]
-                }
-            }
-        },
-        methods: {
-            openDialog() {
-                const id = this.requestData.id
-                if (id !== undefined && id !== '') {
-                    this.axios.get(this.$api.sysManager.getCronExpression + id).then((resp) => {
-                        if (resp.status === 200) {
-                            const json = resp.data
-                            if (json.code === 1) {
-                                this.form = json.data
-                            } else {
-                                this.$message({
-                                    message: '获取信息失败！',
-                                    type: 'error'
-                                })
-                            }
-                        } else {
-                            this.$message({
-                                message: '获取信息失败！',
-                                type: 'error'
-                            })
-                        }
-                    })
-                }
-            },
-            closefrom() {
-                this.clearform()
-                this.$emit('close')
-                this.isDisable = false
-            },
-            clearform() {
-                this.$refs.form.resetFields()
-                this.form.id = ''
-                this.requestData.id = ''
-            },
-            submitOrUpdate() {
-                this.isDisable = true
-                this.$refs.form.validate((valid) => {
-                    if (valid) {
-                        this.axios.post(this.$api.sysManager.addCronExpression, this.form).then((resp) => {
-                            if (resp.status === 200) {
-                                var json = resp.data
-                                if (json.code === 1) {
-                                    this.$message({
-                                        message: '修改成功',
-                                        type: 'success'
-                                    })
-                                    this.$emit('success')
-                                    this.closefrom()
-                                } else {
-                                    this.$message({
-                                        message: json.msg,
-                                        type: 'error'
-                                    })
-                                    this.isDisable = false
-                                    return false
-                                }
-                            } else {
-                                this.$message({
-                                    message: '修改失败',
-                                    type: 'error'
-                                })
-                                this.clearform()
-                                this.$emit('error')
-                            }
-                        })
-                    } else {
-                        this.isDisable = false
-                        return false
-                    }
-                })
-            }
-        }
+export default {
+  props: {
+    showEditDialog: Boolean,
+    requestData: {
+      id: String
+    },
+    dialogWidth: {
+      type: String,
+      default: '600px'
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    labelWidth: {
+      type: String,
+      default: '125px'
     }
+  },
+  data () {
+    return {
+      loading: true,
+      showfooter: true,
+      isDisable: false,
+      form: {
+        id: '',
+        cronExpressionDesc: ''
+      },
+      rules: {
+        cronExpressionDesc: [
+          { required: true, message: '请填写表达式名称' }
+        ]
+      }
+    }
+  },
+  methods: {
+    openDialog () {
+      const id = this.requestData.id
+      if (id !== undefined && id !== '') {
+        this.axios.get(this.$api.sysManager.getCronExpression + id).then((resp) => {
+          if (resp.status === 200) {
+            const json = resp.data
+            if (json.code === 1) {
+              this.form = json.data
+            } else {
+              this.$message({
+                message: '获取信息失败！',
+                type: 'error'
+              })
+            }
+          } else {
+            this.$message({
+              message: '获取信息失败！',
+              type: 'error'
+            })
+          }
+        })
+      }
+    },
+    closefrom () {
+      this.clearform()
+      this.$emit('close')
+      this.isDisable = false
+    },
+    clearform () {
+      this.$refs.form.resetFields()
+      this.form.id = ''
+      this.requestData.id = ''
+    },
+    submitOrUpdate () {
+      this.isDisable = true
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.axios.post(this.$api.sysManager.addCronExpression, this.form).then((resp) => {
+            if (resp.status === 200) {
+              var json = resp.data
+              if (json.code === 1) {
+                this.$message({
+                  message: '修改成功',
+                  type: 'success'
+                })
+                this.$emit('success')
+                this.closefrom()
+              } else {
+                this.$message({
+                  message: json.msg,
+                  type: 'error'
+                })
+                this.isDisable = false
+                return false
+              }
+            } else {
+              this.$message({
+                message: '修改失败',
+                type: 'error'
+              })
+              this.clearform()
+              this.$emit('error')
+            }
+          })
+        } else {
+          this.isDisable = false
+          return false
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
