@@ -26,11 +26,14 @@
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-      <span class="body-top-btn">
+      <!-- <span class="body-top-btn">
         <el-badge is-dot class="badge">
           <i class="el-icon-bell"></i>
         </el-badge>
-      </span>
+      </span> -->
+      <el-badge is-dot class="item">
+        <el-button class="share-button" icon="el-icon-share" type="primary"></el-button>
+      </el-badge>
       <el-dropdown>
         <span class="body-top-btn">
           {{ user.name }}
@@ -110,7 +113,7 @@ export default {
   width: 100%;
   display: flex;
   height: 50px;
-  background-color: $--color-primary;
+  background-color: mix(#000, $--color-primary, 5%);
   z-index: 10;
   .body-top-btn {
     overflow: hidden;

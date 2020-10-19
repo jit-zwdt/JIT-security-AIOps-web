@@ -66,7 +66,7 @@
       </div>
     </template>
     <div>
-      <MonitorPossession :hostId="this.$route.query.hostId" :show1="true"></MonitorPossession>
+      <MonitorPossession :hostId="this.$route.query.hostId"></MonitorPossession>
     </div>
   </div>
 </template>
@@ -77,7 +77,6 @@ export default {
   data () {
     return {
       itemsloading: '',
-      show1: true,
       show: false,
       serverForm: {
         id: '',

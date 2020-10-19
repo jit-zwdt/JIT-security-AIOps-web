@@ -15,7 +15,7 @@
           <div v-if="imageurl">
             <el-avatar shape="square" :size="100" :src="imageurl"></el-avatar>
           </div>
-          <div v-else class="emptyimg"></div>
+          <div v-else :size="100" class="emptyimg"></div>
         </el-col>
       </el-row>
       <el-row>
@@ -233,7 +233,7 @@ export default {
   .sidebar-top {
     width: 100%;
     color: #fff;
-    background-color: mix(#000, $--color-primary, 10%);
+    background-color: mix(#000, $--color-primary, 5%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -246,12 +246,12 @@ export default {
     }
   }
   .sidebar-top-user {
-    width: 100%;
+    // width: 100%;
     color: #fff;
-    background-color: mix(#000, $--color-primary, 10%);
-    height: 15rem;
+    background-color: mix(#000, $--color-primary, 0%);
+    height: 12rem;
     .el-row {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     .el-col {
       border-radius: 4px;
@@ -265,7 +265,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 45px;
+      margin-top: 40px;
     }
   }
   .sidebar-menu {

@@ -37,8 +37,6 @@
               <tr style="height:40px">
                 <th class="darkmainborderth">操作系统</th>
                 <td class="darkmainbordertd" colspan="5">{{this.operateSystem}}</td>
-                <th class="darkmainborderth">运行时间</th>
-                <td class="darkmainbordertd" colspan="5">{{this.runTime}}</td>
               </tr>
             </table>
           </div>
@@ -46,19 +44,17 @@
       </div>
     </template>
     <div>
-        <MonitorPossession :hostId="this.$route.query.hostId" :show1="true"></MonitorPossession>
+        <MonitorPossession :hostId="this.$route.query.hostId"></MonitorPossession>
     </div>
   </div>
 </template>
 <script>
-import { timesMethod } from '@/utils/formatDate.js'
 import MonitorPossession from '@/views/monitorManager/monitorPossessionInfo/monitorPossession.vue'
 export default {
   data () {
     return {
       itemsloading: '',
       show: false,
-      show1: true,
       serverForm: {
         objectName: '',
         businessName: '',
@@ -110,7 +106,6 @@ export default {
         assetsId: '',
         hostId: ''
       },
-      runTime: '',
       operateSystem: '',
       monitorTypeValue: '',
       monitorTypeTitle: '',
@@ -120,7 +115,7 @@ export default {
   },
   created () {
     this.getOperateSystem()
-    this.getRunTime()
+    // this.getRunTime()
     this.getMonitorTypeItems()
     this.findHostIdinfo()
   },
@@ -175,30 +170,6 @@ export default {
               this.operateSystem = '获取失败'
             } else {
               this.operateSystem = json.data[0].lastvalue
-            }
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
-    },
-    getRunTime () {
-      const region = {
-        hostids: [this.$route.query.hostId],
-        status: '',
-        key_: 'hrSystemUptime.0'
-      }
-      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            if (json.data[0].lastvalue === '') {
-              this.runTime = '运行时间获取失败'
-            } else {
-              this.runTime = timesMethod.formattedTime(json.data[0].lastvalue)
             }
           }
         } else {

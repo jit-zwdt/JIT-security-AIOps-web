@@ -334,22 +334,6 @@
                     <!--<el-form-item label="查看触发器">-->
                     <!--<el-checkbox v-model="form.show_legend">查看图例</el-checkbox>-->
                     <!--</el-form-item>-->
-                    <el-row :gutter="40" v-show="show1">
-                    <el-col :span="200">
-                    <el-form-item label="百分比线(左)">
-                      <el-checkbox v-model="leftOption"></el-checkbox>
-                      <el-input v-model="form.percent_left" v-if="leftOption === true"></el-input>
-                    </el-form-item>
-                    </el-col>
-                    </el-row>
-                    <el-row :gutter="40" v-show="show1">
-                    <el-col :span="200">
-                    <el-form-item label="百分比线(右)">
-                      <el-checkbox v-model="rightOption"></el-checkbox>
-                      <el-input v-model="form.percent_right" v-if="rightOption === true"></el-input>
-                    </el-form-item>
-                    </el-col>
-                    </el-row>
                     <el-row :gutter="40">
                       <el-col>
                         <el-form-item label="监控项">
@@ -649,8 +633,7 @@
 import { timesMethod } from '@/utils/formatDate.js'
 export default {
   props: {
-    hostid: String,
-    show1: Boolean
+    hostid: String
   },
   data () {
     return {

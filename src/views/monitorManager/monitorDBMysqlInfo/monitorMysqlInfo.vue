@@ -35,8 +35,6 @@
                 <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
               </tr>
               <tr style="height:40px">
-                <th class="darkmainborderth">运行时间</th>
-                <td class="darkmainbordertd">{{runTime}}</td>
                 <th class="darkmainborderth">版本</th>
                 <td class="darkmainbordertd">{{this.tomcatVersion}}</td>
                 <th class="darkmainborderth">启动监控</th>
@@ -58,12 +56,11 @@
       </div>
     </template>
     <div>
-        <MonitorPossession :hostId="this.$route.query.hostId" :show1="true"></MonitorPossession>
+        <MonitorPossession :hostId="this.$route.query.hostId"></MonitorPossession>
     </div>
   </div>
 </template>
 <script>
-import { timesMethod } from '@/utils/formatDate.js'
 import MonitorPossession from '@/views/monitorManager/monitorPossessionInfo/monitorPossession.vue'
 import qs from 'qs'
 export default {
@@ -71,7 +68,6 @@ export default {
     return {
       itemsloading: '',
       graphsloading: '',
-      show1: true,
       show: false,
       serverForm: {
         id: '',
@@ -122,7 +118,6 @@ export default {
       },
       tomcatVersion: '',
       switchValue: 1,
-      runTime: '',
       monitorTypeValue: '',
       monitorTypeTitle: '',
       spanChangeColor: '',
@@ -133,7 +128,6 @@ export default {
     this.getTomcatVersion()
     this.getMonitorTypeItems()
     this.findHostIdinfo()
-    this.getRunTime()
   },
   methods: {
     // 修改table tr行的背景色
@@ -213,31 +207,6 @@ export default {
               this.tomcatVersion = '获取失败'
             } else {
               this.tomcatVersion = json.data[0].lastvalue
-            }
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
-    },
-    getRunTime () {
-      const region = {
-        hostids: [this.$route.query.hostId],
-        status: '',
-        key_: 'mysql.uptime'
-      }
-      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            if (json.data[0].lastvalue === '') {
-              this.runTime = '获取失败'
-            } else {
-              var second = json.data[0].lastvalue
-              this.runTime = timesMethod.getConvertTime(second)
             }
           }
         } else {
