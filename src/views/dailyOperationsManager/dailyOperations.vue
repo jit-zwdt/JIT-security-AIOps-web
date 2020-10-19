@@ -13,11 +13,6 @@
         <h2 style="padding-top: 5px">运维日报</h2>
       </div>
       <div style="border: 1px solid #000000;width: 100%;height: 500px">
-        <table>
-          <tr>
-            <td>2222222</td>
-          </tr>
-        </table>
         <el-form ref="form" :model="form">
           <el-row style="height: 25px">
             <el-col :span="2" style="border: 1px solid #000000;">运维人</el-col>
@@ -29,18 +24,17 @@
             <el-col style="text-align: center;border: 1px solid #000000;"><h4>运维工作情况</h4></el-col>
           </el-row>
           <el-row>
-            <el-col :colspan="2" :span="2" style="border: 1px solid #000000;">运维工作情况</el-col>
-            <el-col :span="5">新增问题数（较昨日）</el-col>
-            <el-col :span="5">详细内容（较昨日）</el-col>
-            <el-col :span="5">总数</el-col>
-            <el-col :span="5">备注</el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="5">5</el-col>
-            <el-col :span="5">5</el-col>cronExpression
-            <el-col :span="5">详细内容（较昨日）<br>详细内容（较昨日）</el-col>
-            <el-col :span="5">100</el-col>
-            <el-col :span="5">无</el-col>
+            <el-col :span="24">
+              <table>
+                <tr>
+                  <td>出现问题</td>
+                  <td>较昨日新增数</td>
+                  <td>较昨日新增详情</td>
+                  <td>出现问题总数</td>
+                  <td>备注</td>
+                </tr>
+              </table>
+            </el-col>
           </el-row>
         </el-form>
       </div>
