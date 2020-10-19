@@ -9,25 +9,6 @@
           <i class="el-icon-bell"></i>
         </el-badge>
       </span>
-      <el-dropdown>
-        <span class="body-top-btn">
-          <i class="el-icon-bell"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <div style="padding: 10px 20px;text-align: center;">
-            导航类型：
-            <el-button-group>
-              <el-button
-                :type="system.navType === item.value ? 'primary' : ''"
-                size="mini"
-                v-for="item in GlobalCfg.systemNavType"
-                :key="item.value"
-                @click="$store.commit('NAV_TYPE_TOGGLE', item.value)"
-              >{{ item.label }}</el-button>
-            </el-button-group>
-          </div>
-        </el-dropdown-menu>
-      </el-dropdown>
       <span class="body-top-btn" @click="screenFullToggle">
         <i class="fa fa-arrows-alt"></i>
       </span>
