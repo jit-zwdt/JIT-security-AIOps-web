@@ -885,9 +885,9 @@ export default {
       return 'charts-demo-' + index
     },
     getItemsData (itemid, index, units) {
-      var starttime = timesMethod.fun_date(-3)
+      var starttime = timesMethod.fun_date(0)
       var timefrom = timesMethod.getDatestamp(starttime)
-      var endtime = timesMethod.fun_date(3)
+      var endtime = timesMethod.fun_date(1)
       var timetill = timesMethod.getDatestamp(endtime)
       const region = {
         itemids: [itemid],
@@ -901,10 +901,12 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             json.data.forEach(element => {
-              var clock = timesMethod.getTimestamp(element.clock)
+              var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
               returndataclock.push(clock)
-              returndataavg.push(element.value_avg)
+              returndataavg.push(element.value)
             })
+            const countjson = json.data.length
+            const newcount = Math.floor(countjson/10)
             // 基于准备好的dom，初始化echarts实例
             const pieCharts = document.getElementById('charts-demo-' + index)
             var pieEcharts = document.getElementById('pieEcharts')
@@ -917,14 +919,21 @@ export default {
                 data: returndataclock,
                 // 设置字体倾斜
                 axisLabel: {
-                  interval: 2,
+                  interval: newcount,
                   rotate: 45, // 倾斜度-90至90默认为0
                   margin: 2,
                   textStyle: {
                     fontWeight: 'bolder',
                     color: '#000000',
                     fontSize: '7'
-                  }
+                  },
+                  formatter: function (value) {
+                    return value.split(" ")[1];
+                  },
+                  showMaxLabel: true
+                },
+                splitLine: {
+                  show: false
                 }
               },
               grid: {
