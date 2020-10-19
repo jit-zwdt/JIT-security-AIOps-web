@@ -4,6 +4,11 @@
       <i class="el-icon-menu"></i>
     </div>
     <div class="right">
+      <span class="body-top-btn">
+        <el-badge is-dot class="badge">
+          <i class="el-icon-bell"></i>
+        </el-badge>
+      </span>
       <span class="body-top-btn" @click="screenFullToggle">
         <i class="fa fa-arrows-alt"></i>
       </span>
@@ -26,14 +31,11 @@
           </div>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- <span class="body-top-btn">
+      <span class="body-top-btn">
         <el-badge is-dot class="badge">
-          <i class="el-icon-bell"></i>
+          <i class="el-icon-share"></i>
         </el-badge>
-      </span> -->
-      <el-badge is-dot class="item">
-        <el-button class="share-button" icon="el-icon-share" type="primary"></el-button>
-      </el-badge>
+      </span>
       <el-dropdown>
         <span class="body-top-btn">
           {{ user.name }}
