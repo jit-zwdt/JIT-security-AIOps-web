@@ -4,9 +4,8 @@
       <div class="queryleft">
       </div>
       <div class="queryright">
-        <el-button type="primary" size="small" v-print="'#print'">打印</el-button>
+        <el-button type="primary" size="small" v-print="'#print'" @click="saveReport()">打印</el-button>
         <el-button type="primary" size="small" @click="exportReport() == false">导出</el-button>
-        <el-button type="primary" size="small" @click="showHistory() == false">历史</el-button>
       </div>
     </ToolBar>
     <div style="background-color: white;" id="print">
@@ -31,7 +30,8 @@
             <td style="width: 10%;border-left: 1px solid black;">出现问题</td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.newProblemNum}}
             </td>
-            <td style="width: 70%;border-left: 1px solid black;text-align: left;" v-html="this.dailyOperationsData.newProblemDetail">
+            <td style="width: 70%;border-left: 1px solid black;text-align: left;"
+                v-html="this.dailyOperationsData.newProblemDetail">
             </td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.newProblemTotal}}
             </td>
@@ -39,7 +39,8 @@
           <tr style="border-top: 1px solid black;height: 60px;">
             <td style="width: 10%;border-left: 1px solid black;">认领问题</td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.claimedProblemNum}}</td>
-            <td style="width: 70%;border-left: 1px solid black;text-align: left;" v-html="this.dailyOperationsData.claimedProblemDetail">
+            <td style="width: 70%;border-left: 1px solid black;text-align: left;"
+                v-html="this.dailyOperationsData.claimedProblemDetail">
             </td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.claimedProblemTotal}}
             </td>
@@ -48,7 +49,8 @@
             <td style="width: 10%;border-left: 1px solid black;">处理中问题</td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.processingProblemNum}}
             </td>
-            <td style="width: 70%;border-left: 1px solid black;text-align: left;" v-html="this.dailyOperationsData.processingProblemDetail">
+            <td style="width: 70%;border-left: 1px solid black;text-align: left;"
+                v-html="this.dailyOperationsData.processingProblemDetail">
             </td>
             <td style="width: 10%;border-left: 1px solid black;">
               {{this.dailyOperationsData.processingProblemTotal}}
@@ -57,7 +59,8 @@
           <tr style="border-top: 1px solid black;height: 60px;">
             <td style="width: 10%;border-left: 1px solid black;">解决问题</td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.solvedProblemNum}}</td>
-            <td style="width: 70%;border-left: 1px solid black;text-align: left;" v-html="this.dailyOperationsData.solvedProblemDetail">
+            <td style="width: 70%;border-left: 1px solid black;text-align: left;"
+                v-html="this.dailyOperationsData.solvedProblemDetail">
             </td>
             <td style="width: 10%;border-left: 1px solid black;">{{this.dailyOperationsData.solvedProblemTotail}}
             </td>
@@ -96,6 +99,24 @@ export default {
             this.dailyOperationsData = json.data
             this.loading = false
           }
+        }
+      })
+    },
+    saveReport () {
+      this.axios.post(this.$api.dailyOperationReportManager.addDailyOperationReport, this.dailyOperationsData).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+          }
+        } else {
+          this.$message({
+            message: '添加失败',
+            type: 'error'
+          })
         }
       })
     }

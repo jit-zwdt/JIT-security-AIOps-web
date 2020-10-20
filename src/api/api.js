@@ -226,7 +226,9 @@ const api = {
     deleteMonitorSchemeTimerTask: '/inspection/deleteMonitorSchemeTimerTask/'
   },
   dailyOperationReportManager: {
-    getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/'
+    getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/',
+    addDailyOperationReport: '/dailyOperationReport/addDailyOperationReport',
+    getDailyOperationReports: '/dailyOperationReport/getDailyOperationReports/'
   },
   main: {
     // Index.vue
