@@ -211,8 +211,7 @@ export default {
     },
     gmtCreateFormat (val) {
       if (val.gmtCreate !== null && val.gmtCreate !== '') {
-        var index = val.gmtCreate.indexOf('.')
-        return val.gmtCreate.substr(0, index).replace('T', ' ')
+        return val.gmtCreate.replace('T', ' ')
       }
     },
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
@@ -244,8 +243,6 @@ export default {
         problemSolution: this.registerForm.resolveWay,
         problemProcess: this.registerForm.process,
         isResolve: problemTypeResult,
-        gmtCreate: (new Date()).getTime(),
-        isDeleted: 0,
         claimId: this.$route.query.claimId
       }
       return region

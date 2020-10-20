@@ -84,6 +84,7 @@ export default {
       this.$store.commit('HIDE_SIDEBAR_TOGGLE')
     },
     screenFullToggle () {
+      this.$store.commit('HIDE_SIDEBAR_TOGGLE')
       ScreenFull.toggle()
         .then(() => { })
         .catch(() => {

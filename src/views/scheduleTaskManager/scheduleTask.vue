@@ -95,7 +95,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
-import ScheduleTaskAdd from '@/views/sysManager/scheduleTaskManager/scheduleTaskAdd.vue'
+import ScheduleTaskAdd from '@/views/scheduleTaskManager/scheduleTaskAdd.vue'
 
 export default {
   data () {

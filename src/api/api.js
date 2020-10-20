@@ -221,6 +221,9 @@ const api = {
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
     getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks'
   },
+  dailyOperationReportManager: {
+    getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/'
+  },
   main: {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
