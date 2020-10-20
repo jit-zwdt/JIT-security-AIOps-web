@@ -1,0 +1,168 @@
+<template>
+  <div>
+    <ToolBar>
+      <div class="queryleft">
+        <el-date-picker
+            v-model="queryDate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期">
+        </el-date-picker>
+        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
+      </div>
+      <div class="queryright"></div>
+    </ToolBar>
+    <el-table
+        :data="tableData"
+        border
+        v-loading="loading"
+        style="width: 100%"
+        :row-style="tableRowStyle"
+        :header-cell-style="tableHeaderColor"
+        @sort-change="changeTableSort"
+    >
+      <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column
+          label="创建时间"
+          prop="gmtCreate"
+          min-width="15%"
+          :resizable="false"
+          :formatter="formatDate"
+      ></el-table-column>
+      <el-table-column align="center" label="操作" min-width="10%">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              type="primary"
+              slot="reference"
+              icon="el-icon-edit-outline"
+              @click="confirmupdate(scope.$index, scope.row)"
+          >查看
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
+  </div>
+</template>
+<script>
+import { formatTodate } from '@/utils/format.js'
+import Pagination from '@/components/Pagination.vue'
+
+export default {
+  data () {
+    return {
+      show: false,
+      showEditDialog: false,
+      queryDate: '',
+      tableData: [
+        {
+          id: '',
+          date: ''
+        }
+      ],
+      currentPage: 1,
+      pageSize: 15,
+      currentTotal: 0,
+      loading: true
+    }
+  },
+  created () {
+    this.showInfo()
+  },
+  methods: {
+    // 修改table tr行的背景色
+    tableRowStyle ({ row, column, rowIndex, columnIndex }) {
+    },
+    // 修改table header的背景色
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
+      }
+    },
+    reloadData () {
+      this.showInfo()
+    },
+    showInfo () {
+      this.loading = true
+      this.tableData = this.tableDataclear
+      const _this = this
+      this.setTimeoutster = window.setTimeout(() => {
+        _this.showInfoTimeout()
+      }, 300)
+    },
+    showInfoTimeout () {
+      this.axios
+        .post(this.$api.monitorManager.getMonitorTemplates, {
+          param: {
+            name: this.temp_name,
+            type: this.temp_type
+          },
+          page: this.currentPage,
+          size: this.pageSize,
+          orders: [
+            {
+              property: 'orderNum',
+              direction: 'ASC'
+            }
+          ]
+        })
+        .then(resp => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.tableData = json.data.dataList
+              this.currentTotal = json.data.totalRow
+              this.loading = false
+            }
+          }
+        })
+    },
+    pageChange (item) {
+      this.currentPage = item.page_currentPage
+      this.pageSize = item.page_pageSize
+      this.showInfo()
+    },
+    showClear () {
+      this.queryDate = ''
+    },
+    formatDate (row, column) {
+      let data = ''
+      data = row[column.property]
+      if (data == null) {
+        return ''
+      }
+      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    }
+  },
+  actions: {},
+  components: { Pagination }
+}
+</script>
+<style lang="scss" scoped>
+  .queryleft {
+    float: left;
+  }
+
+  .queryright {
+    float: right;
+  }
+
+  .tableHeaderColor {
+    font-size: 20;
+  }
+
+  .datetop /deep/ input {
+    height: 32px !important;
+    margin-top: 1px !important;
+  }
+
+  /deep/ .el-input__prefix {
+    margin-top: -3px;
+  }
+
+  /deep/ .el-button {
+    margin-left: 10px;
+  }
+</style>
