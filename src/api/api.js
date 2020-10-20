@@ -220,6 +220,9 @@ const api = {
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/'
   },
+  dailyOperationReportManager: {
+    getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/'
+  },
   main: {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
