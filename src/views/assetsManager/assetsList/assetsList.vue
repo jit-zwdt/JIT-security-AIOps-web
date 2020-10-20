@@ -9,12 +9,14 @@
           v-model="registerDateStartTop"
           type="date"
           placeholder="开始登记时间"
+          value-format="yyyy-MM-dd"
           class="datetop"
         ></el-date-picker>
         <el-date-picker
           v-model="registerDateEndTop"
           type="date"
           placeholder="结束登记时间"
+          value-format="yyyy-MM-dd"
           class="datetop"
         ></el-date-picker>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
@@ -224,12 +226,7 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.setTimeoutster = ''
-      let registerDateStartTopstr = ''
-      registerDateStartTopstr = formatTodate(this.registerDateStartTop, 'YYYY-MM-DD HH:mm:ss')
-      let registerDateEndTopstr = ''
-      registerDateEndTopstr = formatTodate(this.registerDateEndTop, 'YYYY-MM-DD 23:59:59')
-      if (compareDate(registerDateStartTopstr, registerDateEndTopstr)) {
+      if (compareDate(this.registerDateStartTop, this.registerDateEndTop)) {
         Message({
           message: '开始日期大于结束日期！',
           type: 'warning'
@@ -239,8 +236,8 @@ export default {
       this.axios.post(api.assetsManager.assetsList.assetsList.findByCondition, {
         param: {
           name: this.nameTop,
-          assetRegisterStartDate: registerDateStartTopstr,
-          assetRegisterEndDate: registerDateEndTopstr
+          registerStartDate: this.registerDateStartTop,
+          registerEndDate: this.registerDateEndTop
         },
         page: this.currentPage,
         size: this.pageSize
@@ -248,7 +245,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            // console.log(json.data.dataList[0])
             this.tableData = json.data.dataList
             this.currentTotal = json.data.totalRow
             this.loading = false
