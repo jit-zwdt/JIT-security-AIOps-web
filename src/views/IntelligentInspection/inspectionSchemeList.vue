@@ -3,7 +3,7 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="13">
-          <el-input type="text" v-model="hostObjectName" size="small" placeholder="业务名称" clearable></el-input>
+          <el-input type="text" v-model="schemeName" size="small" placeholder="巡检计划名称" clearable></el-input>
         </el-col>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
@@ -30,21 +30,9 @@
       :row-style="tableRowStyle"
       :header-cell-style="tableHeaderColor"
     >
-      >
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="templatesId" prop="templatesId" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="zabbix中主机的Hostid" prop="hostid" v-if="show"></el-table-column>
-      <el-table-column label="主机名称" prop="objectName" min-width="20%"></el-table-column>
-      <el-table-column label="业务名称" prop="businessName" min-width="20%" v-if="datashow"></el-table-column>
-      <el-table-column label="IP" prop="hostIp" min-width="20%" :resizable="false"></el-table-column>
-      <el-table-column label="类型" prop="type" min-width="10%" :resizable="false"></el-table-column>
-      <el-table-column
-        label="子类型"
-        prop="subtype"
-        min-width="10%"
-        :resizable="false"
-        v-if="datashow"
-      ></el-table-column>
+      <el-table-column label="巡检计划名称" prop="schemeName" min-width="20%"></el-table-column>
+      <el-table-column label="创建时间" prop="gmtCreate" :formatter="formatDate" min-width="20%"></el-table-column>
       <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
       <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="scope">
@@ -82,29 +70,23 @@
 <script>
 import Pagination from '@/components/Pagination.vue'
 import InspectionSchemeAdd from '@/views/IntelligentInspection/inspectionSchemeAdd.vue'
+import { formatTodate } from '@/utils/format.js'
 export default {
   data () {
     return {
       show: false,
       datashow: false,
-      hostObjectName: '',
+      schemeName: '',
       tableData: [{
         id: '',
-        objectName: '',
-        agentIp: '',
-        snmpIp: '',
-        enableMonitor: '',
-        monitorType: '',
-        type: '',
-        subtype: '',
-        remark: '',
-        groupId: '',
-        hostLabel: '',
-        businessName: '',
-        hostid: '',
-        templatesId: '',
-        typeId: '',
-        subtypeId: ''
+        scheduleId: '',
+        ftpUrl: '',
+        schemeName: '',
+        gmtCreate: '',
+        gmtModified: '',
+        createBy: '',
+        updateBy: '',
+        isDeleted: ''
       }],
       currentPage: 1,
       pageSize: 15,
@@ -193,14 +175,9 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.axios.post(this.$api.monitorManager.hostinfo, {
+      this.axios.post(this.$api.inspectionManager.getMonitorSchemeTimerTasks, {
         param: {
-          hostObjectName: this.hostObjectName,
-          hostIp: this.hostIp,
-          typeId: this.currentHostType,
-          subtypeId: this.currentHostSubType,
-          enableMonitor: this.currentEnableMonitor,
-          groupId: this.currentHostGroup
+          schemeName: this.schemeName
         },
         page: this.currentPage,
         size: this.pageSize
@@ -220,8 +197,17 @@ export default {
         }
       })
     },
+    // 格式化日期
+    formatDate (row, column) {
+      let data = ''
+      data = row[column.property]
+      if (data == null) {
+        return ''
+      }
+      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    },
     showClear () {
-      this.hostObjectName = ''
+      this.schemeName = ''
     },
     showAssetsAdd () {
       this.showEditDialog = true

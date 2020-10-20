@@ -218,7 +218,8 @@ const api = {
   inspectionManager: {
     makePdf: '/inspection/makePdf',
     inspectionGetHostInfo: '/inspection/getHostInfo/',
-    addTimerTaskInfo: '/inspection/addTimerTaskInfo/'
+    addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
+    getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks'
   },
   main: {
     // Index.vue
