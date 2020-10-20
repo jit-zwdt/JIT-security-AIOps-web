@@ -9,7 +9,7 @@
       />
       <span v-else>{{ GlobalCfg.siteName }}</span>
     </div>
-    <div class="sidebar-top-user">
+    <!-- <div class="sidebar-top-user">
       <el-row>
         <el-col class="width-style">
           <div v-if="imageurl">
@@ -25,7 +25,7 @@
           </div>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
     <div class="sidebar-menu">
       <el-menu
         router
@@ -177,7 +177,7 @@ export default {
     }
   },
   created () {
-    this.showinfo()
+    // this.showinfo()
   },
   methods: {
     showinfo () {
