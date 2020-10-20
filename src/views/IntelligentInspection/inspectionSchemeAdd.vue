@@ -189,6 +189,8 @@ export default {
     clearform () {
       resetObject(this.serverForm)
       this.$refs.serverForm.resetFields()
+      // 清空添加的数据
+      this.tableData = []
     },
     submitOrUpdate (formName) {
       this.$refs[formName].validate((valid) => {
@@ -237,6 +239,8 @@ export default {
           this.$emit('error')
         }
       })
+      // 数据清空
+      this.clearform()
     },
     update () {
       alert('修改')

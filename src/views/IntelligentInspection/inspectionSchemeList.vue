@@ -33,26 +33,15 @@
       <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
       <el-table-column label="巡检计划名称" prop="schemeName" min-width="20%"></el-table-column>
       <el-table-column label="创建时间" prop="gmtCreate" :formatter="formatDate" min-width="20%"></el-table-column>
-      <!--<el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column>-->
+      <!-- <el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column> -->
       <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="scope">
+          <el-button size="mini" type="warning" slot="reference" icon="el-icon-switch-button">停止</el-button>
+          <el-button size="mini" type="success" slot="reference" icon="el-icon-switch-button">启动</el-button>
+          <el-button size="mini" type="primary" slot="reference" icon="el-icon-edit-outline" @click="confirmupdate(scope.$index, scope.row)">编辑</el-button>
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
           </el-popconfirm>
-          <el-button
-            size="mini"
-            type="primary"
-            slot="reference"
-            icon="el-icon-edit-outline"
-            @click="confirmupdate(scope.$index, scope.row)"
-          >编辑</el-button>
-          <el-button
-            size="mini"
-            type="primary"
-            slot="reference"
-            icon="el-icon-s-grid"
-            @click="confirmItemList(scope.$index, scope.row)"
-          >监控项</el-button>
         </template>
       </el-table-column>
     </el-table>
