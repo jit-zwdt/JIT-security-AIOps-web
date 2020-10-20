@@ -113,6 +113,7 @@ export default {
     // 重置方法
     showClear () {
       this.nameTop = ''
+      this.gmtCreate = []
       this.showInfo()
     },
     // 格式化日期
