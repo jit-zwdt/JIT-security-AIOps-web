@@ -906,7 +906,7 @@ export default {
               returndataavg.push(element.value)
             })
             const countjson = json.data.length
-            const newcount = Math.floor(countjson/10)
+            const newcount = Math.floor(countjson / 10)
             // 基于准备好的dom，初始化echarts实例
             const pieCharts = document.getElementById('charts-demo-' + index)
             var pieEcharts = document.getElementById('pieEcharts')
@@ -928,7 +928,7 @@ export default {
                     fontSize: '7'
                   },
                   formatter: function (value) {
-                    return value.split(" ")[1];
+                    return value.split(' ')[1]
                   },
                   showMaxLabel: true
                 },
