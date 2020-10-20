@@ -35,9 +35,9 @@
               >
                 <el-option
                   v-for="item in timerTaskoptionsType"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
+                  :key="item.cronExpression"
+                  :label="item.cronExpressionDesc"
+                  :value="item.cronExpression"
                 >
                 </el-option>
               </el-select>
@@ -154,20 +154,8 @@ export default {
         this.$parent.$parent.noReloadData()
       },
       hostinfotbale: [],
-      timerTaskoptionsType: [
-        {
-          id: '0/5 * * * * ?',
-          name: '按每5分钟巡检一次'
-        },
-        {
-          id: '0/10 * * * * ?',
-          name: '按每10分钟巡检一次'
-        },
-        {
-          id: '0/30 * * * * ?',
-          name: '按每30分钟巡检一次'
-        }
-      ]
+      // 巡检时间的 Type 数组 里面封存的是动态的数据
+      timerTaskoptionsType: []
     }
   },
   components: { InspectionSchemeItemAdd },
@@ -177,9 +165,25 @@ export default {
   methods: {
     openDialog () {
       // this.showInfo()
+      // 打开的时候进行查询定时巡检时间的数据进行添加到下拉框中
+      this.setTimerTaskoptionsType()
     },
     addItem () {
       this.addItemDialog = true
+    },
+    // 刷新巡检时间的数据
+    setTimerTaskoptionsType () {
+      // 调用后端代码查询动态的巡检时间数据添加到代码中
+      this.timerTaskoptionsType = []
+      this.axios.post(this.$api.inspectionManager.getCronExpressionObject).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json)
+            this.timerTaskoptionsType = json.data
+          }
+        }
+      })
     },
     closefrom () {
       // this.showfooter = true

@@ -219,7 +219,8 @@ const api = {
     makePdf: '/inspection/makePdf',
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
-    getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks'
+    getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks',
+    getCronExpressionObject: '/sys/cronExpression/getCronExpressionObject'
   },
   dailyOperationReportManager: {
     getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/'
