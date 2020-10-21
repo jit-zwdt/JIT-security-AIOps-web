@@ -27,7 +27,7 @@
             <el-table-column label="序号" prop="num" min-width="5%" :resizable="false"></el-table-column>
             <el-table-column label="字典名称" prop="dictionaryEntity.dictName" min-width="10%" :resizable="false"></el-table-column>
             <el-table-column
-                    label="字典编号"
+                    label="字典编码"
                     prop="dictionaryEntity.dictCode"
                     min-width="10%"
                     :resizable="false"

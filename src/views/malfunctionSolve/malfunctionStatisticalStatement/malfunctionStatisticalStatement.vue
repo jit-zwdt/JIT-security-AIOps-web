@@ -52,7 +52,6 @@
               prop="register.problemType"
               min-width="5%"
               :resizable="false"
-              :formatter="problemTypeFormat"
           ></el-table-column>
           <el-table-column label="处理角色" prop="role" min-width="5%" :resizable="false"></el-table-column>
           <el-table-column label="处理人" prop="user" min-width="5%" :resizable="false"></el-table-column>
@@ -124,7 +123,8 @@ export default {
           problemType: '',
           problemName: '',
           resolveTimeStart: this.resolveTimeStart,
-          resolveTimeEnd: this.resolveTimeEnd
+          resolveTimeEnd: this.resolveTimeEnd,
+          dictCode: 'gzlx'
         }))
         .then(resp => {
           if (resp.status === 200) {
@@ -141,17 +141,6 @@ export default {
       this.resolveTimeEnd = ''
       this.getDate()
       this.getCurrentMonthFirst()
-    },
-    problemTypeFormat (val) {
-      if (val.register.problemType === '0') {
-        return '类型一'
-      } else if (val.register.problemType === '1') {
-        return '类型二'
-      } else if (val.register.problemType === '2') {
-        return '类型三'
-      } else if (val.register.problemType === '3') {
-        return '类型四'
-      }
     },
     getDate: function () {
       const _this = this
