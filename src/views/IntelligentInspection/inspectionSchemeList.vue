@@ -45,6 +45,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 这个组件即是编辑也是添加只是传入的值不同 -->
     <InspectionSchemeAdd
       :title="'巡检计划'+titleType"
       :dataform="dataform"
@@ -129,7 +130,8 @@ export default {
       this.showInfo()
     },
     confirmdelete (index, row) {
-      this.axios.delete(this.$api.monitorManager.deleteHost + row.id).then((resp) => {
+      // 这里缺少判断 停止服务的判断如果没有停止不让删除操作
+      this.axios.delete(this.$api.inspectionManager.deleteMonitorSchemeTimerTask + row.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -211,7 +213,11 @@ export default {
     noReloadData () {
       this.showEditDialog = false
     },
+    // 点击修改按钮的时候调用的方法
     confirmupdate (index, row) {
+      this.showEditDialog = true
+      this.titleType = '编辑'
+      this.dataform.flag = '2'
     }
   },
   mounted () {

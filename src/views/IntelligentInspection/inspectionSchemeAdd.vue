@@ -20,7 +20,7 @@
           :rules="rules"
         >
           <el-row>
-            <el-form-item label="巡检计划名称:" prop="schemeName">
+            <el-form-item v-if="dataform.flag !== '2'" label="巡检计划名称:" prop="schemeName">
               <el-input
                 v-model="serverForm.schemeName"
                 placeholder="请输入巡检计划名称"
@@ -167,6 +167,10 @@ export default {
       // this.showInfo()
       // 打开的时候进行查询定时巡检时间的数据进行添加到下拉框中
       this.setTimerTaskoptionsType()
+      // 如果传入的 dataform.flag !== '2' 的时候那就是修改 修改需要调用回显数据的方法
+      if (this.dataform.flag !== '2') {
+        // 回显数据
+      }
     },
     addItem () {
       this.addItemDialog = true
@@ -179,7 +183,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json)
             this.timerTaskoptionsType = json.data
           }
         }
@@ -247,6 +250,7 @@ export default {
       this.clearform()
     },
     update () {
+      // 修改的代码跟添加的代码差不多只需要传入的参数多了一个 id
       alert('修改')
     },
     showInfo () {

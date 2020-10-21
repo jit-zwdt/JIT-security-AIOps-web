@@ -220,7 +220,8 @@ const api = {
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
     getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks',
-    getCronExpressionObject: '/sys/cronExpression/getCronExpressionObject'
+    getCronExpressionObject: '/sys/cronExpression/getCronExpressionObject',
+    deleteMonitorSchemeTimerTask: '/inspection/deleteMonitorSchemeTimerTask/'
   },
   dailyOperationReportManager: {
     getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/'
