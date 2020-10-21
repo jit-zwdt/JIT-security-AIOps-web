@@ -131,7 +131,7 @@ export default {
     },
     confirmdelete (index, row) {
       // 这里缺少判断 停止服务的判断如果没有停止不让删除操作
-      this.axios.delete(this.$api.inspectionManager.deleteMonitorSchemeTimerTask + row.id).then((resp) => {
+      this.axios.delete(this.$api.inspectionManager.deleteMonitorSchemeTimerTask + row.id + "/"+row.scheduleId).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
