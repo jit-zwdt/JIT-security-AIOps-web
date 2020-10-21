@@ -158,7 +158,8 @@ export default {
       // 巡检时间的 Type 数组 里面封存的是动态的数据
       timerTaskoptionsType: [],
       // 编辑的名称数据
-      schemeName: {}
+      schemeName: {},
+      id: ''
     }
   },
   components: { InspectionSchemeItemAdd },
@@ -180,6 +181,7 @@ export default {
               const json = resp.data
               if (json.code === 1) {
                 this.serverForm.timerTask = json.data.cronExpression
+                this.id = json.data.id
                 const jsonParam = JSON.parse(json.data.jsonParam)
                 this.tableData = jsonParam.info
                 this.schemeName = jsonParam.schemeName
@@ -278,9 +280,6 @@ export default {
     },
     update () {
       // 修改的代码跟添加的代码差不多只需要传入的参数多了一个 id
-      alert('修改')
-      // 调用删除进行本条数据的删除
-      this.axios.delete(this.$api.inspectionManager.deleteMonitorSchemeTimerTask + this.dataform.id + '/' + this.dataform.scheduleId)
       // 调用添加进行这条数据的添加
       const paramInfo = {
         schemeName: this.schemeName,
@@ -290,6 +289,7 @@ export default {
       console.log(paramInfo)
       const param = new URLSearchParams()
       param.append('param', JSON.stringify(paramInfo))
+      param.append('id', this.id)
       this.axios.post(this.$api.inspectionManager.addTimerTaskInfo, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
