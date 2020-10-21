@@ -263,7 +263,11 @@ export default {
     }
   },
   created () {
-    // this.timer = setInterval(this.getTime, 1000)
+    const severityVal = this.$route.query.severity
+    if (typeof (severityVal) !== 'undefined' && severityVal !== '' && severityVal !== null) {
+      this.severity = severityVal
+      this.$router.push({ name: 'alertInquire' })
+    }
     this.showInfo()
   },
   mounted () {
@@ -321,7 +325,6 @@ export default {
       }
       endTimestr = String(Math.round(new Date(endTimestr).getTime() / 1000))
       startTimestr = String(Math.round(new Date(startTimestr).getTime() / 1000))
-
       const region = {
         severity: this.severity,
         timeFrom: startTimestr,
