@@ -85,6 +85,7 @@
         :direction="direction"
         :before-close="handleClose"
         size='20%'
+        @open="openDrawer"
         @closed="closedDrawer"
         :wrapperClosable="false"
         :destroy-on-close="true">
@@ -95,7 +96,7 @@
                   v-model="filterText" clearable>
         </el-input>
       </div>
-      <div class="el-tree-data">
+      <div class="el-tree-data" :style="this.changeHeight">
         <el-tree
             class="filter-tree"
             :data="menuData"
@@ -167,6 +168,9 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'label'
+      },
+      changeHeight: {
+        height: ''
       }
     }
   },
@@ -347,6 +351,9 @@ export default {
           this.$emit('error')
         }
       })
+    },
+    openDrawer () {
+      this.changeHeight.height = window.innerHeight - 210 + 'px'
     }
   },
   components: { Pagination, roleAdd, roleAddUser }
@@ -382,9 +389,8 @@ export default {
     margin-left: 20px;
   }
 
-  .el-tree-data {
+ .el-tree-data {
     margin-left: 20px;
-    max-height: 60%;
     overflow-y: auto
   }
 
