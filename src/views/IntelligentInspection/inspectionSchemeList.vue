@@ -36,8 +36,8 @@
       <!-- <el-table-column label="标签" prop="hostLabel" min-width="6%" :resizable="false"></el-table-column> -->
       <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="scope">
-          <el-button size="mini" v-if="scope.row.status === 0" type="warning" slot="reference" icon="el-icon-switch-button">停止</el-button>
-          <el-button size="mini" v-if="scope.row.status === 1" type="success" slot="reference" icon="el-icon-switch-button">启动</el-button>
+          <el-button size="mini" v-if="scope.row.status === 0" type="warning" slot="reference" @click="changeStatus(scope.$index, scope.row)" icon="el-icon-switch-button">停止</el-button>
+          <el-button size="mini" v-if="scope.row.status === 1" type="success" slot="reference" @click="changeStatus(scope.$index, scope.row)" icon="el-icon-switch-button">启动</el-button>
           <el-button size="mini" type="primary" slot="reference" icon="el-icon-edit-outline" @click="confirmupdate(scope.$index, scope.row)">编辑</el-button>
           <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
             <el-button size="mini" type="danger" slot="reference" icon="el-icon-delete">删除</el-button>
@@ -90,9 +90,11 @@ export default {
         hostid: ''
       },
       titleType: '',
+      // 传递数据的对象
       dataform: {
         id: '',
-        flag: ''
+        flag: '',
+        scheduleId: ''
       }
     }
   },
@@ -130,30 +132,62 @@ export default {
       this.showEditDialog = false
       this.showInfo()
     },
-    confirmdelete (index, row) {
-      // 这里缺少判断 停止服务的判断如果没有停止不让删除操作
-      this.axios.delete(this.$api.inspectionManager.deleteMonitorSchemeTimerTask + row.id + '/' + row.scheduleId).then((resp) => {
+    // 变更任务的状态 启动/关闭
+    changeStatus (index, row) {
+      this.axios.put(this.$api.sysManager.changeStatus + row.scheduleId).then((resp) => {
         if (resp.status === 200) {
-          var json = resp.data
+          const json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '删除成功',
+              message: '操作成功',
               type: 'success'
             })
+          } else {
+            this.$message({
+              message: '操作失败',
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '操作失败',
+            type: 'error'
+          })
+        }
+        this.showInfo()
+      })
+    },
+    confirmdelete (index, row) {
+      // 这里缺少判断 停止服务的判断如果没有停止不让删除操作
+      if (row.status === 1) {
+        this.axios.delete(this.$api.inspectionManager.deleteMonitorSchemeTimerTask + row.id + '/' + row.scheduleId).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '删除失败',
+                type: 'error'
+              })
+            }
           } else {
             this.$message({
               message: '删除失败',
               type: 'error'
             })
           }
-        } else {
-          this.$message({
-            message: '删除失败',
-            type: 'error'
-          })
-        }
-        this.showInfo()
-      })
+          this.showInfo()
+        })
+      } else {
+        this.$message({
+          message: '请先把任务停止再进行删除',
+          type: 'error'
+        })
+      }
     },
     pageChange (item) {
       this.currentPage = item.page_currentPage
@@ -219,6 +253,8 @@ export default {
       this.showEditDialog = true
       this.titleType = '编辑'
       this.dataform.flag = '2'
+      this.dataform.id = row.id
+      this.dataform.scheduleId = row.scheduleId
     }
   },
   mounted () {
