@@ -68,6 +68,7 @@
             weight: 10;
             font-size: 15px;
           "
+            @click="buttonClick(0)"
         >未定义
         </el-button
         >
@@ -81,6 +82,7 @@
             weight: 10;
             font-size: 15px;
           "
+            @click="buttonClick(1)"
         >信息
         </el-button
         >
@@ -94,6 +96,7 @@
             weight: 10;
             font-size: 15px;
           "
+            @click="buttonClick(2)"
         >警告
         </el-button
         >
@@ -107,6 +110,7 @@
             weight: 10;
             font-size: 15px;
           "
+            @click="buttonClick(3)"
         >一般严重
         </el-button
         >
@@ -120,6 +124,7 @@
             weight: 10;
             font-size: 15px;
           "
+            @click="buttonClick(4)"
         >严重
         </el-button
         >
@@ -133,6 +138,7 @@
             weight: 10;
             font-size: 15px;
           "
+            @click="buttonClick(5)"
         >灾难
         </el-button
         >
@@ -382,6 +388,10 @@ export default {
       var leave2 = leave1 % (3600 * 1000) // 计算小时数后剩余的毫秒数
       var minutes = Math.floor(leave2 / (60 * 1000))
       return days + '天 ' + hours + '小时 ' + minutes + '分'
+    },
+    buttonClick (severity) {
+      this.severity = severity
+      this.showInfo()
     }
   }
 }
