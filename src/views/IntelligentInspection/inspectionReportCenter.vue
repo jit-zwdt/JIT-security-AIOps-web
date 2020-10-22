@@ -131,27 +131,13 @@ export default {
       this.showInfo()
     },
     // 点击预览进行 PDF 文件的查看
-    loadinfo () {
-      // this.axios
-      //   .post(this.$api.inspectionManager.makePdf, { responseType: 'arraybuffer' }).then(resp => {
-      //     console.log(resp)
-      //     if (resp.status === 200) {
-      //       var json = resp.data
-      //       console.log(json)
-      //       const binaryData = []
-      //       binaryData.push(json)
-      //       this.pdfUrl = window.URL.createObjectURL(new Blob(binaryData, { type: 'application/pdf' }))
-      //       window.open(this.pdfUrl)
-      //       // console.log(binaryData)
-      //       // const url = window.URL.createObjectURL(new Blob(binaryData, { type: 'application/pdf;chartset=utf-8' }))
-      //       // // 将转化后 url 赋值给 vue-pdf 插件
-      //       // this.src = url
-      //       // this.$refs.pdfSearch.handleOpen()
-      //     }
-      //   })
+    loadinfo (index, row) {
       axios({
         method: 'post',
         url: this.$api.inspectionManager.makePdf,
+        params: {
+          ftpFilePath: row.ftpUrl
+        },
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         },
