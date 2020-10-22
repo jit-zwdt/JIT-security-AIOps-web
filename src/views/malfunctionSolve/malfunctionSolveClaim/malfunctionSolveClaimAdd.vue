@@ -46,7 +46,7 @@
                     </el-row>
                     <el-row>
                         <el-col>
-                            <el-form-item label="指派意见" prop="claimOpinion">
+                            <el-form-item label="指派意见：" prop="claimOpinion">
                                 <el-input type="textarea" v-model="serverListForm.claimOpinion" clearable style="width:100%"></el-input>
                             </el-form-item>
                         </el-col>
