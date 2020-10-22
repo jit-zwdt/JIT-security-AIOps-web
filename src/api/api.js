@@ -1,6 +1,7 @@
 const api = {
   login: '/login',
   index: '/index',
+  logout: '/logout/logout',
   regionManager: {
     list: '/regionManager/list'
   },

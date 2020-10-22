@@ -117,7 +117,8 @@ export default {
   props: {
     dataform: {
       id: '',
-      flag: ''
+      flag: '',
+      scheduleId: ''
     },
     showEditDialog: Boolean,
     dialogWidth: {
@@ -155,7 +156,10 @@ export default {
       },
       hostinfotbale: [],
       // 巡检时间的 Type 数组 里面封存的是动态的数据
-      timerTaskoptionsType: []
+      timerTaskoptionsType: [],
+      // 编辑的名称数据
+      schemeName: {},
+      id: ''
     }
   },
   components: { InspectionSchemeItemAdd },
@@ -167,9 +171,34 @@ export default {
       // this.showInfo()
       // 打开的时候进行查询定时巡检时间的数据进行添加到下拉框中
       this.setTimerTaskoptionsType()
-      // 如果传入的 dataform.flag !== '2' 的时候那就是修改 修改需要调用回显数据的方法
-      if (this.dataform.flag !== '2') {
+      // 如果传入的 dataform.flag === '2' 的时候那就是修改 修改需要调用回显数据的方法
+      if (this.dataform.flag === '2') {
         // 回显数据
+        const id = this.dataform.scheduleId
+        if (id !== undefined && id !== '') {
+          this.axios.get(this.$api.sysManager.getScheduleTask + id).then((resp) => {
+            if (resp.status === 200) {
+              const json = resp.data
+              if (json.code === 1) {
+                this.serverForm.timerTask = json.data.cronExpression
+                this.id = json.data.id
+                const jsonParam = JSON.parse(json.data.jsonParam)
+                this.tableData = jsonParam.info
+                this.schemeName = jsonParam.schemeName
+              } else {
+                this.$message({
+                  message: '获取任务信息失败！',
+                  type: 'error'
+                })
+              }
+            } else {
+              this.$message({
+                message: '获取任务信息失败！',
+                type: 'error'
+              })
+            }
+          })
+        }
       }
     },
     addItem () {
@@ -251,7 +280,36 @@ export default {
     },
     update () {
       // 修改的代码跟添加的代码差不多只需要传入的参数多了一个 id
-      alert('修改')
+      // 调用添加进行这条数据的添加
+      const paramInfo = {
+        schemeName: this.schemeName,
+        timerTask: this.serverForm.timerTask,
+        info: this.tableData
+      }
+      console.log(paramInfo)
+      const param = new URLSearchParams()
+      param.append('param', JSON.stringify(paramInfo))
+      param.append('id', this.id)
+      this.axios.post(this.$api.inspectionManager.addTimerTaskInfo, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+            this.$emit('success')
+          }
+        } else {
+          this.$message({
+            message: '保存失败',
+            type: 'error'
+          })
+          this.$emit('error')
+        }
+      })
+      // 数据清空
+      this.clearform()
     },
     showInfo () {
       const param = new URLSearchParams()

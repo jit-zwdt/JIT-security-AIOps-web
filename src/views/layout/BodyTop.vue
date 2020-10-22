@@ -177,11 +177,20 @@ export default {
         })
     },
     logout () {
-      this.user = {}
-      this.$store.commit('LOGOUT')
-      this.$router.replace({
-        path: '/',
-        query: { redirect: this.$router.currentRoute.fullPath }
+      this.axios.post(this.$api.logout).then((resp) => {
+        this.user = {}
+        this.$store.commit('LOGOUT')
+        this.$router.replace({
+          path: '/',
+          query: { redirect: this.$router.currentRoute.fullPath }
+        })
+      }).catch(() => {
+        this.user = {}
+        this.$store.commit('LOGOUT')
+        this.$router.replace({
+          path: '/',
+          query: { redirect: this.$router.currentRoute.fullPath }
+        })
       })
     },
     // 将弹框回复初始状态

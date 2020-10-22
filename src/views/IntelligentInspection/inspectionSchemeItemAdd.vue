@@ -112,6 +112,7 @@ export default {
       tophostid: '',
       loading: false,
       forShowData: [],
+      // 下拉框的信息
       nameOptions: [],
       show: false,
       currentPage: 1, // 当前页码
@@ -132,6 +133,7 @@ export default {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
+    // 打开页面调用的方法
     openDialog () {
       this.showInfo()
     },
@@ -145,6 +147,7 @@ export default {
       this.selectionData = []
       this.$refs.selectionTable.clearSelection()
     },
+    // 查询下拉框的信息
     showInfo () {
       const param = new URLSearchParams()
       param.append('id', '')
@@ -163,6 +166,7 @@ export default {
         }
       })
     },
+    // 点击切换主机按钮调用的方法
     chooseHost (value) {
       this.forShowData = []
       this.loading = true
@@ -175,6 +179,7 @@ export default {
           if (json.code === 1) {
             this.forShowData = json.data
             this.currentPage = 1
+            this.currentInsidePage = 1
           }
         } else {
           this.$message({
@@ -190,7 +195,7 @@ export default {
       this.clearform()
     },
     getRowKey (row) {
-      return row.itemid
+      return row.triggerid
     },
     handleSelectionChange (val) {
       if (val !== null) {
