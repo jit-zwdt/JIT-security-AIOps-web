@@ -70,7 +70,7 @@
               <div
                 :id="getID(index)"
                 class="echart"
-                :onchange="getItemsData(items.itemId, index, items.units)"
+                :onchange="getItemsData(items.itemId, index, items.units, items.valueType)"
               ></div>
             </div>
           </div>
@@ -120,9 +120,7 @@
               <div
                 :id="getGraphID(index1)"
                 class="echart"
-                :onchange="
-                  getGraphsData(items.graphId, items.graphName, index1)
-                "
+                :onchange="getGraphsData(items.graphId, items.graphName, index1)"
               ></div>
             </div>
           </div>
@@ -280,7 +278,7 @@
               >
               <div style="margin-left: 58%">
                 <el-popover
-                  placement="left"
+                  placement="left-start"
                   width="1200"
                   trigger="manual"
                   v-model="visible"
@@ -294,7 +292,7 @@
                       </el-col>
                     </el-row>
                     <el-row :gutter="40">
-                      <el-col :span="200" style="padding-left: 30px">
+                      <el-col :span="200">
                         <el-form-item label="图形类型">
                           <el-select v-model="form.graphtype">
                             <el-option
@@ -318,7 +316,7 @@
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="200" :push="1">
+                      <el-col :span="200" :push="2">
                         <el-form-item label="纵轴最大值">
                           <el-select v-model="form.ymax_type">
                             <el-option
@@ -657,7 +655,8 @@ export default {
         itemid: '',
         name: '',
         delay: '',
-        status: ''
+        status: '',
+        valueType: ''
       }],
       nameTop: '',
       currentPage: 1, // 当前页码
@@ -917,13 +916,14 @@ export default {
     getID (index) {
       return 'charts-demo-' + index
     },
-    getItemsData (itemid, index, units) {
+    getItemsData (itemid, index, units, history) {
       var starttime = timesMethod.fun_date(0)
       var timefrom = timesMethod.getDatestamp(starttime)
       var endtime = timesMethod.fun_date(1)
       var timetill = timesMethod.getDatestamp(endtime)
       const region = {
         itemids: [itemid],
+        history: history,
         timefrom: timefrom,
         timetill: timetill
       }
@@ -1072,7 +1072,8 @@ export default {
         hostId: row.hostid,
         itemId: row.itemid,
         itemName: row.name,
-        units: row.units
+        units: row.units,
+        valueType: row.value_type
       }
       this.axios.post(this.$api.monitorManager.addHostDetailItem, region).then((resp) => {
         if (resp.status === 200) {
@@ -1244,6 +1245,10 @@ export default {
             itemData = finalResult.itemData
             gItemData = finalResult.gItemData
             graphData = finalResult.graphData
+            console.log('finalResult===================' + JSON.stringify(finalResult))
+            // console.log('itemData' + JSON.stringify(itemData))
+            // console.log('gItemData' + JSON.stringify(gItemData))
+            // console.log('graphData' + JSON.stringify(graphData))
           }
         } else {
           this.$message({
@@ -1263,11 +1268,11 @@ export default {
           var value
           var name
           switch (gItemData[a].calc_fnc) {
-            case 1: value = trendData[trendData.length - 1].value_min
+            case 1: value = trendData[trendData.length - 1].value
               break
-            case 2: value = trendData[trendData.length - 1].value_avg
+            case 2: value = trendData[trendData.length - 1].value
               break
-            case 4: value = trendData[trendData.length - 1].value_max
+            case 4: value = trendData[trendData.length - 1].value
               break
           }
           name = legendData[a]
@@ -1523,6 +1528,7 @@ export default {
         this.form.name = ''
         this.form.ymax_type = ''
         this.form.ymin_type = ''
+        this.$refs.multipleTable.clearSelection()
       })
       // this.$refs.gPopover.doClose()
       this.showGraphsInfo()
@@ -1630,6 +1636,10 @@ export default {
           j = i + 1
         }
         if (_this[i].units !== _this[j].units) {
+          flag = false
+          return
+        }
+        if (_this[i].history !== _this[j].history) {
           flag = false
           return
         }
