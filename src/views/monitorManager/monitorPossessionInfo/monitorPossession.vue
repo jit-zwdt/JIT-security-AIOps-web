@@ -282,8 +282,8 @@
                 <el-popover
                   placement="left"
                   width="1200"
-                  trigger="click"
-                  ref="gPopover"
+                  trigger="manual"
+                  v-model="visible"
                 >
                   <el-form ref="form" :model="form" label-width="90px">
                     <el-row :gutter="40">
@@ -543,6 +543,7 @@
                     size="small"
                     slot="reference"
                     icon="el-icon-plus"
+                    @click="visible = !visible"
                     >新增</el-button
                   >
                 </el-popover>
@@ -609,6 +610,15 @@
                     circle
                   ></el-button>
                 </el-popconfirm>
+                <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
+                  <el-button
+                          size="mini"
+                          type="danger"
+                          slot="reference"
+                          icon="el-icon-delete"
+                          circle
+                  ></el-button>
+                </el-popconfirm>
               </template>
             </el-table-column>
           </el-table>
@@ -631,12 +641,14 @@
 </template>
 <script>
 import { timesMethod } from '@/utils/formatDate.js'
+import qs from 'qs'
 export default {
   props: {
     hostid: String
   },
   data () {
     return {
+      visible: false,
       itemsloading: '',
       show: false,
       spanChangeColor: '',
@@ -800,6 +812,27 @@ export default {
     this.form.graphtype = this.graphtypeOptions[0].value
   },
   methods: {
+    confirmdelete (index, row) {
+      this.axios.post(this.$api.monitorManager.deleteGPro, qs.stringify({
+        graphid: row.graphid
+      })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+          }
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+        }
+        this.showGraphsInfo()
+      })
+    },
     // 修改table tr行的背景色
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
     },
@@ -1280,7 +1313,7 @@ export default {
           trendData = finalResult.trendListData[i]
           var data = []
           for (var j = 0; j < trendData.length; j++) {
-            var clock = timesMethod.getTimestamp(trendData[j].clock)
+            var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
             var index
             if (clock) {
               index = i
@@ -1290,11 +1323,11 @@ export default {
               returndataclock.push(clock)
             }
             switch (gItemData[i].calc_fnc) {
-              case 1: data.push(trendData[j].value_min)
+              case 1: data.push(trendData[j].value)
                 break
-              case 2: data.push(trendData[j].value_avg)
+              case 2: data.push(trendData[j].value)
                 break
-              case 4: data.push(trendData[j].value_max)
+              case 4: data.push(trendData[j].value)
                 break
             }
           }
@@ -1345,6 +1378,7 @@ export default {
           series.data = data
           seriesData.push(series)
         }
+        const xcount = Math.floor(sum / 10)
         const pieCharts = document.getElementById('charts-graph-demo-' + index1)
         const pieEcharts = document.getElementById('pieEcharts')
         pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
@@ -1380,14 +1414,16 @@ export default {
               type: 'category',
               data: returndataclock,
               axisLabel: {
-                interval: 2,
+                // interval: 2,
+                interval: xcount,
                 rotate: 45, // 倾斜度-90至90默认为0
                 margin: 2,
                 textStyle: {
                   fontWeight: 'bolder',
                   color: '#000000',
                   fontSize: '7'
-                }
+                },
+                showMaxLabel: true
               }
             }
           ],
@@ -1448,6 +1484,7 @@ export default {
     },
     // 提交表单
     onSubmit () {
+      this.visible = false
       if (!this.form.name) {
         this.$message({
           message: '名称不能为空!',
@@ -1481,8 +1518,13 @@ export default {
             type: 'error'
           })
         }
+        this.form.graphtype = ''
+        this.form.gitems = []
+        this.form.name = ''
+        this.form.ymax_type = ''
+        this.form.ymin_type = ''
       })
-      this.$refs.gPopover.doClose()
+      // this.$refs.gPopover.doClose()
       this.showGraphsInfo()
     },
     valuetypeformatter (row) {
@@ -1527,9 +1569,13 @@ export default {
       })
     },
     closePopover () {
-      this.$refs.gPopover.doClose()
+      // this.$refs.gPopover.doClose()
+      this.visible = false
+      this.form.graphtype = ''
       this.form.gitems = []
       this.form.name = ''
+      this.form.ymax_type = ''
+      this.form.ymin_type = ''
       this.$refs.multipleTable.clearSelection()
     },
     handleDelete (index, row) {
@@ -1591,7 +1637,6 @@ export default {
       return flag
     },
     rightChose () {
-      console.log(this.multipleSelection1)
       var _this = this.multipleSelection1
       if (!this.changeItemCheck(_this)) {
         this.$message({
@@ -1631,7 +1676,6 @@ export default {
         gitems.itemid = _this[i].itemid
         this.form.gitems.push(gitems)
       }
-      console.log(this.multipleSelection1)
       this.$refs.multipleTable.clearSelection()
       this.$refs.gList.doClose()
     },

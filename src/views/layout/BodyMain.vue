@@ -39,7 +39,8 @@ export default {
   .content {
     .content-view {
       max-height: 800px;
-      overflow: hidden;
+      // overflow: hidden;
+      overflow-x: auto;
       overflow-y: auto;
       padding: 6px;
       min-height: calc(100vh - 39px - #{$--top-height} - #{$--top-height});
