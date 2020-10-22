@@ -135,6 +135,7 @@ export default {
     },
     // 打开页面调用的方法
     openDialog () {
+      this.pageSize = 10
       this.showInfo()
     },
     closefrom () {
@@ -191,8 +192,15 @@ export default {
       })
     },
     rightChose () {
-      this.$emit('success', this.selectionData)
-      this.clearform()
+      if (this.selectionData.length !== 0) {
+        this.$emit('success', this.selectionData)
+        this.clearform()
+      } else {
+        this.$message({
+          message: '请选择信息！',
+          type: 'error'
+        })
+      }
     },
     getRowKey (row) {
       return row.triggerid

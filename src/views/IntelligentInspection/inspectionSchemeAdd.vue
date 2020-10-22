@@ -105,7 +105,7 @@
     <div slot="footer" class="dialog-footer">
       <el-button @click="closefrom()">取消</el-button>
       <el-button type="primary" @click="submitOrUpdate('serverForm')"
-        >确认</el-button
+        >保存</el-button
       >
     </div>
   </el-dialog>
