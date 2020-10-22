@@ -3,7 +3,7 @@
     <Pdf ref="pdfSearch" :src="src" :fileId="fileId" />
     <ToolBar>
       <div class="queryleft">
-        <el-input type="text" style="width: 250px" v-model="nameTop" size="small" placeholder="巡检报告名称" clearable></el-input>
+        <el-input type="text" style="width: 250px" @keyup.enter.native="showInfo" v-model="nameTop" size="small" placeholder="巡检报告名称" clearable></el-input>
         <el-date-picker style="width: 400px" v-model="gmtCreate" type="datetimerange" size="small" value-format="yyyy-MM-ddTHH:mm:ss.SSSZ" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
         <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
