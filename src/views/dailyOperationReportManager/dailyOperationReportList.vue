@@ -22,22 +22,25 @@
         :header-cell-style="tableHeaderColor"
         @sort-change="changeTableSort"
     >
-      <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
+      <el-table-column
+          label="运维人"
+          prop="operationUser"
+          :resizable="false"
+      ></el-table-column>
       <el-table-column
           label="创建时间"
           prop="gmtCreate"
-          min-width="15%"
           :resizable="false"
           :formatter="formatDate"
       ></el-table-column>
-      <el-table-column align="center" label="操作" min-width="10%">
+      <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="scope">
           <el-button
               size="mini"
               type="primary"
               slot="reference"
-              icon="el-icon-edit-outline"
-              @click="confirmupdate(scope.$index, scope.row)"
+              icon="el-icon-view"
+              @click="showDailyOperationReport(scope.$index, scope.row)"
           >查看
           </el-button>
         </template>
@@ -58,8 +61,7 @@ export default {
       queryDate: '',
       tableData: [
         {
-          id: '',
-          date: ''
+          id: ''
         }
       ],
       currentPage: 1,
@@ -94,19 +96,12 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post(this.$api.monitorManager.getMonitorTemplates, {
+        .post(this.$api.dailyOperationReportManager.getDailyOperationReports, {
           param: {
-            name: this.temp_name,
-            type: this.temp_type
+            queryDate: this.queryDate
           },
           page: this.currentPage,
-          size: this.pageSize,
-          orders: [
-            {
-              property: 'orderNum',
-              direction: 'ASC'
-            }
-          ]
+          size: this.pageSize
         })
         .then(resp => {
           if (resp.status === 200) {
@@ -134,6 +129,9 @@ export default {
         return ''
       }
       return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    },
+    showDailyOperationReport (index, row) {
+      this.$router.push({ name: 'showDailyOperationReport', query: { id: row.id } })
     }
   },
   actions: {},
