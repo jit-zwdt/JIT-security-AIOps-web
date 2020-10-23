@@ -17,7 +17,9 @@
           <div class="box3">
             <div class="title_index">运维指数</div>
             <div class="box3_con">
-              <div class="box3_con_left" id="liquidFillrun"></div>
+              <div class="box3_con_left" id="liquidFillrun">
+                <small class="small_index">优</small>
+              </div>
               <div class="div_cut_off_rule">
                 <table
                   border="1px"
@@ -172,7 +174,8 @@ export default {
       this.makeData4()
       this.makeData5()
       this.makeData6()
-      this.getOperationRunInfo()
+      // this.getOperationRunInfo()
+      this.paly()
     },
     makeData1 () {
       const pieCharts = document.getElementById('myChart1')
@@ -1576,6 +1579,13 @@ export default {
           break
       }
       return name
+    },
+    change () {
+      this.tableData.push(this.tableData[0])
+      this.tableData.shift()
+    },
+    paly () {
+      setInterval(this.change, 2000)
     }
   },
   actions: {
