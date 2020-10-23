@@ -1971,6 +1971,9 @@ a:hover {
 /deep/.el-input--suffix {
   margin-left: -10px;
 }
+/deep/.el-select {
+  margin-left: 10px;
+}
 @media screen and (max-width: 1500px) {
   .card-width {
     width: 32%;
