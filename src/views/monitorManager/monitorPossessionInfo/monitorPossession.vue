@@ -256,7 +256,7 @@
               <el-col :span="6">
                 <el-input
                   type="text"
-                  v-model="nameTop"
+                  v-model="nameTopPic"
                   size="small"
                   placeholder="名称"
                   clearable
@@ -272,16 +272,20 @@
               <el-button
                 type="primary"
                 size="small"
-                @click="showClear() == false"
+                @click="showClearPic() == false"
                 icon="el-icon-refresh-left"
                 >重置</el-button
               >
-              <div style="margin-left: 58%">
-                <el-popover
+              <div>
+                <el-dialog
+                  :visible.sync="dialogVisible"
                   placement="left-start"
-                  width="1200"
+                  width="64%"
                   trigger="manual"
                   v-model="visible"
+                  :show-close="false"
+                  :close-on-click-modal="false"
+                  :close-on-press-escape="false"
                 >
                   <el-form ref="form" :model="form" label-width="90px">
                     <el-row :gutter="40">
@@ -536,17 +540,19 @@
                       </el-col>
                     </el-row>
                   </el-form>
-                  <el-button
-                    type="danger"
-                    size="small"
-                    slot="reference"
-                    icon="el-icon-plus"
-                    @click="visible = !visible"
-                    >新增</el-button
-                  >
-                </el-popover>
+                </el-dialog>
               </div>
             </div>
+            <div class="queryright">
+                  <el-button
+                          type="danger"
+                          size="small"
+                          slot="reference"
+                          icon="el-icon-plus"
+                          @click="newPic"
+                  >新增</el-button
+                  >
+              </div>
           </ToolBar>
           <el-table
             :data="
@@ -646,6 +652,7 @@ export default {
   },
   data () {
     return {
+      dialogVisible: false,
       visible: false,
       itemsloading: '',
       show: false,
@@ -659,6 +666,7 @@ export default {
         valueType: ''
       }],
       nameTop: '',
+      nameTopPic: '',
       currentPage: 1, // 当前页码
       currentInsidePage: 1, // 监控项页码
       currentGraphPage: 1, // 图形列表页码
@@ -832,6 +840,10 @@ export default {
         this.showGraphsInfo()
       })
     },
+    newPic () {
+      this.visible = !this.visible
+      this.dialogVisible = true
+    },
     // 修改table tr行的背景色
     tableRowStyle ({ row, column, rowIndex, columnIndex }) {
     },
@@ -885,6 +897,9 @@ export default {
     },
     showClear () {
       this.nameTop = ''
+    },
+    showClearPic () {
+      this.nameTopPic = ''
     },
     drawLine () {
     },
@@ -1469,7 +1484,7 @@ export default {
     showGraphInfoTimeout (str) {
       const region = {
         hostids: [this.$route.query.hostId],
-        name: this.nameTop
+        name: this.nameTopPic
       }
       this.axios.post(this.$api.monitorManager.getGProInfoList, region).then((resp) => {
         if (resp.status === 200) {
@@ -1529,6 +1544,7 @@ export default {
         this.form.ymax_type = ''
         this.form.ymin_type = ''
         this.$refs.multipleTable.clearSelection()
+        this.dialogVisible = false
       })
       // this.$refs.gPopover.doClose()
       this.showGraphsInfo()
@@ -1583,6 +1599,7 @@ export default {
       this.form.ymax_type = ''
       this.form.ymin_type = ''
       this.$refs.multipleTable.clearSelection()
+      this.dialogVisible = false
     },
     handleDelete (index, row) {
       this.form.gitems.splice(index, 1)
