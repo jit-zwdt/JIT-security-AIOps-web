@@ -58,20 +58,20 @@
           </el-row>
           <el-row :gutter="40" v-show="serverListForm.type === '0'">
             <el-col :span="12">
-              <el-form-item label="内存大小：" prop="memory">
+              <el-form-item label="内存大小(G)：" prop="memory">
                 <el-input v-model.number="serverListForm.memory" placeholder="请输入内存大小 单位 G" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="硬盘大小：" prop="hardDisk">
+              <el-form-item label="硬盘大小(T)：" prop="hardDisk">
                 <el-input v-model.number="serverListForm.hardDisk" placeholder="请输入硬盘大小 单位 T" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="40" v-show="serverListForm.type === '0'">
              <el-col :span="12">
-              <el-form-item label="CPU：" prop="cpu">
-                <el-input v-model.number="serverListForm.cpu" clearable></el-input>
+              <el-form-item label="CPU(G)：" prop="cpu">
+                <el-input v-model.number="serverListForm.cpu" placeholder="请输入 CPU 大小 单位 G" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -310,9 +310,9 @@ export default {
         brand: '',
         productModel: '',
         parentId: '',
-        cpu: '',
-        memory: '',
-        hardDisk: ''
+        cpu: 0,
+        memory: 0,
+        hardDisk: 0
       },
       stateOptions: [{
         value: '0',
@@ -460,9 +460,9 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.serverListForm = json.data
-              this.serverListForm.cpu = parseInt(json.data.cpu)
-              this.serverListForm.memory = parseInt(json.data.memory)
-              this.serverListForm.hardDisk = parseInt(json.data.hardDisk)
+              this.serverListForm.cpu = parseInt(json.data.cpu === null ? 0 : json.data.cpu)
+              this.serverListForm.memory = parseInt(json.data.memory === null ? 0 : json.data.memory)
+              this.serverListForm.hardDisk = parseInt(json.data.hardDisk === null ? 0 : json.data.hardDisk)
             }
           } else {
             this.$message({
