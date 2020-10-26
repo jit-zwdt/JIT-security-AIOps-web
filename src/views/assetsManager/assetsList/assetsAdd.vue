@@ -356,6 +356,10 @@ export default {
         registerDate: [
           { required: true, message: '请选择资产登记时间' }
         ],
+        CPU: [
+          { type: 'number', message: 'CPU 必须为数字值 单位 G'},
+          { type: 'number', validator: validateNumber, trigger: 'blur' }
+        ],
         memory: [
           { type: 'number', message: '内存大小必须为数字值 单位 G'},
           { type: 'number', validator: validateNumber, trigger: 'blur' }
@@ -474,6 +478,9 @@ export default {
       if(this.serverListForm.hardDisk !== ''){
         this.serverListForm.hardDisk = this.serverListForm.hardDisk + 'T'
       }
+      if(this.serverListForm.CPU !== ''){
+        this.serverListForm.CPU = this.serverListForm.CPU
+      }
       const region = {
         name: this.serverListForm.name,
         type: this.serverListForm.type,
@@ -499,6 +506,7 @@ export default {
         productModel: this.serverListForm.productModel,
         classify: this.serverListForm.classify,
         parentId: this.serverListForm.parentId,
+        CPU: this.serverListForm.CPU,
         memory: this.serverListForm.memory,
         hardDisk: this.serverListForm.hardDisk
       }
