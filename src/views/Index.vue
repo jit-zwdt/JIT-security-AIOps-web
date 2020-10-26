@@ -17,7 +17,10 @@
           <div class="box3">
             <div class="title_index">运维指数</div>
             <div class="box3_con">
-              <div class="box3_con_left_rain" id="liquidFillrun">
+              <div
+                :class="errorStyle"
+                id="liquidFillrun"
+              >
                 <small class="small_index"></small>
               </div>
               <div class="div_cut_off_rule">
@@ -212,6 +215,8 @@ export default {
     return {
       show: false,
       hideRow: false,
+      errorCount: 0,
+      errorStyle: '',
       conheight: {
         height: '',
         width: ''
@@ -264,7 +269,16 @@ export default {
       this.makeData5()
       this.makeData6()
       // this.getOperationRunInfo()
-      // this.paly()
+    },
+    situation () {
+      var errorCount = this.errorCount
+      if (errorCount !== null && (errorCount > 10 && errorCount <= 20)) {
+        this.errorStyle = 'box3_con_left_cloudy'
+      } else if (errorCount !== null && (errorCount > 20)) {
+        this.errorStyle = 'box3_con_left_rain'
+      } else {
+        this.errorStyle = 'box3_con_left_sun'
+      }
     },
     makeData1 () {
       const xdata = []
@@ -272,6 +286,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
+            this.errorCount = json.data.high
             xdata.push(
               { value: json.data.information, name: '信息' },
               { value: json.data.warning, name: '警告' },
@@ -279,6 +294,7 @@ export default {
               { value: json.data.high, name: '严重' },
               { value: json.data.disaster, name: '灾难' }
             )
+            this.situation()
             this.makeData1_info(xdata)
           }
         } else {
@@ -1335,7 +1351,7 @@ export default {
   overflow: hidden;
 }
 .scroll_span_10 {
-  color: #77DDFF;
+  color: #77ddff;
   display: flex;
   justify-content: space-between;
   float: left;
@@ -1344,7 +1360,7 @@ export default {
 }
 .scroll_span_30 {
   // color: rgb(162, 180, 230);
-  color: #77DDFF;
+  color: #77ddff;
   display: flex;
   justify-content: space-between;
   float: left;
@@ -1352,7 +1368,7 @@ export default {
   font-size: 0.8rem;
 }
 .scroll_span_60 {
-  color: #77DDFF;
+  color: #77ddff;
   display: flex;
   justify-content: space-between;
   float: left;
