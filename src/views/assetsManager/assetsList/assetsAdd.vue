@@ -475,15 +475,6 @@ export default {
       }
     },
     makeParam () {
-      if (this.serverListForm.memory !== '') {
-        this.serverListForm.memory = this.serverListForm.memory + 'G'
-      }
-      if (this.serverListForm.hardDisk !== '') {
-        this.serverListForm.hardDisk = this.serverListForm.hardDisk + 'T'
-      }
-      if (this.serverListForm.cpu !== '') {
-        this.serverListForm.cpu = this.serverListForm.cpu + ''
-      }
       const region = {
         name: this.serverListForm.name,
         type: this.serverListForm.type,
