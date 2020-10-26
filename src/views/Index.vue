@@ -70,22 +70,116 @@
           <div class="box4 m-20">
             <div class="title_index">问题列表</div>
             <div class="box4_con" id="box4">
-              <el-table
-                :data="tableData"
-                :default-sort="{ prop: 'date', order: 'descending' }"
+              <div
+                style="
+                  height: 2.3rem;
+                  color: white;
+                  font-weight: 500;
+                  background-color: rgba(148, 144, 144, 0.3);
+                "
               >
-                <el-table-column prop="date" label="日期" sortable width="180">
-                </el-table-column>
-                <el-table-column prop="name" label="名称" sortable width="auto">
-                </el-table-column>
-                <el-table-column
-                  prop="type"
-                  label="级别"
-                  width="100"
-                  :formatter="formattertype"
+                <h1
+                  style="
+                    float: left;
+                    color: rgb(162, 180, 230);
+                    width: 20%;
+                    text-align: center;
+                    font-size: 1.2rem;
+                    margin-top: 0.3rem;
+                  "
                 >
-                </el-table-column>
-              </el-table>
+                  日期
+                </h1>
+                <h1
+                  style="
+                    float: left;
+                    color: rgb(162, 180, 230);
+                    width: 65%;
+                    text-align: center;
+                    font-size: 1.2rem;
+                    margin-top: 0.3rem;
+                  "
+                >
+                  名称
+                </h1>
+                <h1
+                  style="
+                    float: left;
+                    color: rgb(162, 180, 230);
+                    width: 15%;
+                    text-align: center;
+                    font-size: 1.2rem;
+                    margin-top: 0.3rem;
+                  "
+                >
+                  级别
+                </h1>
+              </div>
+              <div class="page-example">
+                <vue-seamless-scroll
+                  :data="tableData"
+                  class="seamless-warp"
+                  :class-option="defaultOption"
+                >
+                  <ul class="ul-scoll">
+                    <li v-for="(item, index) in tableData" :key="index">
+                      <span class="scroll_span_30">{{
+                        formatterdata(item.zabbixProblemDTO.clock)
+                      }}</span>
+                      <span class="scroll_span_60">{{
+                        item.zabbixProblemDTO.name
+                      }}</span>
+                      <span class="scroll_span_10">{{
+                        formattertype(item.zabbixProblemDTO.severity)
+                      }}</span>
+                    </li>
+                  </ul>
+                  <!-- <el-table
+                  :data="tableData"
+                  :show-header="hideRow"
+                  class="ul-scoll"
+                >
+                  <el-table-column
+                    prop="zabbixProblemDTO.clock"
+                    label="日期"
+                    width="180"
+                  >
+                    <template slot-scope="scope">
+                      <el-link
+                        type="primary"
+                        v-html="formatterdata(scope.row.zabbixProblemDTO.clock)"
+                      ></el-link>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    prop="zabbixProblemDTO.name"
+                    label="名称"
+                    width="auto"
+                  >
+                    <template slot-scope="scope">
+                      <el-link
+                        type="primary"
+                        v-html="formatterName(scope.row.zabbixProblemDTO.name)"
+                      ></el-link>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    prop="zabbixProblemDTO.severity"
+                    label="级别"
+                    width="100"
+                  >
+                    <template slot-scope="scope">
+                      <el-link
+                        type="primary"
+                        v-html="
+                          formattertype(scope.row.zabbixProblemDTO.severity)
+                        "
+                      ></el-link>
+                    </template>
+                  </el-table-column>
+                </el-table> -->
+                </vue-seamless-scroll>
+              </div>
             </div>
           </div>
         </div>
@@ -112,31 +206,27 @@
 </template>
 <script>
 import 'echarts-liquidfill'
-// import { timesMethod } from '@/utils/formatDate.js'
+import { formatTodate } from '@/utils/format.js'
 export default {
   data () {
     return {
       show: false,
+      hideRow: false,
       conheight: {
         height: '',
         width: ''
       },
       tableData: [{
-        date: '2020-10-21 15:41:16',
-        name: 'jvm1 is not reachable',
-        type: 3
-      }, {
-        date: '2020-10-21 12:11:45',
-        name: 'Tomcat0723 is not reachable',
-        type: 4
-      }, {
-        date: '2020-10-21 09:06:55',
-        name: '[主机]Linux1020的主动监控模式无法及时采集到数据',
-        type: 5
-      }, {
-        date: '2020-10-20 13:56:02',
-        name: 'Zabbix unreachable poller processes more than 75% busy',
-        type: 3
+        hostId: '',
+        ip: '',
+        hostName: '',
+        clock: '',
+        name: '',
+        zabbixProblemDTO: {
+          name: '',
+          severity: '',
+          clock: ''
+        }
       }]
     }
   },
@@ -153,21 +243,6 @@ export default {
       this.conheight.width = document.body.clientWidth - 8 + 'px'
     },
     showInfo () {
-      //   this.axios.post(this.$api.main.getMonitorTypeUsedInfo).then((resp) => {
-      //     if (resp.status === 200) {
-      //       var json = resp.data
-      //       if (json.code === 1) {
-      //         json.data.forEach(element => {
-      //         })
-      //       }
-      //     } else {
-      //       this.$message({
-      //         message: '查询失败',
-      //         type: 'error'
-      //       })
-      //     }
-      //   })
-      // }
       this.makeData1()
       this.makeData2()
       this.makeData3()
@@ -175,9 +250,32 @@ export default {
       this.makeData5()
       this.makeData6()
       // this.getOperationRunInfo()
-      this.paly()
+      // this.paly()
     },
     makeData1 () {
+      const xdata = []
+      this.axios.post(this.$api.main.getInformationStatistics).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            xdata.push(
+              { value: json.data.information, name: '信息' },
+              { value: json.data.warning, name: '警告' },
+              { value: json.data.average, name: '一般严重' },
+              { value: json.data.high, name: '严重' },
+              { value: json.data.disaster, name: '灾难' }
+            )
+            this.makeData1_info(xdata)
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    makeData1_info (xdata) {
       const pieCharts = document.getElementById('myChart1')
       const myChart = this.$echarts.init(pieCharts)
       myChart.setOption({
@@ -199,17 +297,11 @@ export default {
         color: ['rgb(129, 192, 192)', 'rgb(255, 211, 6)', 'rgb(234, 117, 0)', 'rgb(255, 32, 32)', 'rgb(128, 0, 0)'],
         series: [
           {
-            name: '情况',
+            name: '分类',
             type: 'pie',
             radius: '65%',
             center: ['60%', '40%'],
-            data: [
-              { value: 5, name: '信息' },
-              { value: 2, name: '警告' },
-              { value: 1, name: '一般严重' },
-              { value: 0, name: '严重' },
-              { value: 0, name: '灾难' }
-            ],
+            data: xdata,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -483,6 +575,21 @@ export default {
     makeData3 () {
     },
     makeData4 () {
+      const region = {}
+      this.axios.post(this.$api.alertManager.alertInquire.findProblemHost, region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.tableData = json.data
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+        this.loading = false
+      })
     },
     makeData5 () {
       const pieCharts = document.getElementById('myChart3')
@@ -707,397 +814,47 @@ export default {
       })
     },
     makeData6 () {
-      this.makeData6_1()
-      this.makeData6_2()
-      this.makeData6_3()
-      this.makeData6_4()
+      this.makeData6_info('2', 'myChart4', 'CPU')
+      this.makeData6_info('3', 'myChart5', '内存')
+      this.makeData6_info('2', 'myChart6', '磁盘')
+      this.makeData6_info('3', 'myChart7', '网络接口速率')
     },
-    makeData6_1 () {
-      const pieCharts = document.getElementById('myChart4')
-      const myChart = this.$echarts.init(pieCharts)
-      const data = {
-        xData: ['Linux1020', 'tomcat0915', 'Tomcat0723', 'Linux1021', '测试20201016'],
-        yData: [23, 22, 21, 20, 19],
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF']
+    makeData6_info (itemKey, myChartName, name) {
+      const param = {
+        typeId: '1',
+        itemKey: itemKey,
+        valueType: '0',
+        method: 'top5ByItem'
       }
-      const namedata = [{
-        name: '',
-        data: data.yData,
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#555'
-          },
-          normal: {
-            show: false
+
+      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            this.makeData6_Chart(myChartName, json.data, name)
+          } else {
           }
-        },
-        barWidth: '50%',
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              const colors = data.color
-              return colors[params.dataIndex]
-            }
-          }
-        },
-        xAxisIndex: 0,
-        yAxisIndex: 0
-      }, {
-        name: data.xData[0],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[0]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[1],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[1]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[2],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[2]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[3],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[3]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[4],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[4]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }]
-      myChart.setOption({
-        title: {
-          text: 'CPU',
-          x: 'center',
-          textStyle: {
-            color: '#17a2b8',
-            fontSize: '16',
-            fontWeight: 'bold'
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            lineStyle: {
-              color: 'rgba(0, 255, 233,0)'
-            }
-          },
-          formatter: function (params, ticket, callback) {
-            var res = '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xData[0] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xData[1] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xData[2] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xData[3] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xData[4] + '<br>'
-            return res
-          }
-        },
-        grid: [
-          {
-            top: 30,
-            bottom: 20,
-            left: 40
-          },
-          {
-            height: 0,
-            bottom: 0
-          }
-        ],
-        xAxis: [{
-          type: 'category',
-          data: data.yData,
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          zlevel: 1,
-          show: true
-        }, {
-          type: 'category',
-          gridIndex: 1,
-          axisLine: {
-            show: false
-          },
-          zlevel: 1
-        }],
-        yAxis: [{
-          type: 'value',
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8',
-            formatter: '{value} 次'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#4784e8'
-            }
-          }
-        }, {
-          type: 'value',
-          gridIndex: 1,
-          axisLabel: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          }
-        }],
-        series: namedata
+        } else {
+          this.$message({
+            message: '获取信息失败',
+            type: 'error'
+          })
+        }
       })
     },
-    makeData6_2 () {
-      const pieCharts = document.getElementById('myChart5')
-      const myChart = this.$echarts.init(pieCharts)
-      const data = {
-        xData: ['Linux1020', 'tomcat0915', 'Tomcat0723', 'Linux1021', '测试20201016'],
-        yData: [23, 22, 21, 20, 19],
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF']
-      }
-      const namedata = [{
-        name: '',
-        data: data.yData,
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#555'
-          },
-          normal: {
-            show: false
-          }
-        },
-        barWidth: '50%',
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              const colors = data.color
-              return colors[params.dataIndex]
-            }
-          }
-        },
-        xAxisIndex: 0,
-        yAxisIndex: 0
-      }, {
-        name: data.xData[0],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[0]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[1],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[1]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[2],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[2]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[3],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[3]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[4],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[4]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }]
-      myChart.setOption({
-        title: {
-          text: '内存',
-          x: 'center',
-          textStyle: {
-            color: '#17a2b8',
-            fontSize: '16',
-            fontWeight: 'bold'
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            lineStyle: {
-              color: 'rgba(0, 255, 233,0)'
-            }
-          },
-          formatter: function (params, ticket, callback) {
-            var res = '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xData[0] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xData[1] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xData[2] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xData[3] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xData[4] + '<br>'
-            return res
-          }
-        },
-        grid: [
-          {
-            top: 30,
-            bottom: 20,
-            left: 40
-          },
-          {
-            height: 0,
-            bottom: 0
-          }
-        ],
-        xAxis: [{
-          type: 'category',
-          data: data.yData,
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          zlevel: 1,
-          show: true
-        }, {
-          type: 'category',
-          gridIndex: 1,
-          axisLine: {
-            show: false
-          },
-          zlevel: 1
-        }],
-        yAxis: [{
-          type: 'value',
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8',
-            formatter: '{value} 次'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#4784e8'
-            }
-          }
-        }, {
-          type: 'value',
-          gridIndex: 1,
-          axisLabel: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          }
-        }],
-        series: namedata
+    makeData6_Chart (myChartName, myChartData, name) {
+      const xData = []
+      const yData = []
+      myChartData.forEach(element => {
+        xData.push(element.hostName)
+        yData.push(element.value)
       })
-    },
-    makeData6_3 () {
-      const pieCharts = document.getElementById('myChart6')
+      const pieCharts = document.getElementById(myChartName)
       const myChart = this.$echarts.init(pieCharts)
       const data = {
-        xData: ['Linux1020', 'tomcat0915', 'Tomcat0723', 'Linux1021', '测试20201016'],
-        yData: [23, 22, 21, 20, 19],
+        xData: xData,
+        yData: yData,
         color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF']
       }
       const namedata = [{
@@ -1178,197 +935,7 @@ export default {
       }]
       myChart.setOption({
         title: {
-          text: '磁盘',
-          x: 'center',
-          textStyle: {
-            color: '#17a2b8',
-            fontSize: '16',
-            fontWeight: 'bold'
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            lineStyle: {
-              color: 'rgba(0, 255, 233,0)'
-            }
-          },
-          formatter: function (params, ticket, callback) {
-            var res = '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xData[0] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xData[1] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xData[2] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xData[3] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xData[4] + '<br>'
-            return res
-          }
-        },
-        grid: [
-          {
-            top: 30,
-            bottom: 20,
-            left: 40
-          },
-          {
-            height: 0,
-            bottom: 0
-          }
-        ],
-        xAxis: [{
-          type: 'category',
-          data: data.yData,
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          zlevel: 1,
-          show: true
-        }, {
-          type: 'category',
-          gridIndex: 1,
-          axisLine: {
-            show: false
-          },
-          zlevel: 1
-        }],
-        yAxis: [{
-          type: 'value',
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8',
-            formatter: '{value} 次'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#4784e8'
-            }
-          }
-        }, {
-          type: 'value',
-          gridIndex: 1,
-          axisLabel: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          }
-        }],
-        series: namedata
-      })
-    },
-    makeData6_4 () {
-      const pieCharts = document.getElementById('myChart7')
-      const myChart = this.$echarts.init(pieCharts)
-      const data = {
-        xData: ['Linux1020', 'tomcat0915', 'Tomcat0723', 'Linux1021', '测试20201016'],
-        yData: [23, 22, 21, 20, 19],
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF']
-      }
-      const namedata = [{
-        name: '',
-        data: data.yData,
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#555'
-          },
-          normal: {
-            show: false
-          }
-        },
-        barWidth: '50%',
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              const colors = data.color
-              return colors[params.dataIndex]
-            }
-          }
-        },
-        xAxisIndex: 0,
-        yAxisIndex: 0
-      }, {
-        name: data.xData[0],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[0]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[1],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[1]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[2],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[2]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[3],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[3]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[4],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[4]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }]
-      myChart.setOption({
-        title: {
-          text: '网络接口速率',
+          text: name,
           x: 'center',
           textStyle: {
             color: '#17a2b8',
@@ -1559,9 +1126,9 @@ export default {
         // backgroundColor: '#ddd' // 容器背景颜色
       })
     },
-    formattertype (row) {
+    formattertype (severity) {
       var name = ''
-      switch (row.type) {
+      switch (severity) {
         case 1:
           name = '信息'
           break
@@ -1580,13 +1147,27 @@ export default {
       }
       return name
     },
-    change () {
-      this.tableData.push(this.tableData[0])
-      this.tableData.shift()
+    formatterdata (value) {
+      return formatTodate(value, 'YYYY-MM-DD HH:mm:ss')
     },
-    paly () {
-      setInterval(this.change, 2000)
+    formatterName (value) {
+      return value
     }
+  },
+  computed: {
+    defaultOption () {
+      return {
+        step: 0.2, // 数值越大速度滚动越快
+        limitMoveNum: 20, // 开始无缝滚动的数据量 this.dataList.length
+        hoverStop: true, // 是否开启鼠标悬停stop
+        direction: 1, // 0向下 1向上 2向左 3向右
+        openWatch: true, // 开启数据实时监控刷新dom
+        singleHeight: 0, // 单步运动停止的高度(默认值0是无缝不停止的滚动) direction => 0/1
+        singleWidth: 0, // 单步运动停止的宽度(默认值0是无缝不停止的滚动) direction => 2/3
+        waitTime: 1000 // 单步运动停止的时间(默认值1000ms)
+      }
+    }
+
   },
   actions: {
   },
@@ -1616,6 +1197,45 @@ export default {
 }
 /deep/ .el-table .el-table__body {
   width: 100% !important;
+}
+.seamless-warp {
+  height: 100%;
+  overflow: hidden;
+}
+.scroll_span_10 {
+  color: rgb(162, 180, 230);
+  display: flex;
+  justify-content: space-between;
+  float: left;
+  width: 10%;
+  font-size: 0.8rem;
+}
+.scroll_span_30 {
+  color: rgb(162, 180, 230);
+  display: flex;
+  justify-content: space-between;
+  float: left;
+  width: 30%;
+  font-size: 0.8rem;
+}
+.scroll_span_60 {
+  color: rgb(162, 180, 230);
+  display: flex;
+  justify-content: space-between;
+  float: left;
+  width: 60%;
+  font-size: 0.8rem;
+}
+.page-example {
+  height: 100%;
+  overflow: hidden;
+  .ul-scoll {
+    li {
+      border-bottom: 1px solid rgba(148, 144, 144, 0.3);
+      margin: 6px;
+      padding: 5px;
+    }
+  }
 }
 @import '~@/assets/css/index.css';
 </style>

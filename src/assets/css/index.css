@@ -98,7 +98,7 @@ small{font-size: 1.1rem; color: #FF9000;}
   background-color: rgba(148, 144, 144, 0.3)
 }
 .box4_con .el-table__body tr:hover > td{
-    background-color:#007bff !important;
+    background-color:rgba(148, 144, 144, 0.3)!important;
 }
 .box4_con .container-cus{
     width: 100%;
