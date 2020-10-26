@@ -460,6 +460,9 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.serverListForm = json.data
+              this.serverListForm.cpu = parseInt(json.data.cpu)
+              this.serverListForm.memory = parseInt(json.data.memory)
+              this.serverListForm.hardDisk = parseInt(json.data.hardDisk)
             }
           } else {
             this.$message({
