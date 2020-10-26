@@ -236,7 +236,10 @@ const api = {
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
     getTimeTop5ItemInfo: '/homePage/getTimeTop5ItemInfo/',
     getUserInfo: '/user/getUserInfo',
-    getAlertdata: '/problem/getAlertdata'
+    getAlertdata: '/problem/getAlertdata',
+    getInformationStatistics: '/homePage/getInformationStatistics',
+    getFAQTop5: '/homePage/getFAQTop5',
+    getHostErrorTop10: '/homePage/getHostErrorTop10'
   },
   refreshToken: '/refreshToken'
 }

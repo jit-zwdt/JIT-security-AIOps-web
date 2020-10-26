@@ -16,6 +16,7 @@ import echarts from 'echarts'
 import api from '@/api/api'
 import './promission'// 这里进行路由后台获取的模拟
 import Print from 'vue-print-nb'
+import scroll from 'vue-seamless-scroll'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)
@@ -26,6 +27,7 @@ Vue.use(ToolBar)
 Vue.prototype.GlobalCfg = Config
 Vue.component('ToolBar', ToolBar)
 Vue.use(Print)
+Vue.use(scroll)
 router.beforeResolve((to, from, next) => {
   if (to.name) {
     NProgress.start()
