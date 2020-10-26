@@ -56,6 +56,25 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row :gutter="40" v-show="serverListForm.type === '0'">
+            <el-col :span="12">
+              <el-form-item label="内存大小：" prop="memory">
+                <el-input v-model.number="serverListForm.memory" placeholder="请输入内存大小 单位 G" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="硬盘大小：" prop="hardDisk">
+                <el-input v-model.number="serverListForm.hardDisk" placeholder="请输入硬盘大小 单位 T" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="40" v-show="serverListForm.type === '0'">
+             <el-col :span="12">
+              <el-form-item label="CPU：" prop="CPU">
+                <el-input v-model="serverListForm.CPU" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row :gutter="40" v-if="serverListForm.type === '1'">
             <el-col :span="24">
               <el-form-item label="所属硬件：" prop="parentId">
@@ -256,6 +275,13 @@ export default {
     }
   },
   data () {
+    var validateNumber = (rule, value, callback) => {
+      if (value < 0) {
+        callback(new Error('输入的值不能为负数'))
+      } else {
+        callback()
+      }
+    };
     return {
       showfooter: true,
       serverListForm: {
@@ -283,7 +309,10 @@ export default {
         sn: '',
         brand: '',
         productModel: '',
-        parentId: ''
+        parentId: '',
+        CPU: '',
+        memory: '',
+        hardDisk: ''
       },
       stateOptions: [{
         value: '0',
@@ -326,6 +355,14 @@ export default {
         ],
         registerDate: [
           { required: true, message: '请选择资产登记时间' }
+        ],
+        memory: [
+          { type: 'number', message: '内存大小必须为数字值 单位 G'},
+          { type: 'number', validator: validateNumber, trigger: 'blur' }
+        ],
+        hardDisk: [
+          { type: 'number', message: '硬盘大小必须为数字值 单位 T'},
+          { type: 'number', validator: validateNumber, trigger: 'blur' }
         ]
       }
     }
@@ -431,6 +468,12 @@ export default {
       }
     },
     makeParam () {
+      if(this.serverListForm.memory !== ''){
+        this.serverListForm.memory = this.serverListForm.memory + 'G'
+      }
+      if(this.serverListForm.hardDisk !== ''){
+        this.serverListForm.hardDisk = this.serverListForm.hardDisk + 'T'
+      }
       const region = {
         name: this.serverListForm.name,
         type: this.serverListForm.type,
@@ -455,7 +498,9 @@ export default {
         brand: this.serverListForm.brand,
         productModel: this.serverListForm.productModel,
         classify: this.serverListForm.classify,
-        parentId: this.serverListForm.parentId
+        parentId: this.serverListForm.parentId,
+        memory: this.serverListForm.memory,
+        hardDisk: this.serverListForm.hardDisk
       }
       return region
     },
