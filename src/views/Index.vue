@@ -17,8 +17,8 @@
           <div class="box3">
             <div class="title_index">运维指数</div>
             <div class="box3_con">
-              <div class="box3_con_left" id="liquidFillrun">
-                <small class="small_index">优</small>
+              <div class="box3_con_left_rain" id="liquidFillrun">
+                <small class="small_index"></small>
               </div>
               <div class="div_cut_off_rule">
                 <table
@@ -43,24 +43,24 @@
                 <div class="box3_con_right_bot">
                   <div class="row_index row_table">
                     <div class="data_bg">
-                      <p>14台</p>
-                      <small>操作系统</small>
+                      <p>{{ this.hostOneCount }}台</p>
+                      <small>{{ this.hostOneType }}</small>
                     </div>
                     <div class="data_bg">
-                      <p>5台</p>
-                      <small>数据库</small>
+                      <p>{{ this.hostTwoCount }}台</p>
+                      <small>{{ this.hostTwoType }}</small>
                     </div>
                     <div class="data_bg">
-                      <p>5台</p>
-                      <small>中间件</small>
+                      <p>{{ this.hostThreeCount }}台</p>
+                      <small>{{ this.hostThreeType }}</small>
                     </div>
                     <div class="data_bg">
-                      <p>2台</p>
-                      <small>网络设备</small>
+                      <p>{{ this.hostFourCount }}台</p>
+                      <small>{{ this.hostFourType }}</small>
                     </div>
                     <div class="data_bg">
-                      <p>6台</p>
-                      <small>硬件设备</small>
+                      <p>{{ this.hostFiveCount }}台</p>
+                      <small>{{ this.hostFiveType }}</small>
                     </div>
                   </div>
                 </div>
@@ -227,20 +227,34 @@ export default {
           severity: '',
           clock: ''
         }
-      }]
+      }],
+      hostOneTypeId: '',
+      hostOneType: '',
+      hostOneCount: '',
+      hostTwoTypeId: '',
+      hostTwoType: '',
+      hostTwoCount: '',
+      hostThreeTypeId: '',
+      hostThreeType: '',
+      hostThreeCount: '',
+      hostFourTypeId: '',
+      hostFourType: '',
+      hostFourCount: '',
+      hostFiveTypeId: '',
+      hostFiveType: '',
+      hostFiveCount: ''
     }
   },
   created () {
-    window.addEventListener('resize', this.getResize)
-    this.getResize()
+    // window.addEventListener('resize', this.getResize)
+    // this.getResize()
   },
   mounted () {
     this.showInfo()
   },
   methods: {
     getResize () {
-      this.conheight.height = document.body.clientHeight - 151 + 'px'
-      this.conheight.width = document.body.clientWidth - 8 + 'px'
+      this.conheight.height = window.innerHeight - 151 + 'px'
     },
     showInfo () {
       this.makeData1()
@@ -294,7 +308,8 @@ export default {
             color: []
           }
         },
-        color: ['rgb(129, 192, 192)', 'rgb(255, 211, 6)', 'rgb(234, 117, 0)', 'rgb(255, 32, 32)', 'rgb(128, 0, 0)'],
+        // color: ['rgb(129, 192, 192)', 'rgb(255, 211, 6)', 'rgb(234, 117, 0)', 'rgb(255, 32, 32)', 'rgb(128, 0, 0)'],
+        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF'],
         series: [
           {
             name: '分类',
@@ -326,12 +341,40 @@ export default {
       })
     },
     makeData2 () {
+      this.axios.post(this.$api.main.getFAQTop5).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.makeData2_info(json.data)
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    makeData2_info (myChartData) {
+      const xData = []
+      const yData = []
+      const xNameData = []
+      myChartData.forEach(element => {
+        var newname = element.name
+        if (newname !== null && newname.length > 50) {
+          newname = newname.substring(0, 50) + '...'
+        }
+        xData.push(newname)
+        xNameData.push(element.name)
+        yData.push(element.count)
+      })
       const pieCharts = document.getElementById('myChart2')
       const myChart = this.$echarts.init(pieCharts)
       const data = {
-        xData: ['jvm1 is not reachable', 'tomcat0915 is not reachable', 'Tomcat0723 is not reachable', '[主机]Linux1020的主动监控模式无法及时采集到数据', '[主机]测试20201016的主动监控模式无法及时采集到数据'],
-        yData: [23, 22, 18, 12, 9],
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF']
+        xData: xData,
+        yData: yData,
+        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF'],
+        xNameData: xNameData
       }
       const namedata = [{
         name: '',
@@ -485,6 +528,23 @@ export default {
         yAxisIndex: 1
       }]
       myChart.setOption({
+        tooltip: {
+          trigger: 'axis',
+          extraCssText: 'width:6rem',
+          axisPointer: {
+            lineStyle: {
+              color: 'rgba(0, 255, 233,0)'
+            }
+          },
+          formatter: function (params, ticket, callback) {
+            var res = '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xNameData[0] + '<br>'
+            res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xNameData[1] + '<br>'
+            res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xNameData[2] + '<br>'
+            res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xNameData[3] + '<br>'
+            res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xNameData[4] + '<br>'
+            return res
+          }
+        },
         legend: {
           top: '2%',
           data: data.xData,
@@ -573,6 +633,50 @@ export default {
       })
     },
     makeData3 () {
+      this.axios.post(this.$api.main.getMonitorTypeUsedInfo).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            json.data.forEach(element => {
+              switch (element.typeId) {
+                case '1':
+                  this.hostOneTypeId = element.typeId
+                  this.hostOneType = element.type
+                  this.hostOneCount = element.hostCount
+                  break
+                case '2':
+                  this.hostTwoTypeId = element.typeId
+                  this.hostTwoType = element.type
+                  this.hostTwoCount = element.hostCount
+                  break
+                case '3':
+                  this.hostThreeTypeId = element.typeId
+                  this.hostThreeType = element.type
+                  this.hostThreeCount = element.hostCount
+                  break
+                case '4':
+                  this.hostFourTypeId = element.typeId
+                  this.hostFourType = element.type
+                  this.hostFourCount = element.hostCount
+                  break
+                case '5':
+                  this.hostFiveTypeId = element.typeId
+                  this.hostFiveType = element.type
+                  this.hostFiveCount = element.hostCount
+                  break
+                default:
+                  break
+              }
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+        this.loading = false
+      })
     },
     makeData4 () {
       const region = {}
@@ -592,12 +696,40 @@ export default {
       })
     },
     makeData5 () {
+      this.axios.post(this.$api.main.getHostErrorTop10).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.makeData5_info(json.data)
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    makeData5_info (myChartData) {
+      const xData = []
+      const yData = []
+      const xNameData = []
+      myChartData.forEach(element => {
+        var newname = element.name
+        if (newname !== null && newname.length > 50) {
+          newname = newname.substring(0, 50) + '...'
+        }
+        xData.push(newname)
+        xNameData.push(element.name)
+        yData.push(element.count)
+      })
       const pieCharts = document.getElementById('myChart3')
       const myChart = this.$echarts.init(pieCharts)
       const data = {
-        xData: ['Linux1020', 'tomcat0915', 'Tomcat0723', 'Linux1021', '测试20201016', 'jvm1', 'tomcat0919', 'Tomcat0726', 'Linux1024', '测试20201020'],
-        yData: [23, 22, 21, 20, 19, 17, 15, 12, 10, 9],
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF', '#40E0D0', '#87CECB', '#B0E0E6', '#AFEEEE', '#E0FFFF']
+        xData: xData,
+        yData: yData,
+        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF', '#40E0D0', '#87CECB', '#B0E0E6', '#AFEEEE', '#E0FFFF'],
+        xNameData: xNameData
       }
       const namedata = [{
         name: '',
@@ -727,7 +859,7 @@ export default {
       }]
       myChart.setOption({
         legend: {
-          top: '2%',
+          top: '1%',
           data: data.xData,
           textStyle: {
             fontSize: 12,
@@ -736,8 +868,9 @@ export default {
         },
         grid: [
           {
-            top: 100,
-            bottom: 20
+            top: 120,
+            bottom: 20,
+            left: '12%'
           },
           {
             height: 0,
@@ -826,12 +959,10 @@ export default {
         valueType: '0',
         method: 'top5ByItem'
       }
-
       this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.makeData6_Chart(myChartName, json.data, name)
           } else {
           }
@@ -1194,6 +1325,7 @@ export default {
   background: url('~@/assets/img/bg_body.jpg') no-repeat;
   background-size: 100% 100%;
   width: 100%;
+  height: 58rem;
 }
 /deep/ .el-table .el-table__body {
   width: 100% !important;
@@ -1203,7 +1335,7 @@ export default {
   overflow: hidden;
 }
 .scroll_span_10 {
-  color: rgb(162, 180, 230);
+  color: #77DDFF;
   display: flex;
   justify-content: space-between;
   float: left;
@@ -1211,7 +1343,8 @@ export default {
   font-size: 0.8rem;
 }
 .scroll_span_30 {
-  color: rgb(162, 180, 230);
+  // color: rgb(162, 180, 230);
+  color: #77DDFF;
   display: flex;
   justify-content: space-between;
   float: left;
@@ -1219,7 +1352,7 @@ export default {
   font-size: 0.8rem;
 }
 .scroll_span_60 {
-  color: rgb(162, 180, 230);
+  color: #77DDFF;
   display: flex;
   justify-content: space-between;
   float: left;
