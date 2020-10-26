@@ -71,7 +71,7 @@
           <el-row :gutter="40" v-show="serverListForm.type === '0'">
              <el-col :span="12">
               <el-form-item label="CPU：" prop="CPU">
-                <el-input v-model="serverListForm.CPU" clearable></el-input>
+                <el-input v-model.number="serverListForm.CPU" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -281,7 +281,7 @@ export default {
       } else {
         callback()
       }
-    };
+    }
     return {
       showfooter: true,
       serverListForm: {
@@ -357,15 +357,15 @@ export default {
           { required: true, message: '请选择资产登记时间' }
         ],
         CPU: [
-          { type: 'number', message: 'CPU 必须为数字值 单位 G'},
+          { type: 'number', message: 'CPU 必须为数字值 单位 G' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ],
         memory: [
-          { type: 'number', message: '内存大小必须为数字值 单位 G'},
+          { type: 'number', message: '内存大小必须为数字值 单位 G' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ],
         hardDisk: [
-          { type: 'number', message: '硬盘大小必须为数字值 单位 T'},
+          { type: 'number', message: '硬盘大小必须为数字值 单位 T' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ]
       }
@@ -472,14 +472,14 @@ export default {
       }
     },
     makeParam () {
-      if(this.serverListForm.memory !== ''){
+      if (this.serverListForm.memory !== '') {
         this.serverListForm.memory = this.serverListForm.memory + 'G'
       }
-      if(this.serverListForm.hardDisk !== ''){
+      if (this.serverListForm.hardDisk !== '') {
         this.serverListForm.hardDisk = this.serverListForm.hardDisk + 'T'
       }
-      if(this.serverListForm.CPU !== ''){
-        this.serverListForm.CPU = this.serverListForm.CPU
+      if (this.serverListForm.CPU !== '') {
+        this.serverListForm.CPU = this.serverListForm.CPU + ''
       }
       const region = {
         name: this.serverListForm.name,
