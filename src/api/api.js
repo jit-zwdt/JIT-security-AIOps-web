@@ -239,7 +239,8 @@ const api = {
     getAlertdata: '/problem/getAlertdata',
     getInformationStatistics: '/homePage/getInformationStatistics',
     getFAQTop5: '/homePage/getFAQTop5',
-    getHostErrorTop10: '/homePage/getHostErrorTop10'
+    getHostErrorTop10: '/homePage/getHostErrorTop10',
+    getAssetData: '/homePage/getAssetData'
   },
   refreshToken: '/refreshToken'
 }

@@ -13,7 +13,8 @@ export default new Vuex.Store({
     system: {
       hideSidebar: Storage.get('HideSidebar'),
       miniSidebar: Storage.get('MiniSidebar'),
-      navType: parseInt(Storage.get('NavType') || 1)
+      navType: parseInt(Storage.get('NavType') || 1),
+      windowType: Storage.get('WindowType')
     }
   },
   mutations: {
@@ -41,6 +42,11 @@ export default new Vuex.Store({
     NAV_TYPE_TOGGLE (state, type) {
       state.system.navType = type
       Storage.set('NavType', type)
+    },
+    WINDOW_TYPE_TOGGLE (state) {
+      const type = state.system.hideSidebar === 1 ? 0 : 1
+      state.system.windowType = type
+      Storage.set('WindowType', type)
     }
   },
   actions: {

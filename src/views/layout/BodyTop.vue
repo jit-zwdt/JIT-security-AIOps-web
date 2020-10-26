@@ -84,7 +84,7 @@
           <i class="el-icon-setting"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <div style="padding: 10px 20px;text-align: center;">
+          <div style="padding: 10px 20px; text-align: center">
             导航类型：
             <el-button-group>
               <el-button
@@ -93,7 +93,8 @@
                 v-for="item in GlobalCfg.systemNavType"
                 :key="item.value"
                 @click="$store.commit('NAV_TYPE_TOGGLE', item.value)"
-              >{{ item.label }}</el-button>
+                >{{ item.label }}</el-button
+              >
             </el-button-group>
           </div>
         </el-dropdown-menu>
@@ -166,9 +167,11 @@ export default {
       this.$store.commit('HIDE_SIDEBAR_TOGGLE')
     },
     screenFullToggle () {
-      this.$store.commit('HIDE_SIDEBAR_TOGGLE')
       ScreenFull.toggle()
-        .then(() => { })
+        .then(() => {
+          this.$store.commit('WINDOW_TYPE_TOGGLE')
+          this.$store.commit('HIDE_SIDEBAR_TOGGLE')
+        })
         .catch(() => {
           this.$message({
             message: '你的浏览器不支持全屏！',

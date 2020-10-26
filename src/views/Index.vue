@@ -17,10 +17,7 @@
           <div class="box3">
             <div class="title_index">运维指数</div>
             <div class="box3_con">
-              <div
-                :class="errorStyle"
-                id="liquidFillrun"
-              >
+              <div :class="errorStyle" id="liquidFillrun">
                 <small class="small_index"></small>
               </div>
               <div class="div_cut_off_rule">
@@ -34,13 +31,13 @@
               <div class="box3_con_right">
                 <div class="box3_con_right_top">
                   <div class="con_right_top">
-                    <small>总设备：82台</small>
+                    <small>总设备：{{ this.hostSumNum }}台</small>
                   </div>
                   <div class="con_right_top">
-                    <small>总CPU：100hz</small>
+                    <small>总磁盘：{{ this.hostSumHardDisk }}T</small>
                   </div>
                   <div class="con_right_top">
-                    <small>总内存：150T</small>
+                    <small>总内存：{{ this.hostSumMemory }}G</small>
                   </div>
                 </div>
                 <div class="box3_con_right_bot">
@@ -217,6 +214,9 @@ export default {
       hideRow: false,
       errorCount: 0,
       errorStyle: '',
+      hostSumNum: '0',
+      hostSumMemory: '0',
+      hostSumHardDisk: '0',
       conheight: {
         height: '',
         width: ''
@@ -251,15 +251,29 @@ export default {
     }
   },
   created () {
-    // window.addEventListener('resize', this.getResize)
-    // this.getResize()
   },
   mounted () {
     this.showInfo()
+    // window.addEventListener('resize', this.getResize)
+    // this.getResize()
+  },
+  beforeDestroy () {
+    // window.removeEventListener('resize', this.getResize)
   },
   methods: {
     getResize () {
-      this.conheight.height = window.innerHeight - 151 + 'px'
+      // this.conheight.height = window.innerHeight - 151 + 'px'
+      var timer = null
+      return function () {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(function () {
+          const pieCharts = document.getElementById('myChart2')
+          const myChart = this.$echarts.init(pieCharts)
+          myChart.resize()
+        }, 500)
+      }
     },
     showInfo () {
       this.makeData1()
@@ -562,7 +576,7 @@ export default {
           }
         },
         legend: {
-          top: '2%',
+          top: '5%',
           data: data.xData,
           textStyle: {
             fontSize: 12,
@@ -571,7 +585,7 @@ export default {
         },
         grid: [
           {
-            top: 150,
+            top: 200,
             bottom: 20
           },
           {
@@ -649,6 +663,27 @@ export default {
       })
     },
     makeData3 () {
+      this.makeData3_info()
+      this.makeData3_sumInfo()
+    },
+    makeData3_sumInfo () {
+      this.axios.get(this.$api.main.getAssetData).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.hostSumNum = json.data.hostSumNum
+            this.hostSumMemory = json.data.hostSumMemory
+            this.hostSumHardDisk = json.data.hostSumHardDisk
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    makeData3_info () {
       this.axios.post(this.$api.main.getMonitorTypeUsedInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -691,7 +726,6 @@ export default {
             type: 'error'
           })
         }
-        this.loading = false
       })
     },
     makeData4 () {
@@ -708,7 +742,6 @@ export default {
             type: 'error'
           })
         }
-        this.loading = false
       })
     },
     makeData5 () {
@@ -875,7 +908,7 @@ export default {
       }]
       myChart.setOption({
         legend: {
-          top: '1%',
+          top: '5%',
           data: data.xData,
           textStyle: {
             fontSize: 12,
@@ -884,7 +917,7 @@ export default {
         },
         grid: [
           {
-            top: 120,
+            top: 150,
             bottom: 20,
             left: '12%'
           },
@@ -1082,6 +1115,7 @@ export default {
       }]
       myChart.setOption({
         title: {
+          top: 10,
           text: name,
           x: 'center',
           textStyle: {
@@ -1108,7 +1142,7 @@ export default {
         },
         grid: [
           {
-            top: 30,
+            top: '20%',
             bottom: 20,
             left: 40
           },
@@ -1341,7 +1375,7 @@ export default {
   background: url('~@/assets/img/bg_body.jpg') no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 58rem;
+  height: 63.5rem;
 }
 /deep/ .el-table .el-table__body {
   width: 100% !important;
