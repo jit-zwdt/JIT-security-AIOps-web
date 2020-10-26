@@ -70,8 +70,8 @@
           </el-row>
           <el-row :gutter="40" v-show="serverListForm.type === '0'">
              <el-col :span="12">
-              <el-form-item label="CPU：" prop="CPU">
-                <el-input v-model.number="serverListForm.CPU" clearable></el-input>
+              <el-form-item label="CPU：" prop="cpu">
+                <el-input v-model.number="serverListForm.cpu" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -310,7 +310,7 @@ export default {
         brand: '',
         productModel: '',
         parentId: '',
-        CPU: '',
+        cpu: '',
         memory: '',
         hardDisk: ''
       },
@@ -356,7 +356,7 @@ export default {
         registerDate: [
           { required: true, message: '请选择资产登记时间' }
         ],
-        CPU: [
+        cpu: [
           { type: 'number', message: 'CPU 必须为数字值 单位 G' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ],
@@ -478,8 +478,8 @@ export default {
       if (this.serverListForm.hardDisk !== '') {
         this.serverListForm.hardDisk = this.serverListForm.hardDisk + 'T'
       }
-      if (this.serverListForm.CPU !== '') {
-        this.serverListForm.CPU = this.serverListForm.CPU + ''
+      if (this.serverListForm.cpu !== '') {
+        this.serverListForm.cpu = this.serverListForm.cpu + ''
       }
       const region = {
         name: this.serverListForm.name,
@@ -506,7 +506,7 @@ export default {
         productModel: this.serverListForm.productModel,
         classify: this.serverListForm.classify,
         parentId: this.serverListForm.parentId,
-        CPU: this.serverListForm.CPU,
+        cpu: this.serverListForm.cpu,
         memory: this.serverListForm.memory,
         hardDisk: this.serverListForm.hardDisk
       }
