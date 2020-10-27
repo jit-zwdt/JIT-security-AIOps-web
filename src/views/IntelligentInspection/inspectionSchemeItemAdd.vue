@@ -179,10 +179,10 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             // this.forShowData = json.data
-            //进行筛选添加
-            json.data.forEach(item =>{
-              if(item.status !== 1){
-                this.forShowData.push(item);
+            // 进行筛选添加
+            json.data.forEach(item => {
+              if (item.status !== 1) {
+                this.forShowData.push(item)
               }
             })
             this.currentPage = 1
