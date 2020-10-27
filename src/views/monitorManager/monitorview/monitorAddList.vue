@@ -3,10 +3,22 @@
     <ToolBar>
       <div class="queryleft">
         <el-col :span="8">
-          <el-input type="text" v-model="hostObjectName" size="small" placeholder="搜索关键字" clearable></el-input>
+          <el-input
+            type="text"
+            v-model="hostObjectName"
+            size="small"
+            placeholder="搜索关键字"
+            clearable
+          ></el-input>
         </el-col>
         <el-col :span="6">
-          <el-select v-model="hostType" class="datetop" filterable placeholder="模板类型" clearable>
+          <el-select
+            v-model="hostType"
+            class="datetop"
+            filterable
+            placeholder="模板类型"
+            clearable
+          >
             <el-option
               v-for="item in hostTypeOptions"
               :key="item.value"
@@ -15,38 +27,58 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          @click="showInfo() == false"
+          icon="el-icon-search"
+          >查询</el-button
+        >
         <el-button
           type="primary"
           size="small"
           @click="showClear() == false"
           icon="el-icon-refresh-left"
-        >重置</el-button>
+          >重置</el-button
+        >
       </div>
       <div class="queryright">
         <el-button @click="backfrom()">返回</el-button>
       </div>
     </ToolBar>
     <template>
-      <div class="card dark-main-background" v-for="(items, index) in tableData" v-bind:key="index">
+      <div
+        class="card dark-main-background"
+        v-for="(items, index) in tableData"
+        v-bind:key="index"
+      >
         <div
           class="title-bar card-header m-a-0 dark-main-background dark-deep-border dark-white-color"
         >
           <h1 class="title-bar-title m-b-sm">
-            <span class="d-ib">{{items.type}}</span>
+            <span class="d-ib">{{ items.type }}</span>
           </h1>
           <div v-if="items.templates.length !== 0">
             <p class="title-bar-description">
-              <span>agent标识表示需要安装agent客户端, snmp标识表示需支持snmp协议</span>
+              <span
+                >agent标识表示需要安装agent客户端,
+                snmp标识表示需支持snmp协议</span
+              >
             </p>
           </div>
         </div>
         <div class="tempList card-body">
           <div v-if="items.templates.length === 0">
-            <div style="text-align: center; font-size: 14px;">暂无该类型模板，请创建并迁移</div>
+            <div style="text-align: center; font-size: 14px">
+              暂无该类型模板，请创建并迁移
+            </div>
           </div>
           <div v-else>
-            <div class="card m-r" v-for="(item, index) in items.templates" v-bind:key="index">
+            <div
+              class="card m-r"
+              v-for="(item, index) in items.templates"
+              v-bind:key="index"
+            >
               <div class="card-body p-a-0">
                 <div v-if="item.typeId === '4'">
                   <div class="pos-r snmp">
@@ -56,10 +88,12 @@
                         alt
                         height="100px"
                         class="card-img"
-                        style="width:100px !important"
+                        style="width: 100px !important"
                       />
                     </div>
-                    <p class="text-center p-x-md template-name">{{item.name}}</p>
+                    <p class="text-center p-x-md template-name">
+                      {{ item.name }}
+                    </p>
                   </div>
                 </div>
                 <div v-else>
@@ -70,27 +104,54 @@
                         alt
                         height="100px"
                         class="card-img"
-                        style="width:100px !important"
+                        style="width: 100px !important"
                       />
                     </div>
-                    <p class="text-center p-x-md template-name">{{item.name}}</p>
+                    <p class="text-center p-x-md template-name">
+                      {{ item.name }}
+                    </p>
                   </div>
                 </div>
               </div>
               <div class="card-footer no-border text-center">
                 <a
-                  @click="showTempHelp(item.helpDoc,item.name,item.ico)"
+                  @click="showTempHelp(item.helpDoc, item.name, item.ico)"
                   class="el-button w-100 el-button--primary el-button--mini hosts-btn"
-                  style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
+                  style="
+                    height: 28px;
+                    line-height: 100%;
+                    padding: 6px 8px;
+                    font-size: 12px;
+                    border-radius: 3px;
+                    margin-left: 0px;
+                    margin-top: 2px;
+                    text-decoration: none;
+                  "
                 >
                   <i class="fa fa-question"></i>
                   <span>帮助</span>
                 </a>
                 <a
-                  @click="showAssetsAdd(item.id,item.typeId,item.subtypeIds,item.name)"
+                  @click="
+                    showAssetsAdd(
+                      item.id,
+                      item.typeId,
+                      item.subtypeIds,
+                      item.name
+                    )
+                  "
                   href="javaScript:void(0)"
                   class="el-button w-100 el-button--success el-button--mini hosts-btn"
-                  style="height: 28px; line-height: 100%; padding: 6px 8px; font-size: 12px; border-radius: 3px; margin-left: 0px; margin-top: 2px; text-decoration: none;"
+                  style="
+                    height: 28px;
+                    line-height: 100%;
+                    padding: 6px 8px;
+                    font-size: 12px;
+                    border-radius: 3px;
+                    margin-left: 0px;
+                    margin-top: 2px;
+                    text-decoration: none;
+                  "
                 >
                   <i class="fa fa-plus"></i>
                   <span>创建</span>
@@ -101,7 +162,10 @@
         </div>
       </div>
     </template>
-    <HelpTemplates :helpform="helpform" :showhelpDialog="showhelpDialog"></HelpTemplates>
+    <HelpTemplates
+      :helpform="helpform"
+      :showhelpDialog="showhelpDialog"
+    ></HelpTemplates>
   </div>
 </template>
 <script>
@@ -113,6 +177,7 @@ export default {
       show: false,
       hostObjectName: '',
       hostType: '',
+      fromPath: '',
       tableData: {
         type: '',
         templates: [{}]
@@ -217,28 +282,9 @@ export default {
       }
     },
     backfrom () {
-      var typeId = this.$route.query.typeId // 返回上一层
-      if (typeId != null && typeId === '2') {
-        this.$router.push({
-          name: 'monitorDBIndex'
-        })
-      } else if (typeId != null && typeId === '1') {
-        this.$router.push({
-          name: 'monitorSystemIndex'
-        })
-      } else if (typeId != null && typeId === '3') {
-        this.$router.push({
-          name: 'monitorMiddlewareIndex'
-        })
-      } else if (typeId != null && typeId === '28') {
-        this.$router.push({
-          name: 'monitorJVMInfo'
-        })
-      } else {
-        this.$router.push({
-          name: 'monitorList'
-        })
-      }
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     showTempHelp (url, name, ico) {
       this.helpform.url = url

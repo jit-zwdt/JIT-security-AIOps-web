@@ -541,7 +541,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.monitorTypeItems = json.data
           }
         } else {
@@ -608,7 +607,6 @@ export default {
       this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId, objectName: '编辑      ' + row.objectName, identification: '2' } })
     },
     showPossessionInfo (row) {
-      console.log(row.typeId)
       if (row.typeId === '2' && row.subtypeId === '12') {
         this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
       } else if (row.typeId === '2' && row.subtypeId === '11') {

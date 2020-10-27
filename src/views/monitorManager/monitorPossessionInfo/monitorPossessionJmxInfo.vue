@@ -4,39 +4,57 @@
       <div class="card dark-main-background">
         <div
           class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:40px"
+          style="margin-top: -10px !important; height: 40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
-              <span>{{this.$route.query.hostName}}\{{this.serverForm.jmxIp}}</span>
+              <span
+                >{{ this.$route.query.hostName }}\{{
+                  this.serverForm.jmxIp
+                }}</span
+              >
             </p>
           </div>
-          <div class="queryright" style="margin-top:-5px !important;height:40px">
+          <div
+            class="queryright"
+            style="margin-top: -5px !important; height: 40px"
+          >
             <el-button @click="backfrom()" size="mini">返回</el-button>
           </div>
         </div>
         <div class="tempList card-body">
           <div>
-            <table class="dark-main-background" style="width:100%;margin-top:-5px">
-              <tr style="height:40px">
+            <table
+              class="dark-main-background"
+              style="width: 100%; margin-top: -5px"
+            >
+              <tr style="height: 40px">
                 <th class="darkmainborderth">名称</th>
-                <td class="darkmainbordertd">{{this.$route.query.hostName}}</td>
+                <td class="darkmainbordertd">
+                  {{ this.$route.query.hostName }}
+                </td>
                 <th class="darkmainborderth">监控状态</th>
                 <td class="darkmainbordertd">
                   <span
                     class="label label-danger"
                     data-toggle="tooltip"
                     ata-placement="bottom"
-                    v-bind:class="{changeColor:spanChangeColor,redchangeColor:spanredChangeColor}"
+                    v-bind:class="{
+                      changeColor: spanChangeColor,
+                      redchangeColor: spanredChangeColor,
+                    }"
                     :title="makeMonitorTypeTitle()"
-                  >{{this.monitorTypeValue}}</span>
+                    >{{ this.monitorTypeValue }}</span
+                  >
                 </td>
                 <th class="darkmainborderth">ip地址</th>
-                <td class="darkmainbordertd">{{this.serverForm.jmxIp}}</td>
+                <td class="darkmainbordertd">{{ this.serverForm.jmxIp }}</td>
               </tr>
-              <tr style="height:40px">
+              <tr style="height: 40px">
                 <th class="darkmainborderth">版本</th>
-                <td class="darkmainbordertd" colspan="5">{{this.tomcatVersion}}</td>
+                <td class="darkmainbordertd" colspan="5">
+                  {{ this.tomcatVersion }}
+                </td>
               </tr>
             </table>
           </div>
@@ -175,16 +193,9 @@ export default {
     },
     // 返回
     backfrom () {
-      var identification = this.$route.query.identification
-      if (identification != null && identification === '1') {
-        this.$router.push({
-          name: 'monitorList'
-        })
-      } else {
-        this.$router.push({
-          name: 'monitorMiddlewareIndex'
-        })
-      }
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {

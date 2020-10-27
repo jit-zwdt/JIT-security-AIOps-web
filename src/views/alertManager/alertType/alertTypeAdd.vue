@@ -433,9 +433,9 @@ export default {
     reloadData () {
     },
     backfrom () {
-      this.$router.push({
-        name: 'alertType'
-      })// 返回上一层
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     changeType (val) {
       this.showSMTP = false

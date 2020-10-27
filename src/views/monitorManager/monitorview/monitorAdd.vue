@@ -2,7 +2,11 @@
   <div>
     <ToolBar>
       <div class="queryleft">
-        <span>{{this.$route.query.objectName}}&#12288;&#12288;&#12288;&#12288;{{this.$route.query.templateTypeName}}</span>
+        <span
+          >{{ this.$route.query.objectName }}&#12288;&#12288;&#12288;&#12288;{{
+            this.$route.query.templateTypeName
+          }}</span
+        >
       </div>
     </ToolBar>
     <ToolBar>
@@ -19,7 +23,10 @@
             <el-input v-model="serverListForm.objectName" clearable></el-input>
           </el-form-item>
           <el-form-item label="业务名称" prop="businessName">
-            <el-input v-model="serverListForm.businessName" clearable></el-input>
+            <el-input
+              v-model="serverListForm.businessName"
+              clearable
+            ></el-input>
           </el-form-item>
           <el-form-item
             label="AGENT选用类型"
@@ -27,24 +34,43 @@
             class="el-form-item-radio"
             v-if="agentShow"
           >
-            <el-radio v-model="serverListForm.agentType" label="1">使用IP</el-radio>
-            <el-radio v-model="serverListForm.agentType" label="2">使用DNS</el-radio>
+            <el-radio v-model="serverListForm.agentType" label="1"
+              >使用IP</el-radio
+            >
+            <el-radio v-model="serverListForm.agentType" label="2"
+              >使用DNS</el-radio
+            >
           </el-form-item>
           <el-form-item label="对应资产" prop="assetsId">
-            <el-select v-model="serverListForm.assetsId" placeholder="请选择" @change="changeAssetsId" filterable style="width: 100%">
+            <el-select
+              v-model="serverListForm.assetsId"
+              placeholder="请选择"
+              @change="changeAssetsId"
+              filterable
+              style="width: 100%"
+            >
               <el-option
-                  v-for="item in assetOptions"
-                  :key="item[0]"
-                  :label="item[1]+'('+item[2]+')'"
-                  :value="item[0]">
+                v-for="item in assetOptions"
+                :key="item[0]"
+                :label="item[1] + '(' + item[2] + ')'"
+                :value="item[0]"
+              >
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="IP" prop="agentIp" v-if="agentShow">
-            <el-input v-model="serverListForm.agentIp" clearable :disabled="true"></el-input>
+            <el-input
+              v-model="serverListForm.agentIp"
+              clearable
+              :disabled="true"
+            ></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="agentDnsName" v-if="agentShow">
-            <el-input v-model="serverListForm.agentDnsName" clearable placeholder="域名"></el-input>
+            <el-input
+              v-model="serverListForm.agentDnsName"
+              clearable
+              placeholder="域名"
+            ></el-input>
           </el-form-item>
           <el-form-item label="端口" prop="agentPort" v-if="agentShow">
             <el-input v-model="serverListForm.agentPort" clearable></el-input>
@@ -66,7 +92,11 @@
               </el-input>
             </div>
             <div>
-              <el-input v-model="serverListForm.mssqlMacroPassword" clearable show-password>
+              <el-input
+                v-model="serverListForm.mssqlMacroPassword"
+                clearable
+                show-password
+              >
                 <template slot="prepend">密码</template>
               </el-input>
             </div>
@@ -93,20 +123,41 @@
               </el-input>
             </div>
             <div>
-              <el-input v-model="serverListForm.oracleMacroPassword" clearable show-password>
+              <el-input
+                v-model="serverListForm.oracleMacroPassword"
+                clearable
+                show-password
+              >
                 <template slot="prepend">密码</template>
               </el-input>
             </div>
           </el-form-item>
-          <el-form-item label="JMX选用类型" prop="jmxType" class="el-form-item-radio" v-if="jmxShow">
-            <el-radio v-model="serverListForm.jmxType" label="1">使用IP</el-radio>
-            <el-radio v-model="serverListForm.jmxType" label="2">使用DNS</el-radio>
+          <el-form-item
+            label="JMX选用类型"
+            prop="jmxType"
+            class="el-form-item-radio"
+            v-if="jmxShow"
+          >
+            <el-radio v-model="serverListForm.jmxType" label="1"
+              >使用IP</el-radio
+            >
+            <el-radio v-model="serverListForm.jmxType" label="2"
+              >使用DNS</el-radio
+            >
           </el-form-item>
           <el-form-item label="JMXIP" prop="jmxIp" v-if="jmxShow">
-            <el-input v-model="serverListForm.jmxIp" clearable :disabled="true"></el-input>
+            <el-input
+              v-model="serverListForm.jmxIp"
+              clearable
+              :disabled="true"
+            ></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="jmxDnsName" v-if="jmxShow">
-            <el-input v-model="serverListForm.jmxDnsName" clearable placeholder="域名"></el-input>
+            <el-input
+              v-model="serverListForm.jmxDnsName"
+              clearable
+              placeholder="域名"
+            ></el-input>
           </el-form-item>
           <el-form-item label="JMX 端口" prop="jmxPort" v-if="jmxShow">
             <el-input v-model="serverListForm.jmxPort" clearable></el-input>
@@ -116,15 +167,32 @@
               <template slot="prepend">JMX路径</template>
             </el-input>
           </el-form-item>
-          <el-form-item label="SNMP选用类型" prop="snmpType" class="el-form-item-radio" v-if="snmpShow">
-            <el-radio v-model="serverListForm.snmpType" label="1">使用IP</el-radio>
-            <el-radio v-model="serverListForm.snmpType" label="2">使用DNS</el-radio>
+          <el-form-item
+            label="SNMP选用类型"
+            prop="snmpType"
+            class="el-form-item-radio"
+            v-if="snmpShow"
+          >
+            <el-radio v-model="serverListForm.snmpType" label="1"
+              >使用IP</el-radio
+            >
+            <el-radio v-model="serverListForm.snmpType" label="2"
+              >使用DNS</el-radio
+            >
           </el-form-item>
           <el-form-item label="SNMP IP" prop="snmpIp" v-if="snmpShow">
-            <el-input v-model="serverListForm.snmpIp" clearable :disabled="true"></el-input>
+            <el-input
+              v-model="serverListForm.snmpIp"
+              clearable
+              :disabled="true"
+            ></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="snmpDnsName" v-if="snmpShow">
-            <el-input v-model="serverListForm.snmpDnsName" clearable placeholder="域名"></el-input>
+            <el-input
+              v-model="serverListForm.snmpDnsName"
+              clearable
+              placeholder="域名"
+            ></el-input>
           </el-form-item>
           <el-form-item label="SNMP 端口" prop="snmpPort" v-if="snmpShow">
             <el-input v-model="serverListForm.snmpPort" clearable></el-input>
@@ -134,15 +202,32 @@
               <template slot="prepend">SNMP团体名</template>
             </el-input>
           </el-form-item>
-          <el-form-item label="IPMI选用类型" prop="ipmiType" class="el-form-item-radio" v-if="ipmiShow">
-            <el-radio v-model="serverListForm.ipmiType" label="1">使用IP</el-radio>
-            <el-radio v-model="serverListForm.ipmiType" label="2">使用DNS</el-radio>
+          <el-form-item
+            label="IPMI选用类型"
+            prop="ipmiType"
+            class="el-form-item-radio"
+            v-if="ipmiShow"
+          >
+            <el-radio v-model="serverListForm.ipmiType" label="1"
+              >使用IP</el-radio
+            >
+            <el-radio v-model="serverListForm.ipmiType" label="2"
+              >使用DNS</el-radio
+            >
           </el-form-item>
           <el-form-item label="IPMI IP" prop="ipmiIp" v-if="ipmiShow">
-            <el-input v-model="serverListForm.ipmiIp" clearable :disabled="true"></el-input>
+            <el-input
+              v-model="serverListForm.ipmiIp"
+              clearable
+              :disabled="true"
+            ></el-input>
           </el-form-item>
           <el-form-item label="DNS名称" prop="ipmiDnsName" v-if="ipmiShow">
-            <el-input v-model="serverListForm.ipmiDnsName" clearable placeholder="域名"></el-input>
+            <el-input
+              v-model="serverListForm.ipmiDnsName"
+              clearable
+              placeholder="域名"
+            ></el-input>
           </el-form-item>
           <el-form-item label="IPMI 端口" prop="ipmiPort" v-if="ipmiShow">
             <el-input v-model="serverListForm.ipmiPort" clearable></el-input>
@@ -169,13 +254,20 @@
               </el-input>
             </div>
             <div>
-              <el-input v-model="serverListForm.vmMacroPassword" clearable show-password>
+              <el-input
+                v-model="serverListForm.vmMacroPassword"
+                clearable
+                show-password
+              >
                 <template slot="prepend">密码</template>
               </el-input>
             </div>
           </el-form-item>
           <el-form-item label="通过Proxy监控" prop="proxyMonitor">
-            <el-select v-model="serverListForm.proxyMonitor" placeholder="请选择">
+            <el-select
+              v-model="serverListForm.proxyMonitor"
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in proxyMonitorOptions"
                 :key="item.value"
@@ -188,7 +280,8 @@
             <el-checkbox
               v-model="serverListForm.enableMonitor"
               :formatter="formatEnableMonitor(serverListForm.enableMonitor)"
-            >启动监控</el-checkbox>
+              >启动监控</el-checkbox
+            >
           </el-form-item>
           <el-form-item label="模板表ID" prop="templatesId" v-if="show">
             <el-input v-model="serverListForm.templatesId" clearable></el-input>
@@ -238,7 +331,9 @@
     <ToolBar class="queryright">
       <div class="dialog-footer">
         <el-button @click="backfrom()">返回</el-button>
-        <el-button type="primary" @click="submitOrUpdate('serverListForm')">确认</el-button>
+        <el-button type="primary" @click="submitOrUpdate('serverListForm')"
+          >确认</el-button
+        >
       </div>
     </ToolBar>
   </div>
@@ -786,19 +881,9 @@ export default {
       this.oldBusinessName = ''
     },
     backfrom () {
-      var typeId = this.$route.query.templateTypeId
-      var identification = this.$route.query.identification
-      if (!identification) {
-        this.$router.push({ name: 'monitorAddList', query: { typeId: typeId } })
-      } else {
-        if (identification === '1') {
-          this.$router.push({ name: 'monitorAddList' })
-        } else {
-          this.$router.push({
-            name: 'monitorList'
-          })
-        }
-      }
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     changeAssetsId () {
       const assetOptions = this.assetOptions
