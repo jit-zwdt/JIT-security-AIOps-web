@@ -363,16 +363,21 @@
                   <el-radio-group @change="modifyDay" v-model="form.cron.day.cronEvery">
                     <el-row>
                       <el-col :span="24">
-                        <el-radio label="1">每天</el-radio>
+                        <el-radio label="1">不指定</el-radio>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="24">
-                        <el-radio label="2">从
-                          <el-input v-model.number="form.cron.day.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('2')"
+                        <el-radio label="2">每天</el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="3">从
+                          <el-input v-model.number="form.cron.day.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
                                     placeholder="请输入内容"></el-input>
                           天开始，每隔
-                          <el-input v-model.number="form.cron.day.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyDay('2')"
+                          <el-input v-model.number="form.cron.day.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
                                     placeholder="请输入内容"></el-input>
                           天执行一次
                         </el-radio>
@@ -380,11 +385,11 @@
                     </el-row>
                     <el-row>
                       <el-col :span="24">
-                        <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.day.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
+                        <el-radio label="4">周期从
+                          <el-input v-model.number="form.cron.day.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('4')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.day.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
+                          <el-input v-model.number="form.cron.day.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyDay('4')"
                                     placeholder="请输入内容"></el-input>
                           天
                         </el-radio>
@@ -392,18 +397,18 @@
                     </el-row>
                     <el-row>
                       <el-col :span="24">
-                        <el-radio v-model="form.cron.day.cronLastSpecificDomDay" label="4">本月最后一天</el-radio>
+                        <el-radio v-model="form.cron.day.cronLastSpecificDomDay" label="5">本月最后一天</el-radio>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="24">
-                        <el-radio v-model="form.cron.day.cronLastSpecificWorkDay" label="5">本月最后一个工作日</el-radio>
+                        <el-radio v-model="form.cron.day.cronLastSpecificWorkDay" label="6">本月最后一个工作日</el-radio>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col>
-                        <el-radio label="6">具体天数<br>
-                          <el-checkbox-group @change="modifyDay('6')" v-model="form.cron.day.specificSpecific">
+                        <el-radio label="7">具体天数<br>
+                          <el-checkbox-group @change="modifyDay('7')" v-model="form.cron.day.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="1"></el-checkbox>
@@ -449,82 +454,6 @@
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="31"></el-checkbox>
-                              </el-col>
-                            </el-row>
-                          </el-checkbox-group>
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                  </el-radio-group>
-                </el-tab-pane>
-                <el-tab-pane>
-                  <span slot="label"><i class="el-icon-date"></i> 周</span>
-                  <el-radio-group @change="modifyWeek" v-model="form.cron.week.cronEvery">
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="1">每周</el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="2">从
-                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('2')">
-                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
-                            </el-option>
-                          </el-select>
-                          开始，每隔
-                          <el-input v-model="form.cron.week.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyWeek('2')"
-                                    placeholder="请输入内容"></el-input>
-                          周执行一次
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="3">周期从星期
-                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('3')">
-                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
-                            </el-option>
-                          </el-select>
-                          到
-                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('3')">
-                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
-                            </el-option>
-                          </el-select>
-                          之间
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="4">本月最后一个星期
-                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('4')">
-                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="5">第
-                          <el-input size="mini" v-model="form.cron.week.cronWhatWeek" style=" width: 100px" @keyup.native="modifyWeek('5')" placeholder="请输入内容"></el-input>
-                          周的星期
-                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('5')">
-                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col>
-                        <el-radio label="6">具体星期几<br>
-                          <el-checkbox-group @change="modifyWeek('6')" v-model="form.cron.week.specificSpecific">
-                            <el-row>
-                              <el-col :offset="1">
-                                <el-checkbox v-for="(item, index) in weekConstant" :key="index" :label="item.value">{{ item.label }}
-                            </el-checkbox>
                               </el-col>
                             </el-row>
                           </el-checkbox-group>
@@ -587,6 +516,86 @@
                                 <el-checkbox label="10"></el-checkbox>
                                 <el-checkbox label="11"></el-checkbox>
                                 <el-checkbox label="12"></el-checkbox>
+                              </el-col>
+                            </el-row>
+                          </el-checkbox-group>
+                        </el-radio>
+                      </el-col>
+                    </el-row>
+                  </el-radio-group>
+                </el-tab-pane>
+                <el-tab-pane>
+                  <span slot="label"><i class="el-icon-date"></i> 周</span>
+                  <el-radio-group @change="modifyWeek" v-model="form.cron.week.cronEvery">
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="1">不指定</el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="2">每周</el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="3">从
+                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')">
+                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
+                            </el-option>
+                          </el-select>
+                          开始，每隔
+                          <el-input v-model="form.cron.week.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyWeek('3')"
+                                    placeholder="请输入内容"></el-input>
+                          周执行一次
+                        </el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="4">周期从星期
+                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')">
+                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
+                            </el-option>
+                          </el-select>
+                          到
+                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')">
+                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
+                            </el-option>
+                          </el-select>
+                          之间
+                        </el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="5">本月最后一个星期
+                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')">
+                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <el-radio label="6">第
+                          <el-input size="mini" v-model="form.cron.week.cronWhatWeek" style=" width: 100px" @keyup.native="modifyWeek('6')" placeholder="请输入内容"></el-input>
+                          周的星期
+                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')">
+                            <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-radio>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col>
+                        <el-radio label="7">具体星期几<br>
+                          <el-checkbox-group @change="modifyWeek('7')" v-model="form.cron.week.specificSpecific">
+                            <el-row>
+                              <el-col :offset="1">
+                                <el-checkbox v-for="(item, index) in weekConstant" :key="index" :label="item.value">{{ item.label }}</el-checkbox>
                               </el-col>
                             </el-row>
                           </el-checkbox-group>
@@ -705,7 +714,7 @@ export default {
             specificSpecific: []
           },
           day: {
-            cronEvery: '1',
+            cronEvery: '2',
             incrementStart: 1,
             incrementIncrement: 1,
             rangeStart: 1,
@@ -783,7 +792,7 @@ export default {
         }
       ],
       // cron 数组
-      cronArray: ['*', '*', '*', '*', '*', '*', '*']
+      cronArray: ['*', '*', '*', '*', '*', '?', '*']
     }
   },
   methods: {
@@ -913,6 +922,12 @@ export default {
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.second.rangeStart = this.checkMinutesAndSeconds(this.form.cron.second.rangeStart) ? this.form.cron.second.rangeStart : '0'
         this.form.cron.second.rangeEnd = this.checkMinutesAndSeconds(this.form.cron.second.rangeEnd) ? this.form.cron.second.rangeEnd : '60'
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.second.rangeStart > this.form.cron.second.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.second.rangeStart = this.form.cron.second.rangeEnd
+          this.$message.error('前面的值不能大于后面的值')
+        }
         // 正常的拼接 cron 字符串
         secondCron = this.form.cron.second.rangeStart + '-' + this.form.cron.second.rangeEnd
       } else if (cronEvery === '4') { // 具体秒数
@@ -954,6 +969,12 @@ export default {
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.minute.rangeStart = this.checkMinutesAndSeconds(this.form.cron.minute.rangeStart) ? this.form.cron.minute.rangeStart : '0'
         this.form.cron.minute.rangeEnd = this.checkMinutesAndSeconds(this.form.cron.minute.rangeEnd) ? this.form.cron.minute.rangeEnd : '59'
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.minute.rangeStart > this.form.cron.minute.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.minute.rangeStart = this.form.cron.minute.rangeEnd
+          this.$message.error('前面的值不能大于后面的值')
+        }
         // 正常的拼接 cron 字符串
         minuteCron = this.form.cron.minute.rangeStart + '-' + this.form.cron.minute.rangeEnd
       } else if (cronEvery === '4') { // 具体分钟数
@@ -995,6 +1016,12 @@ export default {
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.hour.rangeStart = this.checkHour(this.form.cron.hour.rangeStart) ? this.form.cron.hour.rangeStart : '0'
         this.form.cron.hour.rangeEnd = this.checkHour(this.form.cron.hour.rangeEnd) ? this.form.cron.hour.rangeEnd : '23'
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.hour.rangeStart > this.form.cron.hour.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.hour.rangeStart = this.form.cron.hour.rangeEnd
+          this.$message.error('前面的值不能大于后面的值')
+        }
         // 正常的拼接 cron 字符串
         horuCron = this.form.cron.hour.rangeStart + '-' + this.form.cron.hour.rangeEnd
       } else if (cronEvery === '4') { // 具体小时数
@@ -1024,25 +1051,33 @@ export default {
       this.cronArray.splice(3, 1)
       // 声明需要添加的文字
       let dayCron = '*'
-      if (cronEvery === '1') { // 每天
+      if (cronEvery === '1') { // 不指定
+        dayCron = '?'
+      } else if (cronEvery === '2') { // 每天
         dayCron = '*'
-      } else if (cronEvery === '2') { // 从 ? 天开始 , 每隔 ? 天执行一次
+      } else if (cronEvery === '3') { // 从 ? 天开始 , 每隔 ? 天执行一次
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.day.incrementStart = this.checkDay(this.form.cron.day.incrementStart) ? this.form.cron.day.incrementStart : '1'
         this.form.cron.day.incrementIncrement = this.checkDay(this.form.cron.day.incrementIncrement) ? this.form.cron.day.incrementIncrement : '31'
         // 正常的拼接 cron 字符串
         dayCron = this.form.cron.day.incrementStart + '/' + this.form.cron.day.incrementIncrement
-      } else if (cronEvery === '3') { // 周期从 ? 到 ? 天
+      } else if (cronEvery === '4') { // 周期从 ? 到 ? 天
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.day.rangeStart = this.checkDay(this.form.cron.day.rangeStart) ? this.form.cron.day.rangeStart : '1'
         this.form.cron.day.rangeEnd = this.checkDay(this.form.cron.day.rangeEnd) ? this.form.cron.day.rangeEnd : '31'
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.day.rangeStart > this.form.cron.day.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.day.rangeStart = this.form.cron.day.rangeEnd
+          this.$message.error('前面的值不能大于后面的值')
+        }
         // 正常的拼接 cron 字符串
         dayCron = this.form.cron.day.rangeStart + '-' + this.form.cron.day.rangeEnd
-      } else if (cronEvery === '4') { // 本月最后一天
+      } else if (cronEvery === '5') { // 本月最后一天
         dayCron = 'L'
-      } else if (cronEvery === '5') { // 本月最后一工作日
+      } else if (cronEvery === '6') { // 本月最后一工作日
         dayCron = 'LW'
-      } else if (cronEvery === '6') { // 具体天数
+      } else if (cronEvery === '7') { // 具体天数
         // 赋值为 '' 不允许出现 '*' 拼接的情况
         dayCron = ''
         for (let i = 0; i < this.form.cron.day.specificSpecific.length; i++) {
@@ -1058,6 +1093,22 @@ export default {
       }
       // 添加文字到数组的指定位置
       this.cronArray.splice(3, 0, dayCron)
+      // 如果选中了不指定的按钮需要把周变为每周
+      if (cronEvery === '1') { // 如果选中不指定
+        // 把天位的文字变为每周
+        this.cronArray.splice(5, 1)
+        // 添加为通配符表示不指定的意思
+        this.cronArray.splice(5, 0, '*')
+        // 切换周的文字为不指定
+        this.form.cron.week.cronEvery = '2'
+      } else { // 没选中不指定
+        // 赋值成功之后进行周位的不指定 因为冲突 移除周位的文字
+        this.cronArray.splice(5, 1)
+        // 添加为通配符表示不指定的意思
+        this.cronArray.splice(5, 0, '?')
+        // 切换周的文字为不指定
+        this.form.cron.week.cronEvery = '1'
+      }
     },
     // 修改周调用的方法
     modifyWeek (cronEvery) {
@@ -1068,18 +1119,26 @@ export default {
       // 首先移除 周位的数组文字
       this.cronArray.splice(5, 1)
       // 声明需要添加的文字
-      let weekCron = '*'
-      if (cronEvery === '1') { // 每周
+      let weekCron = '?'
+      if (cronEvery === '1') { // 不指定
+        weekCron = '?'
+      } else if (cronEvery === '2') { // 每周
         weekCron = '*'
-      } else if (cronEvery === '2') { // 从 ? 开始 , 每隔 ? 周执行一次
+      } else if (cronEvery === '3') { // 从 ? 开始 , 每隔 ? 周执行一次
         weekCron = this.form.cron.week.incrementStart + '/' + this.form.cron.week.incrementIncrement
-      } else if (cronEvery === '3') { // 周期从 ? 到 ? 之间
+      } else if (cronEvery === '4') { // 周期从 ? 到 ? 之间
         weekCron = this.form.cron.week.rangeStart + '-' + this.form.cron.week.rangeEnd
-      } else if (cronEvery === '4') { // 本月最后一个星期 ?
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.week.rangeStart > this.form.cron.week.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.week.rangeStart = this.form.cron.week.rangeEnd
+          this.$message.error('选择不合法')
+        }
+      } else if (cronEvery === '5') { // 本月最后一个星期 ?
         weekCron = this.form.cron.week.cronLastWeek + 'L'
-      } else if (cronEvery === '5') { // 第 ? 周的星期 ?
+      } else if (cronEvery === '6') { // 第 ? 周的星期 ?
         weekCron = (parseInt(this.form.cron.week.cronWhatWeekDay) - 1) + '#' + this.form.cron.week.cronWhatWeek
-      } else if (cronEvery === '6') { // 具体天数
+      } else if (cronEvery === '7') { // 具体天数
         // 赋值为 '' 不允许出现 '*' 拼接的情况
         weekCron = ''
         for (let i = 0; i < this.form.cron.week.specificSpecific.length; i++) {
@@ -1095,6 +1154,22 @@ export default {
       }
       // 添加文字到数组的指定位置
       this.cronArray.splice(5, 0, weekCron)
+      // 如果选中了不指定的按钮需要把天变为每天
+      if (cronEvery === '1') { // 如果选中不指定
+        // 把天位的文字变为每天
+        this.cronArray.splice(3, 1)
+        // 添加为通配符表示不指定的意思
+        this.cronArray.splice(3, 0, '*')
+        // 切换天的文字为每天
+        this.form.cron.day.cronEvery = '2'
+      } else { // 没选中不指定
+        // 赋值成功之后进行天位的不指定 因为冲突 移除天位的文字
+        this.cronArray.splice(3, 1)
+        // 添加为通配符表示不指定的意思
+        this.cronArray.splice(3, 0, '?')
+        // 切换天的文字为不指定
+        this.form.cron.day.cronEvery = '1'
+      }
     },
     // 修改月调用的方法
     modifyMonth (cronEvery) {
@@ -1118,6 +1193,12 @@ export default {
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.month.rangeStart = this.checkMonth(this.form.cron.month.rangeStart) ? this.form.cron.month.rangeStart : '1'
         this.form.cron.month.rangeEnd = this.checkMonth(this.form.cron.month.rangeEnd) ? this.form.cron.month.rangeEnd : '12'
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.month.rangeStart > this.form.cron.month.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.month.rangeStart = this.form.cron.month.rangeEnd
+          this.$message.error('前面的值不能大于后面的值')
+        }
         // 正常的拼接 cron 字符串
         monthCron = this.form.cron.month.rangeStart + '-' + this.form.cron.month.rangeEnd
       } else if (cronEvery === '4') { // 具体月数
@@ -1158,6 +1239,12 @@ export default {
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.year.rangeStart = this.checkYear(this.form.cron.year.rangeStart) ? this.form.cron.year.rangeStart : '1970'
         this.form.cron.year.rangeEnd = this.checkYear(this.form.cron.year.rangeEnd) ? this.form.cron.year.rangeEnd : '2099'
+        // 判断第一个值是否小于第二个值
+        if (this.form.cron.year.rangeStart > this.form.cron.year.rangeEnd) {
+          // 把大的值赋值给小的值
+          this.form.cron.year.rangeStart = this.form.cron.year.rangeEnd
+          this.$message.error('前面的值不能大于后面的值')
+        }
         // 正常的拼接 cron 字符串
         yearCron = this.form.cron.year.rangeStart + '-' + this.form.cron.year.rangeEnd
       }
@@ -1243,7 +1330,7 @@ export default {
         return false
       }
       return true
-    }
+    }// TODO: 需要修改 天和周的冲突问题 需要让前面的值大于后面的值 , 校验问题 需要校验在添加的时候表达式不能重复的问题 缺少切换不指定的时候文字不会改变
   }
 }
 </script>
