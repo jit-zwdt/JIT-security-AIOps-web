@@ -1152,7 +1152,6 @@ export default {
       } else if (cronEvery === '2') { // 从 ? 年开始 , 每隔 ? 年执行一次
         // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
         this.form.cron.year.incrementStart = this.checkYear(this.form.cron.year.incrementStart) ? this.form.cron.year.incrementStart : '1970'
-        this.form.cron.year.incrementIncrement = this.checkYear(this.form.cron.year.incrementIncrement) ? this.form.cron.year.incrementIncrement : '2099'
         // 正常的拼接 cron 字符串
         yearCron = this.form.cron.year.incrementStart + '/' + this.form.cron.year.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 年之间
