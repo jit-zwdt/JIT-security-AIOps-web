@@ -39,10 +39,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model="form.cron.second.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifySecond('2')"
+                          <el-input v-model.number="form.cron.second.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifySecond('2')"
                                     placeholder="请输入内容"></el-input>
                           秒开始，每隔
-                          <el-input v-model="form.cron.second.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifySecond('2')"
+                          <el-input v-model.number="form.cron.second.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifySecond('2')"
                                     placeholder="请输入内容"></el-input>
                           秒执行一次
                         </el-radio>
@@ -51,10 +51,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model="form.cron.second.rangeStart" size="mini" style=" width: 100px" @keyup="modifySecond('3')"
+                          <el-input v-model.number="form.cron.second.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifySecond('3')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model="form.cron.second.rangeEnd" size="mini" style=" width: 100px" @keyup="modifySecond('3')"
+                          <el-input v-model.number="form.cron.second.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifySecond('3')"
                                     placeholder="请输入内容"></el-input>
                           秒
                         </el-radio>
@@ -66,16 +66,16 @@
                           <el-checkbox-group @change="modifySecond('4')" v-model="form.cron.second.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="00"></el-checkbox>
-                                <el-checkbox label="01"></el-checkbox>
-                                <el-checkbox label="02"></el-checkbox>
-                                <el-checkbox label="03"></el-checkbox>
-                                <el-checkbox label="04"></el-checkbox>
-                                <el-checkbox label="05"></el-checkbox>
-                                <el-checkbox label="06"></el-checkbox>
-                                <el-checkbox label="07"></el-checkbox>
-                                <el-checkbox label="08"></el-checkbox>
-                                <el-checkbox label="09"></el-checkbox>
+                                <el-checkbox label="0"></el-checkbox>
+                                <el-checkbox label="1"></el-checkbox>
+                                <el-checkbox label="2"></el-checkbox>
+                                <el-checkbox label="3"></el-checkbox>
+                                <el-checkbox label="4"></el-checkbox>
+                                <el-checkbox label="5"></el-checkbox>
+                                <el-checkbox label="6"></el-checkbox>
+                                <el-checkbox label="7"></el-checkbox>
+                                <el-checkbox label="8"></el-checkbox>
+                                <el-checkbox label="9"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -165,10 +165,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model="form.cron.minute.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyMinute('2')"
+                          <el-input v-model.number="form.cron.minute.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyMinute('2')"
                                     placeholder="请输入内容"></el-input>
                           分开始，每隔
-                          <el-input v-model="form.cron.minute.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyMinute('2')"
+                          <el-input v-model.number="form.cron.minute.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyMinute('2')"
                                     placeholder="请输入内容"></el-input>
                           分执行一次
                         </el-radio>
@@ -177,10 +177,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model="form.cron.minute.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyMinute('3')"
+                          <el-input v-model.number="form.cron.minute.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyMinute('3')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model="form.cron.minute.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyMinute('3')"
+                          <el-input v-model.number="form.cron.minute.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyMinute('3')"
                                     placeholder="请输入内容"></el-input>
                           分
                         </el-radio>
@@ -192,16 +192,16 @@
                           <el-checkbox-group @change="modifyMinute('4')" v-model="form.cron.minute.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="00"></el-checkbox>
-                                <el-checkbox label="01"></el-checkbox>
-                                <el-checkbox label="02"></el-checkbox>
-                                <el-checkbox label="03"></el-checkbox>
-                                <el-checkbox label="04"></el-checkbox>
-                                <el-checkbox label="05"></el-checkbox>
-                                <el-checkbox label="06"></el-checkbox>
-                                <el-checkbox label="07"></el-checkbox>
-                                <el-checkbox label="08"></el-checkbox>
-                                <el-checkbox label="09"></el-checkbox>
+                                <el-checkbox label="0"></el-checkbox>
+                                <el-checkbox label="1"></el-checkbox>
+                                <el-checkbox label="2"></el-checkbox>
+                                <el-checkbox label="3"></el-checkbox>
+                                <el-checkbox label="4"></el-checkbox>
+                                <el-checkbox label="5"></el-checkbox>
+                                <el-checkbox label="6"></el-checkbox>
+                                <el-checkbox label="7"></el-checkbox>
+                                <el-checkbox label="8"></el-checkbox>
+                                <el-checkbox label="9"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -291,10 +291,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model="form.cron.hour.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyHour('2')"
+                          <el-input v-model.number="form.cron.hour.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyHour('2')"
                                     placeholder="请输入内容"></el-input>
                           时开始，每隔
-                          <el-input v-model="form.cron.hour.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyHour('2')"
+                          <el-input v-model.number="form.cron.hour.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyHour('2')"
                                     placeholder="请输入内容"></el-input>
                           小时执行一次
                         </el-radio>
@@ -303,10 +303,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model="form.cron.hour.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyHour('3')"
+                          <el-input v-model.number="form.cron.hour.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyHour('3')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model="form.cron.hour.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyHour('3')"
+                          <el-input v-model.number="form.cron.hour.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyHour('3')"
                                     placeholder="请输入内容"></el-input>
                           小时
                         </el-radio>
@@ -318,16 +318,16 @@
                           <el-checkbox-group @change="modifyHour('4')" v-model="form.cron.hour.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="00"></el-checkbox>
-                                <el-checkbox label="01"></el-checkbox>
-                                <el-checkbox label="02"></el-checkbox>
-                                <el-checkbox label="03"></el-checkbox>
-                                <el-checkbox label="04"></el-checkbox>
-                                <el-checkbox label="05"></el-checkbox>
-                                <el-checkbox label="06"></el-checkbox>
-                                <el-checkbox label="07"></el-checkbox>
-                                <el-checkbox label="08"></el-checkbox>
-                                <el-checkbox label="09"></el-checkbox>
+                                <el-checkbox label="0"></el-checkbox>
+                                <el-checkbox label="1"></el-checkbox>
+                                <el-checkbox label="2"></el-checkbox>
+                                <el-checkbox label="3"></el-checkbox>
+                                <el-checkbox label="4"></el-checkbox>
+                                <el-checkbox label="5"></el-checkbox>
+                                <el-checkbox label="6"></el-checkbox>
+                                <el-checkbox label="7"></el-checkbox>
+                                <el-checkbox label="8"></el-checkbox>
+                                <el-checkbox label="9"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -369,10 +369,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model="form.cron.day.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('2')"
+                          <el-input v-model.number="form.cron.day.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('2')"
                                     placeholder="请输入内容"></el-input>
                           天开始，每隔
-                          <el-input v-model="form.cron.day.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyDay('2')"
+                          <el-input v-model.number="form.cron.day.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyDay('2')"
                                     placeholder="请输入内容"></el-input>
                           天执行一次
                         </el-radio>
@@ -381,10 +381,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model="form.cron.day.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
+                          <el-input v-model.number="form.cron.day.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model="form.cron.day.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
+                          <el-input v-model.number="form.cron.day.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyDay('3')"
                                     placeholder="请输入内容"></el-input>
                           天
                         </el-radio>
@@ -406,21 +406,20 @@
                           <el-checkbox-group @change="modifyDay('6')" v-model="form.cron.day.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="00"></el-checkbox>
-                                <el-checkbox label="01"></el-checkbox>
-                                <el-checkbox label="02"></el-checkbox>
-                                <el-checkbox label="03"></el-checkbox>
-                                <el-checkbox label="04"></el-checkbox>
-                                <el-checkbox label="05"></el-checkbox>
-                                <el-checkbox label="06"></el-checkbox>
-                                <el-checkbox label="07"></el-checkbox>
-                                <el-checkbox label="08"></el-checkbox>
-                                <el-checkbox label="09"></el-checkbox>
+                                <el-checkbox label="1"></el-checkbox>
+                                <el-checkbox label="2"></el-checkbox>
+                                <el-checkbox label="3"></el-checkbox>
+                                <el-checkbox label="4"></el-checkbox>
+                                <el-checkbox label="5"></el-checkbox>
+                                <el-checkbox label="6"></el-checkbox>
+                                <el-checkbox label="7"></el-checkbox>
+                                <el-checkbox label="8"></el-checkbox>
+                                <el-checkbox label="9"></el-checkbox>
+                                <el-checkbox label="10"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="10"></el-checkbox>
                                 <el-checkbox label="11"></el-checkbox>
                                 <el-checkbox label="12"></el-checkbox>
                                 <el-checkbox label="13"></el-checkbox>
@@ -430,11 +429,11 @@
                                 <el-checkbox label="17"></el-checkbox>
                                 <el-checkbox label="18"></el-checkbox>
                                 <el-checkbox label="19"></el-checkbox>
+                                <el-checkbox label="20"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="20"></el-checkbox>
                                 <el-checkbox label="21"></el-checkbox>
                                 <el-checkbox label="22"></el-checkbox>
                                 <el-checkbox label="23"></el-checkbox>
@@ -444,11 +443,11 @@
                                 <el-checkbox label="27"></el-checkbox>
                                 <el-checkbox label="28"></el-checkbox>
                                 <el-checkbox label="29"></el-checkbox>
+                                <el-checkbox label="30"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
                               <el-col :offset="1">
-                                <el-checkbox label="30"></el-checkbox>
                                 <el-checkbox label="31"></el-checkbox>
                               </el-col>
                             </el-row>
@@ -545,10 +544,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model="form.cron.month.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyMonth('2')"
+                          <el-input v-model.number="form.cron.month.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyMonth('2')"
                                     placeholder="请输入内容"></el-input>
                           月开始，每隔
-                          <el-input v-model="form.cron.month.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyMonth('2')"
+                          <el-input v-model.number="form.cron.month.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyMonth('2')"
                                     placeholder="请输入内容"></el-input>
                           个月执行一次
                         </el-radio>
@@ -557,10 +556,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model="form.cron.month.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyMonth('3')"
+                          <el-input v-model.number="form.cron.month.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyMonth('3')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model="form.cron.month.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyMonth('3')"
+                          <el-input v-model.number="form.cron.month.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyMonth('3')"
                                     placeholder="请输入内容"></el-input>
                           月之间
                         </el-radio>
@@ -607,10 +606,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model="form.cron.year.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyYear('2')"
+                          <el-input v-model.number="form.cron.year.incrementStart" size="mini" style=" width: 100px" @keyup.native="modifyYear('2')"
                                     placeholder="请输入内容"></el-input>
                           年开始，每隔
-                          <el-input v-model="form.cron.year.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyYear('2')"
+                          <el-input v-model.number="form.cron.year.incrementIncrement" size="mini" style=" width: 100px" @keyup.native="modifyYear('2')"
                                     placeholder="请输入内容"></el-input>
                           年执行一次
                         </el-radio>
@@ -619,10 +618,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model="form.cron.year.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyYear('3')"
+                          <el-input v-model.number="form.cron.year.rangeStart" size="mini" style=" width: 100px" @keyup.native="modifyYear('3')"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model="form.cron.year.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyYear('3')"
+                          <el-input v-model.number="form.cron.year.rangeEnd" size="mini" style=" width: 100px" @keyup.native="modifyYear('3')"
                                     placeholder="请输入内容"></el-input>
                           年之间
                         </el-radio>
@@ -669,15 +668,6 @@ export default {
     }
   },
   data () {
-    // 秒/分校验
-    var validateSecond = (rule, value, callback) => {
-      const v = parseInt(value)
-      if (v >= 0 && v < 60) {
-        callback(new Error('输入的值不能为负数'))
-      } else {
-        callback()
-      }
-    }
     return {
       // 加载的样式
       loading: true,
@@ -759,8 +749,7 @@ export default {
       rules: {
         cronExpressionDesc: [
           { required: true, message: '请填写表达式名称' }
-        ],
-        secondOrMinute: [{ type: 'string', validator: validateSecond, trigger: 'keyup' }]
+        ]
       },
       // 周常量池
       weekConstant: [
@@ -915,8 +904,16 @@ export default {
       if (cronEvery === '1') { // 每一秒
         secondCron = '*'
       } else if (cronEvery === '2') { // 从 ? 秒开始 , 每隔 ? 秒执行一次
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.second.incrementStart = this.checkMinutesAndSeconds(this.form.cron.second.incrementStart) ? this.form.cron.second.incrementStart : '0'
+        this.form.cron.second.incrementIncrement = this.checkMinutesAndSeconds(this.form.cron.second.incrementIncrement) ? this.form.cron.second.incrementIncrement : '60'
+        // 正常的拼接 cron 字符串
         secondCron = this.form.cron.second.incrementStart + '/' + this.form.cron.second.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 秒
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.second.rangeStart = this.checkMinutesAndSeconds(this.form.cron.second.rangeStart) ? this.form.cron.second.rangeStart : '0'
+        this.form.cron.second.rangeEnd = this.checkMinutesAndSeconds(this.form.cron.second.rangeEnd) ? this.form.cron.second.rangeEnd : '60'
+        // 正常的拼接 cron 字符串
         secondCron = this.form.cron.second.rangeStart + '-' + this.form.cron.second.rangeEnd
       } else if (cronEvery === '4') { // 具体秒数
         // 赋值为 '' 不允许出现 '*' 拼接的情况
@@ -948,8 +945,16 @@ export default {
       if (cronEvery === '1') { // 每一分
         minuteCron = '*'
       } else if (cronEvery === '2') { // 从 ? 分开始 , 每隔 ? 分执行一次
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.minute.incrementStart = this.checkMinutesAndSeconds(this.form.cron.minute.incrementStart) ? this.form.cron.minute.incrementStart : '0'
+        this.form.cron.minute.incrementIncrement = this.checkMinutesAndSeconds(this.form.cron.minute.incrementIncrement) ? this.form.cron.minute.incrementIncrement : '59'
+        // 正常的拼接 cron 字符串
         minuteCron = this.form.cron.minute.incrementStart + '/' + this.form.cron.minute.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 分
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.minute.rangeStart = this.checkMinutesAndSeconds(this.form.cron.minute.rangeStart) ? this.form.cron.minute.rangeStart : '0'
+        this.form.cron.minute.rangeEnd = this.checkMinutesAndSeconds(this.form.cron.minute.rangeEnd) ? this.form.cron.minute.rangeEnd : '59'
+        // 正常的拼接 cron 字符串
         minuteCron = this.form.cron.minute.rangeStart + '-' + this.form.cron.minute.rangeEnd
       } else if (cronEvery === '4') { // 具体分钟数
         // 赋值为 '' 不允许出现 '*' 拼接的情况
@@ -981,8 +986,16 @@ export default {
       if (cronEvery === '1') { // 每时
         horuCron = '*'
       } else if (cronEvery === '2') { // 从 ? 时开始 , 每隔 ? 小时执行一次
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.hour.incrementStart = this.checkHour(this.form.cron.hour.incrementStart) ? this.form.cron.hour.incrementStart : '0'
+        this.form.cron.hour.incrementIncrement = this.checkHour(this.form.cron.hour.incrementIncrement) ? this.form.cron.hour.incrementIncrement : '23'
+        // 正常的拼接 cron 字符串
         horuCron = this.form.cron.hour.incrementStart + '/' + this.form.cron.hour.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 小时
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.hour.rangeStart = this.checkHour(this.form.cron.hour.rangeStart) ? this.form.cron.hour.rangeStart : '0'
+        this.form.cron.hour.rangeEnd = this.checkHour(this.form.cron.hour.rangeEnd) ? this.form.cron.hour.rangeEnd : '23'
+        // 正常的拼接 cron 字符串
         horuCron = this.form.cron.hour.rangeStart + '-' + this.form.cron.hour.rangeEnd
       } else if (cronEvery === '4') { // 具体小时数
         // 赋值为 '' 不允许出现 '*' 拼接的情况
@@ -1014,8 +1027,16 @@ export default {
       if (cronEvery === '1') { // 每天
         dayCron = '*'
       } else if (cronEvery === '2') { // 从 ? 天开始 , 每隔 ? 天执行一次
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.day.incrementStart = this.checkDay(this.form.cron.day.incrementStart) ? this.form.cron.day.incrementStart : '1'
+        this.form.cron.day.incrementIncrement = this.checkDay(this.form.cron.day.incrementIncrement) ? this.form.cron.day.incrementIncrement : '31'
+        // 正常的拼接 cron 字符串
         dayCron = this.form.cron.day.incrementStart + '/' + this.form.cron.day.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 天
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.day.rangeStart = this.checkDay(this.form.cron.day.rangeStart) ? this.form.cron.day.rangeStart : '1'
+        this.form.cron.day.rangeEnd = this.checkDay(this.form.cron.day.rangeEnd) ? this.form.cron.day.rangeEnd : '31'
+        // 正常的拼接 cron 字符串
         dayCron = this.form.cron.day.rangeStart + '-' + this.form.cron.day.rangeEnd
       } else if (cronEvery === '4') { // 本月最后一天
         dayCron = 'L'
@@ -1088,8 +1109,16 @@ export default {
       if (cronEvery === '1') { // 每月
         monthCron = '*'
       } else if (cronEvery === '2') { // 从 ? 月开始 , 每隔 ? 个月执行一次
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.month.incrementStart = this.checkMonth(this.form.cron.month.incrementStart) ? this.form.cron.month.incrementStart : '1'
+        this.form.cron.month.incrementIncrement = this.checkMonth(this.form.cron.month.incrementIncrement) ? this.form.cron.month.incrementIncrement : '12'
+        // 正常的拼接 cron 字符串
         monthCron = this.form.cron.month.incrementStart + '/' + this.form.cron.month.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 月之间
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.month.rangeStart = this.checkMonth(this.form.cron.month.rangeStart) ? this.form.cron.month.rangeStart : '1'
+        this.form.cron.month.rangeEnd = this.checkMonth(this.form.cron.month.rangeEnd) ? this.form.cron.month.rangeEnd : '12'
+        // 正常的拼接 cron 字符串
         monthCron = this.form.cron.month.rangeStart + '-' + this.form.cron.month.rangeEnd
       } else if (cronEvery === '4') { // 具体月数
         // 赋值为 '' 不允许出现 '*' 拼接的情况
@@ -1121,13 +1150,101 @@ export default {
       if (cronEvery === '1') { // 每年
         yearCron = '*'
       } else if (cronEvery === '2') { // 从 ? 年开始 , 每隔 ? 年执行一次
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.year.incrementStart = this.checkYear(this.form.cron.year.incrementStart) ? this.form.cron.year.incrementStart : '1970'
+        this.form.cron.year.incrementIncrement = this.checkYear(this.form.cron.year.incrementIncrement) ? this.form.cron.year.incrementIncrement : '2099'
+        // 正常的拼接 cron 字符串
         yearCron = this.form.cron.year.incrementStart + '/' + this.form.cron.year.incrementIncrement
       } else if (cronEvery === '3') { // 周期从 ? 到 ? 年之间
+        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
+        this.form.cron.year.rangeStart = this.checkYear(this.form.cron.year.rangeStart) ? this.form.cron.year.rangeStart : '1970'
+        this.form.cron.year.rangeEnd = this.checkYear(this.form.cron.year.rangeEnd) ? this.form.cron.year.rangeEnd : '2099'
+        // 正常的拼接 cron 字符串
         yearCron = this.form.cron.year.rangeStart + '-' + this.form.cron.year.rangeEnd
       }
       // 添加文字到数组的指定位置
       this.cronArray.splice(6, 0, yearCron)
-    }// TODO: 没有添加文本框的校验
+    },
+    // 校验分秒
+    checkMinutesAndSeconds (value) {
+      // 如果值为 null 直接返回 false 不是数字
+      if (value === '') {
+        return false
+      }
+      // 如果输入的值小于 0 返回 fasle
+      if (value < 0) {
+        this.$message.error('输入的值不能小于 0')
+        return false
+      } else if (value > 60) { // 如果输入的值大于 60 返回 fasle
+        this.$message.error('输入的值不能大于 60')
+        return false
+      }
+      return true
+    },
+    // 校验时
+    checkHour (value) {
+      // 如果值为 null 直接返回 false 不是数字
+      if (value === '') {
+        return false
+      }
+      // 如果输入的值小于 0 返回 fasle
+      if (value < 0) {
+        this.$message.error('输入的值不能小于 0')
+        return false
+      } else if (value > 24) { // 如果输入的值大于 24 返回 fasle
+        this.$message.error('输入的值不能大于 24')
+        return false
+      }
+      return true
+    },
+    // 校验天
+    checkDay (value) {
+      // 如果值为 null 直接返回 false 不是数字
+      if (value === '') {
+        return false
+      }
+      // 如果输入的值小于 1 返回 fasle
+      if (value < 1) {
+        this.$message.error('输入的值不能小于 1')
+        return false
+      } else if (value > 31) { // 如果输入的值大于 31 返回 fasle
+        this.$message.error('输入的值不能大于 31')
+        return false
+      }
+      return true
+    },
+    // 校验月
+    checkMonth (value) {
+      // 如果值为 null 直接返回 false 不是数字
+      if (value === '') {
+        return false
+      }
+      // 如果输入的值小于 1 返回 fasle
+      if (value < 1) {
+        this.$message.error('输入的值不能小于 1')
+        return false
+      } else if (value > 12) { // 如果输入的值大于 12 返回 fasle
+        this.$message.error('输入的值不能大于 12')
+        return false
+      }
+      return true
+    },
+    // 校验月
+    checkYear (value) {
+      // 如果值为 null 直接返回 false 不是数字
+      if (value === '') {
+        return false
+      }
+      // 如果输入的值小于 0 返回 fasle
+      if (value < 1970) {
+        this.$message.error('输入的值不能小于 1970')
+        return false
+      } else if (value > 2099) { // 如果输入的值大于 60 返回 fasle
+        this.$message.error('输入的值不能大于 2099')
+        return false
+      }
+      return true
+    }
   }
 }
 </script>
