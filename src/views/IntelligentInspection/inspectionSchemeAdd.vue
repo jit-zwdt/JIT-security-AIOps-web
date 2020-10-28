@@ -334,6 +334,7 @@ export default {
       value.forEach(element => {
         this.tableData.push({
           hostid: element.hostid,
+          hostname: element.hostname,
           triggerid: element.triggerid,
           description: element.description
         })

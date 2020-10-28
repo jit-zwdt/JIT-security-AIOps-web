@@ -120,7 +120,9 @@ export default {
       currentGraphPage: 1, // 图形列表页码
       total: 20, // 总条数
       pageSize: 10, // 每页的数据条数
-      selectionData: []
+      selectionData: [],
+      // 主机名称
+      hostname: ''
     }
   },
   methods: {
@@ -169,6 +171,16 @@ export default {
     },
     // 点击切换主机按钮调用的方法
     chooseHost (value) {
+      // 切换主机的时候把切换的主机名称记录
+      // 声明一个变量
+      let obj = {}
+      // model就是上面的数据源
+      obj = this.nameOptions.find((item) => {
+        // 筛选出匹配数据
+        return item.hostId === value
+      })
+      // 赋值
+      this.hostname = obj.objectName
       this.forShowData = []
       this.loading = true
       const region = {
@@ -213,9 +225,11 @@ export default {
     },
     handleSelectionChange (val) {
       if (val !== null) {
-        val.forEach(element => {
-          element.hostid = this.tophostid
-        })
+        // 获取数组最后的一个元素
+        const element = val[val.length - 1]
+        element.hostid = this.tophostid
+        // 将主机名称放入
+        element.hostname = this.hostname
       }
       this.selectionData = val
     },
