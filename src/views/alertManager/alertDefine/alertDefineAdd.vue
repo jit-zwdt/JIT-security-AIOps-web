@@ -4,21 +4,24 @@
       <div class="card dark-main-background">
         <div
           class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:40px"
+          style="margin-top: -10px !important; height: 40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
               <span>添加</span>
             </p>
           </div>
-          <div class="queryright" style="margin-top:-5px !important;height:40px">
+          <div
+            class="queryright"
+            style="margin-top: -5px !important; height: 40px"
+          >
             <el-button @click="backfrom()" size="mini">返回</el-button>
           </div>
         </div>
       </div>
     </template>
     <template>
-      <el-tabs type="border-card" style="margin-top:5px">
+      <el-tabs type="border-card" style="margin-top: 5px">
         <el-tab-pane label="触发器">
           <div class="queryCenter">
             <el-form
@@ -39,7 +42,11 @@
                 <el-input v-model="serverForm.opdata" clearable></el-input>
               </el-form-item>
               <el-form-item label="严重性" prop="priority">
-                <el-radio-group v-model="serverForm.priority" size="small" class="formqueryleft">
+                <el-radio-group
+                  v-model="serverForm.priority"
+                  size="small"
+                  class="formqueryleft"
+                >
                   <el-radio-button label="0">未分类</el-radio-button>
                   <el-radio-button label="1">信息</el-radio-button>
                   <el-radio-button label="2">警告</el-radio-button>
@@ -50,11 +57,17 @@
                 <!--0 - (default 默认) not classified; 未分类；1 - information; 信息；2 - warning; 警告；3 - average; 一般严重；4 - high; 严重；5 - disaster. 灾难。 -->
               </el-form-item>
               <el-form-item label="表达式" prop="expression">
-                <div class="queryleft" style="width:95%">
-                  <el-input type="textarea" v-model="serverForm.expression" clearable></el-input>
+                <div class="queryleft" style="width: 95%">
+                  <el-input
+                    type="textarea"
+                    v-model="serverForm.expression"
+                    clearable
+                  ></el-input>
                 </div>
-                <div class="queryright" style="width:5%">
-                  <el-button @click="addExpression()" type="text" size="small">添加</el-button>
+                <div class="queryright" style="width: 5%">
+                  <el-button @click="addExpression()" type="text" size="small"
+                    >添加</el-button
+                  >
                 </div>
               </el-form-item>
               <el-form-item label="事件成功迭代" prop="recovery_mode">
@@ -70,12 +83,24 @@
                 </el-radio-group>
                 <!-- 正常事件生成模式:0 - 表达式； 1 - 恢复表达式；2 - None. 无-->
               </el-form-item>
-              <el-form-item label="恢复表达式" prop="recovery_expression" v-if="showexpression">
-                <el-input type="textarea" v-model="serverForm.recovery_expression" clearable></el-input>
+              <el-form-item
+                label="恢复表达式"
+                prop="recovery_expression"
+                v-if="showexpression"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="serverForm.recovery_expression"
+                  clearable
+                ></el-input>
                 <!-- 生成的触发器恢复表达式。-->
               </el-form-item>
               <el-form-item label="问题事件生成模式" prop="type">
-                <el-radio-group v-model="serverForm.type" size="small" class="formqueryleft">
+                <el-radio-group
+                  v-model="serverForm.type"
+                  size="small"
+                  class="formqueryleft"
+                >
                   <el-radio-button label="0">单个</el-radio-button>
                   <el-radio-button label="1">多重</el-radio-button>
                 </el-radio-group>
@@ -89,15 +114,27 @@
                   @change="changeCorrelationMode"
                 >
                   <el-radio-button label="0">所有问题</el-radio-button>
-                  <el-radio-button label="1">所有问题如果标签值匹配</el-radio-button>
+                  <el-radio-button label="1"
+                    >所有问题如果标签值匹配</el-radio-button
+                  >
                 </el-radio-group>
                 <!-- 正常事件关闭0 - (default 默认) All problems; 所有异常 1 - All problems if tag values match. 匹配标签值的所有异常。-->
               </el-form-item>
-              <el-form-item label="匹配标记" prop="correlation_tag" v-if="showtag">
-                <el-input v-model="serverForm.correlation_tag" clearable></el-input>
+              <el-form-item
+                label="匹配标记"
+                prop="correlation_tag"
+                v-if="showtag"
+              >
+                <el-input
+                  v-model="serverForm.correlation_tag"
+                  clearable
+                ></el-input>
               </el-form-item>
               <el-form-item label="允许手动关闭" prop="manual_close">
-                <el-checkbox v-model="serverForm.manual_close" class="formqueryleft"></el-checkbox>
+                <el-checkbox
+                  v-model="serverForm.manual_close"
+                  class="formqueryleft"
+                ></el-checkbox>
                 <!-- 0不允许 1允许-->
               </el-form-item>
               <el-form-item label="URL" prop="url">
@@ -105,13 +142,24 @@
                 <!-- 关联到触发器原型的URL -->
               </el-form-item>
               <el-form-item label="描述" prop="comments">
-                <el-input type="textarea" v-model="serverForm.comments" clearable></el-input>
+                <el-input
+                  type="textarea"
+                  v-model="serverForm.comments"
+                  clearable
+                ></el-input>
               </el-form-item>
               <el-form-item label="已启用" prop="status">
-                <el-checkbox v-model="serverForm.status" class="formqueryleft"></el-checkbox>
+                <el-checkbox
+                  v-model="serverForm.status"
+                  class="formqueryleft"
+                ></el-checkbox>
                 <!--触发器原型是否在启用状态或禁用状态：0 - (default 默认) enabled; 已启用；1 - disabled. 已禁用。 -->
               </el-form-item>
-              <el-form-item label="触发器原型父模板的ID" prop="templateid" v-if="show">
+              <el-form-item
+                label="触发器原型父模板的ID"
+                prop="templateid"
+                v-if="show"
+              >
                 <el-input v-model="serverForm.templateid" clearable></el-input>
               </el-form-item>
             </el-form>
@@ -134,10 +182,16 @@
                   @change="changeMark"
                 >
                   <el-radio-button label="0">Trigger tags</el-radio-button>
-                  <el-radio-button label="1">Inherited and trigger tags</el-radio-button>
+                  <el-radio-button label="1"
+                    >Inherited and trigger tags</el-radio-button
+                  >
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label prop="tagstableData" style="margin-top:-40px">
+              <el-form-item
+                label
+                prop="tagstableData"
+                style="margin-top: -40px"
+              >
                 <el-table
                   :data="tagstableData"
                   style="width: 100%"
@@ -146,22 +200,37 @@
                 >
                   <el-table-column prop="name" label="名称" width="380px">
                     <template slot-scope="scope">
-                      <el-input v-model="scope.row.name" clearable placeholder="标记"></el-input>
+                      <el-input
+                        v-model="scope.row.name"
+                        clearable
+                        placeholder="标记"
+                      ></el-input>
                     </template>
                   </el-table-column>
                   <el-table-column prop="num" label="值" width="380px">
                     <template slot-scope="scope">
-                      <el-input v-model="scope.row.num" clearable placeholder="值"></el-input>
+                      <el-input
+                        v-model="scope.row.num"
+                        clearable
+                        placeholder="值"
+                      ></el-input>
                     </template>
                   </el-table-column>
                   <el-table-column label="动作" width="75px">
                     <template slot-scope="scope">
-                      <el-button @click="deleteRow(scope.$index)" type="text" size="small">移除</el-button>
+                      <el-button
+                        @click="deleteRow(scope.$index)"
+                        type="text"
+                        size="small"
+                        >移除</el-button
+                      >
                     </template>
                   </el-table-column>
                 </el-table>
-                <div class="queryleft" style="margin-left:10px">
-                  <el-button @click="addRow()" type="text" size="small">添加</el-button>
+                <div class="queryleft" style="margin-left: 10px">
+                  <el-button @click="addRow()" type="text" size="small"
+                    >添加</el-button
+                  >
                 </div>
               </el-form-item>
             </el-form>
@@ -176,22 +245,37 @@
               label-position="right"
               label-width="150px"
             >
-              <el-form-item label prop="relytableData" style="margin-top:-25px">
+              <el-form-item
+                label
+                prop="relytableData"
+                style="margin-top: -25px"
+              >
                 <el-table
                   :data="relytableData"
                   style="width: 100%"
                   min-height="40"
                   class="tablebox"
                 >
-                  <el-table-column prop="name" label="名称" width="760px"></el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="名称"
+                    width="760px"
+                  ></el-table-column>
                   <el-table-column label="动作" width="75px">
                     <template slot-scope="scope">
-                      <el-button @click="relydeleteRow(scope.$index)" type="text" size="small">移除</el-button>
+                      <el-button
+                        @click="relydeleteRow(scope.$index)"
+                        type="text"
+                        size="small"
+                        >移除</el-button
+                      >
                     </template>
                   </el-table-column>
                 </el-table>
-                <div class="queryleft" style="margin-left:10px">
-                  <el-button @click="relyaddRow()" type="text" size="small">添加</el-button>
+                <div class="queryleft" style="margin-left: 10px">
+                  <el-button @click="relyaddRow()" type="text" size="small"
+                    >添加</el-button
+                  >
                 </div>
               </el-form-item>
             </el-form>
@@ -203,10 +287,15 @@
       <div class="card dark-main-background">
         <div
           class="title-bar card-header dark-main-background dark-white-color"
-          style="margin-top:-10px !important;height:55px"
+          style="margin-top: -10px !important; height: 55px"
         >
-          <div class="queryCenter" style="margin-top:-5px !important;height:40px">
-            <el-button @click="addfrom()" type="primary" size="medium">添加</el-button>
+          <div
+            class="queryCenter"
+            style="margin-top: -5px !important; height: 40px"
+          >
+            <el-button @click="addfrom()" type="primary" size="medium"
+              >添加</el-button
+            >
             <el-button @click="backfrom()" size="medium">取消</el-button>
           </div>
         </div>
@@ -308,7 +397,9 @@ export default {
       // })
     },
     backfrom () {
-      this.$router.go(-1) // 返回上一层
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     changeRecoveryMode (value) {
       if (value === '1') {

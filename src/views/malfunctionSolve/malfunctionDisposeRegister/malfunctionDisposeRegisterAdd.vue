@@ -3,26 +3,36 @@
     <template>
       <div class="card dark-main-background">
         <div
-            class="title-bar card-header dark-main-background dark-white-color"
-            style="margin-top:-10px !important;height:40px"
+          class="title-bar card-header dark-main-background dark-white-color"
+          style="margin-top: -10px !important; height: 40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
               <span>故障信息</span>
             </p>
           </div>
-          <div class="queryright" style="margin-top:-5px !important;height:40px">
+          <div
+            class="queryright"
+            style="margin-top: -5px !important; height: 40px"
+          >
             <el-button @click="backfrom()" size="mini">返回</el-button>
           </div>
         </div>
         <div class="tempList card-body">
           <div>
-            <table class="dark-main-background" style="width:100%;margin-top:-5px">
-              <tr style="height:40px">
-                <th class="darkmainborderth" width='10%'>故障名称</th>
-                <td class="darkmainbordertd" width='60%'>{{this.$route.query.problemName}}</td>
-                <th class="darkmainborderth" width='10%'>故障持续时间</th>
-                <td class="darkmainbordertd" width='20%'>{{this.$route.query.ns}}</td>
+            <table
+              class="dark-main-background"
+              style="width: 100%; margin-top: -5px"
+            >
+              <tr style="height: 40px">
+                <th class="darkmainborderth" width="10%">故障名称</th>
+                <td class="darkmainbordertd" width="60%">
+                  {{ this.$route.query.problemName }}
+                </td>
+                <th class="darkmainborderth" width="10%">故障持续时间</th>
+                <td class="darkmainbordertd" width="20%">
+                  {{ this.$route.query.ns }}
+                </td>
               </tr>
             </table>
           </div>
@@ -32,8 +42,8 @@
     <template>
       <div class="card dark-main-background" v-if="showTable">
         <div
-            class="title-bar card-header dark-main-background dark-white-color"
-            style="margin-top:-10px !important;height:40px"
+          class="title-bar card-header dark-main-background dark-white-color"
+          style="margin-top: -10px !important; height: 40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
@@ -42,66 +52,115 @@
           </div>
         </div>
         <el-table
-            :data="tableData"
-            border
-            v-loading="loading"
-            style="width: 100%"
-            :row-style="tableRowStyle"
-            :header-cell-style="tableHeaderColor"
+          :data="tableData"
+          border
+          v-loading="loading"
+          style="width: 100%"
+          :row-style="tableRowStyle"
+          :header-cell-style="tableHeaderColor"
         >
-          <el-table-column label="序号" prop="num" min-width="10%" :resizable="false"></el-table-column>
-          <el-table-column label="故障类型" prop="problemType" min-width="10%" :resizable="false"
-                           :formatter="problemTypeFormat"></el-table-column>
-          <el-table-column label="故障原因" prop="problemReason" min-width="25%" :resizable="false"></el-table-column>
-          <el-table-column label="解决方式" prop="problemSolution" min-width="25%" :resizable="false"></el-table-column>
-          <el-table-column label="处理过程" prop="problemProcess" min-width="25%" :resizable="false"></el-table-column>
-          <el-table-column label="登记时间" prop="gmtCreate" min-width="15%" :resizable="false"
-                           :formatter="gmtCreateFormat">
+          <el-table-column
+            label="序号"
+            prop="num"
+            min-width="10%"
+            :resizable="false"
+          ></el-table-column>
+          <el-table-column
+            label="故障类型"
+            prop="problemType"
+            min-width="10%"
+            :resizable="false"
+            :formatter="problemTypeFormat"
+          ></el-table-column>
+          <el-table-column
+            label="故障原因"
+            prop="problemReason"
+            min-width="25%"
+            :resizable="false"
+          ></el-table-column>
+          <el-table-column
+            label="解决方式"
+            prop="problemSolution"
+            min-width="25%"
+            :resizable="false"
+          ></el-table-column>
+          <el-table-column
+            label="处理过程"
+            prop="problemProcess"
+            min-width="25%"
+            :resizable="false"
+          ></el-table-column>
+          <el-table-column
+            label="登记时间"
+            prop="gmtCreate"
+            min-width="15%"
+            :resizable="false"
+            :formatter="gmtCreateFormat"
+          >
           </el-table-column>
         </el-table>
       </div>
     </template>
     <template>
       <div v-if="showList">
-        <el-tabs type="border-card" style="margin-top:5px">
+        <el-tabs type="border-card" style="margin-top: 5px">
           <el-tab-pane label="添加">
             <div class="queryCenter">
               <el-form
-                  :model="registerForm"
-                  ref="registerForm"
-                  class="edit-forms fromadd"
-                  label-position="right"
-                  label-width="150px"
-                  :rules="RegisterRules"
+                :model="registerForm"
+                ref="registerForm"
+                class="edit-forms fromadd"
+                label-position="right"
+                label-width="150px"
+                :rules="RegisterRules"
               >
                 <el-form-item label="故障类型" prop="problemType">
                   <el-select
-                      filterable
-                      v-model="registerForm.problemType"
-                      placeholder="请选择"
-                      class="formqueryleft"
+                    filterable
+                    v-model="registerForm.problemType"
+                    placeholder="请选择"
+                    class="formqueryleft"
                   >
                     <el-option
-                        v-for="item in options"
-                        :key="item.itemValue"
-                        :label="item.itemText"
-                        :value="item.itemValue"
+                      v-for="item in options"
+                      :key="item.itemValue"
+                      :label="item.itemText"
+                      :value="item.itemValue"
                     ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="故障原因" prop="problemReason">
-                  <el-input type="textarea" v-model="registerForm.problemReason" clearable></el-input>
+                  <el-input
+                    type="textarea"
+                    v-model="registerForm.problemReason"
+                    clearable
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="解决方式" prop="resolveWay">
-                  <el-input type="textarea" v-model="registerForm.resolveWay" clearable></el-input>
+                  <el-input
+                    type="textarea"
+                    v-model="registerForm.resolveWay"
+                    clearable
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="处理过程" prop="process">
-                  <el-input type="textarea" v-model="registerForm.process" clearable></el-input>
+                  <el-input
+                    type="textarea"
+                    v-model="registerForm.process"
+                    clearable
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="已解决" prop="isResole">
-                  <el-checkbox v-model="registerForm.isResolve" class="formqueryleft"></el-checkbox>
+                  <el-checkbox
+                    v-model="registerForm.isResolve"
+                    class="formqueryleft"
+                  ></el-checkbox>
                 </el-form-item>
-                <el-button type="primary" @click="dialogRegister('registerForm')">登记</el-button>
+                <el-button
+                  type="primary"
+                  @click="dialogRegister('registerForm')"
+                  >登记</el-button
+                >
               </el-form>
             </div>
           </el-tab-pane>
@@ -111,13 +170,13 @@
     <template>
       <div class="card dark-main-background" v-if="show">
         <div
-            class="title-bar card-header dark-main-background dark-white-color"
-            style="margin-top:-10px !important;height:40px"
+          class="title-bar card-header dark-main-background dark-white-color"
+          style="margin-top: -10px !important; height: 40px"
         >
           <div class="queryleft">
             <p class="title-bar-description" style>
               <span>故障处理时长：</span>
-              <span>{{this.handleTime}}</span>
+              <span>{{ this.handleTime }}</span>
             </p>
           </div>
         </div>
@@ -228,8 +287,9 @@ export default {
     reloadData () {
     },
     backfrom () {
-      // this.$router.go(-1)
-      this.$router.push('/malfunctionDisposeRegister')
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     clearform () {
       resetObject(this.registerForm)
@@ -368,59 +428,59 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  [v-cloak] {
-    display: none;
-  }
+[v-cloak] {
+  display: none;
+}
 
-  .tableHeaderColor {
-    font-size: 20;
-  }
+.tableHeaderColor {
+  font-size: 20;
+}
 
-  .queryleft {
-    float: left;
-  }
+.queryleft {
+  float: left;
+}
 
-  .queryright {
-    float: right;
-  }
+.queryright {
+  float: right;
+}
 
-  .title-bar-description {
-    margin-bottom: 0px;
-    margin-top: -5px;
-  }
+.title-bar-description {
+  margin-bottom: 0px;
+  margin-top: -5px;
+}
 
-  /deep/ .el-input__prefix {
-    margin-top: -3px;
-  }
+/deep/ .el-input__prefix {
+  margin-top: -3px;
+}
 
-  .dark-main-background {
-    margin-top: 10px;
-  }
+.dark-main-background {
+  margin-top: 10px;
+}
 
-  .card-header {
-    background-color: #fff;
-  }
+.card-header {
+  background-color: #fff;
+}
 
-  /deep/ .el-tabs__nav {
-    width: 100%;
-  }
+/deep/ .el-tabs__nav {
+  width: 100%;
+}
 
-  .fromadd {
-    width: 60%;
-  }
+.fromadd {
+  width: 60%;
+}
 
-  .fromadd .el-form-item {
-    text-align: center;
-  }
+.fromadd .el-form-item {
+  text-align: center;
+}
 
-  .queryCenter {
-    text-align: center;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+.queryCenter {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
-  .formqueryleft {
-    float: left;
-  }
+.formqueryleft {
+  float: left;
+}
 </style>

@@ -5,6 +5,7 @@ import Layout from '@/views/layout/App.vue'
 // import datajson from './data.json'
 import store from './store'
 import api from '@/api/api'
+import History from '@/utils/history'
 
 var getRouter
 
@@ -88,3 +89,29 @@ function filterAsyncRouter (asyncRouterMap) {
 
   return accessedRouters
 }
+
+router.afterEach((to, from) => {
+  if (from.name !== null && from.name !== 'monitorAdd') {
+    const referrer = {
+      name: from.name,
+      query: from.query
+    }
+    History.dataNull()
+    const referrerData = JSON.parse(sessionStorage.getItem('referrer'))
+    if (referrerData !== null) {
+      referrerData.push(referrer)
+      if (referrerData !== null && referrerData !== '') {
+        referrerData.forEach(element => {
+          History.push({
+            name: element.name,
+            query: element.query
+          })
+        })
+        sessionStorage.setItem('referrer', JSON.stringify(History.data()))
+      }
+    } else {
+      History.push(referrer)
+      sessionStorage.setItem('referrer', JSON.stringify(History.data()))
+    }
+  }
+})

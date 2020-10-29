@@ -223,16 +223,9 @@ export default {
     },
     // 返回
     backfrom () {
-      var identification = this.$route.query.identification
-      if (identification != null && identification === '1') {
-        this.$router.push({
-          name: 'monitorList'
-        })
-      } else {
-        this.$router.push({
-          name: 'monitorSystemIndex'
-        })
-      }
+      const referrer = JSON.parse(sessionStorage.getItem('referrer'))
+      const referrerBack = this.$routerHistory.dataBack(referrer)
+      this.$router.push(referrerBack)
     },
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {

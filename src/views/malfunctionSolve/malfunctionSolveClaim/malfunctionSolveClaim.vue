@@ -1,97 +1,128 @@
 <template>
-    <div>
-        <ToolBar>
-            <div class="queryleft">
-                <el-select v-model="claimType" class="datetop" filterable placeholder="认领类型" clearable>
-                    <el-option
-                            v-for="status in claimTypeList"
-                            :key="status.value"
-                            :label="status.label"
-                            :value="status.value"
-                    ></el-option>
-                </el-select>
-                <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
-                <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
-            </div>
-            <div class="queryright">
-            </div>
-        </ToolBar>
-        <el-table
-                :data="(tableData || []).slice((currentPage-1)*pageSize,currentPage*pageSize)"
-                border
-                v-loading="loading"
-                style="width: 100%"
-                :row-style="tableRowStyle"
-                :header-cell-style="tableHeaderColor"
+  <div>
+    <ToolBar>
+      <div class="queryleft">
+        <el-select
+          v-model="claimType"
+          class="datetop"
+          filterable
+          placeholder="认领类型"
+          clearable
         >
-            <el-table-column label="问题名称" prop="zabbixProblemDTO.name" min-width="60%" :resizable="false"></el-table-column>
-            <el-table-column
-                    label="持续时间"
-                    prop="zabbixProblemDTO.ns"
-                    min-width="10%"
-                    :resizable="false"
-            ></el-table-column>
-            <el-table-column label="严重性" prop="zabbixProblemDTO.severity" min-width="15%" :resizable="false" :formatter="severityLevelFormat">
-                <!--<template slot-scope="scope">-->
-                <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='3'">一般严重</p>-->
-                <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='4'">严重</p>-->
-                <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
-                <!--</template>-->
-            </el-table-column>
-            <el-table-column
-                label="处理人"
-                prop="claimUser"
-                min-width="10%"
-                :resizable="false"
-            ></el-table-column>
-            <el-table-column align="center" label="操作" min-width="15%">
-                <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            type="primary"
-                            slot="reference"
-                            v-if="scope.row.isClaim ==1"
-                            @click="malfucntionShowInfo(scope.$index, scope.row)"
-                    >已认领</el-button>
-                    <el-button
-                            size="mini"
-                            type="primary"
-                            slot="reference"
-                            v-else
-                            @click="malfucntionSolveClaim(scope.$index, scope.row)"
-                    >认领</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <malfunctionSolveClaimAdd
-                :title="'信息'+titleType"
-                :assetform="assetform"
-                :showEditDialog="showEditDialog"
-                @close="showEditDialog = false"
-                @success="reloadData"
-                @error="reloadData"
-        ></malfunctionSolveClaimAdd>
-        <malfunctionShowInfo
-                :title="'信息'+titleType"
-                :assetform="assetform"
-                :showEditDialog="showInfoDialog"
-                @close="showInfoDialog = false"
-                @success="reloadData"
-                @error="reloadData"
-        ></malfunctionShowInfo>
-        <div class="block" style="margin-top:15px;">
-            <el-pagination
-                    align="left"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-sizes="[15, 30, 50, 100]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="totalCount"
-            ></el-pagination>
-        </div>
+          <el-option
+            v-for="status in claimTypeList"
+            :key="status.value"
+            :label="status.label"
+            :value="status.value"
+          ></el-option>
+        </el-select>
+        <el-button
+          type="primary"
+          size="small"
+          @click="showInfo() == false"
+          icon="el-icon-search"
+          >查询</el-button
+        >
+        <el-button type="primary" size="small" @click="showClear() == false"
+          >重置</el-button
+        >
+      </div>
+      <div class="queryright"></div>
+    </ToolBar>
+    <el-table
+      :data="
+        (tableData || []).slice(
+          (currentPage - 1) * pageSize,
+          currentPage * pageSize
+        )
+      "
+      border
+      v-loading="loading"
+      style="width: 100%"
+      :row-style="tableRowStyle"
+      :header-cell-style="tableHeaderColor"
+    >
+      <el-table-column
+        label="问题名称"
+        prop="zabbixProblemDTO.name"
+        min-width="60%"
+        :resizable="false"
+      ></el-table-column>
+      <el-table-column
+        label="持续时间"
+        prop="zabbixProblemDTO.ns"
+        min-width="10%"
+        :resizable="false"
+      ></el-table-column>
+      <el-table-column
+        label="严重性"
+        prop="zabbixProblemDTO.severity"
+        min-width="15%"
+        :resizable="false"
+        :formatter="severityLevelFormat"
+      >
+        <!--<template slot-scope="scope">-->
+        <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='3'">一般严重</p>-->
+        <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='4'">严重</p>-->
+        <!--<p style="margin-bottom: 0px !important" v-if="scope.row.severity=='5'">灾难</p>-->
+        <!--</template>-->
+      </el-table-column>
+      <el-table-column
+        label="处理人"
+        prop="claimUser"
+        min-width="10%"
+        :resizable="false"
+      ></el-table-column>
+      <el-table-column align="center" label="操作" min-width="15%">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="primary"
+            slot="reference"
+            v-if="scope.row.isClaim == 1"
+            @click="malfucntionShowInfo(scope.$index, scope.row)"
+            >已认领</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            slot="reference"
+            v-else
+            @click="malfucntionSolveClaim(scope.$index, scope.row)"
+            >认领</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <malfunctionSolveClaimAdd
+      :title="'信息' + titleType"
+      :assetform="assetform"
+      :showEditDialog="showEditDialog"
+      @close="showEditDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></malfunctionSolveClaimAdd>
+    <malfunctionShowInfo
+      :title="'信息' + titleType"
+      :assetform="assetform"
+      :showEditDialog="showInfoDialog"
+      @close="showInfoDialog = false"
+      @success="reloadData"
+      @error="reloadData"
+    ></malfunctionShowInfo>
+    <div class="block" style="margin-top: 15px">
+      <el-pagination
+        align="left"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[15, 30, 50, 100]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+      ></el-pagination>
     </div>
+  </div>
 </template>
 <script>
 import malfunctionSolveClaimAdd from '@/views/malfunctionSolve/malfunctionSolveClaim/malfunctionSolveClaimAdd.vue'
@@ -104,6 +135,7 @@ export default {
       claimType: '',
       showEditDialog: false,
       showInfoDialog: false,
+      loading: false,
       claimTypeList: [{
         value: 0,
         label: '未认领'
@@ -202,6 +234,7 @@ export default {
             }
           }
         })
+      this.loading = false
     },
     severityLevelFormat (val) {
       if (val.zabbixProblemDTO.severity === 3) {
@@ -249,28 +282,28 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .queryleft {
-        float: left;
-    }
+.queryleft {
+  float: left;
+}
 
-    .queryright {
-        float: right;
-    }
+.queryright {
+  float: right;
+}
 
-    .tableHeaderColor {
-        font-size: 20;
-    }
+.tableHeaderColor {
+  font-size: 20;
+}
 
-    .datetop /deep/ input {
-        height: 32px !important;
-        margin-top: 1px !important;
-    }
+.datetop /deep/ input {
+  height: 32px !important;
+  margin-top: 1px !important;
+}
 
-    /deep/ .el-input__prefix {
-        margin-top: -3px;
-    }
+/deep/ .el-input__prefix {
+  margin-top: -3px;
+}
 
-    /deep/ .el-button {
-        margin-left: 10px;
-    }
+/deep/ .el-button {
+  margin-left: 10px;
+}
 </style>
