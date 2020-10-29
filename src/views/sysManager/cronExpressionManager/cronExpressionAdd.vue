@@ -189,7 +189,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="4">具体分钟数<br>
-                          <el-checkbox-group @change="modifyMinute('4')" :disabled="readOnlyStatus.minute.cronEvery_4 ? false : 'disable'" v-model="form.cron.minute.specificSpecific">
+                          <el-checkbox-group @change="modifyMinute('4')" :disabled="readOnlyStatus.minute.cronEvery_4 ? false : 'disabled'" v-model="form.cron.minute.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
@@ -315,7 +315,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="4">具体小时数<br>
-                          <el-checkbox-group @change="modifyHour('4')" v-model="form.cron.hour.specificSpecific" :disabled="readOnlyStatus.hour.cronEvery_4 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyHour('4')" v-model="form.cron.hour.specificSpecific" :disabled="readOnlyStatus.hour.cronEvery_4 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
@@ -408,7 +408,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="7">具体天数<br>
-                          <el-checkbox-group @change="modifyDay('7')" v-model="form.cron.day.specificSpecific" :disabled="readOnlyStatus.day.cronEvery_7 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyDay('7')" v-model="form.cron.day.specificSpecific" :disabled="readOnlyStatus.day.cronEvery_7 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="1"></el-checkbox>
@@ -497,7 +497,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="4">具体月数<br>
-                          <el-checkbox-group @change="modifyMonth('4')" v-model="form.cron.month.specificSpecific" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyMonth('4')" v-model="form.cron.month.specificSpecific" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="1"></el-checkbox>
@@ -536,7 +536,7 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">从
-                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -550,12 +550,12 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="4">周期从星期
-                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
                           到
-                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -566,7 +566,7 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="5">本月最后一个星期
-                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')" :disabled="readOnlyStatus.week.cronEvery_5 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')" :disabled="readOnlyStatus.week.cronEvery_5 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -578,7 +578,7 @@
                         <el-radio label="6">第
                           <el-input size="mini" v-model="form.cron.week.cronWhatWeek" style=" width: 100px" @blur="modifyWeek('6')" placeholder="请输入内容" :readonly="readOnlyStatus.week.cronEvery_6 ? false : 'readonly'"></el-input>
                           周的星期
-                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -588,7 +588,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="7">具体星期几<br>
-                          <el-checkbox-group @change="modifyWeek('7')" v-model="form.cron.week.specificSpecific" :disabled="readOnlyStatus.week.cronEvery_7 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyWeek('7')" v-model="form.cron.week.specificSpecific" :disabled="readOnlyStatus.week.cronEvery_7 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox v-for="(item, index) in weekConstant" :key="index" :label="item.value">{{ item.label }}</el-checkbox>
