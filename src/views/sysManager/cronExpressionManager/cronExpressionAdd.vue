@@ -67,15 +67,15 @@
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
-                                <el-checkbox label="1"></el-checkbox>
-                                <el-checkbox label="2"></el-checkbox>
-                                <el-checkbox label="3"></el-checkbox>
-                                <el-checkbox label="4"></el-checkbox>
-                                <el-checkbox label="5"></el-checkbox>
-                                <el-checkbox label="6"></el-checkbox>
-                                <el-checkbox label="7"></el-checkbox>
-                                <el-checkbox label="8"></el-checkbox>
-                                <el-checkbox label="9"></el-checkbox>
+                                <el-checkbox label="1" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="2" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="3" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="4" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="5" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="6" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="7" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="8" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="9" style="margin-left: 8px"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -193,15 +193,15 @@
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
-                                <el-checkbox label="1"></el-checkbox>
-                                <el-checkbox label="2"></el-checkbox>
-                                <el-checkbox label="3"></el-checkbox>
-                                <el-checkbox label="4"></el-checkbox>
-                                <el-checkbox label="5"></el-checkbox>
-                                <el-checkbox label="6"></el-checkbox>
-                                <el-checkbox label="7"></el-checkbox>
-                                <el-checkbox label="8"></el-checkbox>
-                                <el-checkbox label="9"></el-checkbox>
+                                <el-checkbox label="1" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="2" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="3" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="4" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="5" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="6" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="7" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="8" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="9" style="margin-left: 8px"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -319,15 +319,15 @@
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
-                                <el-checkbox label="1"></el-checkbox>
-                                <el-checkbox label="2"></el-checkbox>
-                                <el-checkbox label="3"></el-checkbox>
-                                <el-checkbox label="4"></el-checkbox>
-                                <el-checkbox label="5"></el-checkbox>
-                                <el-checkbox label="6"></el-checkbox>
-                                <el-checkbox label="7"></el-checkbox>
-                                <el-checkbox label="8"></el-checkbox>
-                                <el-checkbox label="9"></el-checkbox>
+                                <el-checkbox label="1" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="2" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="3" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="4" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="5" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="6" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="7" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="8" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="9" style="margin-left: 8px"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -412,15 +412,15 @@
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="1"></el-checkbox>
-                                <el-checkbox label="2"></el-checkbox>
-                                <el-checkbox label="3"></el-checkbox>
-                                <el-checkbox label="4"></el-checkbox>
-                                <el-checkbox label="5"></el-checkbox>
-                                <el-checkbox label="6"></el-checkbox>
-                                <el-checkbox label="7"></el-checkbox>
-                                <el-checkbox label="8"></el-checkbox>
-                                <el-checkbox label="9"></el-checkbox>
-                                <el-checkbox label="10"></el-checkbox>
+                                <el-checkbox label="2" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="3" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="4" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="5" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="6" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="7" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="8" style="margin-left: 7px"></el-checkbox>
+                                <el-checkbox label="9" style="margin-left: 8px"></el-checkbox>
+                                <el-checkbox label="10" style="margin-left: 8px"></el-checkbox>
                               </el-col>
                             </el-row>
                             <el-row>
@@ -509,10 +509,6 @@
                                 <el-checkbox label="7"></el-checkbox>
                                 <el-checkbox label="8"></el-checkbox>
                                 <el-checkbox label="9"></el-checkbox>
-                              </el-col>
-                            </el-row>
-                            <el-row>
-                              <el-col :offset="1">
                                 <el-checkbox label="10"></el-checkbox>
                                 <el-checkbox label="11"></el-checkbox>
                                 <el-checkbox label="12"></el-checkbox>
