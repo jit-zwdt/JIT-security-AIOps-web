@@ -67,6 +67,7 @@ export default {
       titleType: '',
       showEditDialog: false,
       problemName: '',
+      loading: false,
       resolveType: '',
       resolveTypeList: [{
         value: 0,
@@ -137,6 +138,7 @@ export default {
               this.loading = false
             }
           }
+          this.loading = false
         })
     },
     claimTimeFormat (val) {

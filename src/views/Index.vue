@@ -235,19 +235,19 @@ export default {
       }],
       hostOneTypeId: '',
       hostOneType: '',
-      hostOneCount: '',
+      hostOneCount: '0',
       hostTwoTypeId: '',
       hostTwoType: '',
-      hostTwoCount: '',
+      hostTwoCount: '0',
       hostThreeTypeId: '',
       hostThreeType: '',
-      hostThreeCount: '',
+      hostThreeCount: '0',
       hostFourTypeId: '',
       hostFourType: '',
-      hostFourCount: '',
+      hostFourCount: '0',
       hostFiveTypeId: '',
       hostFiveType: '',
-      hostFiveCount: ''
+      hostFiveCount: '0'
     }
   },
   created () {
@@ -567,11 +567,22 @@ export default {
             }
           },
           formatter: function (params, ticket, callback) {
-            var res = '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xNameData[0] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xNameData[1] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xNameData[2] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xNameData[3] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xNameData[4] + '<br>'
+            var res = ''
+            if (data.xNameData[0] !== null && data.xNameData[0] !== '' && data.xNameData[0] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xNameData[0] + '<br>'
+            }
+            if (data.xNameData[1] !== null && data.xNameData[1] !== '' && data.xNameData[1] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xNameData[1] + '<br>'
+            }
+            if (data.xNameData[2] !== null && data.xNameData[2] !== '' && data.xNameData[2] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xNameData[2] + '<br>'
+            }
+            if (data.xNameData[3] !== null && data.xNameData[3] !== '' && data.xNameData[3] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xNameData[3] + '<br>'
+            }
+            if (data.xNameData[4] !== null && data.xNameData[4] !== '' && data.xNameData[4] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xNameData[4] + '<br>'
+            }
             return res
           }
         },
@@ -671,9 +682,9 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.hostSumNum = json.data.hostSumNum
-            this.hostSumMemory = json.data.hostSumMemory
-            this.hostSumHardDisk = json.data.hostSumHardDisk
+            this.hostSumNum = this.checkNullzero(json.data.hostSumNum)
+            this.hostSumMemory = this.checkNullzero(json.data.hostSumMemory)
+            this.hostSumHardDisk = this.checkNullzero(json.data.hostSumHardDisk)
           }
         } else {
           this.$message({
@@ -682,6 +693,20 @@ export default {
           })
         }
       })
+    },
+    checkNullzero (value) {
+      var data = 0
+      if (value !== null && value !== '' && value !== undefined) {
+        data = value
+      }
+      return data
+    },
+    checkNullBoolean (value) {
+      console.log(value)
+      if (value !== null && value !== '' && value !== undefined) {
+        return true
+      }
+      return false
     },
     makeData3_info () {
       this.axios.post(this.$api.main.getMonitorTypeUsedInfo).then((resp) => {
@@ -693,27 +718,27 @@ export default {
                 case '1':
                   this.hostOneTypeId = element.typeId
                   this.hostOneType = element.type
-                  this.hostOneCount = element.hostCount
+                  this.hostOneCount = this.checkNullzero(element.hostCount)
                   break
                 case '2':
                   this.hostTwoTypeId = element.typeId
                   this.hostTwoType = element.type
-                  this.hostTwoCount = element.hostCount
+                  this.hostTwoCount = this.checkNullzero(element.hostCount)
                   break
                 case '3':
                   this.hostThreeTypeId = element.typeId
                   this.hostThreeType = element.type
-                  this.hostThreeCount = element.hostCount
+                  this.hostThreeCount = this.checkNullzero(element.hostCount)
                   break
                 case '4':
                   this.hostFourTypeId = element.typeId
                   this.hostFourType = element.type
-                  this.hostFourCount = element.hostCount
+                  this.hostFourCount = this.checkNullzero(element.hostCount)
                   break
                 case '5':
                   this.hostFiveTypeId = element.typeId
                   this.hostFiveType = element.type
-                  this.hostFiveCount = element.hostCount
+                  this.hostFiveCount = this.checkNullzero(element.hostCount)
                   break
                 default:
                   break
@@ -1132,11 +1157,22 @@ export default {
             }
           },
           formatter: function (params, ticket, callback) {
-            var res = '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xData[0] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xData[1] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xData[2] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xData[3] + '<br>'
-            res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xData[4] + '<br>'
+            var res = ''
+            if (data.xData[0] !== null && data.xData[0] !== '' && data.xData[0] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xData[0] + '<br>'
+            }
+            if (data.xData[1] !== null && data.xData[1] !== '' && data.xData[1] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xData[1] + '<br>'
+            }
+            if (data.xData[2] !== null && data.xData[2] !== '' && data.xData[2] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xData[2] + '<br>'
+            }
+            if (data.xData[3] !== null && data.xData[3] !== '' && data.xData[3] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xData[3] + '<br>'
+            }
+            if (data.xData[4] !== null && data.xData[4] !== '' && data.xData[4] !== undefined) {
+              res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xData[4] + '<br>'
+            }
             return res
           }
         },
