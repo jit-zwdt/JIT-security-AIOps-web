@@ -59,19 +59,24 @@
           <el-row :gutter="40" v-show="serverListForm.type === '0'">
             <el-col :span="12">
               <el-form-item label="内存大小(G)：" prop="memory">
-                <el-input v-model.number="serverListForm.memory" placeholder="请输入内存大小 单位 G" clearable></el-input>
+                <el-input v-model.number="serverListForm.memory" placeholder="请输入内存大小 单位 G 没有请填 0" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="硬盘大小(G)：" prop="hardDisk">
-                <el-input v-model.number="serverListForm.hardDisk" placeholder="请输入硬盘大小 单位 G" clearable></el-input>
+                <el-input v-model.number="serverListForm.hardDisk" placeholder="请输入硬盘大小 单位 G 没有请填 0" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="40" v-show="serverListForm.type === '0'">
              <el-col :span="12">
-              <el-form-item label="CPU(G)：" prop="cpu">
-                <el-input v-model.number="serverListForm.cpu" placeholder="请输入 CPU 大小 单位 G" clearable></el-input>
+              <el-form-item label="CPU(GHZ)：" prop="cpu">
+                <el-input v-model="serverListForm.cpu" placeholder="请输入 CPU 大小 单位 GHZ 没有请填 0" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="CPU核数：" prop="cpuCoreNumber">
+                <el-input v-model.number="serverListForm.cpuCoreNumber" placeholder="请输入 CPU 核心数 没有请填 0" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -275,6 +280,14 @@ export default {
     }
   },
   data () {
+    var validateFloat = (rule, value, callback) => {
+      var reg = /^\d+(\.\d+)?$/
+      if (!reg.test(value)) {
+        callback(new Error('请输入正小数 单位 GHZ 没有请填0'))
+      } else {
+        callback()
+      }
+    }
     var validateNumber = (rule, value, callback) => {
       if (value < 0) {
         callback(new Error('输入的值不能为负数'))
@@ -311,6 +324,7 @@ export default {
         productModel: '',
         parentId: '',
         cpu: 0,
+        cpuCoreNumber: 0,
         memory: 0,
         hardDisk: 0
       },
@@ -357,15 +371,18 @@ export default {
           { required: true, message: '请选择资产登记时间' }
         ],
         cpu: [
-          { type: 'number', message: 'CPU 必须为数字值 单位 G' },
+          { type: 'string', validator: validateFloat, trigger: 'blur' }
+        ],
+        cpuCoreNumber: [
+          { type: 'number', message: 'CPU核数 必须为数字值 没有请填 0' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ],
         memory: [
-          { type: 'number', message: '内存大小必须为数字值 单位 G' },
+          { type: 'number', message: '内存大小必须为数字值 单位 G 没有请填 0' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ],
         hardDisk: [
-          { type: 'number', message: '硬盘大小必须为数字值 单位 G' },
+          { type: 'number', message: '硬盘大小必须为数字值 单位 G 没有请填 0' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ]
       }
@@ -460,7 +477,8 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.serverListForm = json.data
-              this.serverListForm.cpu = parseInt(json.data.cpu === null ? 0 : json.data.cpu)
+              this.serverListForm.cpu = parseFloat(json.data.cpu === null ? 0 : json.data.cpu)
+              this.serverListForm.cpuCoreNumber = parseInt(json.data.cpuCoreNumber === null ? 0 : json.data.cpuCoreNumber)
               this.serverListForm.memory = parseInt(json.data.memory === null ? 0 : json.data.memory)
               this.serverListForm.hardDisk = parseInt(json.data.hardDisk === null ? 0 : json.data.hardDisk)
             }
@@ -500,7 +518,8 @@ export default {
         productModel: this.serverListForm.productModel,
         classify: this.serverListForm.classify,
         parentId: this.serverListForm.parentId,
-        cpu: this.serverListForm.cpu,
+        cpu: parseFloat(this.serverListForm.cpu),
+        cpuCoreNumber: this.serverListForm.cpuCoreNumber,
         memory: this.serverListForm.memory,
         hardDisk: this.serverListForm.hardDisk
       }
