@@ -63,8 +63,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="硬盘大小(T)：" prop="hardDisk">
-                <el-input v-model.number="serverListForm.hardDisk" placeholder="请输入硬盘大小 单位 T" clearable></el-input>
+              <el-form-item label="硬盘大小(G)：" prop="hardDisk">
+                <el-input v-model.number="serverListForm.hardDisk" placeholder="请输入硬盘大小 单位 G" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -365,7 +365,7 @@ export default {
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ],
         hardDisk: [
-          { type: 'number', message: '硬盘大小必须为数字值 单位 T' },
+          { type: 'number', message: '硬盘大小必须为数字值 单位 G' },
           { type: 'number', validator: validateNumber, trigger: 'blur' }
         ]
       }
