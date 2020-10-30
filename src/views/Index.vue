@@ -234,19 +234,19 @@ export default {
         }
       }],
       hostOneTypeId: '',
-      hostOneType: '',
+      hostOneType: '操作系统',
       hostOneCount: '0',
       hostTwoTypeId: '',
-      hostTwoType: '',
+      hostTwoType: '数据库',
       hostTwoCount: '0',
       hostThreeTypeId: '',
-      hostThreeType: '',
+      hostThreeType: '中间件',
       hostThreeCount: '0',
       hostFourTypeId: '',
-      hostFourType: '',
+      hostFourType: '网络设备',
       hostFourCount: '0',
       hostFiveTypeId: '',
-      hostFiveType: '',
+      hostFiveType: '硬件',
       hostFiveCount: '0'
     }
   },
@@ -1021,12 +1021,12 @@ export default {
       })
     },
     makeData6 () {
-      this.makeData6_info('2', 'myChart4', 'CPU')
-      this.makeData6_info('3', 'myChart5', '内存')
-      this.makeData6_info('2', 'myChart6', '磁盘')
-      this.makeData6_info('3', 'myChart7', '网络接口速率')
+      this.makeData6_info('2', 'myChart4', 'CPU使用率', '%')
+      this.makeData6_info('3', 'myChart5', '内存使用率', '%')
+      this.makeData6_info('5', 'myChart6', '系统盘使用率', '%')
+      this.makeData6_info('4', 'myChart7', '网络接口速率', 'B/s')
     },
-    makeData6_info (itemKey, myChartName, name) {
+    makeData6_info (itemKey, myChartName, name, type) {
       const param = {
         typeId: '1',
         itemKey: itemKey,
@@ -1037,7 +1037,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData6_Chart(myChartName, json.data, name)
+            this.makeData6_Chart(myChartName, json.data, name, type)
           } else {
           }
         } else {
@@ -1048,7 +1048,7 @@ export default {
         }
       })
     },
-    makeData6_Chart (myChartName, myChartData, name) {
+    makeData6_Chart (myChartName, myChartData, name, type) {
       const xData = []
       const yData = []
       myChartData.forEach(element => {
@@ -1180,7 +1180,7 @@ export default {
           {
             top: '20%',
             bottom: 20,
-            left: 40
+            left: 60
           },
           {
             height: 0,
@@ -1219,7 +1219,7 @@ export default {
           gridIndex: 0,
           axisLabel: {
             color: '#3eb2e8',
-            formatter: '{value} 次'
+            formatter: '{value} ' + type
           },
           axisLine: {
             lineStyle: {
