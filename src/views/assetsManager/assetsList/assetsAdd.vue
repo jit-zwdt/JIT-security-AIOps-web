@@ -300,6 +300,8 @@ export default {
               }
             }
           })
+        } else {
+          callback()
         }
         // callback()
       } else {
