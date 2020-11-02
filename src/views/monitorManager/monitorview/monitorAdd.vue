@@ -108,8 +108,8 @@
               </el-input>
             </div>
             <div>
-              <el-input v-model="serverListForm.oracleMacroAsm" clearable>
-                <template slot="prepend">ASM卷名</template>
+              <el-input v-model="serverListForm.oracleMacroPort" clearable>
+                <template slot="prepend">端口</template>
               </el-input>
             </div>
             <div>
@@ -129,6 +129,11 @@
                 show-password
               >
                 <template slot="prepend">密码</template>
+              </el-input>
+            </div>
+            <div>
+              <el-input v-model="serverListForm.oracleMacroAsm" clearable>
+                <template slot="prepend">ASM卷名</template>
               </el-input>
             </div>
           </el-form-item>
@@ -399,6 +404,7 @@ export default {
         mssqlMacroPassword: '',
         mssqlMacroUsername: '',
         oracleMacroIp: '',
+        oracleMacroPort: '',
         oracleMacroAsm: '',
         oracleMacroDbname: '',
         oracleMacroPassword: '',
@@ -847,6 +853,7 @@ export default {
         mssqlMacroPassword: this.serverListForm.mssqlMacroPassword,
         mssqlMacroUsername: this.serverListForm.mssqlMacroUsername,
         oracleMacroIp: this.serverListForm.oracleMacroIp,
+        oracleMacroPort: this.serverListForm.oracleMacroPort,
         oracleMacroAsm: this.serverListForm.oracleMacroAsm,
         oracleMacroDbname: this.serverListForm.oracleMacroDbname,
         oracleMacroPassword: this.serverListForm.oracleMacroPassword,

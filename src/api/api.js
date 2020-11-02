@@ -10,7 +10,8 @@ const api = {
       assetsAdd: {
         addAssets: '/assets/addAssets',
         updateAssets: '/assets/updateAssets/',
-        findById: '/assets/findById/'
+        findById: '/assets/findById/',
+        validateIp: '/assets/validateIp'
       },
       assetsList: {
         deleteAssets: '/assets/deleteAssets/',

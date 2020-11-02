@@ -39,10 +39,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model.number="form.cron.second.incrementStart" size="mini" style=" width: 100px" @blur="modifySecond('2')" :readonly="readOnlyStatus.second.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.second.incrementStart" size="mini" style=" width: 100px" @blur="modifySecond('2')" :disabled="readOnlyStatus.second.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           秒开始，每隔
-                          <el-input v-model.number="form.cron.second.incrementIncrement" size="mini" style=" width: 100px" @blur="modifySecond('2')" :readonly="readOnlyStatus.second.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.second.incrementIncrement" size="mini" style=" width: 100px" @blur="modifySecond('2')" :disabled="readOnlyStatus.second.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           秒执行一次
                         </el-radio>
@@ -51,10 +51,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.second.rangeStart" size="mini" style=" width: 100px" @blur="modifySecond('3')" :readonly="readOnlyStatus.second.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.second.rangeStart" size="mini" style=" width: 100px" @blur="modifySecond('3')" :disabled="readOnlyStatus.second.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.second.rangeEnd" size="mini" style=" width: 100px" @blur="modifySecond('3')" :readonly="readOnlyStatus.second.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.second.rangeEnd" size="mini" style=" width: 100px" @blur="modifySecond('3')" :disabled="readOnlyStatus.second.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           秒
                         </el-radio>
@@ -165,10 +165,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model.number="form.cron.minute.incrementStart" size="mini" style=" width: 100px" @blur="modifyMinute('2')" :readonly="readOnlyStatus.minute.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.minute.incrementStart" size="mini" style=" width: 100px" @blur="modifyMinute('2')" :disabled="readOnlyStatus.minute.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           分开始，每隔
-                          <el-input v-model.number="form.cron.minute.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyMinute('2')" :readonly="readOnlyStatus.minute.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.minute.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyMinute('2')" :disabled="readOnlyStatus.minute.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           分执行一次
                         </el-radio>
@@ -177,10 +177,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.minute.rangeStart" size="mini" style=" width: 100px" @blur="modifyMinute('3')" :readonly="readOnlyStatus.minute.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.minute.rangeStart" size="mini" style=" width: 100px" @blur="modifyMinute('3')" :disabled="readOnlyStatus.minute.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.minute.rangeEnd" size="mini" style=" width: 100px" @blur="modifyMinute('3')" :readonly="readOnlyStatus.minute.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.minute.rangeEnd" size="mini" style=" width: 100px" @blur="modifyMinute('3')" :disabled="readOnlyStatus.minute.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           分
                         </el-radio>
@@ -189,7 +189,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="4">具体分钟数<br>
-                          <el-checkbox-group @change="modifyMinute('4')" :disabled="readOnlyStatus.minute.cronEvery_4 ? false : 'disable'" v-model="form.cron.minute.specificSpecific">
+                          <el-checkbox-group @change="modifyMinute('4')" :disabled="readOnlyStatus.minute.cronEvery_4 ? false : 'disabled'" v-model="form.cron.minute.specificSpecific">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
@@ -291,10 +291,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model.number="form.cron.hour.incrementStart" size="mini" style=" width: 100px" @blur="modifyHour('2')" :readonly="readOnlyStatus.hour.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.hour.incrementStart" size="mini" style=" width: 100px" @blur="modifyHour('2')" :disabled="readOnlyStatus.hour.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           时开始，每隔
-                          <el-input v-model.number="form.cron.hour.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyHour('2')" :readonly="readOnlyStatus.hour.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.hour.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyHour('2')" :disabled="readOnlyStatus.hour.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           小时执行一次
                         </el-radio>
@@ -303,10 +303,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.hour.rangeStart" size="mini" style=" width: 100px" @blur="modifyHour('3')" :readonly="readOnlyStatus.hour.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.hour.rangeStart" size="mini" style=" width: 100px" @blur="modifyHour('3')" :disabled="readOnlyStatus.hour.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.hour.rangeEnd" size="mini" style=" width: 100px" @blur="modifyHour('3')" :readonly="readOnlyStatus.hour.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.hour.rangeEnd" size="mini" style=" width: 100px" @blur="modifyHour('3')" :disabled="readOnlyStatus.hour.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           小时
                         </el-radio>
@@ -315,7 +315,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="4">具体小时数<br>
-                          <el-checkbox-group @change="modifyHour('4')" v-model="form.cron.hour.specificSpecific" :disabled="readOnlyStatus.hour.cronEvery_4 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyHour('4')" v-model="form.cron.hour.specificSpecific" :disabled="readOnlyStatus.hour.cronEvery_4 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="0"></el-checkbox>
@@ -374,10 +374,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">从
-                          <el-input v-model.number="form.cron.day.incrementStart" size="mini" style=" width: 100px" @blur="modifyDay('3')" :readonly="readOnlyStatus.day.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.day.incrementStart" size="mini" style=" width: 100px" @blur="modifyDay('3')" :disabled="readOnlyStatus.day.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           天开始，每隔
-                          <el-input v-model.number="form.cron.day.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyDay('3')" :readonly="readOnlyStatus.day.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.day.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyDay('3')" :disabled="readOnlyStatus.day.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           天执行一次
                         </el-radio>
@@ -386,10 +386,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="4">周期从
-                          <el-input v-model.number="form.cron.day.rangeStart" size="mini" style=" width: 100px" @blur="modifyDay('4')" :readonly="readOnlyStatus.day.cronEvery_4 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.day.rangeStart" size="mini" style=" width: 100px" @blur="modifyDay('4')" :disabled="readOnlyStatus.day.cronEvery_4 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.day.rangeEnd" size="mini" style=" width: 100px" @blur="modifyDay('4')" :readonly="readOnlyStatus.day.cronEvery_4 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.day.rangeEnd" size="mini" style=" width: 100px" @blur="modifyDay('4')" :disabled="readOnlyStatus.day.cronEvery_4 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           天
                         </el-radio>
@@ -408,7 +408,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="7">具体天数<br>
-                          <el-checkbox-group @change="modifyDay('7')" v-model="form.cron.day.specificSpecific" :disabled="readOnlyStatus.day.cronEvery_7 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyDay('7')" v-model="form.cron.day.specificSpecific" :disabled="readOnlyStatus.day.cronEvery_7 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="1"></el-checkbox>
@@ -473,10 +473,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model.number="form.cron.month.incrementStart" size="mini" style=" width: 100px" @blur="modifyMonth('2')" :readonly="readOnlyStatus.month.cronEvery_4 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.month.incrementStart" size="mini" style=" width: 100px" @blur="modifyMonth('2')" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           月开始，每隔
-                          <el-input v-model.number="form.cron.month.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyMonth('2')" :readonly="readOnlyStatus.month.cronEvery_4 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.month.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyMonth('2')" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           个月执行一次
                         </el-radio>
@@ -485,10 +485,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.month.rangeStart" size="mini" style=" width: 100px" @blur="modifyMonth('3')" :readonly="readOnlyStatus.month.cronEvery_4 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.month.rangeStart" size="mini" style=" width: 100px" @blur="modifyMonth('3')" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.month.rangeEnd" size="mini" style=" width: 100px" @blur="modifyMonth('3')" :readonly="readOnlyStatus.month.cronEvery_4 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.month.rangeEnd" size="mini" style=" width: 100px" @blur="modifyMonth('3')" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           月之间
                         </el-radio>
@@ -497,7 +497,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="4">具体月数<br>
-                          <el-checkbox-group @change="modifyMonth('4')" v-model="form.cron.month.specificSpecific" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyMonth('4')" v-model="form.cron.month.specificSpecific" :disabled="readOnlyStatus.month.cronEvery_4 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox label="1"></el-checkbox>
@@ -536,12 +536,12 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">从
-                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
                           开始，每隔
-                          <el-input v-model="form.cron.week.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyWeek('3')" :readonly="readOnlyStatus.week.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model="form.cron.week.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           周执行一次
                         </el-radio>
@@ -550,12 +550,12 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="4">周期从星期
-                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
                           到
-                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -566,7 +566,7 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="5">本月最后一个星期
-                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')" :disabled="readOnlyStatus.week.cronEvery_5 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')" :disabled="readOnlyStatus.week.cronEvery_5 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -576,9 +576,9 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="6">第
-                          <el-input size="mini" v-model="form.cron.week.cronWhatWeek" style=" width: 100px" @blur="modifyWeek('6')" placeholder="请输入内容" :readonly="readOnlyStatus.week.cronEvery_6 ? false : 'readonly'"></el-input>
+                          <el-input size="mini" v-model="form.cron.week.cronWhatWeek" style=" width: 100px" @blur="modifyWeek('6')" placeholder="请输入内容" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disabled'"></el-input>
                           周的星期
-                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disable'">
+                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -588,7 +588,7 @@
                     <el-row>
                       <el-col>
                         <el-radio label="7">具体星期几<br>
-                          <el-checkbox-group @change="modifyWeek('7')" v-model="form.cron.week.specificSpecific" :disabled="readOnlyStatus.week.cronEvery_7 ? false : 'disable'">
+                          <el-checkbox-group @change="modifyWeek('7')" v-model="form.cron.week.specificSpecific" :disabled="readOnlyStatus.week.cronEvery_7 ? false : 'disabled'">
                             <el-row>
                               <el-col :offset="1">
                                 <el-checkbox v-for="(item, index) in weekConstant" :key="index" :label="item.value">{{ item.label }}</el-checkbox>
@@ -611,10 +611,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="2">从
-                          <el-input v-model.number="form.cron.year.incrementStart" size="mini" style=" width: 100px" @blur="modifyYear('2')" :readonly="readOnlyStatus.year.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.year.incrementStart" size="mini" style=" width: 100px" @blur="modifyYear('2')" :disabled="readOnlyStatus.year.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           年开始，每隔
-                          <el-input v-model.number="form.cron.year.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyYear('2')" :readonly="readOnlyStatus.year.cronEvery_2 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.year.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyYear('2')" :disabled="readOnlyStatus.year.cronEvery_2 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           年执行一次
                         </el-radio>
@@ -623,10 +623,10 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.year.rangeStart" size="mini" style=" width: 100px" @blur="modifyYear('3')" :readonly="readOnlyStatus.year.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.year.rangeStart" size="mini" style=" width: 100px" @blur="modifyYear('3')" :disabled="readOnlyStatus.year.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           到
-                          <el-input v-model.number="form.cron.year.rangeEnd" size="mini" style=" width: 100px" @blur="modifyYear('3')" :readonly="readOnlyStatus.year.cronEvery_3 ? false : 'readonly'"
+                          <el-input v-model.number="form.cron.year.rangeEnd" size="mini" style=" width: 100px" @blur="modifyYear('3')" :disabled="readOnlyStatus.year.cronEvery_3 ? false : 'disabled'"
                                     placeholder="请输入内容"></el-input>
                           年之间
                         </el-radio>
@@ -954,8 +954,6 @@ export default {
     },
     // 修改秒调用的方法
     modifySecond (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.second.cronEvery !== cronEvery) {
         return
@@ -1011,8 +1009,6 @@ export default {
     },
     // 修改分调用的方法
     modifyMinute (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.minute.cronEvery !== cronEvery) {
         return
@@ -1068,8 +1064,6 @@ export default {
     },
     // 修改时调用的方法
     modifyHour (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.hour.cronEvery !== cronEvery) {
         return
@@ -1125,8 +1119,6 @@ export default {
     },
     // 修改天调用的方法
     modifyDay (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.day.cronEvery !== cronEvery) {
         return
@@ -1210,8 +1202,6 @@ export default {
     },
     // 修改周调用的方法
     modifyWeek (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.week.cronEvery !== cronEvery) {
         return
@@ -1288,8 +1278,6 @@ export default {
     },
     // 修改月调用的方法
     modifyMonth (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.month.cronEvery !== cronEvery) {
         return
@@ -1345,8 +1333,6 @@ export default {
     },
     // 修改年调用的方法
     modifyYear (cronEvery) {
-      // 刷新 readOnly 状态
-      Object.assign(this.$data.readOnlyStatus, this.$options.data().readOnlyStatus)
       // 判断是否选中
       if (this.form.cron.year.cronEvery !== cronEvery) {
         return

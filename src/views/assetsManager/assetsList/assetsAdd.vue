@@ -83,7 +83,7 @@
           <el-row :gutter="40" v-if="serverListForm.type === '1'">
             <el-col :span="24">
               <el-form-item label="所属硬件：" prop="parentId">
-                <el-select v-model="serverListForm.parentId" placeholder="请选择" filterable style="width: 100%">
+                <el-select v-model="serverListForm.parentId" @change="addIp" placeholder="请选择" filterable style="width: 100%">
                   <el-option
                       v-for="item in hardwareOptions"
                       :key="item[0]"
@@ -97,12 +97,12 @@
           <el-row :gutter="40">
             <el-col :span="12">
               <el-form-item label="ip：" prop="ip">
-                <el-input v-model="serverListForm.ip" clearable></el-input>
+                <el-input :readonly="serverListForm.type !== '1' ? false : 'readonly'" v-model="serverListForm.ip" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="备用ip：" prop="backupIp">
-                <el-input v-model="serverListForm.backupIp" clearable></el-input>
+                <el-input :readonly="serverListForm.type !== '1' ? false : 'readonly'" v-model="serverListForm.backupIp" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -280,6 +280,32 @@ export default {
     }
   },
   data () {
+    var validateIp = (rule, value, callback) => {
+      // 如果是硬件发送 axios 如果是软件不发送
+      if (this.serverListForm.type === '0') {
+        // 发送 axios 请求到后端判断是否有一致的值
+        if (this.oldIp !== value) {
+          this.axios.get(api.assetsManager.assetsList.assetsAdd.validateIp, { params: { ip: value } }).then((resp) => {
+            // 成功响应
+            if (resp.status === 200) {
+              var json = resp.data
+              // 响应码为 1 的时候进入
+              if (json.code === 1) {
+                // 如果返回值为 true
+                if (json.data) {
+                  callback(new Error('IP 不能重复'))
+                } else {
+                  callback()
+                }
+              }
+            }
+          })
+        }
+        // callback()
+      } else {
+        callback()
+      }
+    }
     var validateFloat = (rule, value, callback) => {
       var reg = /^\d+(\.\d+)?$/
       if (!reg.test(value)) {
@@ -348,6 +374,7 @@ export default {
       }],
       id: '',
       zcfl: [],
+      oldIp: '',
       rules: {
         name: [
           { required: true, message: '请输入资产名称' }
@@ -355,6 +382,7 @@ export default {
         number: [
           { required: true, message: '请输入资产编号' }
         ],
+        ip: [{ type: 'number', validator: validateIp, trigger: 'blur' }],
         type: [
           { required: true, message: '请选择资产类别' }
         ],
@@ -477,10 +505,14 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.serverListForm = json.data
+              this.oldIp = json.data.ip
               this.serverListForm.cpu = parseFloat(json.data.cpu === null ? 0 : json.data.cpu)
               this.serverListForm.cpuCoreNumber = parseInt(json.data.cpuCoreNumber === null ? 0 : json.data.cpuCoreNumber)
               this.serverListForm.memory = parseInt(json.data.memory === null ? 0 : json.data.memory)
               this.serverListForm.hardDisk = parseInt(json.data.hardDisk === null ? 0 : json.data.hardDisk)
+              if (this.serverListForm.type === '1') {
+                this.addIp()
+              }
             }
           } else {
             this.$message({
@@ -488,7 +520,7 @@ export default {
               type: 'error'
             })
             this.$emit('error')
-          }
+          } // TODO: 没有做编辑的回显操作进行修改在修改的方面上进行了回显的操作 但是没有做校验的处理
         })
       }
     },
@@ -541,9 +573,36 @@ export default {
       })
     },
     changeType () {
+      // 如果选择的是软件则进行操作
       if (this.serverListForm.type === '1') {
+        // 添加所所属硬件
         this.getHardwareInfo()
+        this.serverListForm.ip = ''
       }
+      // 清空选择硬件的选择框
+      // this.serverListForm.parentId = ''
+      // 清空 IP 文字
+      // this.serverListForm.ip = ''
+    },
+    // 添加硬件的 Ip
+    addIp () {
+      // 遍历回显的 List
+      const partentid = this.serverListForm.parentId
+      // 声明 IP 值
+      let ip = ''
+      this.hardwareOptions.some(function (value) {
+        // 判断 List 和选中的值是否相等 相等则进入
+        if (value[0] === partentid) {
+          // Ip 赋值
+          ip = value[3]
+          // 切断循环
+          return true
+        }
+      })
+      // Ip 修改
+      this.serverListForm.ip = ip
+      // 备用 Ip
+      // this.serverListForm.backupIp = ''
     },
     getHardwareInfo () {
       this.axios.get(this.$api.assetsManager.assetsList.getHardwareInfo).then((resp) => {
