@@ -18,7 +18,7 @@
             <div class="title_index">运维指数</div>
             <div class="box3_con">
               <div :class="errorStyle" id="liquidFillrun">
-                <small class="small_index"></small>
+                <small class="small_index">{{ this.operation }}</small>
               </div>
               <div class="div_cut_off_rule">
                 <table
@@ -217,6 +217,7 @@ export default {
       hostSumNum: '0',
       hostSumMemory: '0',
       hostSumHardDisk: '0',
+      operation: '设备运行良好',
       conheight: {
         height: '',
         width: ''
@@ -288,10 +289,13 @@ export default {
       var errorCount = this.errorCount
       if (errorCount !== null && (errorCount > 10 && errorCount <= 20)) {
         this.errorStyle = 'box3_con_left_cloudy'
+        this.operation = '设备运行出现故障'
       } else if (errorCount !== null && (errorCount > 20)) {
         this.errorStyle = 'box3_con_left_rain'
+        this.operation = '设备运行故障较多'
       } else {
         this.errorStyle = 'box3_con_left_sun'
+        this.operation = '设备运行良好'
       }
     },
     makeData1 () {
@@ -1199,7 +1203,7 @@ export default {
             top: '30%',
             bottom: 20,
             left: 35,
-            right: 3
+            right: 1
           },
           {
             height: 0,

@@ -19,11 +19,11 @@
 .box3_con_right .box3_con_right_bot{ height: 10rem; margin-top: -6.8rem;}
 .data_bg{width: 10rem; height: 7rem;margin-top: 70px;margin-left: 10px; background: url('~@/assets/img/data_icon.png') no-repeat;background-size: 100% 100%; text-align: center; font-size: 1.5rem; color: #FFFFFF; padding-top: 1.2rem;}
 .data_bg_4{width: 9rem; height: 7rem; background: url('~@/assets/img/data_icon.png') no-repeat;background-size: 100% 100%; text-align: center; font-size: 1.5rem; color: #FFFFFF; padding-top: 1.2rem;}
-.small_index{font-size: 1.1rem; color: #008800;width: 100%;
+.small_index{font-size: 1.1rem; color: #FFCC00;width: 100%;
   position:absolute; 
   z-index:2;
   left:0;
-  bottom:45%;}
+  bottom:-25%;}
 small{font-size: 1.1rem; color: #FFCC00;}
 .box4{height: 21rem; padding: 5px 0 10px 10px; background: url('~@/assets/img/bg_box4.png') no-repeat;background-size: 100% 100%; }
 .box4_con{height: 15rem; }
