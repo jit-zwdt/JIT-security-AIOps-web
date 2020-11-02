@@ -18,7 +18,7 @@
             <div class="title_index">运维指数</div>
             <div class="box3_con">
               <div :class="errorStyle" id="liquidFillrun">
-                <small class="small_index"></small>
+                <small class="small_index">{{ this.operation }}</small>
               </div>
               <div class="div_cut_off_rule">
                 <table
@@ -217,6 +217,7 @@ export default {
       hostSumNum: '0',
       hostSumMemory: '0',
       hostSumHardDisk: '0',
+      operation: '设备运行良好',
       conheight: {
         height: '',
         width: ''
@@ -288,10 +289,13 @@ export default {
       var errorCount = this.errorCount
       if (errorCount !== null && (errorCount > 10 && errorCount <= 20)) {
         this.errorStyle = 'box3_con_left_cloudy'
+        this.operation = '设备运行出现故障'
       } else if (errorCount !== null && (errorCount > 20)) {
         this.errorStyle = 'box3_con_left_rain'
+        this.operation = '设备运行故障较多'
       } else {
         this.errorStyle = 'box3_con_left_sun'
+        this.operation = '设备运行良好'
       }
     },
     makeData1 () {
@@ -1024,7 +1028,7 @@ export default {
       this.makeData6_info('2', 'myChart4', 'CPU使用率', '%')
       this.makeData6_info('3', 'myChart5', '内存使用率', '%')
       this.makeData6_info('5', 'myChart6', '系统盘使用率', '%')
-      this.makeData6_info('4', 'myChart7', '网络接口速率', 'B/s')
+      this.makeData6_info('4', 'myChart7', '网络接口速率', 'MB/s')
     },
     makeData6_info (itemKey, myChartName, name, type) {
       const param = {
@@ -1053,7 +1057,19 @@ export default {
       const yData = []
       myChartData.forEach(element => {
         xData.push(element.hostName)
-        yData.push(element.value)
+        var realVal = '0.00'
+        if (element.value !== null) {
+          if (type === 'MB/s') {
+            const realValnew = element.value / (1000 * 1000)
+            realVal = realValnew
+            yData.push(parseFloat(realVal).toFixed(1))
+          } else {
+            realVal = element.value
+            yData.push(parseFloat(realVal).toFixed(1))
+          }
+        } else {
+          yData.push('0.00')
+        }
       })
       const pieCharts = document.getElementById(myChartName)
       const myChart = this.$echarts.init(pieCharts)
@@ -1142,10 +1158,16 @@ export default {
         title: {
           top: 10,
           text: name,
+          subtext: '单位：' + type,
           x: 'center',
           textStyle: {
-            color: '#17a2b8',
+            color: '#4cabce',
             fontSize: '16',
+            fontWeight: 'bold'
+          },
+          subtextStyle: {
+            color: '#006699',
+            fontSize: '12',
             fontWeight: 'bold'
           }
         },
@@ -1178,9 +1200,10 @@ export default {
         },
         grid: [
           {
-            top: '20%',
+            top: '30%',
             bottom: 20,
-            left: 60
+            left: 35,
+            right: 1
           },
           {
             height: 0,
@@ -1219,7 +1242,7 @@ export default {
           gridIndex: 0,
           axisLabel: {
             color: '#3eb2e8',
-            formatter: '{value} ' + type
+            formatter: '{value} '
           },
           axisLine: {
             lineStyle: {
