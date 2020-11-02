@@ -84,6 +84,7 @@
             <el-col :span="24">
               <el-form-item label="所属硬件：" prop="parentId">
                 <el-select v-model="serverListForm.parentId" @change="addIp" placeholder="请选择" filterable style="width: 100%">
+                  <el-option label="无硬件" value=""></el-option>
                   <el-option
                       v-for="item in hardwareOptions"
                       :key="item[0]"
@@ -432,6 +433,7 @@ export default {
     closefrom () {
       // this.showfooter = true
       this.clearform()
+      Object.assign(this.$data.serverListForm, this.$options.data().serverListForm)
       this.$emit('close')
       this.showInfo()
     },
