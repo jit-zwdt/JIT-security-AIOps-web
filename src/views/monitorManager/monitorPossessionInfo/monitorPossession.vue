@@ -452,7 +452,7 @@
                               "
                               v-loading="loading"
                               border
-                              style="width: 100%"
+                              style="width: 100%;max-height:650px;overflow-y:auto"
                               :row-style="tableRowStyle"
                               :header-cell-style="tableHeaderColor"
                               ref="multipleTable"
@@ -1138,7 +1138,7 @@ export default {
       if (this.setTimeoutItems === '') {
         const _this = this
         this.openloading(index)
-        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(items.itemId, index, items.units) }, 300)
+        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(items.itemId, index, items.units, items.valueType) }, 300)
       }
     },
     openloading (index) {

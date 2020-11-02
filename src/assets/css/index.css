@@ -23,7 +23,7 @@
   position:absolute; 
   z-index:2;
   left:0;
-  bottom:-25%;}
+  top:-30%;}
 small{font-size: 1.1rem; color: #FFCC00;}
 .box4{height: 21rem; padding: 5px 0 10px 10px; background: url('~@/assets/img/bg_box4.png') no-repeat;background-size: 100% 100%; }
 .box4_con{height: 15rem; }

@@ -34,7 +34,7 @@
                     <small>总设备：{{ this.hostSumNum }}台</small>
                   </div>
                   <div class="con_right_top">
-                    <small>总磁盘：{{ this.hostSumHardDisk }}T</small>
+                    <small>总磁盘：{{ this.hostSumHardDisk }}G</small>
                   </div>
                   <div class="con_right_top">
                     <small>总内存：{{ this.hostSumMemory }}G</small>
