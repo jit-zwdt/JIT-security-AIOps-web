@@ -11,9 +11,9 @@
 .box2_con{height: 28rem; }
 .box3{height: 35rem; padding: 5px 0 10px 10px; background: url('~@/assets/img/bg_box3.png') no-repeat;background-size: 100% 100%; }
 .box3_con{height: 20rem;display: flex;justify-content: space-between;align-items: center; }
-.box3_con .box3_con_left_sun{width: 25%; height: 80%;  margin-top: 25%; background: url('~@/assets/img/sun_index.png') no-repeat;background-size: 100% 100%;text-align: center;justify-content: center;display: flex;position: relative;margin-left: 6%;}
-.box3_con .box3_con_left_cloudy{width: 25%; height:  80%;  margin-top: 25%; background: url('~@/assets/img/cloudy_index.png') no-repeat;background-size: 100% 100%;text-align: center;justify-content: center;display: flex;position: relative;margin-left: 6%;}
-.box3_con .box3_con_left_rain{width: 25%; height:  80%;  margin-top: 25%; background: url('~@/assets/img/rain_index.png') no-repeat;background-size: 100% 100%;text-align: center;justify-content: center;display: flex;position: relative;margin-left: 6%;}
+.box3_con .box3_con_left_sun{width: 25%; height: 75%;  margin-top: 25%; background: url('~@/assets/img/sun_index.png') no-repeat;background-size: 100% 100%;text-align: center;justify-content: center;display: flex;position: relative;margin-left: 6%;}
+.box3_con .box3_con_left_cloudy{width: 25%; height:  75%;  margin-top: 25%; background: url('~@/assets/img/cloudy_index.png') no-repeat;background-size: 100% 100%;text-align: center;justify-content: center;display: flex;position: relative;margin-left: 6%;}
+.box3_con .box3_con_left_rain{width: 25%; height:  75%;  margin-top: 25%; background: url('~@/assets/img/rain_index.png') no-repeat;background-size: 100% 100%;text-align: center;justify-content: center;display: flex;position: relative;margin-left: 6%;}
 .box3_con .box3_con_right{width:70%; height: 20rem; }
 .box3_con_right .box3_con_right_top{ height: 5rem;margin-top:20px;}
 .box3_con_right .box3_con_right_bot{ height: 10rem; margin-top: -6.8rem;}

@@ -1024,7 +1024,7 @@ export default {
       this.makeData6_info('2', 'myChart4', 'CPU使用率', '%')
       this.makeData6_info('3', 'myChart5', '内存使用率', '%')
       this.makeData6_info('5', 'myChart6', '系统盘使用率', '%')
-      this.makeData6_info('4', 'myChart7', '网络接口速率', 'B/s')
+      this.makeData6_info('4', 'myChart7', '网络接口速率', 'MB/s')
     },
     makeData6_info (itemKey, myChartName, name, type) {
       const param = {
@@ -1053,7 +1053,19 @@ export default {
       const yData = []
       myChartData.forEach(element => {
         xData.push(element.hostName)
-        yData.push(element.value)
+        var realVal = '0.00'
+        if (element.value !== null) {
+          if (type === 'MB/s') {
+            const realValnew = element.value / (1000 * 1000)
+            realVal = realValnew
+            yData.push(parseFloat(realVal).toFixed(1))
+          } else {
+            realVal = element.value
+            yData.push(parseFloat(realVal).toFixed(1))
+          }
+        } else {
+          yData.push('0.00')
+        }
       })
       const pieCharts = document.getElementById(myChartName)
       const myChart = this.$echarts.init(pieCharts)
@@ -1142,10 +1154,16 @@ export default {
         title: {
           top: 10,
           text: name,
+          subtext: '单位：' + type,
           x: 'center',
           textStyle: {
-            color: '#17a2b8',
+            color: '#4cabce',
             fontSize: '16',
+            fontWeight: 'bold'
+          },
+          subtextStyle: {
+            color: '#006699',
+            fontSize: '12',
             fontWeight: 'bold'
           }
         },
@@ -1178,9 +1196,10 @@ export default {
         },
         grid: [
           {
-            top: '20%',
+            top: '30%',
             bottom: 20,
-            left: 60
+            left: 35,
+            right: 3
           },
           {
             height: 0,
@@ -1219,7 +1238,7 @@ export default {
           gridIndex: 0,
           axisLabel: {
             color: '#3eb2e8',
-            formatter: '{value} ' + type
+            formatter: '{value} '
           },
           axisLine: {
             lineStyle: {
