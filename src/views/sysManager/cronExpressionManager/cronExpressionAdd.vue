@@ -954,6 +954,8 @@ export default {
     },
     // 修改秒调用的方法
     modifySecond (cronEvery) {
+      // 清空 second 表单赋值
+      Object.assign(this.$data.readOnlyStatus.second, this.$options.data().readOnlyStatus.second)
       // 判断是否选中
       if (this.form.cron.second.cronEvery !== cronEvery) {
         return
@@ -1009,6 +1011,8 @@ export default {
     },
     // 修改分调用的方法
     modifyMinute (cronEvery) {
+      // 清空 minute 表单赋值
+      Object.assign(this.$data.readOnlyStatus.minute, this.$options.data().readOnlyStatus.minute)
       // 判断是否选中
       if (this.form.cron.minute.cronEvery !== cronEvery) {
         return
@@ -1064,6 +1068,8 @@ export default {
     },
     // 修改时调用的方法
     modifyHour (cronEvery) {
+      // 清空 hour 表单赋值
+      Object.assign(this.$data.readOnlyStatus.hour, this.$options.data().readOnlyStatus.hour)
       // 判断是否选中
       if (this.form.cron.hour.cronEvery !== cronEvery) {
         return
@@ -1119,6 +1125,8 @@ export default {
     },
     // 修改天调用的方法
     modifyDay (cronEvery) {
+      // 清空 day 表单赋值
+      Object.assign(this.$data.readOnlyStatus.day, this.$options.data().readOnlyStatus.day)
       // 判断是否选中
       if (this.form.cron.day.cronEvery !== cronEvery) {
         return
@@ -1202,6 +1210,8 @@ export default {
     },
     // 修改周调用的方法
     modifyWeek (cronEvery) {
+      // 清空 week 表单赋值
+      Object.assign(this.$data.readOnlyStatus.week, this.$options.data().readOnlyStatus.week)
       // 判断是否选中
       if (this.form.cron.week.cronEvery !== cronEvery) {
         return
@@ -1278,6 +1288,8 @@ export default {
     },
     // 修改月调用的方法
     modifyMonth (cronEvery) {
+      // 清空 month 表单赋值
+      Object.assign(this.$data.readOnlyStatus.month, this.$options.data().readOnlyStatus.month)
       // 判断是否选中
       if (this.form.cron.month.cronEvery !== cronEvery) {
         return
@@ -1333,6 +1345,8 @@ export default {
     },
     // 修改年调用的方法
     modifyYear (cronEvery) {
+      // 清空 year 表单赋值
+      Object.assign(this.$data.readOnlyStatus.year, this.$options.data().readOnlyStatus.year)
       // 判断是否选中
       if (this.form.cron.year.cronEvery !== cronEvery) {
         return
