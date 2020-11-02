@@ -97,12 +97,12 @@
           <el-row :gutter="40">
             <el-col :span="12">
               <el-form-item label="ip：" prop="ip">
-                <el-input :readonly="serverListForm.type !== '1' ? false : 'readonly'" v-model="serverListForm.ip" clearable></el-input>
+                <el-input :disabled="serverListForm.type !== '1' ? false : 'disabled'" v-model="serverListForm.ip" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="备用ip：" prop="backupIp">
-                <el-input :readonly="serverListForm.type !== '1' ? false : 'readonly'" v-model="serverListForm.backupIp" clearable></el-input>
+                <el-input :disabled="serverListForm.type !== '1' ? false : 'disabled'" v-model="serverListForm.backupIp" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
