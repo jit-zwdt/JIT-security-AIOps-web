@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <script src="../../jquery/jquery.min.js"></script>
+  <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+  <link href="../../tempHtml/style.css" rel="stylesheet" type="text/css">
+  <title>JIT-security-AIOps</title>
+</head>
+<script language="javascript">
+  function changeToNetUrl(){
+    $('#roleNetUrl').addClass("activetab");
+    $('#roleNetUrl').removeClass("nactivetab");
+    $('#roleText').removeClass("activetab"); 
+    $('#roleText').addClass("nactivetab"); 
+  }
+  function changeToText(){
+    $("#roleText").removeClass("nactivetab");
+    $("#roleText").addClass("activetab");
+    $('#roleNetUrl').removeClass("activetab"); 
+    $('#roleNetUrl').addClass('nactivetab');
+
+  }
+$().ready(function(){
+  //得到父页面的iframe框架的对象
+  var obj = parent.document.getElementById("mainFrame");
+  //把当前页面内容的高度动态赋给iframe框架的高
+  obj.height = "500px";
+});
+</script>
+<body>
+  <div>
+    <ul class="nav nav-tabs">
+      <li class=""><a id="roleNetUrl" href="#Configuration" data-toggle="tab" aria-expanded="false" class="activetab" onclick="changeToNetUrl();">配置</a></li>
+      <li class=""><a id="roleText" href="#Metrics" data-toggle="tab" aria-expanded="true" class="nactivetab" onclick="changeToText();">指标</a></li>
+    </ul>
+  </div>
+</body>
+</html>
