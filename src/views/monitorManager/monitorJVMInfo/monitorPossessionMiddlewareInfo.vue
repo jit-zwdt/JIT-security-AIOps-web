@@ -50,6 +50,12 @@
                 <th class="darkmainborderth">ip地址</th>
                 <td class="darkmainbordertd">{{ this.serverForm.jmxIp }}</td>
               </tr>
+              <tr style="height: 40px">
+                <th class="darkmainborderth">版本</th>
+                <td class="darkmainbordertd" colspan="5">
+                  {{ this.tomcatVersion }}
+                </td>
+              </tr>
             </table>
           </div>
         </div>
@@ -121,6 +127,7 @@ export default {
     }
   },
   created () {
+    this.getTomcatVersion()
     this.getMonitorTypeItems()
     this.findHostIdinfo()
   },

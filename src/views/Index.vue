@@ -247,7 +247,7 @@ export default {
       hostFourType: '网络设备',
       hostFourCount: '0',
       hostFiveTypeId: '',
-      hostFiveType: '硬件',
+      hostFiveType: 'JVM',
       hostFiveCount: '0'
     }
   },
@@ -739,7 +739,7 @@ export default {
                   this.hostFourType = element.type
                   this.hostFourCount = this.checkNullzero(element.hostCount)
                   break
-                case '5':
+                case '28':
                   this.hostFiveTypeId = element.typeId
                   this.hostFiveType = element.type
                   this.hostFiveCount = this.checkNullzero(element.hostCount)

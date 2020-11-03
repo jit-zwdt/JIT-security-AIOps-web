@@ -281,7 +281,7 @@ export default {
       this.$router.push({ name: 'monitorAddList', query: { typeId: this.metaTypeId } })
     },
     showhostIdInfo (row) {
-      this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostId, hostName: row.hostName } })
+      this.$router.push({ name: 'monitorPossessionMiddlewareInfo', query: { hostId: row.hostId, hostName: row.hostName } })
     },
     getmemoryTop5ByItem () {
       this.memoryloading = true
