@@ -248,7 +248,8 @@ export default {
       hostFourCount: '0',
       hostFiveTypeId: '',
       hostFiveType: 'JVM',
-      hostFiveCount: '0'
+      hostFiveCount: '0',
+      timer: ''
     }
   },
   created () {
@@ -257,9 +258,19 @@ export default {
     this.showInfo()
     // window.addEventListener('resize', this.getResize)
     // this.getResize()
+    if (this.timer) {
+      clearInterval(this.timer)
+    } else {
+      this.timer = setInterval(() => {
+        this.showInfo()
+      }, 1000 * 60 * 5)
+    }
   },
   beforeDestroy () {
     // window.removeEventListener('resize', this.getResize)
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
   },
   methods: {
     getResize () {
