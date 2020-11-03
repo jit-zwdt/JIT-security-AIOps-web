@@ -94,7 +94,7 @@
                   style="
                     float: left;
                     color: rgb(162, 180, 230);
-                    width: 65%;
+                    width: 60%;
                     text-align: center;
                     font-size: 1.2rem;
                     margin-top: 0.3rem;
@@ -106,7 +106,7 @@
                   style="
                     float: left;
                     color: rgb(162, 180, 230);
-                    width: 15%;
+                    width: 20%;
                     text-align: center;
                     font-size: 1.2rem;
                     margin-top: 0.3rem;

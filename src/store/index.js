@@ -43,10 +43,17 @@ export default new Vuex.Store({
       state.system.navType = type
       Storage.set('NavType', type)
     },
-    WINDOW_TYPE_TOGGLE (state) {
-      const type = state.system.hideSidebar === 1 ? 0 : 1
+    WINDOW_TYPE_TOGGLE (state, typedata) {
+      const type = typedata
       state.system.windowType = type
       Storage.set('WindowType', type)
+      if (type === 1) {
+        state.system.hideSidebar = 1
+        Storage.set('HideSidebar', 1)
+      } else {
+        state.system.hideSidebar = 0
+        Storage.set('HideSidebar', 0)
+      }
     }
   },
   actions: {

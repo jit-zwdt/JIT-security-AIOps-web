@@ -76,7 +76,10 @@
           </el-badge>
         </el-tooltip>
       </span>
-      <span class="body-top-btn" @click="screenFullToggle">
+      <span @click="screenFullToggle(1)" :class="fullToggleStyle1">
+        <i class="fa fa-arrows-alt"></i>
+      </span>
+      <span @click="screenFullToggle(0)" :class="fullToggleStyle0">
         <i class="fa fa-arrows-alt"></i>
       </span>
       <!-- <el-dropdown>
@@ -146,7 +149,9 @@ export default {
     return {
       user: {},
       showUserMassage: false,
-      imageurl: ''
+      imageurl: '',
+      fullToggleStyle1: '',
+      fullToggleStyle0: ''
     }
   },
   // 添加组件
@@ -161,16 +166,24 @@ export default {
         this.preShow(json.data)
       }
     })
+    this.fullToggleStyle1 = 'body-top-btn'
+    this.fullToggleStyle0 = 'body-top-btn fullToggledisplay'
   },
   methods: {
     hiddenSidebar () {
       this.$store.commit('HIDE_SIDEBAR_TOGGLE')
     },
-    screenFullToggle () {
+    screenFullToggle (type) {
+      if (type === 1) {
+        this.fullToggleStyle1 = 'body-top-btn fullToggledisplay'
+        this.fullToggleStyle0 = 'body-top-btn '
+      } else {
+        this.fullToggleStyle1 = 'body-top-btn '
+        this.fullToggleStyle0 = 'body-top-btn fullToggledisplay'
+      }
       ScreenFull.toggle()
         .then(() => {
-          this.$store.commit('WINDOW_TYPE_TOGGLE')
-          this.$store.commit('HIDE_SIDEBAR_TOGGLE')
+          this.$store.commit('WINDOW_TYPE_TOGGLE', type)
         })
         .catch(() => {
           this.$message({
@@ -387,6 +400,9 @@ export default {
   }
   .imageStyle {
     padding: 5px 0px 5px 20px;
+  }
+  .fullToggledisplay {
+    display: none;
   }
 }
 </style>
