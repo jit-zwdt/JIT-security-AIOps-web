@@ -53,8 +53,6 @@
                 </td>
               </tr>
               <tr style="height: 40px">
-                <th class="darkmainborderth">版本</th>
-                <td class="darkmainbordertd">{{ this.tomcatVersion }}</td>
                 <th class="darkmainborderth">启动监控</th>
                 <td class="darkmainbordertd">
                   <el-switch
@@ -143,7 +141,6 @@ export default {
     }
   },
   created () {
-    this.getTomcatVersion()
     this.getMonitorTypeItems()
     this.findHostIdinfo()
   },
@@ -210,30 +207,6 @@ export default {
     },
     makeMonitorTypeTitle () {
       return this.monitorTypeTitle
-    },
-    getTomcatVersion () {
-      const region = {
-        hostids: [this.$route.query.hostId],
-        status: '',
-        key_: 'mysql.version["{$MYSQL.HOST}","{$MYSQL.PORT}"]'
-      }
-      this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            if (json.data[0].lastvalue === '') {
-              this.tomcatVersion = '获取失败'
-            } else {
-              this.tomcatVersion = json.data[0].lastvalue
-            }
-          }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
     },
     // 返回上一层
     backfrom () {
