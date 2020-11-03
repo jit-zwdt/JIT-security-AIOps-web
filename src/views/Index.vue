@@ -287,10 +287,10 @@ export default {
     },
     situation () {
       var errorCount = this.errorCount
-      if (errorCount !== null && (errorCount > 10 && errorCount <= 20)) {
+      if (errorCount !== null && (errorCount >= 5 && errorCount <= 15)) {
         this.errorStyle = 'box3_con_left_cloudy'
         this.operation = '设备运行出现故障'
-      } else if (errorCount !== null && (errorCount > 20)) {
+      } else if (errorCount !== null && (errorCount > 15)) {
         this.errorStyle = 'box3_con_left_rain'
         this.operation = '设备运行故障较多'
       } else {
@@ -304,7 +304,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.errorCount = json.data.high
+            this.errorCount = json.data.average + json.data.high + json.data.disaster
             xdata.push(
               { value: json.data.information, name: '信息' },
               { value: json.data.warning, name: '警告' },
