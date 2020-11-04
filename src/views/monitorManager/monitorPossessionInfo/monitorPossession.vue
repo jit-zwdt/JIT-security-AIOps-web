@@ -971,66 +971,74 @@ export default {
           for (var i = 0; i < this.itemstableData.length; i++) {
             const zabbixHistoryDTOs = this.itemstableData[i].zabbixHistoryDTOs
             const units = this.itemstableData[i].monitorHostDetailBindItems.units
-            const returndataclock = []
-            const returndataavg = []
-            zabbixHistoryDTOs.forEach(element => {
-              var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
-              returndataclock.push(clock)
-              returndataavg.push(element.value)
-            })
-            const countjson = zabbixHistoryDTOs.length
-            const newcount = Math.floor(countjson / 10)
-            // 基于准备好的dom，初始化echarts实例
-            const pieCharts = document.getElementById('charts-demo-' + i)
-            var pieEcharts = document.getElementById('pieEcharts')
-            pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-            const myChart = this.$echarts.init(pieCharts)
-            // 绘制图表
-            myChart.setOption({
-              xAxis: {
-                type: 'category',
-                data: returndataclock,
-                // 设置字体倾斜
-                axisLabel: {
-                  interval: newcount,
-                  rotate: 45, // 倾斜度-90至90默认为0
-                  margin: 2,
-                  textStyle: {
-                    fontWeight: 'bolder',
-                    color: '#000000',
-                    fontSize: '7'
-                  },
-                  formatter: function (value) {
-                    return value.split(' ')[1]
-                  },
-                  showMaxLabel: true
-                },
-                splitLine: {
-                  show: false
-                }
-              },
-              grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '2%',
-                containLabel: true
-              },
-              yAxis: {
-                type: 'value',
-                axisLabel: {
-                  formatter: '{value} ' + units
-                }
-              },
-              tooltip: {
-                trigger: 'axis'
-              },
-              series: [{
-                data: returndataavg,
-                type: 'line'
-              }]
-            })
+            this.makeEchartsItem(zabbixHistoryDTOs, units, i)
           }
         }
+      })
+    },
+    makeEchartsItem (data, units, i) {
+      if (data === null || data === '' || data === undefined || data === 'undefined' || data.length === 0) {
+        const pieCharts = document.getElementById('charts-demo-' + i)
+        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%">该监控项当前时间段无数据</span></div>'
+        return
+      }
+      const returndataclock = []
+      const returndataavg = []
+      data.forEach(element => {
+        var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
+        returndataclock.push(clock)
+        returndataavg.push(element.value)
+      })
+      const countjson = data.length
+      const newcount = Math.floor(countjson / 10)
+      // 基于准备好的dom，初始化echarts实例
+      const pieCharts = document.getElementById('charts-demo-' + i)
+      var pieEcharts = document.getElementById('pieEcharts')
+      pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+      const myChart = this.$echarts.init(pieCharts)
+      // 绘制图表
+      myChart.setOption({
+        xAxis: {
+          type: 'category',
+          data: returndataclock,
+          // 设置字体倾斜
+          axisLabel: {
+            interval: newcount,
+            rotate: 45, // 倾斜度-90至90默认为0
+            margin: 2,
+            textStyle: {
+              fontWeight: 'bolder',
+              color: '#000000',
+              fontSize: '7'
+            },
+            formatter: function (value) {
+              return value.split(' ')[1]
+            },
+            showMaxLabel: true
+          },
+          splitLine: {
+            show: false
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '2%',
+          containLabel: true
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} ' + units
+          }
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        series: [{
+          data: returndataavg,
+          type: 'line'
+        }]
       })
     },
     checkbtn (index, row) {
@@ -1140,64 +1148,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            const returndataclock = []
-            const returndataavg = []
-            json.data.forEach(element => {
-              var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
-              returndataclock.push(clock)
-              returndataavg.push(element.value)
-            })
-            const countjson = json.data.length
-            const newcount = Math.floor(countjson / 10)
-            // 基于准备好的dom，初始化echarts实例
-            const pieCharts = document.getElementById('charts-demo-' + index)
-            var pieEcharts = document.getElementById('pieEcharts')
-            pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-            const myChart = this.$echarts.init(pieCharts)
-            // 绘制图表
-            myChart.setOption({
-              xAxis: {
-                type: 'category',
-                data: returndataclock,
-                // 设置字体倾斜
-                axisLabel: {
-                  interval: newcount,
-                  rotate: 45, // 倾斜度-90至90默认为0
-                  margin: 2,
-                  textStyle: {
-                    fontWeight: 'bolder',
-                    color: '#000000',
-                    fontSize: '7'
-                  },
-                  formatter: function (value) {
-                    return value.split(' ')[1]
-                  },
-                  showMaxLabel: true
-                },
-                splitLine: {
-                  show: false
-                }
-              },
-              grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '2%',
-                containLabel: true
-              },
-              yAxis: {
-                type: 'value',
-                axisLabel: {
-                  formatter: '{value} ' + units
-                }
-              },
-              tooltip: {
-                trigger: 'axis'
-              },
-              series: [{
-                data: returndataavg,
-                type: 'line'
-              }]
-            })
+            this.makeEchartsItem(json.data, units, index)
           } else {
             // 基于准备好的dom，初始化echarts实例
             const pieCharts = document.getElementById('charts-demo-' + index)
@@ -1337,6 +1288,419 @@ export default {
         }
       })
     },
+    async getRefreshGraphsData (graphid, graphName, index1) {
+      var finalResult = ''
+      var gItemData = []
+      var graphData = []
+      var itemData = []
+      const legendData = []
+      const params = {
+        graphids: [graphid],
+        hostids: [this.$route.query.hostId],
+        timefrom: this.timefrom,
+        timetill: this.timetill
+      }
+      await this.axios.post(this.$api.monitorManager.getResultList, params).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            finalResult = json.data
+            itemData = finalResult.itemData
+            gItemData = finalResult.gItemData
+            graphData = finalResult.graphData
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      var units = ''
+      itemData.forEach(element => {
+        units = element.units
+        legendData.push(element.name)
+      })
+      this.makeEchartsGraphData(graphData[0].graphtype, finalResult, gItemData, graphData, index1, units, legendData, itemData)
+      if (this.graphsloading !== '') {
+        this.graphsloading.close()
+      }
+      this.setTimeoutGraphs = ''
+    },
+    makeEchartsGraphData (graphtype, finalResult, gItemData, graphData, index1, units, legendData, itemData) {
+      if (finalResult.trendListData === null || finalResult.trendListData === '' || finalResult.trendListData === undefined || finalResult.trendListData === 'undefined' || finalResult.trendListData.length === 0) {
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%">该监控项当前时间段无数据</span></div>'
+        return
+      }
+      var colorData = []
+      var trendData = []
+      const returndataclock = []
+      var seriesData = []
+      console.log(finalResult.trendListData)
+      if (graphtype === 2) {
+        for (let a = 0; a < gItemData.length; a++) {
+          trendData = finalResult.trendListData[a]
+          var value
+          var name
+          if (trendData != null) {
+            value = trendData.value
+          }
+          name = legendData[a]
+          seriesData.push({
+            value: value,
+            name: name
+          })
+          colorData.push('#' + gItemData[a].color)
+        }
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        const pieEcharts = document.getElementById('pieEcharts')
+        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+        const myChart = this.$echarts.init(pieCharts)
+        myChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          color: colorData,
+          legend: {
+            data: legendData
+          },
+          series: [
+            {
+              name: '监控项',
+              type: 'pie',
+              radius: '55%',
+              center: ['50%', '60%'],
+              data: seriesData,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        })
+      } else if (graphtype === 0) {
+        var sum = 0
+        for (var k = 0; k < gItemData.length; k++) {
+          trendData = finalResult.trendListData[k]
+          var data = []
+          for (var j = 0; j < trendData.length; j++) {
+            var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
+            var index
+            if (clock) {
+              index = k
+              sum = sum + 1
+            }
+            if (k === index && sum <= trendData.length) {
+              returndataclock.push(clock)
+            }
+            switch (gItemData[k].calc_fnc) {
+              case 1: data.push(trendData[j].value)
+                break
+              case 2: data.push(trendData[j].value)
+                break
+              case 4: data.push(trendData[j].value)
+                break
+            }
+          }
+          var series = {}
+          series.name = itemData[k].name
+          var type = ''
+          switch (gItemData[k].drawtype) {
+            case 0: type = 'line'
+              break
+            case 1:
+              type = 'line'
+              series.areaStyle = {}
+              break
+            case 3:
+              type = 'effectScatter'
+              break
+            case 2:
+              type = 'line'
+              series.itemStyle = {
+                normal: {
+                  lineStyle: {
+                    width: 5
+                  }
+                }
+              }
+              break
+            case 4:
+              type = 'line'
+              series.itemStyle = {
+                normal: {
+                  lineStyle: {
+                    type: 'dotted'
+                  }
+                }
+              }
+              break
+            case 5:
+              type = 'bar'
+              break
+          }
+          series.type = type
+          colorData.push('#' + gItemData[k].color)
+          series.lineStyle = {
+            normal: {
+              color: '#' + gItemData[k].color
+            }
+          }
+          series.data = data
+          seriesData.push(series)
+        }
+        const xcount = Math.floor(sum / 10)
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        const pieEcharts = document.getElementById('pieEcharts')
+        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+        const myChart = this.$echarts.init(pieCharts)
+        // 绘制图表
+        myChart.setOption({
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          color: colorData,
+          legend: {
+            data: legendData
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: returndataclock,
+              axisLabel: {
+                // interval: 2,
+                interval: xcount,
+                rotate: 45, // 倾斜度-90至90默认为0
+                margin: 2,
+                textStyle: {
+                  fontWeight: 'bolder',
+                  color: '#000000',
+                  fontSize: '7'
+                },
+                showMaxLabel: true
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel: {
+                formatter: '{value} ' + units
+              }
+            }
+          ],
+          series: seriesData
+        })
+      } else if (graphtype === 1) {
+        var sumStack = 0
+        for (var ii = 0; ii < gItemData.length; ii++) {
+          trendData = finalResult.trendListData[ii]
+          var dataStack = []
+          for (var jj = 0; jj < trendData.length; jj++) {
+            var clockStack = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[jj].clock))
+            var indexStack
+            if (clockStack) {
+              indexStack = ii
+              sumStack = sumStack + 1
+            }
+            if (ii === indexStack && sumStack <= trendData.length) {
+              returndataclock.push(clockStack)
+            }
+            switch (gItemData[ii].calc_fnc) {
+              case 1: dataStack.push(trendData[jj].value)
+                break
+              case 2: dataStack.push(trendData[jj].value)
+                break
+              case 4: dataStack.push(trendData[jj].value)
+                break
+            }
+          }
+          var seriesStack = {}
+          seriesStack.name = itemData[ii].name
+          var typeStack = ''
+          switch (gItemData[ii].drawtype) {
+            case 0: typeStack = 'line'
+              break
+            case 1:
+              typeStack = 'line'
+              seriesStack.areaStyle = {}
+              break
+            case 3:
+              typeStack = 'effectScatter'
+              break
+            case 2:
+              typeStack = 'line'
+              seriesStack.itemStyle = {
+                normal: {
+                  lineStyle: {
+                    width: 5
+                  }
+                }
+              }
+              break
+            case 4:
+              typeStack = 'line'
+              seriesStack.itemStyle = {
+                normal: {
+                  lineStyle: {
+                    type: 'dotted'
+                  }
+                }
+              }
+              break
+            case 5:
+              typeStack = 'bar'
+              break
+          }
+          seriesStack.stack = '总量'
+          seriesStack.type = typeStack
+          colorData.push('#' + gItemData[ii].color)
+          seriesStack.lineStyle = {
+            normal: {
+              color: '#' + gItemData[ii].color
+            }
+          }
+          seriesStack.areaStyle = {}
+          seriesStack.data = dataStack
+          seriesData.push(seriesStack)
+        }
+        const xcount = Math.floor(sumStack / 10)
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        const pieEcharts = document.getElementById('pieEcharts')
+        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+        const myChart = this.$echarts.init(pieCharts)
+        // 绘制图表
+        myChart.setOption({
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          color: colorData,
+          legend: {
+            data: legendData
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: returndataclock,
+              axisLabel: {
+                // interval: 2,
+                interval: xcount,
+                rotate: 45, // 倾斜度-90至90默认为0
+                margin: 2,
+                textStyle: {
+                  fontWeight: 'bolder',
+                  color: '#000000',
+                  fontSize: '7'
+                },
+                showMaxLabel: true
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel: {
+                formatter: '{value} ' + units
+              }
+            }
+          ],
+          series: seriesData
+        })
+      } else if (graphtype === 3) {
+        for (let a = 0; a < gItemData.length; a++) {
+          trendData = finalResult.trendListData[a]
+          var valueRose
+          var nameRose
+          switch (gItemData[a].calc_fnc) {
+            case 1: valueRose = trendData[trendData.length - 1].value
+              break
+            case 2: valueRose = trendData[trendData.length - 1].value
+              break
+            case 4: valueRose = trendData[trendData.length - 1].value
+              break
+          }
+          nameRose = legendData[a]
+          seriesData.push({
+            value: valueRose,
+            name: nameRose
+          })
+          colorData.push('#' + gItemData[a].color)
+        }
+        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
+        const pieEcharts = document.getElementById('pieEcharts')
+        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+        const myChart = this.$echarts.init(pieCharts)
+        myChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          color: colorData,
+          legend: {
+            data: legendData
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: { show: true },
+              magicType: {
+                show: true,
+                type: ['pie', 'funnel']
+              }
+            }
+          },
+          series: [
+            {
+              name: '监控项',
+              type: 'pie',
+              radius: [30, 110],
+              center: ['50%', '60%'],
+              roseType: 'area',
+              data: seriesData
+            }
+          ]
+        })
+      }
+    },
     getGraphsData () {
       this.$nextTick(function () {
         if (this.graphstableData !== null && this.graphstableData.length > 0) {
@@ -1345,11 +1709,7 @@ export default {
             var gItemData = []
             var graphData = []
             var itemData = []
-            var trendData = []
             const legendData = []
-            var seriesData = []
-            var colorData = []
-            const returndataclock = []
             finalResult = this.graphstableData[i]
             itemData = finalResult.itemData
             gItemData = finalResult.gItemData
@@ -1359,373 +1719,7 @@ export default {
               units = element.units
               legendData.push(element.name)
             })
-            console.log(graphData[0].graphtype)
-            if (graphData[0].graphtype === 2) {
-              for (let a = 0; a < gItemData.length; a++) {
-                trendData = finalResult.trendListData[a]
-                var value
-                var name
-                if (trendData != null) {
-                  value = trendData.value
-                }
-                name = legendData[a]
-                seriesData.push({
-                  value: value,
-                  name: name
-                })
-                colorData.push('#' + gItemData[a].color)
-              }
-              const pieCharts = document.getElementById('charts-graph-demo-' + i)
-              const pieEcharts = document.getElementById('pieEcharts')
-              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-              const myChart = this.$echarts.init(pieCharts)
-              myChart.setOption({
-                tooltip: {
-                  trigger: 'item',
-                  formatter: '{a} <br/>{b} : {c} ({d}%)'
-                },
-                color: colorData,
-                legend: {
-                  data: legendData
-                },
-                series: [
-                  {
-                    name: '监控项',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    data: seriesData,
-                    emphasis: {
-                      itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                      }
-                    }
-                  }
-                ]
-              })
-            } else if (graphData[0].graphtype === 0) {
-              var sum = 0
-              for (var k = 0; k < gItemData.length; k++) {
-                trendData = finalResult.trendListData[k]
-                console.log(trendData)
-                var data = []
-                for (var j = 0; j < trendData.length; j++) {
-                  var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
-                  console.log(clock)
-                  var index
-                  if (clock) {
-                    index = k
-                    sum = sum + 1
-                  }
-                  console.log(k)
-                  if (k === index && sum <= trendData.length) {
-                    returndataclock.push(clock)
-                  }
-                  switch (gItemData[k].calc_fnc) {
-                    case 1: data.push(trendData[j].value)
-                      break
-                    case 2: data.push(trendData[j].value)
-                      break
-                    case 4: data.push(trendData[j].value)
-                      break
-                  }
-                }
-                var series = {}
-                series.name = itemData[k].name
-                var type = ''
-                switch (gItemData[k].drawtype) {
-                  case 0: type = 'line'
-                    break
-                  case 1:
-                    type = 'line'
-                    series.areaStyle = {}
-                    break
-                  case 3:
-                    type = 'effectScatter'
-                    break
-                  case 2:
-                    type = 'line'
-                    series.itemStyle = {
-                      normal: {
-                        lineStyle: {
-                          width: 5
-                        }
-                      }
-                    }
-                    break
-                  case 4:
-                    type = 'line'
-                    series.itemStyle = {
-                      normal: {
-                        lineStyle: {
-                          type: 'dotted'
-                        }
-                      }
-                    }
-                    break
-                  case 5:
-                    type = 'bar'
-                    break
-                }
-                series.type = type
-                colorData.push('#' + gItemData[k].color)
-                series.lineStyle = {
-                  normal: {
-                    color: '#' + gItemData[k].color
-                  }
-                }
-                series.data = data
-                seriesData.push(series)
-              }
-              console.log(returndataclock)
-              const xcount = Math.floor(sum / 10)
-              const pieCharts = document.getElementById('charts-graph-demo-' + i)
-              const pieEcharts = document.getElementById('pieEcharts')
-              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-              const myChart = this.$echarts.init(pieCharts)
-              // 绘制图表
-              myChart.setOption({
-                tooltip: {
-                  trigger: 'axis',
-                  axisPointer: {
-                    type: 'cross',
-                    label: {
-                      backgroundColor: '#6a7985'
-                    }
-                  }
-                },
-                color: colorData,
-                legend: {
-                  data: legendData
-                },
-                toolbox: {
-                  feature: {
-                    saveAsImage: {}
-                  }
-                },
-                grid: {
-                  left: '3%',
-                  right: '4%',
-                  bottom: '3%',
-                  containLabel: true
-                },
-                xAxis: [
-                  {
-                    type: 'category',
-                    data: returndataclock,
-                    axisLabel: {
-                      // interval: 2,
-                      interval: xcount,
-                      rotate: 45, // 倾斜度-90至90默认为0
-                      margin: 2,
-                      textStyle: {
-                        fontWeight: 'bolder',
-                        color: '#000000',
-                        fontSize: '7'
-                      },
-                      showMaxLabel: true
-                    }
-                  }
-                ],
-                yAxis: [
-                  {
-                    type: 'value',
-                    axisLabel: {
-                      formatter: '{value} ' + units
-                    }
-                  }
-                ],
-                series: seriesData
-              })
-            } else if (graphData[0].graphtype === 1) {
-              var sumStack = 0
-              for (var ii = 0; ii < gItemData.length; ii++) {
-                trendData = finalResult.trendListData[ii]
-                var dataStack = []
-                for (var jj = 0; jj < trendData.length; jj++) {
-                  var clockStack = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[jj].clock))
-                  var indexStack
-                  if (clockStack) {
-                    indexStack = ii
-                    sumStack = sumStack + 1
-                  }
-                  if (ii === indexStack && sumStack <= trendData.length) {
-                    returndataclock.push(clockStack)
-                  }
-                  switch (gItemData[ii].calc_fnc) {
-                    case 1: dataStack.push(trendData[jj].value)
-                      break
-                    case 2: dataStack.push(trendData[jj].value)
-                      break
-                    case 4: dataStack.push(trendData[jj].value)
-                      break
-                  }
-                }
-                var seriesStack = {}
-                seriesStack.name = itemData[ii].name
-                var typeStack = ''
-                switch (gItemData[ii].drawtype) {
-                  case 0: typeStack = 'line'
-                    break
-                  case 1:
-                    typeStack = 'line'
-                    seriesStack.areaStyle = {}
-                    break
-                  case 3:
-                    typeStack = 'effectScatter'
-                    break
-                  case 2:
-                    typeStack = 'line'
-                    seriesStack.itemStyle = {
-                      normal: {
-                        lineStyle: {
-                          width: 5
-                        }
-                      }
-                    }
-                    break
-                  case 4:
-                    typeStack = 'line'
-                    seriesStack.itemStyle = {
-                      normal: {
-                        lineStyle: {
-                          type: 'dotted'
-                        }
-                      }
-                    }
-                    break
-                  case 5:
-                    typeStack = 'bar'
-                    break
-                }
-                seriesStack.stack = '总量'
-                seriesStack.type = typeStack
-                colorData.push('#' + gItemData[ii].color)
-                seriesStack.lineStyle = {
-                  normal: {
-                    color: '#' + gItemData[ii].color
-                  }
-                }
-                seriesStack.areaStyle = {}
-                seriesStack.data = dataStack
-                seriesData.push(seriesStack)
-              }
-              const xcount = Math.floor(sumStack / 10)
-              const pieCharts = document.getElementById('charts-graph-demo-' + i)
-              const pieEcharts = document.getElementById('pieEcharts')
-              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-              const myChart = this.$echarts.init(pieCharts)
-              // 绘制图表
-              myChart.setOption({
-                tooltip: {
-                  trigger: 'axis',
-                  axisPointer: {
-                    type: 'cross',
-                    label: {
-                      backgroundColor: '#6a7985'
-                    }
-                  }
-                },
-                color: colorData,
-                legend: {
-                  data: legendData
-                },
-                toolbox: {
-                  feature: {
-                    saveAsImage: {}
-                  }
-                },
-                grid: {
-                  left: '3%',
-                  right: '4%',
-                  bottom: '3%',
-                  containLabel: true
-                },
-                xAxis: [
-                  {
-                    type: 'category',
-                    data: returndataclock,
-                    axisLabel: {
-                      // interval: 2,
-                      interval: xcount,
-                      rotate: 45, // 倾斜度-90至90默认为0
-                      margin: 2,
-                      textStyle: {
-                        fontWeight: 'bolder',
-                        color: '#000000',
-                        fontSize: '7'
-                      },
-                      showMaxLabel: true
-                    }
-                  }
-                ],
-                yAxis: [
-                  {
-                    type: 'value',
-                    axisLabel: {
-                      formatter: '{value} ' + units
-                    }
-                  }
-                ],
-                series: seriesData
-              })
-            } else if (graphData[0].graphtype === 3) {
-              for (let a = 0; a < gItemData.length; a++) {
-                trendData = finalResult.trendListData[a]
-                var valueRose
-                var nameRose
-                switch (gItemData[a].calc_fnc) {
-                  case 1: valueRose = trendData[trendData.length - 1].value
-                    break
-                  case 2: valueRose = trendData[trendData.length - 1].value
-                    break
-                  case 4: valueRose = trendData[trendData.length - 1].value
-                    break
-                }
-                nameRose = legendData[a]
-                seriesData.push({
-                  value: valueRose,
-                  name: nameRose
-                })
-                colorData.push('#' + gItemData[a].color)
-              }
-              const pieCharts = document.getElementById('charts-graph-demo-' + i)
-              const pieEcharts = document.getElementById('pieEcharts')
-              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-              const myChart = this.$echarts.init(pieCharts)
-              myChart.setOption({
-                tooltip: {
-                  trigger: 'item',
-                  formatter: '{a} <br/>{b} : {c} ({d}%)'
-                },
-                color: colorData,
-                legend: {
-                  data: legendData
-                },
-                toolbox: {
-                  show: true,
-                  feature: {
-                    mark: { show: true },
-                    magicType: {
-                      show: true,
-                      type: ['pie', 'funnel']
-                    }
-                  }
-                },
-                series: [
-                  {
-                    name: '监控项',
-                    type: 'pie',
-                    radius: [30, 110],
-                    center: ['50%', '60%'],
-                    roseType: 'area',
-                    data: seriesData
-                  }
-                ]
-              })
-            }
+            this.makeEchartsGraphData(graphData[0].graphtype, finalResult, gItemData, graphData, i, units, legendData, itemData)
           }
         }
       })
@@ -1994,7 +1988,7 @@ export default {
       if (this.setTimeoutGraphs === '') {
         const _this = this
         this.openGraphloading(index)
-        this.setTimeoutGraphs = window.setTimeout(() => { _this.getGraphsData(items.graphId, items.graphName, index) }, 300)
+        this.setTimeoutGraphs = window.setTimeout(() => { _this.getRefreshGraphsData(items.graphData[0].graphid, items.graphName, index) }, 300)
       }
     },
     openGraphloading (index) {
