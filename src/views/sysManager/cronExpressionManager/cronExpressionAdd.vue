@@ -536,7 +536,7 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="3">从
-                          <el-select size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disabled'">
+                          <el-select style="width: 100px;" size="mini" v-model="form.cron.week.incrementStart" placeholder="请选择星期" @change="modifyWeek('3')" :disabled="readOnlyStatus.week.cronEvery_3 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -550,12 +550,12 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="4">周期从星期
-                          <el-select size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
+                          <el-select style="width: 100px;" size="mini" v-model="form.cron.week.rangeStart" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
                           到
-                          <el-select size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
+                          <el-select style="width: 100px;" size="mini" v-model="form.cron.week.rangeEnd" placeholder="请选择星期" @change="modifyWeek('4')" :disabled="readOnlyStatus.week.cronEvery_4 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -566,7 +566,7 @@
                     <el-row>
                       <el-col :span="24">
                         <el-radio label="5">本月最后一个星期
-                          <el-select size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')" :disabled="readOnlyStatus.week.cronEvery_5 ? false : 'disabled'">
+                          <el-select style="width: 100px;" size="mini" v-model="form.cron.week.cronLastWeek" placeholder="请选择星期" @change="modifyWeek('5')" :disabled="readOnlyStatus.week.cronEvery_5 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -578,7 +578,7 @@
                         <el-radio label="6">第
                           <el-input size="mini" v-model="form.cron.week.cronWhatWeek" style=" width: 100px" @blur="modifyWeek('6')" placeholder="请输入内容" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disabled'"></el-input>
                           周的星期
-                          <el-select size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disabled'">
+                          <el-select style="width: 100px;" size="mini" v-model="form.cron.week.cronWhatWeekDay" placeholder="请选择星期" @change="modifyWeek('6')" :disabled="readOnlyStatus.week.cronEvery_6 ? false : 'disabled'">
                             <el-option v-for="(item, index) in weekConstant" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
@@ -1250,7 +1250,7 @@ export default {
       } else if (cronEvery === '6') { // 第 ? 周的星期 ?
         // 修改 readonly 状态
         this.readOnlyStatus.week.cronEvery_6 = true
-        weekCron = (parseInt(this.form.cron.week.cronWhatWeekDay) - 1) + '#' + this.form.cron.week.cronWhatWeek
+        weekCron = this.form.cron.week.cronWhatWeekDay + '#' + this.form.cron.week.cronWhatWeek
       } else if (cronEvery === '7') { // 具体天数
         // 修改 readonly 状态
         this.readOnlyStatus.week.cronEvery_7 = true
