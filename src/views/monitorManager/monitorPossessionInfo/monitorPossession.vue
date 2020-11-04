@@ -1120,6 +1120,10 @@ export default {
             if (json.code === 1) {
               this.getShowData()
               this.activeName = 'first'
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
             }
           } else {
             this.$message({
@@ -1230,6 +1234,10 @@ export default {
             if (json.code === 1) {
               this.getGraphData()
               this.activeName = 'first'
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
             }
           } else {
             this.$message({
@@ -1337,7 +1345,6 @@ export default {
       var trendData = []
       const returndataclock = []
       var seriesData = []
-      console.log(finalResult.trendListData)
       if (graphtype === 2) {
         for (let a = 0; a < gItemData.length; a++) {
           trendData = finalResult.trendListData[a]
@@ -1388,7 +1395,7 @@ export default {
         for (var k = 0; k < gItemData.length; k++) {
           trendData = finalResult.trendListData[k]
           var data = []
-          for (var j = 0; j < trendData.length; j++) {
+                    for (var j = 0; j < trendData.length; j++) {
             var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
             var index
             if (clock) {
