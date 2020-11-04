@@ -1,147 +1,141 @@
 <template>
   <div>
     <el-tabs
-            type="border-card"
-            style="margin-top: 5px"
-            v-model="activeName"
-            id="pieEcharts"
+      type="border-card"
+      style="margin-top: 5px"
+      v-model="activeName"
+      id="pieEcharts"
     >
       <el-tab-pane label="概况" name="first" :key="'first'">
         <template>
           <div style="width: 100%; height: 3rem">
-            <div class="block" style="float: left;margin-left: 10px">
+            <div class="block" style="float: left; margin-left: 10px">
               <el-date-picker
-                      v-model="time"
-                      type="datetimerange"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
-                      @change= "selectTime"
+                v-model="time"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                @change="selectTime"
               >
               </el-date-picker>
             </div>
             <div style="float: right">
               刷新时间：
               <el-select
-                      v-model="selecttimevalue"
-                      style="width: 6rem; margin-left: 20px"
-                      @change="selecttimevalueAction()"
+                v-model="selecttimevalue"
+                style="width: 6rem; margin-left: 20px"
+                @change="selecttimevalueAction()"
               >
                 <el-option
-                        v-for="item in selecttimevalueoptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
+                  v-for="item in selecttimevalueoptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
                 >
                 </el-option>
               </el-select>
             </div>
           </div>
           <div
-                  class="card dark-main-background queryleft card-width"
-                  v-for="(items, index) in itemstableData"
-                  v-bind:key="index"
+            class="card dark-main-background queryleft card-width"
+            v-for="(items, index) in itemstableData"
+            v-bind:key="items.itemId"
           >
             <div
-                    class="title-bar card-header dark-main-background dark-white-color"
-                    style="height: 40px; width: 100%"
+              class="title-bar card-header dark-main-background dark-white-color"
+              style="height: 40px; width: 100%"
             >
               <div class="queryleft">
-                <p class="title-bar-description" style>
-                  <span>{{ formatitemName(items.monitorHostDetailBindItems.itemName) }}</span>
+                <p class="title-bar-description">
+                  <span>{{
+                    formatitemName(items.monitorHostDetailBindItems.itemName)
+                  }}</span>
                 </p>
               </div>
               <div
-                      class="queryright"
-                      style="margin-top: -5px !important; height: 40px"
+                class="queryright"
+                style="margin-top: -5px !important; height: 40px"
               >
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px"
-                        type="text"
-                        @click="removeItems(items)"
+                  style="float: right; padding: 0px; margin-left: 5px"
+                  type="text"
+                  @click="removeItems(items.monitorHostDetailBindItems)"
                 >
                   <i
-                          class="fa fa-remove"
-                          style="font-size: 18px; color: #979899; font-weight: 400"
+                    class="fa fa-remove"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
                   ></i>
                 </el-button>
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px"
-                        type="text"
-                        @click="refreshItems(items, index)"
+                  style="float: right; padding: 0px; margin-left: 5px"
+                  type="text"
+                  @click="refreshItems(items, index)"
                 >
                   <i
-                          class="el-icon-refresh"
-                          style="font-size: 18px; color: #979899; font-weight: 400"
+                    class="el-icon-refresh"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
                   ></i>
                 </el-button>
               </div>
             </div>
             <div class="tempList card-body">
-              <div
-                      :id="getID(index)"
-                      class="echart"
-                      :onchange="getItemsData(items.monitorHostDetailBindItems.itemId, index, items.monitorHostDetailBindItems.units, items.monitorHostDetailBindItems.valueType, items.zabbixHistoryDTOs)"
-              ></div>
+              <div :id="getID(index)" class="echart"></div>
             </div>
           </div>
           <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
           <div
-                  class="card dark-main-background queryleft"
-                  style="width: 32.5%; margin-left: 10px"
-                  v-for="(items, index1) in graphstableData"
-                  v-bind:key="index1 + 1000"
+            class="card dark-main-background queryleft"
+            style="width: 32.5%; margin-left: 10px"
+            v-for="(items, index1) in graphstableData"
+            v-bind:key="index1 + 1000"
           >
             <div
-                    class="title-bar card-header dark-main-background dark-white-color"
-                    style="height: 40px; width: 100%"
+              class="title-bar card-header dark-main-background dark-white-color"
+              style="height: 40px; width: 100%"
             >
               <div class="queryleft">
-                <p class="title-bar-description" style>
+                <p class="title-bar-description">
                   <span>{{ formatitemName(items.graphData[0].name) }}</span>
                 </p>
               </div>
               <div
-                      class="queryright"
-                      style="margin-top: -5px !important; height: 40px"
+                class="queryright"
+                style="margin-top: -5px !important; height: 40px"
               >
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px"
-                        type="text"
-                        @click="removeGraphs(items)"
+                  style="float: right; padding: 0px; margin-left: 5px"
+                  type="text"
+                  @click="removeGraphs(items)"
                 >
                   <i
-                          class="fa fa-remove"
-                          style="font-size: 18px; color: #979899; font-weight: 400"
+                    class="fa fa-remove"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
                   ></i>
                 </el-button>
                 <el-button
-                        style="float: right; padding: 0px; margin-left: 5px"
-                        type="text"
-                        @click="refreshGraphs(items, index1)"
+                  style="float: right; padding: 0px; margin-left: 5px"
+                  type="text"
+                  @click="refreshGraphs(items, index1)"
                 >
                   <i
-                          class="el-icon-refresh"
-                          style="font-size: 18px; color: #979899; font-weight: 400"
+                    class="el-icon-refresh"
+                    style="font-size: 18px; color: #979899; font-weight: 400"
                   ></i>
                 </el-button>
               </div>
             </div>
             <div class="tempList card-body">
-              <div
-                      :id="getGraphID(index1)"
-                      class="echart"
-                      :onchange="getGraphsData(items, index1)"
-              ></div>
+              <div :id="getGraphID(index1)" class="echart"></div>
             </div>
           </div>
           <!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
           <div class="dark-main-background queryleft card-width-top">
             <a
-                    href="javascript:void(0);"
-                    @click="addItems()"
-                    class="card card-body dark-main-background"
-                    style="
+              href="javascript:void(0);"
+              @click="addItems()"
+              class="card card-body dark-main-background"
+              style="
                 height: 392px;
                 display: flex;
                 justify-content: center;
@@ -165,82 +159,82 @@
             <div class="queryleft" style="width: 100%">
               <el-col :span="6" class="el-col-pic">
                 <el-input
-                        type="text"
-                        v-model="nameTop"
-                        size="small"
-                        placeholder="名称"
-                        clearable
+                  type="text"
+                  v-model="nameTop"
+                  size="small"
+                  placeholder="名称"
+                  clearable
                 ></el-input>
               </el-col>
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showInfo() == false"
-                      icon="el-icon-search"
-              >查询</el-button
+                type="primary"
+                size="small"
+                @click="showInfo() == false"
+                icon="el-icon-search"
+                >查询</el-button
               >
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showClear() == false"
-                      icon="el-icon-refresh-left"
-              >重置</el-button
+                type="primary"
+                size="small"
+                @click="showClear() == false"
+                icon="el-icon-refresh-left"
+                >重置</el-button
               >
             </div>
           </ToolBar>
           <el-table
-                  :data="
+            :data="
               tableData.slice(
                 (currentPage - 1) * pageSize,
                 currentPage * pageSize
               )
             "
-                  v-loading="loading"
-                  border
-                  style="width: 100%"
-                  :row-style="tableRowStyle"
-                  :row-key="getRowKey1"
-                  :header-cell-style="tableHeaderColor"
+            v-loading="loading"
+            border
+            style="width: 100%"
+            :row-style="tableRowStyle"
+            :row-key="getRowKey1"
+            :header-cell-style="tableHeaderColor"
           >
             <el-table-column
-                    label="itemid"
-                    prop="itemid"
-                    :resizable="false"
-                    v-if="show"
+              label="itemid"
+              prop="itemid"
+              :resizable="false"
+              v-if="show"
             ></el-table-column>
             <el-table-column
-                    label="监控项名称"
-                    prop="name"
-                    min-width="70%"
+              label="监控项名称"
+              prop="name"
+              min-width="70%"
             ></el-table-column>
             <el-table-column
-                    label="应用集"
-                    prop="value_type"
-                    min-width="15%"
+              label="应用集"
+              prop="value_type"
+              min-width="15%"
             ></el-table-column>
             <el-table-column
-                    label="间隔"
-                    prop="delay"
-                    min-width="15%"
+              label="间隔"
+              prop="delay"
+              min-width="15%"
             ></el-table-column>
             <el-table-column
-                    align="center"
-                    label="操作"
-                    min-width="15%"
-                    :resizable="false"
+              align="center"
+              label="操作"
+              min-width="15%"
+              :resizable="false"
             >
               <template slot-scope="scope">
                 <el-popconfirm
-                        title="是否添加指标到概况？"
-                        @onConfirm="confirmSaveTrend(scope.$index, scope.row)"
+                  title="是否添加指标到概况？"
+                  @onConfirm="confirmSaveTrend(scope.$index, scope.row)"
                 >
                   <el-button
-                          size="mini"
-                          type="primary"
-                          slot="reference"
-                          icon="fa fa-external-link"
-                          circle
-                          :style="{ display: checkbtn(scope.$index, scope.row) }"
+                    size="mini"
+                    type="primary"
+                    slot="reference"
+                    icon="fa fa-external-link"
+                    circle
+                    :style="{ display: checkbtn(scope.$index, scope.row) }"
                   ></el-button>
                 </el-popconfirm>
               </template>
@@ -248,14 +242,14 @@
           </el-table>
           <div class="block" style="margin-top: 15px">
             <el-pagination
-                    align="left"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-sizes="[10, 30, 50, 100]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="tableData.length"
+              align="left"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 30, 50, 100]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="tableData.length"
             ></el-pagination>
           </div>
         </div>
@@ -266,37 +260,37 @@
             <div class="queryleft" style="width: 100%">
               <el-col :span="6" class="el-col-pic">
                 <el-input
-                        type="text"
-                        v-model="nameTopPic"
-                        size="small"
-                        placeholder="名称"
-                        clearable
+                  type="text"
+                  v-model="nameTopPic"
+                  size="small"
+                  placeholder="名称"
+                  clearable
                 ></el-input>
               </el-col>
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showGraphsInfo() == false"
-                      icon="el-icon-search"
-              >查询</el-button
+                type="primary"
+                size="small"
+                @click="showGraphsInfo() == false"
+                icon="el-icon-search"
+                >查询</el-button
               >
               <el-button
-                      type="primary"
-                      size="small"
-                      @click="showClearPic() == false"
-                      icon="el-icon-refresh-left"
-              >重置</el-button
+                type="primary"
+                size="small"
+                @click="showClearPic() == false"
+                icon="el-icon-refresh-left"
+                >重置</el-button
               >
               <div>
                 <el-dialog
-                        :visible.sync="dialogVisible"
-                        placement="left-start"
-                        width="64%"
-                        trigger="manual"
-                        v-model="visible"
-                        :show-close="false"
-                        :close-on-click-modal="false"
-                        :close-on-press-escape="false"
+                  :visible.sync="dialogVisible"
+                  placement="left-start"
+                  width="64%"
+                  trigger="manual"
+                  v-model="visible"
+                  :show-close="false"
+                  :close-on-click-modal="false"
+                  :close-on-press-escape="false"
                 >
                   <el-form ref="form" :model="form" label-width="90px">
                     <el-row :gutter="40">
@@ -311,10 +305,10 @@
                         <el-form-item label="图形类型">
                           <el-select v-model="form.graphtype">
                             <el-option
-                                    v-for="item in graphtypeOptions"
-                                    :key="item.value"
-                                    :value="item.value"
-                                    :label="item.label"
+                              v-for="item in graphtypeOptions"
+                              :key="item.value"
+                              :value="item.value"
+                              :label="item.label"
                             ></el-option>
                           </el-select>
                         </el-form-item>
@@ -323,10 +317,10 @@
                         <el-form-item label="纵轴最小值">
                           <el-select v-model="form.ymin_type">
                             <el-option
-                                    v-for="item in yOptions"
-                                    :key="item.value"
-                                    :value="item.value"
-                                    :label="item.label"
+                              v-for="item in yOptions"
+                              :key="item.value"
+                              :value="item.value"
+                              :label="item.label"
                             ></el-option>
                           </el-select>
                         </el-form-item>
@@ -335,10 +329,10 @@
                         <el-form-item label="纵轴最大值">
                           <el-select v-model="form.ymax_type">
                             <el-option
-                                    v-for="item in yOptions"
-                                    :key="item.value"
-                                    :value="item.value"
-                                    :label="item.label"
+                              v-for="item in yOptions"
+                              :key="item.value"
+                              :value="item.value"
+                              :label="item.label"
                             ></el-option>
                           </el-select>
                         </el-form-item>
@@ -352,35 +346,35 @@
                         <el-form-item label="监控项">
                           <div style="border: 1px solid #dcdfe6">
                             <el-table
-                                    :data="form.gitems"
-                                    :row-key="getRowKey2"
-                                    style="width: 100%"
+                              :data="form.gitems"
+                              :row-key="getRowKey2"
+                              style="width: 100%"
                             >
                               <el-table-column
-                                      label="监控项id"
-                                      width="180"
-                                      prop="itemid"
-                                      v-if="show"
+                                label="监控项id"
+                                width="180"
+                                prop="itemid"
+                                v-if="show"
                               ></el-table-column>
                               <el-table-column
-                                      prop="name"
-                                      label="名称"
-                                      width="310"
-                                      show-overflow-tooltip
+                                prop="name"
+                                label="名称"
+                                width="310"
+                                show-overflow-tooltip
                               ></el-table-column>
                               <el-table-column label="功能" width="180">
                                 <template slot-scope="scope">
                                   <el-form-item
-                                          :prop="
+                                    :prop="
                                       'gitems.' + scope.$index + '.calc_fnc'
                                     "
                                   >
                                     <el-select v-model="scope.row.calc_fnc">
                                       <el-option
-                                              v-for="item in fncOptions"
-                                              :key="item.value"
-                                              :value="item.value"
-                                              :label="item.label"
+                                        v-for="item in fncOptions"
+                                        :key="item.value"
+                                        :value="item.value"
+                                        :label="item.label"
                                       ></el-option>
                                     </el-select>
                                   </el-form-item>
@@ -389,16 +383,16 @@
                               <el-table-column label="绘图风格" width="180">
                                 <template slot-scope="scope">
                                   <el-form-item
-                                          :prop="
+                                    :prop="
                                       'gitems.' + scope.$index + '.drawtype'
                                     "
                                   >
                                     <el-select v-model="scope.row.drawtype">
                                       <el-option
-                                              v-for="item in drawTypeOptions"
-                                              :key="item.value"
-                                              :value="item.value"
-                                              :label="item.label"
+                                        v-for="item in drawTypeOptions"
+                                        :key="item.value"
+                                        :value="item.value"
+                                        :label="item.label"
                                       ></el-option>
                                     </el-select>
                                   </el-form-item>
@@ -407,16 +401,16 @@
                               <el-table-column label="纵轴Y线" width="180">
                                 <template slot-scope="scope">
                                   <el-form-item
-                                          :prop="
+                                    :prop="
                                       'gitems.' + scope.$index + '.yaxisside'
                                     "
                                   >
                                     <el-select v-model="scope.row.yaxisside">
                                       <el-option
-                                              v-for="item in yAxisOptions"
-                                              :key="item.value"
-                                              :value="item.value"
-                                              :label="item.label"
+                                        v-for="item in yAxisOptions"
+                                        :key="item.value"
+                                        :value="item.value"
+                                        :label="item.label"
                                       ></el-option>
                                     </el-select>
                                   </el-form-item>
@@ -425,10 +419,10 @@
                               <el-table-column label="颜色" width="80">
                                 <template slot-scope="scope">
                                   <el-form-item
-                                          :prop="'gitems.' + scope.$index + '.color'"
+                                    :prop="'gitems.' + scope.$index + '.color'"
                                   >
                                     <el-color-picker
-                                            v-model="scope.row.color"
+                                      v-model="scope.row.color"
                                     ></el-color-picker>
                                   </el-form-item>
                                 </template>
@@ -436,58 +430,58 @@
                               <el-table-column label="操作" width="150">
                                 <template slot-scope="scope">
                                   <el-button
-                                          size="mini"
-                                          type="danger"
-                                          icon="el-icon-delete"
-                                          @click="
+                                    size="mini"
+                                    type="danger"
+                                    icon="el-icon-delete"
+                                    @click="
                                       handleDelete(scope.$index, scope.row)
                                     "
-                                  >移除</el-button
+                                    >移除</el-button
                                   >
                                 </template>
                               </el-table-column>
                             </el-table>
                           </div>
                           <el-popover
-                                  placement="right"
-                                  width="100%"
-                                  trigger="click"
-                                  ref="gList"
+                            placement="right"
+                            width="100%"
+                            trigger="click"
+                            ref="gList"
                           >
                             <el-table
-                                    :data="
+                              :data="
                                 forShowData.slice(
                                   (currentInsidePage - 1) * pageSize,
                                   currentInsidePage * pageSize
                                 )
                               "
-                                    v-loading="loading"
-                                    border
-                                    style="width: 100%"
-                                    :row-style="tableRowStyle"
-                                    :header-cell-style="tableHeaderColor"
-                                    ref="multipleTable"
-                                    tooltip-effect="dark"
-                                    :row-key="getRowKey3"
-                                    @selection-change="handleSelectionChange"
+                              v-loading="loading"
+                              border
+                              style="width: 100%"
+                              :row-style="tableRowStyle"
+                              :header-cell-style="tableHeaderColor"
+                              ref="multipleTable"
+                              tooltip-effect="dark"
+                              :row-key="getRowKey3"
+                              @selection-change="handleSelectionChange"
                             >
                               <el-table-column
-                                      type="selection"
-                                      width="55"
-                                      :selectable="selectable"
-                                      :reserve-selection="true"
+                                type="selection"
+                                width="55"
+                                :selectable="selectable"
+                                :reserve-selection="true"
                               ></el-table-column>
                               <el-table-column
-                                      prop="name"
-                                      label="名称"
-                                      width="300"
-                                      show-overflow-tooltip
+                                prop="name"
+                                label="名称"
+                                width="300"
+                                show-overflow-tooltip
                               ></el-table-column>
                               <el-table-column
-                                      prop="key_"
-                                      label="键值"
-                                      width="250"
-                                      show-overflow-tooltip
+                                prop="key_"
+                                label="键值"
+                                width="250"
+                                show-overflow-tooltip
                               ></el-table-column>
                               <!-- <el-table-column
                                 prop="type"
@@ -495,57 +489,57 @@
                                 width="120"
                               ></el-table-column> -->
                               <el-table-column
-                                      prop="value_type"
-                                      label="信息类型"
-                                      width="100"
-                                      :formatter="valuetypeformatter"
+                                prop="value_type"
+                                label="信息类型"
+                                width="100"
+                                :formatter="valuetypeformatter"
                               ></el-table-column>
                               <el-table-column
-                                      prop="status"
-                                      label="状态"
-                                      width="60"
+                                prop="status"
+                                label="状态"
+                                width="60"
                               >
                                 <template slot-scope="scope">
                                   <div v-html="statusformat(scope.row)"></div>
                                 </template>
                               </el-table-column>
                               <el-table-column
-                                      prop="units"
-                                      label="单位"
-                                      width="60"
+                                prop="units"
+                                label="单位"
+                                width="60"
                               ></el-table-column>
                             </el-table>
                             <div class="block" style="margin-top: 15px">
                               <el-pagination
-                                      align="left"
-                                      @size-change="handleSizeInsideChange"
-                                      @current-change="handleCurrentInsideChange"
-                                      :current-page="currentInsidePage"
-                                      :page-sizes="[10, 30, 50, 100]"
-                                      :page-size="pageSize"
-                                      layout="total, sizes, prev, pager, next, jumper"
-                                      :total="forShowData.length"
+                                align="left"
+                                @size-change="handleSizeInsideChange"
+                                @current-change="handleCurrentInsideChange"
+                                :current-page="currentInsidePage"
+                                :page-sizes="[10, 30, 50, 100]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="forShowData.length"
                               ></el-pagination>
                             </div>
                             <div style="margin-top: 20px">
                               <el-button @click="rightChose"
-                              >确定选择</el-button
+                                >确定选择</el-button
                               >
                               <el-button @click="toggleSelection()"
-                              >取消选择</el-button
+                                >取消选择</el-button
                               >
                             </div>
                             <el-button
-                                    type="text"
-                                    slot="reference"
-                                    @click="popoverFormInfo()"
-                            >新增</el-button
+                              type="text"
+                              slot="reference"
+                              @click="popoverFormInfo()"
+                              >新增</el-button
                             >
                           </el-popover>
                         </el-form-item>
                         <el-form-item>
                           <el-button type="primary" @click="onSubmit"
-                          >提交</el-button
+                            >提交</el-button
                           >
                           <el-button @click="closePopover">取消</el-button>
                         </el-form-item>
@@ -557,82 +551,85 @@
             </div>
             <div class="queryright">
               <el-button
-                      type="danger"
-                      size="small"
-                      slot="reference"
-                      icon="el-icon-plus"
-                      @click="newPic"
-              >新增</el-button
+                type="danger"
+                size="small"
+                slot="reference"
+                icon="el-icon-plus"
+                @click="newPic"
+                >新增</el-button
               >
             </div>
           </ToolBar>
           <el-table
-                  :data="
+            :data="
               graphData.slice(
                 (currentGraphPage - 1) * pageSize,
                 currentGraphPage * pageSize
               )
             "
-                  v-loading="loading"
-                  border
-                  style="width: 100%"
-                  :row-style="tableRowStyle"
-                  :row-key="getRowKey4"
-                  :header-cell-style="tableHeaderColor"
+            v-loading="loading"
+            border
+            style="width: 100%"
+            :row-style="tableRowStyle"
+            :row-key="getRowKey4"
+            :header-cell-style="tableHeaderColor"
           >
             <el-table-column
-                    label="graphid"
-                    prop="graphid"
-                    :resizable="false"
-                    v-if="show"
+              label="graphid"
+              prop="graphid"
+              :resizable="false"
+              v-if="show"
             ></el-table-column>
             <el-table-column
-                    label="图形名称"
-                    prop="name"
-                    min-width="70%"
+              label="图形名称"
+              prop="name"
+              min-width="70%"
             ></el-table-column>
             <el-table-column
-                    label="高"
-                    prop="height"
-                    min-width="15%"
+              label="高"
+              prop="height"
+              min-width="15%"
             ></el-table-column>
             <el-table-column
-                    label="宽"
-                    prop="width"
-                    min-width="15%"
+              label="宽"
+              prop="width"
+              min-width="15%"
             ></el-table-column>
             <el-table-column
-                    label="图形类型"
-                    prop="graphtype"
-                    min-width="15%"
-                    :formatter="typeFormat"
+              label="图形类型"
+              prop="graphtype"
+              min-width="15%"
+              :formatter="typeFormat"
             ></el-table-column>
             <el-table-column
-                    align="center"
-                    label="操作"
-                    min-width="15%"
-                    :resizable="false"
+              align="center"
+              label="操作"
+              min-width="15%"
+              :resizable="false"
             >
               <template slot-scope="scope">
                 <el-popconfirm
-                        title="是否添加指标到概况？"
-                        @onConfirm="confirmGraphSaveTrend(scope.$index, scope.row)"
+                  title="是否添加指标到概况？"
+                  @onConfirm="confirmGraphSaveTrend(scope.$index, scope.row)"
                 >
                   <el-button
-                          size="mini"
-                          type="primary"
-                          slot="reference"
-                          icon="fa fa-external-link"
-                          circle
+                    size="mini"
+                    type="primary"
+                    slot="reference"
+                    icon="fa fa-external-link"
+                    circle
                   ></el-button>
                 </el-popconfirm>
-                <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
+                <el-popconfirm
+                  title="确定删除吗？"
+                  @onConfirm="confirmdelete(scope.$index, scope.row)"
+                >
                   <el-button
-                          size="mini"
-                          type="danger"
-                          slot="reference"
-                          icon="el-icon-delete"
-                          circle
+                    size="mini"
+                    type="danger"
+                    slot="reference"
+                    icon="el-icon-delete"
+                    circle
                   ></el-button>
                 </el-popconfirm>
               </template>
@@ -640,14 +637,14 @@
           </el-table>
           <div class="block" style="margin-top: 15px">
             <el-pagination
-                    align="left"
-                    @size-change="handleSizeGraphChange"
-                    @current-change="handleCurrentGraphChange"
-                    :current-page="currentGraphPage"
-                    :page-sizes="[10, 30, 50, 100]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="graphData.length"
+              align="left"
+              @size-change="handleSizeGraphChange"
+              @current-change="handleCurrentGraphChange"
+              :current-page="currentGraphPage"
+              :page-sizes="[10, 30, 50, 100]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="graphData.length"
             ></el-pagination>
           </div>
         </div>
@@ -955,10 +952,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.itemstableData = json.data
-            console.log('this.itemstableData=============' + JSON.stringify(this.itemstableData))
-            // json.data.forEach(element => {
-            //   this.getItemsData(element.itemid)
-            // })
+            this.getItemsData()
           }
         } else {
           this.$message({
@@ -971,183 +965,73 @@ export default {
     getID (index) {
       return 'charts-demo-' + index
     },
-    getItemsData (itemid, index, units, history, zabbixHistoryDTOs) {
-      // const region = {
-      //   itemids: [itemid],
-      //   history: history,
-      //   timefrom: this.timefrom,
-      //   timetill: this.timetill
-      // }
-      const returndataclock = []
-      const returndataavg = []
-      zabbixHistoryDTOs.forEach(element => {
-        var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
-        returndataclock.push(clock)
-        returndataavg.push(element.value)
-      })
-      console.log('returndataclock---' + returndataclock)
-      console.log('returndataavg---' + returndataavg)
-      const countjson = zabbixHistoryDTOs.length
-      const newcount = Math.floor(countjson / 10)
-      // 基于准备好的dom，初始化echarts实例
-      const pieCharts = document.getElementById('charts-demo-' + index)
-      var pieEcharts = document.getElementById('pieEcharts')
-      pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-      const myChart = this.$echarts.init(pieCharts)
-      // 绘制图表
-      myChart.setOption({
-        xAxis: {
-          type: 'category',
-          data: returndataclock,
-          // 设置字体倾斜
-          axisLabel: {
-            interval: newcount,
-            rotate: 45, // 倾斜度-90至90默认为0
-            margin: 2,
-            textStyle: {
-              fontWeight: 'bolder',
-              color: '#000000',
-              fontSize: '7'
-            },
-            formatter: function (value) {
-              return value.split(' ')[1]
-            },
-            showMaxLabel: true
-          },
-          splitLine: {
-            show: false
+    getItemsData () {
+      this.$nextTick(function () {
+        if (this.itemstableData !== null && this.itemstableData.length > 0) {
+          for (var i = 0; i < this.itemstableData.length; i++) {
+            const zabbixHistoryDTOs = this.itemstableData[i].zabbixHistoryDTOs
+            const units = this.itemstableData[i].monitorHostDetailBindItems.units
+            const returndataclock = []
+            const returndataavg = []
+            zabbixHistoryDTOs.forEach(element => {
+              var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
+              returndataclock.push(clock)
+              returndataavg.push(element.value)
+            })
+            const countjson = zabbixHistoryDTOs.length
+            const newcount = Math.floor(countjson / 10)
+            // 基于准备好的dom，初始化echarts实例
+            const pieCharts = document.getElementById('charts-demo-' + i)
+            var pieEcharts = document.getElementById('pieEcharts')
+            pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+            const myChart = this.$echarts.init(pieCharts)
+            // 绘制图表
+            myChart.setOption({
+              xAxis: {
+                type: 'category',
+                data: returndataclock,
+                // 设置字体倾斜
+                axisLabel: {
+                  interval: newcount,
+                  rotate: 45, // 倾斜度-90至90默认为0
+                  margin: 2,
+                  textStyle: {
+                    fontWeight: 'bolder',
+                    color: '#000000',
+                    fontSize: '7'
+                  },
+                  formatter: function (value) {
+                    return value.split(' ')[1]
+                  },
+                  showMaxLabel: true
+                },
+                splitLine: {
+                  show: false
+                }
+              },
+              grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '2%',
+                containLabel: true
+              },
+              yAxis: {
+                type: 'value',
+                axisLabel: {
+                  formatter: '{value} ' + units
+                }
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              series: [{
+                data: returndataavg,
+                type: 'line'
+              }]
+            })
           }
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '2%',
-          containLabel: true
-        },
-        yAxis: {
-          type: 'value',
-          axisLabel: {
-            formatter: '{value} ' + units
-          }
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        series: [{
-          data: returndataavg,
-          type: 'line'
-        }]
+        }
       })
-      if (this.itemsloading !== '') {
-        this.itemsloading.close()
-      }
-      this.setTimeoutItems = ''
-      // this.axios.post(this.$api.monitorManager.getItemInfoListTrend, region).then((resp) => {
-      //   if (resp.status === 200) {
-      //     var json = resp.data
-      //     if (json.code === 1) {
-      //       json.data.forEach(element => {
-      //         var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
-      //         returndataclock.push(clock)
-      //         returndataavg.push(element.value)
-      //       })
-      //       const countjson = json.data.length
-      //       const newcount = Math.floor(countjson / 10)
-      //       // 基于准备好的dom，初始化echarts实例
-      //       const pieCharts = document.getElementById('charts-demo-' + index)
-      //       var pieEcharts = document.getElementById('pieEcharts')
-      //       pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-      //       const myChart = this.$echarts.init(pieCharts)
-      //       // 绘制图表
-      //       myChart.setOption({
-      //         xAxis: {
-      //           type: 'category',
-      //           data: returndataclock,
-      //           // 设置字体倾斜
-      //           axisLabel: {
-      //             interval: newcount,
-      //             rotate: 45, // 倾斜度-90至90默认为0
-      //             margin: 2,
-      //             textStyle: {
-      //               fontWeight: 'bolder',
-      //               color: '#000000',
-      //               fontSize: '7'
-      //             },
-      //             formatter: function (value) {
-      //               return value.split(' ')[1]
-      //             },
-      //             showMaxLabel: true
-      //           },
-      //           splitLine: {
-      //             show: false
-      //           }
-      //         },
-      //         grid: {
-      //           left: '3%',
-      //           right: '4%',
-      //           bottom: '2%',
-      //           containLabel: true
-      //         },
-      //         yAxis: {
-      //           type: 'value',
-      //           axisLabel: {
-      //             formatter: '{value} ' + units
-      //           }
-      //         },
-      //         tooltip: {
-      //           trigger: 'axis'
-      //         },
-      //         series: [{
-      //           data: returndataavg,
-      //           type: 'line'
-      //         }]
-      //       })
-      //     } else {
-      //       // 基于准备好的dom，初始化echarts实例
-      //       const pieCharts = document.getElementById('charts-demo-' + index)
-      //       var pieEcharts2 = document.getElementById('pieEcharts')
-      //       pieCharts.style.width = pieEcharts2.clientWidth / 3 - 70 + 'px'
-      //       const myChart = this.$echarts.init(pieCharts)
-      //       // 绘制图表
-      //       myChart.setOption({
-      //         xAxis: {
-      //           type: 'category',
-      //           data: '',
-      //           // 设置字体倾斜
-      //           axisLabel: {
-      //             interval: 0,
-      //             rotate: 45, // 倾斜度-90至90默认为0
-      //             margin: 2,
-      //             textStyle: {
-      //               fontWeight: 'bolder',
-      //               color: '#000000',
-      //               fontSize: '7'
-      //             }
-      //           }
-      //         },
-      //         yAxis: {
-      //           type: 'value'
-      //         },
-      //         tooltip: {
-      //           trigger: 'axis'
-      //         },
-      //         series: [{
-      //           data: '',
-      //           type: 'line'
-      //         }]
-      //       })
-      //     }
-      //   } else {
-      //     this.$message({
-      //       message: '查询失败',
-      //       type: 'error'
-      //     })
-      //   }
-      //   if (this.itemsloading !== '') {
-      //     this.itemsloading.close()
-      //   }
-      //   this.setTimeoutItems = ''
-      // })
     },
     checkbtn (index, row) {
       if (row.value_type === 1 || row.value_type === 2 || row.value_type === 4) {
@@ -1242,8 +1126,124 @@ export default {
       if (this.setTimeoutItems === '') {
         const _this = this
         this.openloading(index)
-        this.setTimeoutItems = window.setTimeout(() => { _this.getItemsData(items.itemId, index, items.units) }, 300)
+        this.setTimeoutItems = window.setTimeout(() => { _this.getRefreshItemsData(items.itemId, index, items.monitorHostDetailBindItems.units, items.monitorHostDetailBindItems.valueType) }, 300)
       }
+    },
+    getRefreshItemsData (itemid, index, units, valueType) {
+      const region = {
+        itemids: [itemid],
+        history: valueType,
+        timefrom: this.timefrom,
+        timetill: this.timetill
+      }
+      this.axios.post(this.$api.monitorManager.getItemInfoListTrend, region).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            const returndataclock = []
+            const returndataavg = []
+            json.data.forEach(element => {
+              var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
+              returndataclock.push(clock)
+              returndataavg.push(element.value)
+            })
+            const countjson = json.data.length
+            const newcount = Math.floor(countjson / 10)
+            // 基于准备好的dom，初始化echarts实例
+            const pieCharts = document.getElementById('charts-demo-' + index)
+            var pieEcharts = document.getElementById('pieEcharts')
+            pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+            const myChart = this.$echarts.init(pieCharts)
+            // 绘制图表
+            myChart.setOption({
+              xAxis: {
+                type: 'category',
+                data: returndataclock,
+                // 设置字体倾斜
+                axisLabel: {
+                  interval: newcount,
+                  rotate: 45, // 倾斜度-90至90默认为0
+                  margin: 2,
+                  textStyle: {
+                    fontWeight: 'bolder',
+                    color: '#000000',
+                    fontSize: '7'
+                  },
+                  formatter: function (value) {
+                    return value.split(' ')[1]
+                  },
+                  showMaxLabel: true
+                },
+                splitLine: {
+                  show: false
+                }
+              },
+              grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '2%',
+                containLabel: true
+              },
+              yAxis: {
+                type: 'value',
+                axisLabel: {
+                  formatter: '{value} ' + units
+                }
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              series: [{
+                data: returndataavg,
+                type: 'line'
+              }]
+            })
+          } else {
+            // 基于准备好的dom，初始化echarts实例
+            const pieCharts = document.getElementById('charts-demo-' + index)
+            var pieEcharts2 = document.getElementById('pieEcharts')
+            pieCharts.style.width = pieEcharts2.clientWidth / 3 - 70 + 'px'
+            const myChart = this.$echarts.init(pieCharts)
+            // 绘制图表
+            myChart.setOption({
+              xAxis: {
+                type: 'category',
+                data: '',
+                // 设置字体倾斜
+                axisLabel: {
+                  interval: 0,
+                  rotate: 45, // 倾斜度-90至90默认为0
+                  margin: 2,
+                  textStyle: {
+                    fontWeight: 'bolder',
+                    color: '#000000',
+                    fontSize: '7'
+                  }
+                }
+              },
+              yAxis: {
+                type: 'value'
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              series: [{
+                data: '',
+                type: 'line'
+              }]
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+        if (this.itemsloading !== '') {
+          this.itemsloading.close()
+        }
+        this.setTimeoutItems = ''
+      })
     },
     openloading (index) {
       this.itemsloading = this.$loading({
@@ -1337,435 +1337,398 @@ export default {
         }
       })
     },
-    async getGraphsData (item, index1) {
-      var finalResult = ''
-      var gItemData = []
-      var graphData = []
-      var itemData = []
-      var trendData = []
-      const legendData = []
-      var seriesData = []
-      var colorData = []
-      const returndataclock = []
-      finalResult = item
-      itemData = finalResult.itemData
-      gItemData = finalResult.gItemData
-      graphData = finalResult.graphData
-
-      // var starttime = timesMethod.fun_date(0)
-      // var timefrom = timesMethod.getDatestamp(starttime)
-      // var endtime = timesMethod.fun_date(1)
-      // var timetill = timesMethod.getDatestamp(endtime)
-      // var finalResult = ''
-      // var gItemData = []
-      // var graphData = []
-      // var itemData = []
-      // var trendData = []
-      // const legendData = []
-      // var seriesData = []
-      // var colorData = []
-      // const returndataclock = []
-      // const params = {
-      //   graphids: [graphid],
-      //   hostids: [this.$route.query.hostId],
-      //   timefrom: timefrom,
-      //   timetill: timetill
-      // }
-      // await this.axios.post(this.$api.monitorManager.getResultList, params).then((resp) => {
-      //   if (resp.status === 200) {
-      //     var json = resp.data
-      //     if (json.code === 1) {
-      //       finalResult = json.data
-      //       itemData = finalResult.itemData
-      //       gItemData = finalResult.gItemData
-      //       graphData = finalResult.graphData
-      //     }
-      //   } else {
-      //     this.$message({
-      //       message: '查询失败',
-      //       type: 'error'
-      //     })
-      //   }
-      // })
-      var units = ''
-      itemData.forEach(element => {
-        units = element.units
-        legendData.push(element.name)
+    getGraphsData () {
+      this.$nextTick(function () {
+        if (this.graphstableData !== null && this.graphstableData.length > 0) {
+          for (var i = 0; i < this.graphstableData.length; i++) {
+            var finalResult = ''
+            var gItemData = []
+            var graphData = []
+            var itemData = []
+            var trendData = []
+            const legendData = []
+            var seriesData = []
+            var colorData = []
+            const returndataclock = []
+            finalResult = this.graphstableData[i]
+            itemData = finalResult.itemData
+            gItemData = finalResult.gItemData
+            graphData = finalResult.graphData
+            var units = ''
+            itemData.forEach(element => {
+              units = element.units
+              legendData.push(element.name)
+            })
+            console.log(graphData[0].graphtype)
+            if (graphData[0].graphtype === 2) {
+              for (let a = 0; a < gItemData.length; a++) {
+                trendData = finalResult.trendListData[a]
+                var value
+                var name
+                if (trendData != null) {
+                  value = trendData.value
+                }
+                name = legendData[a]
+                seriesData.push({
+                  value: value,
+                  name: name
+                })
+                colorData.push('#' + gItemData[a].color)
+              }
+              const pieCharts = document.getElementById('charts-graph-demo-' + i)
+              const pieEcharts = document.getElementById('pieEcharts')
+              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+              const myChart = this.$echarts.init(pieCharts)
+              myChart.setOption({
+                tooltip: {
+                  trigger: 'item',
+                  formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                color: colorData,
+                legend: {
+                  data: legendData
+                },
+                series: [
+                  {
+                    name: '监控项',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: seriesData,
+                    emphasis: {
+                      itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                    }
+                  }
+                ]
+              })
+            } else if (graphData[0].graphtype === 0) {
+              var sum = 0
+              for (var k = 0; k < gItemData.length; k++) {
+                trendData = finalResult.trendListData[k]
+                console.log(trendData)
+                var data = []
+                for (var j = 0; j < trendData.length; j++) {
+                  var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
+                  console.log(clock)
+                  var index
+                  if (clock) {
+                    index = k
+                    sum = sum + 1
+                  }
+                  console.log(k)
+                  if (k === index && sum <= trendData.length) {
+                    returndataclock.push(clock)
+                  }
+                  switch (gItemData[k].calc_fnc) {
+                    case 1: data.push(trendData[j].value)
+                      break
+                    case 2: data.push(trendData[j].value)
+                      break
+                    case 4: data.push(trendData[j].value)
+                      break
+                  }
+                }
+                var series = {}
+                series.name = itemData[k].name
+                var type = ''
+                switch (gItemData[k].drawtype) {
+                  case 0: type = 'line'
+                    break
+                  case 1:
+                    type = 'line'
+                    series.areaStyle = {}
+                    break
+                  case 3:
+                    type = 'effectScatter'
+                    break
+                  case 2:
+                    type = 'line'
+                    series.itemStyle = {
+                      normal: {
+                        lineStyle: {
+                          width: 5
+                        }
+                      }
+                    }
+                    break
+                  case 4:
+                    type = 'line'
+                    series.itemStyle = {
+                      normal: {
+                        lineStyle: {
+                          type: 'dotted'
+                        }
+                      }
+                    }
+                    break
+                  case 5:
+                    type = 'bar'
+                    break
+                }
+                series.type = type
+                colorData.push('#' + gItemData[k].color)
+                series.lineStyle = {
+                  normal: {
+                    color: '#' + gItemData[k].color
+                  }
+                }
+                series.data = data
+                seriesData.push(series)
+              }
+              console.log(returndataclock)
+              const xcount = Math.floor(sum / 10)
+              const pieCharts = document.getElementById('charts-graph-demo-' + i)
+              const pieEcharts = document.getElementById('pieEcharts')
+              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+              const myChart = this.$echarts.init(pieCharts)
+              // 绘制图表
+              myChart.setOption({
+                tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                    type: 'cross',
+                    label: {
+                      backgroundColor: '#6a7985'
+                    }
+                  }
+                },
+                color: colorData,
+                legend: {
+                  data: legendData
+                },
+                toolbox: {
+                  feature: {
+                    saveAsImage: {}
+                  }
+                },
+                grid: {
+                  left: '3%',
+                  right: '4%',
+                  bottom: '3%',
+                  containLabel: true
+                },
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: returndataclock,
+                    axisLabel: {
+                      // interval: 2,
+                      interval: xcount,
+                      rotate: 45, // 倾斜度-90至90默认为0
+                      margin: 2,
+                      textStyle: {
+                        fontWeight: 'bolder',
+                        color: '#000000',
+                        fontSize: '7'
+                      },
+                      showMaxLabel: true
+                    }
+                  }
+                ],
+                yAxis: [
+                  {
+                    type: 'value',
+                    axisLabel: {
+                      formatter: '{value} ' + units
+                    }
+                  }
+                ],
+                series: seriesData
+              })
+            } else if (graphData[0].graphtype === 1) {
+              var sumStack = 0
+              for (var ii = 0; ii < gItemData.length; ii++) {
+                trendData = finalResult.trendListData[ii]
+                var dataStack = []
+                for (var jj = 0; jj < trendData.length; jj++) {
+                  var clockStack = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[jj].clock))
+                  var indexStack
+                  if (clockStack) {
+                    indexStack = ii
+                    sumStack = sumStack + 1
+                  }
+                  if (ii === indexStack && sumStack <= trendData.length) {
+                    returndataclock.push(clockStack)
+                  }
+                  switch (gItemData[ii].calc_fnc) {
+                    case 1: dataStack.push(trendData[jj].value)
+                      break
+                    case 2: dataStack.push(trendData[jj].value)
+                      break
+                    case 4: dataStack.push(trendData[jj].value)
+                      break
+                  }
+                }
+                var seriesStack = {}
+                seriesStack.name = itemData[ii].name
+                var typeStack = ''
+                switch (gItemData[ii].drawtype) {
+                  case 0: typeStack = 'line'
+                    break
+                  case 1:
+                    typeStack = 'line'
+                    seriesStack.areaStyle = {}
+                    break
+                  case 3:
+                    typeStack = 'effectScatter'
+                    break
+                  case 2:
+                    typeStack = 'line'
+                    seriesStack.itemStyle = {
+                      normal: {
+                        lineStyle: {
+                          width: 5
+                        }
+                      }
+                    }
+                    break
+                  case 4:
+                    typeStack = 'line'
+                    seriesStack.itemStyle = {
+                      normal: {
+                        lineStyle: {
+                          type: 'dotted'
+                        }
+                      }
+                    }
+                    break
+                  case 5:
+                    typeStack = 'bar'
+                    break
+                }
+                seriesStack.stack = '总量'
+                seriesStack.type = typeStack
+                colorData.push('#' + gItemData[ii].color)
+                seriesStack.lineStyle = {
+                  normal: {
+                    color: '#' + gItemData[ii].color
+                  }
+                }
+                seriesStack.areaStyle = {}
+                seriesStack.data = dataStack
+                seriesData.push(seriesStack)
+              }
+              const xcount = Math.floor(sumStack / 10)
+              const pieCharts = document.getElementById('charts-graph-demo-' + i)
+              const pieEcharts = document.getElementById('pieEcharts')
+              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+              const myChart = this.$echarts.init(pieCharts)
+              // 绘制图表
+              myChart.setOption({
+                tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                    type: 'cross',
+                    label: {
+                      backgroundColor: '#6a7985'
+                    }
+                  }
+                },
+                color: colorData,
+                legend: {
+                  data: legendData
+                },
+                toolbox: {
+                  feature: {
+                    saveAsImage: {}
+                  }
+                },
+                grid: {
+                  left: '3%',
+                  right: '4%',
+                  bottom: '3%',
+                  containLabel: true
+                },
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: returndataclock,
+                    axisLabel: {
+                      // interval: 2,
+                      interval: xcount,
+                      rotate: 45, // 倾斜度-90至90默认为0
+                      margin: 2,
+                      textStyle: {
+                        fontWeight: 'bolder',
+                        color: '#000000',
+                        fontSize: '7'
+                      },
+                      showMaxLabel: true
+                    }
+                  }
+                ],
+                yAxis: [
+                  {
+                    type: 'value',
+                    axisLabel: {
+                      formatter: '{value} ' + units
+                    }
+                  }
+                ],
+                series: seriesData
+              })
+            } else if (graphData[0].graphtype === 3) {
+              for (let a = 0; a < gItemData.length; a++) {
+                trendData = finalResult.trendListData[a]
+                var valueRose
+                var nameRose
+                switch (gItemData[a].calc_fnc) {
+                  case 1: valueRose = trendData[trendData.length - 1].value
+                    break
+                  case 2: valueRose = trendData[trendData.length - 1].value
+                    break
+                  case 4: valueRose = trendData[trendData.length - 1].value
+                    break
+                }
+                nameRose = legendData[a]
+                seriesData.push({
+                  value: valueRose,
+                  name: nameRose
+                })
+                colorData.push('#' + gItemData[a].color)
+              }
+              const pieCharts = document.getElementById('charts-graph-demo-' + i)
+              const pieEcharts = document.getElementById('pieEcharts')
+              pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
+              const myChart = this.$echarts.init(pieCharts)
+              myChart.setOption({
+                tooltip: {
+                  trigger: 'item',
+                  formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                color: colorData,
+                legend: {
+                  data: legendData
+                },
+                toolbox: {
+                  show: true,
+                  feature: {
+                    mark: { show: true },
+                    magicType: {
+                      show: true,
+                      type: ['pie', 'funnel']
+                    }
+                  }
+                },
+                series: [
+                  {
+                    name: '监控项',
+                    type: 'pie',
+                    radius: [30, 110],
+                    center: ['50%', '60%'],
+                    roseType: 'area',
+                    data: seriesData
+                  }
+                ]
+              })
+            }
+          }
+        }
       })
-      if (graphData[0].graphtype === 2) {
-        for (let a = 0; a < gItemData.length; a++) {
-          trendData = finalResult.trendListData[a]
-          var value
-          var name
-          // switch (gItemData[a].calc_fnc) {
-          //   case 1: value = trendData[trendData.length - 1].value
-          //     break
-          //   case 2: value = trendData[trendData.length - 1].value
-          //     break
-          //   case 4: value = trendData[trendData.length - 1].value
-          //     break
-          // }
-          if (trendData != null) {
-            value = trendData.value
-          }
-          name = legendData[a]
-          seriesData.push({
-            value: value,
-            name: name
-          })
-          colorData.push('#' + gItemData[a].color)
-        }
-        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
-        const pieEcharts = document.getElementById('pieEcharts')
-        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-        const myChart = this.$echarts.init(pieCharts)
-        myChart.setOption({
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          color: colorData,
-          legend: {
-            data: legendData
-          },
-          series: [
-            {
-              name: '监控项',
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: seriesData,
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        })
-      } else if (graphData[0].graphtype === 0) {
-        var sum = 0
-        for (var i = 0; i < gItemData.length; i++) {
-          trendData = finalResult.trendListData[i]
-          var data = []
-          for (var j = 0; j < trendData.length; j++) {
-            var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
-            var index
-            if (clock) {
-              index = i
-              sum = sum + 1
-            }
-            if (i === index && sum <= trendData.length) {
-              returndataclock.push(clock)
-            }
-            switch (gItemData[i].calc_fnc) {
-              case 1: data.push(trendData[j].value)
-                break
-              case 2: data.push(trendData[j].value)
-                break
-              case 4: data.push(trendData[j].value)
-                break
-            }
-          }
-          var series = {}
-          series.name = itemData[i].name
-          var type = ''
-          switch (gItemData[i].drawtype) {
-            case 0: type = 'line'
-              break
-            case 1:
-              type = 'line'
-              series.areaStyle = {}
-              break
-            case 3:
-              type = 'effectScatter'
-              break
-            case 2:
-              type = 'line'
-              series.itemStyle = {
-                normal: {
-                  lineStyle: {
-                    width: 5
-                  }
-                }
-              }
-              break
-            case 4:
-              type = 'line'
-              series.itemStyle = {
-                normal: {
-                  lineStyle: {
-                    type: 'dotted'
-                  }
-                }
-              }
-              break
-            case 5:
-              type = 'bar'
-              break
-          }
-          series.type = type
-          colorData.push('#' + gItemData[i].color)
-          series.lineStyle = {
-            normal: {
-              color: '#' + gItemData[i].color
-            }
-          }
-          series.data = data
-          seriesData.push(series)
-        }
-        const xcount = Math.floor(sum / 10)
-        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
-        const pieEcharts = document.getElementById('pieEcharts')
-        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-        const myChart = this.$echarts.init(pieCharts)
-        // 绘制图表
-        myChart.setOption({
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
-              }
-            }
-          },
-          color: colorData,
-          legend: {
-            data: legendData
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: returndataclock,
-              axisLabel: {
-                // interval: 2,
-                interval: xcount,
-                rotate: 45, // 倾斜度-90至90默认为0
-                margin: 2,
-                textStyle: {
-                  fontWeight: 'bolder',
-                  color: '#000000',
-                  fontSize: '7'
-                },
-                showMaxLabel: true
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              axisLabel: {
-                formatter: '{value} ' + units
-              }
-            }
-          ],
-          series: seriesData
-        })
-      } else if (graphData[0].graphtype === 1) {
-        var sumStack = 0
-        for (var ii = 0; ii < gItemData.length; ii++) {
-          trendData = finalResult.trendListData[ii]
-          var dataStack = []
-          for (var jj = 0; jj < trendData.length; jj++) {
-            var clockStack = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[jj].clock))
-            var indexStack
-            if (clockStack) {
-              indexStack = ii
-              sumStack = sumStack + 1
-            }
-            if (ii === indexStack && sumStack <= trendData.length) {
-              returndataclock.push(clockStack)
-            }
-            switch (gItemData[ii].calc_fnc) {
-              case 1: dataStack.push(trendData[jj].value)
-                break
-              case 2: dataStack.push(trendData[jj].value)
-                break
-              case 4: dataStack.push(trendData[jj].value)
-                break
-            }
-          }
-          var seriesStack = {}
-          seriesStack.name = itemData[ii].name
-          var typeStack = ''
-          switch (gItemData[ii].drawtype) {
-            case 0: typeStack = 'line'
-              break
-            case 1:
-              typeStack = 'line'
-              seriesStack.areaStyle = {}
-              break
-            case 3:
-              typeStack = 'effectScatter'
-              break
-            case 2:
-              typeStack = 'line'
-              seriesStack.itemStyle = {
-                normal: {
-                  lineStyle: {
-                    width: 5
-                  }
-                }
-              }
-              break
-            case 4:
-              typeStack = 'line'
-              seriesStack.itemStyle = {
-                normal: {
-                  lineStyle: {
-                    type: 'dotted'
-                  }
-                }
-              }
-              break
-            case 5:
-              typeStack = 'bar'
-              break
-          }
-          seriesStack.stack = '总量'
-          seriesStack.type = typeStack
-          colorData.push('#' + gItemData[ii].color)
-          seriesStack.lineStyle = {
-            normal: {
-              color: '#' + gItemData[ii].color
-            }
-          }
-          seriesStack.areaStyle = {}
-          seriesStack.data = dataStack
-          seriesData.push(seriesStack)
-        }
-        const xcount = Math.floor(sumStack / 10)
-        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
-        const pieEcharts = document.getElementById('pieEcharts')
-        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-        const myChart = this.$echarts.init(pieCharts)
-        // 绘制图表
-        myChart.setOption({
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
-              }
-            }
-          },
-          color: colorData,
-          legend: {
-            data: legendData
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: returndataclock,
-              axisLabel: {
-                // interval: 2,
-                interval: xcount,
-                rotate: 45, // 倾斜度-90至90默认为0
-                margin: 2,
-                textStyle: {
-                  fontWeight: 'bolder',
-                  color: '#000000',
-                  fontSize: '7'
-                },
-                showMaxLabel: true
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              axisLabel: {
-                formatter: '{value} ' + units
-              }
-            }
-          ],
-          series: seriesData
-        })
-      } else if (graphData[0].graphtype === 3) {
-        for (let a = 0; a < gItemData.length; a++) {
-          trendData = finalResult.trendListData[a]
-          var valueRose
-          var nameRose
-          switch (gItemData[a].calc_fnc) {
-            case 1: valueRose = trendData[trendData.length - 1].value
-              break
-            case 2: valueRose = trendData[trendData.length - 1].value
-              break
-            case 4: valueRose = trendData[trendData.length - 1].value
-              break
-          }
-          nameRose = legendData[a]
-          seriesData.push({
-            value: valueRose,
-            name: nameRose
-          })
-          colorData.push('#' + gItemData[a].color)
-        }
-        const pieCharts = document.getElementById('charts-graph-demo-' + index1)
-        const pieEcharts = document.getElementById('pieEcharts')
-        pieCharts.style.width = pieEcharts.clientWidth / 3 - 70 + 'px'
-        const myChart = this.$echarts.init(pieCharts)
-        myChart.setOption({
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          color: colorData,
-          legend: {
-            data: legendData
-          },
-          toolbox: {
-            show: true,
-            feature: {
-              mark: { show: true },
-              magicType: {
-                show: true,
-                type: ['pie', 'funnel']
-              }
-            }
-          },
-          series: [
-            {
-              name: '监控项',
-              type: 'pie',
-              radius: [30, 110],
-              center: ['50%', '60%'],
-              roseType: 'area',
-              data: seriesData
-            }
-          ]
-        })
-      }
-      if (this.graphsloading !== '') {
-        this.graphsloading.close()
-      }
-      this.setTimeoutGraphs = ''
     },
     getGraphID (index) {
       return 'charts-graph-demo-' + index
@@ -1781,7 +1744,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.graphstableData = json.data
-            console.log('11111111111111111111111111' + JSON.stringify(this.graphstableData))
+            this.getGraphsData()
           }
         } else {
           this.$message({
@@ -2125,176 +2088,176 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .queryleft {
-    float: left;
-  }
-  .queryright {
-    float: right;
-  }
-  .toolbar > div:last-child {
-    justify-content: flex-start;
-  }
-  .datetop /deep/ input {
-    height: 32px !important;
-    margin-top: 1px !important;
-  }
-  /deep/.el-input__prefix {
-    margin-top: -3px;
-  }
-  /deep/.el-button {
-    margin-left: 10px;
-  }
-  .tempList .card {
-    float: left;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    box-shadow: none;
-    background-color: #fff;
-  }
-  .tempList .img-container {
-    height: 110px;
-    width: 100%;
-    background: #fff;
-  }
-  .tempList p {
-    width: 200px;
-  }
-  .title-bar-title {
-    font-size: 24px;
-    margin-top: 0px;
-    line-height: 24px;
-  }
-  .title-bar-description {
-    margin-bottom: 0px;
-    margin-top: -5px;
-  }
-  .dark-main-background {
-    margin-top: 10px;
-  }
-  .card-header {
-    background-color: #fff;
-  }
-  .card-footer {
-    background-color: #fff;
-    padding: 0px 15px 5px 25px;
-  }
-  .no-border {
-    border: none;
-  }
-  .agent:before {
-    content: 'Agent';
-    font-family: sans-serif;
-    font-size: 13px;
-    background: #ef6c00;
-    color: #fff;
-    /*text-transform: uppercase;*/
-    font-weight: bold;
-    text-align: center;
-    display: block;
-    width: 6.5em;
-    position: absolute;
-    padding: 3px;
-    top: 0.76em;
-    left: -1.8em;
-    -ms-transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-  }
-  .snmp:before {
-    content: 'snmp';
-    font-family: sans-serif;
-    font-size: 13px;
-    background: #ef6c00;
-    color: #fff;
-    /*text-transform: uppercase;*/
-    font-weight: bold;
-    text-align: center;
-    display: block;
-    width: 6.5em;
-    position: absolute;
-    padding: 3px;
-    top: 0.76em;
-    left: -1.8em;
-    -ms-transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-  }
-  .card-footer .hosts-btn {
-    width: 90px !important;
-  }
-  // .tempList {
-  //   height: 240px;
-  // }
-  .tempList .m-r {
-    height: 220px;
-  }
-  .img-container img {
-    width: 100% !important;
-  }
-  .m-r {
-    margin-right: 10px !important;
-  }
-  .text-center a {
-    margin-right: 10px !important;
-  }
-  .darkmainbordertd {
-    min-width: 200px;
-    border: 0px;
-    text-align: left;
-    padding: 5px 20px;
-    vertical-align: middle;
-  }
-  .darkmainborderth {
-    border: 0px;
-    vertical-align: middle;
-  }
-  .changeColor {
-    color: green;
-  }
-  .redchangeColor {
-    color: red;
-  }
-  /deep/.el-tabs__nav {
-    width: 100%;
-  }
-  /deep/.el-tabs__item {
-    width: 33.33%;
-  }
-  a:hover {
-    background-color: #c5c5c5;
-  }
-  .echart {
-    width: 100%;
-    height: 300px;
-  }
+.queryleft {
+  float: left;
+}
+.queryright {
+  float: right;
+}
+.toolbar > div:last-child {
+  justify-content: flex-start;
+}
+.datetop /deep/ input {
+  height: 32px !important;
+  margin-top: 1px !important;
+}
+/deep/.el-input__prefix {
+  margin-top: -3px;
+}
+/deep/.el-button {
+  margin-left: 10px;
+}
+.tempList .card {
+  float: left;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  background-color: #fff;
+}
+.tempList .img-container {
+  height: 110px;
+  width: 100%;
+  background: #fff;
+}
+.tempList p {
+  width: 200px;
+}
+.title-bar-title {
+  font-size: 24px;
+  margin-top: 0px;
+  line-height: 24px;
+}
+.title-bar-description {
+  margin-bottom: 0px;
+  margin-top: -5px;
+}
+.dark-main-background {
+  margin-top: 10px;
+}
+.card-header {
+  background-color: #fff;
+}
+.card-footer {
+  background-color: #fff;
+  padding: 0px 15px 5px 25px;
+}
+.no-border {
+  border: none;
+}
+.agent:before {
+  content: 'Agent';
+  font-family: sans-serif;
+  font-size: 13px;
+  background: #ef6c00;
+  color: #fff;
+  /*text-transform: uppercase;*/
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  width: 6.5em;
+  position: absolute;
+  padding: 3px;
+  top: 0.76em;
+  left: -1.8em;
+  -ms-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.snmp:before {
+  content: 'snmp';
+  font-family: sans-serif;
+  font-size: 13px;
+  background: #ef6c00;
+  color: #fff;
+  /*text-transform: uppercase;*/
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  width: 6.5em;
+  position: absolute;
+  padding: 3px;
+  top: 0.76em;
+  left: -1.8em;
+  -ms-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.card-footer .hosts-btn {
+  width: 90px !important;
+}
+// .tempList {
+//   height: 240px;
+// }
+.tempList .m-r {
+  height: 220px;
+}
+.img-container img {
+  width: 100% !important;
+}
+.m-r {
+  margin-right: 10px !important;
+}
+.text-center a {
+  margin-right: 10px !important;
+}
+.darkmainbordertd {
+  min-width: 200px;
+  border: 0px;
+  text-align: left;
+  padding: 5px 20px;
+  vertical-align: middle;
+}
+.darkmainborderth {
+  border: 0px;
+  vertical-align: middle;
+}
+.changeColor {
+  color: green;
+}
+.redchangeColor {
+  color: red;
+}
+/deep/.el-tabs__nav {
+  width: 100%;
+}
+/deep/.el-tabs__item {
+  width: 33.33%;
+}
+a:hover {
+  background-color: #c5c5c5;
+}
+.echart {
+  width: 100%;
+  height: 300px;
+}
+.card-width {
+  width: 32.5%;
+  margin-left: 10px;
+}
+.card-width-top {
+  width: 32.5%;
+  margin-left: 10px;
+  margin-top: 0px;
+}
+.el-col-pic {
+  margin-left: 10px;
+}
+/deep/.el-input--suffix {
+  margin-left: -10px;
+}
+
+/deep/.el-select {
+  margin-left: 10px;
+}
+@media screen and (max-width: 1500px) {
   .card-width {
-    width: 32.5%;
+    width: 32%;
     margin-left: 10px;
   }
   .card-width-top {
-    width: 32.5%;
+    width: 32%;
     margin-left: 10px;
     margin-top: 0px;
   }
-  .el-col-pic {
-    margin-left: 10px;
-  }
-  /deep/.el-input--suffix {
-    margin-left: -10px;
-  }
-
-  /deep/.el-select {
-    margin-left: 10px;
-  }
-  @media screen and (max-width: 1500px) {
-    .card-width {
-      width: 32%;
-      margin-left: 10px;
-    }
-    .card-width-top {
-      width: 32%;
-      margin-left: 10px;
-      margin-top: 0px;
-    }
-  }
+}
 </style>
