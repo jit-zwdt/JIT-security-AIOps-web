@@ -1395,7 +1395,7 @@ export default {
         for (var k = 0; k < gItemData.length; k++) {
           trendData = finalResult.trendListData[k]
           var data = []
-                    for (var j = 0; j < trendData.length; j++) {
+          for (var j = 0; j < trendData.length; j++) {
             var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
             var index
             if (clock) {
