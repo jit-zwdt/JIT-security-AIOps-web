@@ -301,6 +301,9 @@ export default {
               }
             }
           })
+          if (value === '') {
+            callback()
+          }
         } else {
           callback()
         }
@@ -313,6 +316,27 @@ export default {
       var reg = /^\d+(\.\d+)?$/
       if (!reg.test(value)) {
         callback(new Error('请输入正小数 单位 GHZ 没有请填0'))
+      } else {
+        callback()
+      }
+    }
+    var validateAssetNumber = (rule, value, callback) => {
+      if (this.oldAssetNumber !== value) {
+        this.axios.get(api.assetsManager.assetsList.assetsAdd.validateNumber, { params: { number: value } }).then((resp) => {
+          // 成功响应
+          if (resp.status === 200) {
+            var json = resp.data
+            // 响应码为 1 的时候进入
+            if (json.code === 1) {
+              // 如果返回值为 true
+              if (json.data) {
+                callback(new Error('资产编号 不能重复'))
+              } else {
+                callback()
+              }
+            }
+          }
+        })
       } else {
         callback()
       }
@@ -378,12 +402,14 @@ export default {
       id: '',
       zcfl: [],
       oldIp: '',
+      oldAssetNumber: '',
       rules: {
         name: [
           { required: true, message: '请输入资产名称' }
         ],
         number: [
-          { required: true, message: '请输入资产编号' }
+          { required: true, message: '请输入资产编号' },
+          { validator: validateAssetNumber, trigger: 'blur' }
         ],
         ip: [{ type: 'number', validator: validateIp, trigger: 'blur' }],
         type: [
@@ -510,6 +536,7 @@ export default {
             if (json.code === 1) {
               this.serverListForm = json.data
               this.oldIp = json.data.ip
+              this.oldAssetNumber = json.data.number
               this.serverListForm.cpu = parseFloat(json.data.cpu === null ? 0 : json.data.cpu)
               this.serverListForm.cpuCoreNumber = parseInt(json.data.cpuCoreNumber === null ? 0 : json.data.cpuCoreNumber)
               this.serverListForm.memory = parseInt(json.data.memory === null ? 0 : json.data.memory)

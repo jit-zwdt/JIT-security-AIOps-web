@@ -689,16 +689,16 @@ export default {
             cronEvery: '1',
             incrementStart: 3,
             incrementIncrement: 5,
-            rangeStart: 1,
-            rangeEnd: 10,
+            rangeStart: 0,
+            rangeEnd: 59,
             specificSpecific: []
           },
           minute: {
             cronEvery: '1',
             incrementStart: 3,
             incrementIncrement: 5,
-            rangeStart: 1,
-            rangeEnd: 10,
+            rangeStart: 0,
+            rangeEnd: 59,
             specificSpecific: []
           },
           hour: {
@@ -706,7 +706,7 @@ export default {
             incrementStart: 3,
             incrementIncrement: 5,
             rangeStart: 0,
-            rangeEnd: 0,
+            rangeEnd: 23,
             specificSpecific: []
           },
           day: {
@@ -714,7 +714,7 @@ export default {
             incrementStart: 1,
             incrementIncrement: 1,
             rangeStart: 1,
-            rangeEnd: 1,
+            rangeEnd: 31,
             specificSpecific: [],
             cronLastSpecificDomDay: 1,
             cronLastSpecificWorkDay: 1
@@ -724,7 +724,7 @@ export default {
             incrementStart: 1,
             incrementIncrement: 1,
             rangeStart: 1,
-            rangeEnd: 1,
+            rangeEnd: 7,
             specificSpecific: [],
             // 本月最后一个星期 ?
             cronLastWeek: 1,
@@ -738,7 +738,7 @@ export default {
             incrementStart: 3,
             incrementIncrement: 5,
             rangeStart: 1,
-            rangeEnd: 1,
+            rangeEnd: 12,
             specificSpecific: []
           },
           year: {
@@ -746,7 +746,7 @@ export default {
             incrementStart: 2020,
             incrementIncrement: 1,
             rangeStart: 2020,
-            rangeEnd: 2020
+            rangeEnd: 2099
           }
         }
       },

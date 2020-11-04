@@ -11,7 +11,8 @@ const api = {
         addAssets: '/assets/addAssets',
         updateAssets: '/assets/updateAssets/',
         findById: '/assets/findById/',
-        validateIp: '/assets/validateIp'
+        validateIp: '/assets/validateIp',
+        validateNumber: '/assets/validateNumber'
       },
       assetsList: {
         deleteAssets: '/assets/deleteAssets/',
