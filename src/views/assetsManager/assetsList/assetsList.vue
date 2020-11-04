@@ -197,6 +197,11 @@ export default {
               type: 'success'
             })
             this.showInfo()
+          } else if (json.code === 3006){
+            this.$message({
+              message: json.msg,
+              type: 'error'
+            })
           }
         } else {
           this.$message({
