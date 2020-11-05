@@ -17,7 +17,7 @@
                             placeholder="选择开始日期时间">
                     </el-date-picker>
                 </div>
-                <div style="float: left">
+                <div style="float: left;margin-left: 20px">
                     <el-date-picker
                             v-model="timetillselect"
                             type="datetime"
@@ -886,11 +886,11 @@ export default {
     selectTime () {
       if (this.timefromselect <= this.timetillselect) {
         if (this.timefromselect !== '' && this.timetillselect !== '') {
-          this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
-          this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
-        } else {
           this.timefrom = new Date(this.timefromselect).getTime() / 1000
           this.timetill = new Date(this.timetillselect).getTime() / 1000
+        } else {
+          this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
+          this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
         }
         this.getShowData()
         this.getGraphData()
@@ -1072,7 +1072,8 @@ export default {
               fontSize: '7'
             },
             formatter: function (value) {
-              return value.split(' ')[1]
+              // return value.split(' ')[1]
+              return value
             },
             showMaxLabel: true
           },
