@@ -10,15 +10,24 @@
         <template>
           <div style="width: 100%; height: 3rem">
             <div class="block" style="float: left; margin-left: 10px">
-              <el-date-picker
-                v-model="time"
-                type="datetimerange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                @change="selectTime"
-              >
-              </el-date-picker>
+                <div style="float: left; margin-left: 10px">
+                    <el-date-picker
+                            v-model="timefromselect"
+                            type="datetime"
+                            placeholder="选择开始日期时间">
+                    </el-date-picker>
+                </div>
+                <div style="float: left;margin-left: 20px">
+                    <el-date-picker
+                            v-model="timetillselect"
+                            type="datetime"
+                            placeholder="选择结束日期时间">
+                    </el-date-picker>
+                </div>
+                <div style="float: right">
+                  <el-button type="primary" size="medium " @click="selectTime">查询</el-button>
+                  <el-button type="primary" size="medium " @click="clearTime">清除</el-button>
+                </div>
             </div>
             <div style="float: right">
               刷新时间：
@@ -620,6 +629,14 @@
                     circle
                   ></el-button>
                 </el-popconfirm>
+                  <el-button
+                          size="mini"
+                          type="primary"
+                          slot="reference"
+                          icon="el-icon-edit"
+                          circle
+                          @click="getGraph(scope.row)"
+                  ></el-button>
                 <el-popconfirm
                   title="确定删除吗？"
                   @onConfirm="confirmdelete(scope.$index, scope.row)"
@@ -654,13 +671,15 @@
 </template>
 <script>
 import { timesMethod } from '@/utils/formatDate.js'
-import qs from 'qs'
 export default {
   props: {
     hostid: String
   },
   data () {
     return {
+      timefromselect: '',
+      timetillselect: '',
+      submitType: 0,
       time: '',
       timefrom: timesMethod.getDatestamp(timesMethod.fun_date(0)),
       timetill: timesMethod.getDatestamp(timesMethod.fun_date(1)),
@@ -709,6 +728,7 @@ export default {
       },
       graphstableData: [],
       form: {
+        graphid: '',
         hostids: [this.$route.query.hostId],
         name: '',
         region: '',
@@ -723,8 +743,8 @@ export default {
         graphtype: '',
         show_legend: 0,
         show_work_period: 0,
-        percent_left: '',
-        percent_right: '',
+        percent_left: 0,
+        percent_right: 0,
         gitems: []
       },
       leftOption: false,
@@ -831,18 +851,55 @@ export default {
     this.form.graphtype = this.graphtypeOptions[0].value
   },
   methods: {
-    selectTime (val) {
-      if (val == null) {
-        this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
-        this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
-      } else {
-        this.timefrom = new Date(val[0]).getTime() / 1000
-        this.timetill = new Date(val[1]).getTime() / 1000
-      }
-      this.showInfo()
-      this.showGraphsInfo()
+    clearTime () {
+      this.timefromselect = ''
+      this.timetillselect = ''
+      this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
+      this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
       this.getShowData()
       this.getGraphData()
+    },
+    getGraph (row) {
+      this.submitType = 2
+      this.dialogVisible = true
+      this.form.graphid = row.graphid
+      this.form.name = row.name
+      this.form.ymax_type = row.ymax_type
+      this.form.ymin_type = row.ymin_type
+      this.form.graphtype = row.graphtype
+      this.axios.post(this.$api.monitorManager.getGItemByGraphId + row.graphid).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          this.form.gitems = json.data
+          this.form.gitems.forEach(element => {
+            this.forShowData.forEach(element1 => {
+              if (element.itemid === element1.itemid) {
+                element.name = element1.name
+              }
+            })
+            element.color = '#' + element.color
+          })
+          this.multipleSelection = this.form.gitems
+        }
+      })
+    },
+    selectTime () {
+      if (this.timefromselect <= this.timetillselect) {
+        if (this.timefromselect !== '' && this.timetillselect !== '') {
+          this.timefrom = new Date(this.timefromselect).getTime() / 1000
+          this.timetill = new Date(this.timetillselect).getTime() / 1000
+        } else {
+          this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
+          this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
+        }
+        this.getShowData()
+        this.getGraphData()
+      } else {
+        this.$message({
+          message: '开始时间不能大于结束时间!',
+          type: 'error'
+        })
+      }
     },
     selectable (row, index) {
       if (row.status === 0) {
@@ -852,9 +909,12 @@ export default {
       }
     },
     confirmdelete (index, row) {
-      this.axios.post(this.$api.monitorManager.deleteGPro, qs.stringify({
-        graphid: row.graphid
-      })).then((resp) => {
+      const region = {
+        hostId: this.$route.query.hostId,
+        graphId: row.graphid,
+        graphName: row.name
+      }
+      this.axios.post(this.$api.monitorManager.deleteGPro, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -869,10 +929,10 @@ export default {
             type: 'error'
           })
         }
-        this.showGraphsInfo()
       })
     },
     newPic () {
+      this.submitType = 1
       this.visible = !this.visible
       this.dialogVisible = true
     },
@@ -1012,7 +1072,8 @@ export default {
               fontSize: '7'
             },
             formatter: function (value) {
-              return value.split(' ')[1]
+              // return value.split(' ')[1]
+              return value
             },
             showMaxLabel: true
           },
@@ -1336,7 +1397,7 @@ export default {
       this.setTimeoutGraphs = ''
     },
     makeEchartsGraphData (graphtype, finalResult, gItemData, graphData, index1, units, legendData, itemData) {
-      if (finalResult.trendListData === null || finalResult.trendListData === '' || finalResult.trendListData === undefined || finalResult.trendListData === 'undefined' || finalResult.trendListData.length === 0) {
+      if (itemData[0].trend.length === 0) {
         const pieCharts = document.getElementById('charts-graph-demo-' + index1)
         pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%">该监控项当前时间段无数据</span></div>'
         return
@@ -1347,11 +1408,11 @@ export default {
       var seriesData = []
       if (graphtype === 2) {
         for (let a = 0; a < gItemData.length; a++) {
-          trendData = finalResult.trendListData[a]
+          trendData = itemData[a].trend
           var value
           var name
           if (trendData != null) {
-            value = trendData.value
+            value = trendData[trendData.length - 1].value
           }
           name = legendData[a]
           seriesData.push({
@@ -1393,7 +1454,7 @@ export default {
       } else if (graphtype === 0) {
         var sum = 0
         for (var k = 0; k < gItemData.length; k++) {
-          trendData = finalResult.trendListData[k]
+          trendData = finalResult.itemData[k].trend
           var data = []
           for (var j = 0; j < trendData.length; j++) {
             var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[j].clock))
@@ -1523,7 +1584,7 @@ export default {
       } else if (graphtype === 1) {
         var sumStack = 0
         for (var ii = 0; ii < gItemData.length; ii++) {
-          trendData = finalResult.trendListData[ii]
+          trendData = finalResult.itemData[ii].trend
           var dataStack = []
           for (var jj = 0; jj < trendData.length; jj++) {
             var clockStack = timesMethod.getTimestamp(timesMethod.getDatestamp(trendData[jj].clock))
@@ -1654,7 +1715,7 @@ export default {
         })
       } else if (graphtype === 3) {
         for (let a = 0; a < gItemData.length; a++) {
-          trendData = finalResult.trendListData[a]
+          trendData = finalResult.itemData[a].trend
           var valueRose
           var nameRose
           switch (gItemData[a].calc_fnc) {
@@ -1792,34 +1853,73 @@ export default {
         })
         return
       }
-      this.axios.post(this.$api.monitorManager.createGpro, this.form).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '新增成功',
-              type: 'success'
-            })
+      if (this.submitType === 1) {
+        this.axios.post(this.$api.monitorManager.createGpro, this.form).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.$message({
+                message: '新增成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: json.msg,
+                type: 'error'
+              })
+            }
           } else {
             this.$message({
               message: json.msg,
               type: 'error'
             })
           }
-        } else {
-          this.$message({
-            message: json.msg,
-            type: 'error'
-          })
-        }
-        this.form.graphtype = ''
-        this.form.gitems = []
-        this.form.name = ''
-        this.form.ymax_type = ''
-        this.form.ymin_type = ''
-        this.$refs.multipleTable.clearSelection()
-        this.dialogVisible = false
-      })
+          this.multipleSelection = []
+          this.multipleSelection1 = []
+          this.form.graphtype = ''
+          this.form.gitems = []
+          this.form.graphid = ''
+          this.form.name = ''
+          this.form.ymax_type = ''
+          this.form.ymin_type = ''
+          this.$refs.multipleTable.clearSelection()
+          this.dialogVisible = false
+        })
+      } else {
+        this.axios.post(this.$api.monitorManager.updateGpro, this.form).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: json.msg,
+                type: 'error'
+              })
+            }
+          } else {
+            this.$message({
+              message: json.msg,
+              type: 'error'
+            })
+          }
+          this.multipleSelection = []
+          this.multipleSelection1 = []
+          this.form.graphid = ''
+          this.form.graphtype = ''
+          this.form.gitems = []
+          this.form.name = ''
+          this.form.ymax_type = ''
+          this.form.ymin_type = ''
+          this.$refs.multipleTable.clearSelection()
+          this.dialogVisible = false
+          this.getGraphsData()
+        })
+      }
+      this.submitType = 0
       // this.$refs.gPopover.doClose()
       this.showGraphsInfo()
     },
@@ -1866,6 +1966,7 @@ export default {
     },
     closePopover () {
       // this.$refs.gPopover.doClose()
+      this.submitType = 0
       this.visible = false
       this.form.graphtype = ''
       this.form.gitems = []
@@ -1873,6 +1974,8 @@ export default {
       this.form.ymax_type = ''
       this.form.ymin_type = ''
       this.$refs.multipleTable.clearSelection()
+      this.multipleSelection = []
+      this.multipleSelection1 = []
       this.dialogVisible = false
     },
     handleDelete (index, row) {
@@ -1953,6 +2056,7 @@ export default {
         })
         return
       }
+      this.form.gitems = []
       this.multipleSelection = _this
       for (var i = 0; i < _this.length; i++) {
         var breaked = false
