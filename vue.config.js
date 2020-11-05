@@ -1,6 +1,15 @@
+let target = process.env.VUE_APP_SERVICE_URL
+console.log(target)
 module.exports = {
   devServer: {
-    proxy: 'http://localhost:8081'
+    https: false,
+    disableHostCheck: true,
+    proxy: {
+      '^/': {
+        target: target,
+        changeOrigin: true
+      }
+    }
   },
   configureWebpack: {
     devtool: 'source-map'
