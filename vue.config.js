@@ -1,5 +1,4 @@
-let target = process.env.VUE_APP_SERVICE_URL
-console.log(target)
+const target = process.env.VUE_APP_SERVICE_URL
 module.exports = {
   devServer: {
     https: false,
