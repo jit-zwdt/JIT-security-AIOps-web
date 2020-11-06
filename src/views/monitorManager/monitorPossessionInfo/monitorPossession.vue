@@ -929,6 +929,8 @@ export default {
             type: 'error'
           })
         }
+        this.getGraphData()
+        this.showGraphsInfo()
       })
     },
     newPic () {
@@ -1916,12 +1918,12 @@ export default {
           this.form.ymin_type = ''
           this.$refs.multipleTable.clearSelection()
           this.dialogVisible = false
-          this.getGraphsData()
         })
       }
+      this.getGraphData()
+      this.showGraphsInfo()
       this.submitType = 0
       // this.$refs.gPopover.doClose()
-      this.showGraphsInfo()
     },
     valuetypeformatter (row) {
       var name = ''
