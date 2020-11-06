@@ -249,7 +249,7 @@ const api = {
   },
   refreshToken: '/refreshToken'
 }
-
+/**
 function addPrefix (obj) {
   for (const i in obj) {
     if (typeof obj[i] === 'object') {
@@ -260,4 +260,5 @@ function addPrefix (obj) {
   }
 }
 addPrefix(api)
+*/
 export default api
