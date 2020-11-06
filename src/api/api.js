@@ -1,7 +1,7 @@
 const api = {
   login: '/login',
   index: '/index',
-  getCheckCode: '/api/getCheckCode',
+  getCheckCode: '/getCheckCode',
   logout: '/logout/logout',
   regionManager: {
     list: '/regionManager/list'
