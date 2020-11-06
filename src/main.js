@@ -19,15 +19,7 @@ import Print from 'vue-print-nb'
 import scroll from 'vue-seamless-scroll'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
-// Vue.use(VueAxios, axios)
-// axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL
-// if (process.env.NODE_ENV === 'production') {
-//  const url = process.env.APP_WEB_URL
-//  axios.defaults.baseURL = url
-// }
-// Vue.prototype.axios = axios.create({
-//  baseURL: '/api/'
-// })
+Vue.prototype.axios = axios
 Vue.prototype.$api = api
 Vue.use(ElementUI)
 Vue.use(ToolBar)
