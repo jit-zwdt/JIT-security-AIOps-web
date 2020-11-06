@@ -25,9 +25,9 @@ Vue.config.productionTip = false
 //  const url = process.env.APP_WEB_URL
 //  axios.defaults.baseURL = url
 // }
-Vue.prototype.axios = axios.create({
-  baseURL: '/api/'
-})
+// Vue.prototype.axios = axios.create({
+//  baseURL: '/api/'
+// })
 Vue.prototype.$api = api
 Vue.use(ElementUI)
 Vue.use(ToolBar)
