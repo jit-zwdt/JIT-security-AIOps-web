@@ -380,7 +380,6 @@ export default {
       this.axios.get(this.$api.monitorManager.checkObjectName, { params: { objectName: value, odlObjectName: this.odlObjectName } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
-          console.log(json.data)
           if (json.data === false) {
             return callback(new Error('这个主机名称已经存在了'))
           } else {
@@ -394,7 +393,6 @@ export default {
       this.axios.get(this.$api.monitorManager.checkBusinessName, { params: { businessName: value, odlBusinessName: this.odlBusinessName } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
-          console.log(json.data)
           if (json.data === false) {
             return callback(new Error('这个业务名称已经存在了'))
           } else {
@@ -638,7 +636,6 @@ export default {
       this.axios.post(this.$api.monitorManager.getZabbixHostGroup).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          // console.log(json.data)
           if (json.code === 1) {
             this.groupIdData = json.data
           }
@@ -656,7 +653,6 @@ export default {
       this.axios.post(this.$api.monitorManager.getJsonTypes, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          // console.log(json.data)
           if (json.code === 1) {
             this.subtypeIdOptions = json.data
           }

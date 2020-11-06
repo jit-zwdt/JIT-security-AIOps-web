@@ -295,7 +295,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.memoryTop5 = json.data
             this.memoryloading = false
           } else {
@@ -318,7 +317,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.exceptionTop5 = json.data
             this.exceptionloading = false
           } else {
@@ -344,7 +342,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.threadTop5 = json.data
             this.threadloading = false
           } else {
@@ -370,7 +367,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.requestNumTop5 = json.data
             this.requestNumloading = false
           } else {

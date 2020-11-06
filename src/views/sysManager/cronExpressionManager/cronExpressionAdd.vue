@@ -1463,7 +1463,7 @@ export default {
         return false
       }
       return true
-    }// TODO: 需要修改 天和周的冲突问题 需要让前面的值大于后面的值 , 校验问题 需要校验在添加的时候表达式不能重复的问题 缺少切换不指定的时候文字不会改变
+    }
   }
 }
 </script>
