@@ -1363,6 +1363,8 @@ export default {
             type: 'error'
           })
         }
+        this.getShowData()
+        this.getGraphData()
       })
     },
     async getRefreshGraphsData (graphid, graphName, index1) {
