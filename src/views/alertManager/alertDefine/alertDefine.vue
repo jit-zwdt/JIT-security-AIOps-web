@@ -82,8 +82,6 @@ export default {
   },
   created () {
     this.showInfo()
-    // var sum = 48
-    // console.log(sum.toString(2))
   },
   methods: {
     // 修改table tr行的背景色

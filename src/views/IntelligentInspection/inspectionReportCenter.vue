@@ -146,7 +146,6 @@ export default {
       }).then(response => {
         const binaryData = []
         binaryData.push(response.data)
-        console.log(response.data)
         this.pdfUrl = window.URL.createObjectURL(new Blob(binaryData, { type: 'application/pdf' }))
         window.open(this.pdfUrl)
         // 内部打开

@@ -273,7 +273,6 @@ export default {
       this.axios.post(this.$api.monitorManager.getTemplates, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
-          // console.log(json)
           if (json.code === 1) {
             this.tableData = json.data
             this.loading = false

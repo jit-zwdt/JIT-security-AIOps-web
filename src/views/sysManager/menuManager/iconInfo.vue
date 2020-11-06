@@ -1724,10 +1724,6 @@ export default {
     openDialog () {
     },
     changeIcon (value) {
-      // console.log(value)
-      // console.log(value.target.tagName)
-      // console.log(value.target.innerHTML)
-      // console.log(value.target.className)
       var valueinfo = ''
       var name = value.target.tagName
       if (name === 'I') {

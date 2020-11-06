@@ -155,8 +155,6 @@ export default {
       }
     },
     change_enableMonitor () {
-      console.log(this.$route.query.hostId)
-      console.log(this.serverForm.enableMonitor)
       this.axios.put(this.$api.monitorManager.updateHostEnableMonitor + this.serverForm.id, qs.stringify({
         enableMonitor: this.serverForm.enableMonitor
       })).then((resp) => {
@@ -217,7 +215,6 @@ export default {
     makeMonitorTypeItems () {
       this.monitorTypeItems.forEach(element => {
         var monitorTypeValue = ''
-        console.log(element)
         if (element.available === 0) {
           monitorTypeValue = '未检测'
           this.spanChangeColor = false

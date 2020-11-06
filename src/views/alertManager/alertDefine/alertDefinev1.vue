@@ -165,7 +165,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.tableData = json.data
             this.currentPage = 1
           }

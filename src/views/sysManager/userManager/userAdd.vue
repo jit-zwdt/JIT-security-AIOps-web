@@ -484,7 +484,6 @@ export default {
     },
     handleAvatarSuccess (res, file) {
       this.userForm.picUrl = res.data
-      console.log('123:' + this.userForm.picUrl)
       this.axios.post(this.$api.sysManager.getPicBase64 + this.userForm.picUrl).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data

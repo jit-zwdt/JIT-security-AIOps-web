@@ -196,8 +196,6 @@ export default {
       })
     },
     change_enableMonitor () {
-      console.log(this.$route.query.hostId)
-      console.log(this.serverForm.enableMonitor)
       this.axios.put(this.$api.monitorManager.updateHostEnableMonitor + this.serverForm.id, qs.stringify({
         enableMonitor: this.serverForm.enableMonitor
       })).then((resp) => {

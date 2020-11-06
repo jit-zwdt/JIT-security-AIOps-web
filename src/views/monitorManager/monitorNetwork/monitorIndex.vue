@@ -293,7 +293,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.memoryTop5 = json.data
             this.memoryloading = false
           } else {
@@ -316,7 +315,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.exceptionTop5 = json.data
             this.exceptionloading = false
           } else {
@@ -342,7 +340,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.cpuRateTop5 = json.data
             this.cpuRateloading = false
           } else {

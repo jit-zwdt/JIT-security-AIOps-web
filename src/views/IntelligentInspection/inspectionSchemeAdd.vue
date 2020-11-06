@@ -254,7 +254,6 @@ export default {
         timerTask: this.serverForm.timerTask,
         info: this.tableData
       }
-      console.log(paramInfo)
       const param = new URLSearchParams()
       param.append('param', JSON.stringify(paramInfo))
       this.axios.post(this.$api.inspectionManager.addTimerTaskInfo, param).then((resp) => {
@@ -286,7 +285,6 @@ export default {
         timerTask: this.serverForm.timerTask,
         info: this.tableData
       }
-      console.log(paramInfo)
       const param = new URLSearchParams()
       param.append('param', JSON.stringify(paramInfo))
       param.append('id', this.id)
@@ -330,7 +328,6 @@ export default {
       })
     },
     reloadData (value) {
-      console.log(value)
       value.forEach(element => {
         this.tableData.push({
           hostid: element.hostid,
