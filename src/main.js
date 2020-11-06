@@ -20,7 +20,7 @@ import scroll from 'vue-seamless-scroll'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // Vue.use(VueAxios, axios)
-axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL
+// axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL
 // if (process.env.NODE_ENV === 'production') {
 //  const url = process.env.VUE_APP_SERVICE_URL
 //  axios.defaults.baseURL = url
