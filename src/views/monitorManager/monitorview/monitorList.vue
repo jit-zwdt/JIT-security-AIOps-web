@@ -215,17 +215,37 @@
       @error="reloadData"
     ></TriggerList>
     <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
+    <monitorAdd
+      :drawer="drawer"
+      :templateId="templateId"
+      :templateTypeId="templateTypeId"
+      :templateSubTypeId="templateSubTypeId"
+      :objectName="objectName"
+      :id="id"
+      :groupIds="groupIds"
+      @changeDrawer="changeDrawer"
+    ></monitorAdd>
   </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
 import ItemList from '@/views/monitorManager/monitorview/item/itemList.vue'
 import TriggerList from '@/views/monitorManager/monitorview/trigger/triggerList.vue'
+import monitorAdd from '@/views/monitorManager/monitorview/monitorAdd.vue'
 import qs from 'qs'
 export default {
   data () {
     return {
-      identification: '',
+      // drawer 抽屉的打开状态
+      drawer: false,
+      // 传输值开始
+      id: '',
+      templateId: '',
+      templateTypeId: '',
+      templateSubTypeId: '',
+      groupIds: '',
+      objectName: '',
+      // 传输值结束
       show: false,
       datashow: false,
       hostObjectName: '',
@@ -432,7 +452,7 @@ export default {
     },
     showAssetsAdd () {
       // this.$router.push({ name: 'monitorAddList', query: { id: this.hostObjectName } })
-      this.$router.push({ name: 'monitorAddList', query: { identification: '1' } })
+      this.$router.push({ name: 'monitorAddList' })
     },
     getTypes () {
       this.axios.post(this.$api.monitorManager.getMonitorTypes).then((resp) => {
@@ -604,23 +624,34 @@ export default {
       this.showTriggerDialog = false
     },
     confirmupdate (index, row) {
-      this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId, objectName: '编辑      ' + row.objectName, identification: '2' } })
+      this.id = row.id
+      this.templateId = row.templatesId
+      this.templateTypeId = row.typeId
+      this.templateSubTypeId = row.subtypeId
+      this.groupIds = row.groupId
+      this.objectName = '编辑      ' + row.objectName
+      this.drawer = true
+      // this.$router.push({ name: 'monitorAdd', query: { id: row.id, templateId: row.templatesId, templateTypeId: row.typeId, templateSubTypeId: row.subtypeId, groupIds: row.groupId, objectName: '编辑      ' + row.objectName, identification: '2' } })
+    },
+    changeDrawer (v) {
+      this.showInfo()
+      this.drawer = v
     },
     showPossessionInfo (row) {
       if (row.typeId === '2' && row.subtypeId === '12') {
-        this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '2' && row.subtypeId === '11') {
-        this.$router.push({ name: 'monitorMysqlInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorMysqlInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '2' && row.subtypeId === '30') {
-        this.$router.push({ name: 'monitorRedisInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorRedisInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '1') {
-        this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '3') {
-        this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '28') {
-        this.$router.push({ name: 'monitorPossessionJvmInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorPossessionJvmInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '5') {
-        this.$router.push({ name: 'monitorHardInfo', query: { hostId: row.hostid, hostName: row.objectName, identification: '1' } })
+        this.$router.push({ name: 'monitorHardInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       }
     }
   },
@@ -636,7 +667,7 @@ export default {
   destroyed () {
     clearInterval(this.timer)
   },
-  components: { Pagination, ItemList, TriggerList }
+  components: { Pagination, ItemList, TriggerList, monitorAdd }
 }
 </script>
 <style lang="scss" scoped>

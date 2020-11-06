@@ -133,7 +133,7 @@ export default {
       this.makeCode()
     },
     makeCode () {
-      this.axios.get('/getCheckCode').then((resp) => {
+      this.axios.get(this.$api.getCheckCode).then((resp) => {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {

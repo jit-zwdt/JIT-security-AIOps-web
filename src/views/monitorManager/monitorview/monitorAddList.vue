@@ -166,14 +166,32 @@
       :helpform="helpform"
       :showhelpDialog="showhelpDialog"
     ></HelpTemplates>
+    <monitorAdd
+      :drawer="drawer"
+      :templateId="id"
+      :templateTypeId="typeId"
+      :templateSubTypeId="subtypeIds"
+      :templateTypeName="'新增    ' + name"
+      id=""
+      groupIds=""
+      @changeDrawer="changeDrawer"
+    ></monitorAdd>
   </div>
 </template>
 <script>
 import HelpTemplates from '@/views/monitorManager/helpTemplates/helpTemplates.vue'
+import monitorAdd from '@/views/monitorManager/monitorview/monitorAdd.vue'
 export default {
   data () {
     return {
-      identification: '',
+      // drawer 抽屉的打开状态
+      drawer: false,
+      // 传输值
+      id: '',
+      typeId: '',
+      subtypeIds: '',
+      name: '',
+      // 传世值 结束
       show: false,
       hostObjectName: '',
       hostType: '',
@@ -275,11 +293,14 @@ export default {
       this.titleType = ''
     },
     showAssetsAdd (id, typeId, subtypeIds, name) {
-      if (this.$route.query.identification) {
-        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增    ' + name, id: '', groupIds: '', identification: this.$route.query.identification } })
-      } else {
-        this.$router.push({ name: 'monitorAdd', query: { templateId: id, templateTypeId: typeId, templateSubTypeId: subtypeIds, templateTypeName: '新增    ' + name, id: '', groupIds: '' } })
-      }
+      this.id = id
+      this.typeId = typeId
+      this.subtypeIds = subtypeIds
+      this.name = name
+      this.drawer = true
+    },
+    changeDrawer (v) {
+      this.drawer = v
     },
     backfrom () {
       const referrer = JSON.parse(sessionStorage.getItem('referrer'))
@@ -298,7 +319,7 @@ export default {
   },
   actions: {
   },
-  components: { HelpTemplates }
+  components: { HelpTemplates, monitorAdd }
 }
 </script>
 <style lang="scss" scoped>

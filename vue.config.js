@@ -1,3 +1,4 @@
+
 const target = process.env.VUE_APP_SERVICE_URL
 module.exports = {
   devServer: {
