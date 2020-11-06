@@ -91,7 +91,7 @@ function filterAsyncRouter (asyncRouterMap) {
 }
 
 router.afterEach((to, from) => {
-  if (from.name !== null && from.name !== 'monitorAdd') {
+  if (from.name !== null) {
     const referrer = {
       name: from.name,
       query: from.query
