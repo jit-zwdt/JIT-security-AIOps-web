@@ -10,7 +10,7 @@ fi
 echo $VERSION
 
 if docker ps -a|grep -i jit-aiops-web;then
-   docker rm -f jit-aiops-server
+   docker rm -f jit-aiops-web
 fi
 
 if [ -z "$imagesid" ];then
