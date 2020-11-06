@@ -249,4 +249,17 @@ const api = {
   },
   refreshToken: '/refreshToken'
 }
+// 统一增加url前缀 by renjunming 2020/11/06
+/**
+function addPrefix (obj) {
+  for (const i in obj) {
+    if (typeof (obj[i]) === 'object') {
+      addPrefix(obj[i])
+    } else {
+      obj[i] = '/api' + obj[i]
+    }
+  }
+}
+addPrefix(api)
+*/
 export default api
