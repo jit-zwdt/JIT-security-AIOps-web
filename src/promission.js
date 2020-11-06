@@ -6,6 +6,7 @@ import Layout from '@/views/layout/App.vue'
 import store from './store'
 import api from '@/api/api'
 import History from '@/utils/history'
+import { resetRouter } from '@/router/index'
 
 var getRouter
 
@@ -55,6 +56,7 @@ router.beforeEach((to, from, next) => {
 
 function routerGo (to, next) {
   getRouter = filterAsyncRouter(getRouter)
+  resetRouter()
   router.addRoutes(getRouter)
   global.antRouter = getRouter
   next({ ...to, replace: true })

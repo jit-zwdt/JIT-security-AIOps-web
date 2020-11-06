@@ -24,10 +24,17 @@ const constantRouterMap = [
     }
   }
 ]
-const router = new Router({
+const createRouter = () => new Router({
   routes: constantRouterMap
   // // base: '/projectName/',
   // mode: 'history'
 })
+
+const router = createRouter()
+
+export function resetRouter () {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher
+}
 
 export default router
