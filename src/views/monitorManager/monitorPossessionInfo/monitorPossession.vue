@@ -879,7 +879,13 @@ export default {
             })
             element.color = '#' + element.color
           })
-          this.multipleSelection = this.form.gitems
+          this.form.gitems.forEach(element => {
+            this.forShowData.forEach(element1 => {
+              if (element.itemid === element1.itemid) {
+                this.multipleSelection.push(element1)
+              }
+            })
+          })
         }
       })
     },
