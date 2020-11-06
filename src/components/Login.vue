@@ -89,7 +89,7 @@ export default {
                   message: '登录成功',
                   type: 'success'
                 })
-                this.$router.replace({ path: api.index })
+                this.$router.push({ path: api.index })
               } else if (resp.data.code === 1003 || resp.data.code === 1004) {
                 this.$message({
                   message: resp.data.msg,
@@ -133,7 +133,7 @@ export default {
       this.makeCode()
     },
     makeCode () {
-      this.axios.get('/getCheckCode').then((resp) => {
+      this.axios.get(this.$api.getCheckCode).then((resp) => {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {

@@ -1,6 +1,7 @@
 const api = {
   login: '/login',
   index: '/index',
+  getCheckCode: '/getCheckCode',
   logout: '/logout/logout',
   regionManager: {
     list: '/regionManager/list'
@@ -114,7 +115,9 @@ const api = {
     findHostDetailGraphs: '/trend/findHostDetailGraphs/',
     getGProInfoList: '/gPrototype/getGProInfoList',
     createGpro: '/gPrototype/createGpro',
+    updateGpro: '/gPrototype/updateGpro',
     deleteGPro: '/gPrototype/deleteGpro',
+    getGItemByGraphId: '/gItem/getGItemByGraphId/',
     // monitorDBOracleInfo 上面的 monitorDBMysqlInfo 都有
     // monitorMiddleware 上面的 monitorDBMysqlInfo 都有
     // monitorPossessionInfo 上面的 monitorDBMysqlInfo 都有
