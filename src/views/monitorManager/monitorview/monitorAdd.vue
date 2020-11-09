@@ -18,7 +18,7 @@
      -->
     <div>
       <ToolBar>
-        <div class="queryCenter">
+        <div class="queryCenter" ref="queryCenter">
           <el-form
             :model="serverListForm"
             ref="serverListForm"
@@ -344,7 +344,7 @@
       <ToolBar class="queryright">
         <div class="dialog-footer">
           <el-button @click="handleClose()">返回</el-button>
-          <el-button type="primary" @click="submitOrUpdate('serverListForm')"
+          <el-button type="primary" @click="submitOrUpdate('serverListForm')" id="button-submit"
             >确认</el-button
           >
         </div>
@@ -604,6 +604,8 @@ export default {
       if (id !== null && id !== '') {
         this.showform(id)
       }
+      // 设置滚动元素在最上
+      this.$refs.queryCenter.scrollTop = 0
     },
     showform (id) {
       this.axios.post(this.$api.monitorManager.findById + id).then((resp) => {
@@ -896,8 +898,7 @@ export default {
         })
     },
     openDrawer () {
-      // 设置滚动元素在最上
-      this.$el.scrollTop = 0
+      // this.$el.scrollTop = 0
       this.serverListForm.templatesId = this.templateId
       var templateId = this.templateId
       this.serverListForm.typeId = this.templateTypeId
@@ -959,7 +960,7 @@ export default {
   float: left;
 }
 .queryright {
-  justify-content: flex-end !important;
+  justify-content: center !important;
 }
 .queryCenter {
   text-align: center;
@@ -1022,5 +1023,11 @@ export default {
 }
 .queryCenter ::-webkit-scrollbar{
   display: none;
+}
+/deep/.el-drawer__header {
+  margin-bottom: 20px;
+}
+#button-submit {
+  margin-left: 170px;
 }
 </style>
