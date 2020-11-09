@@ -287,7 +287,6 @@ export default {
       this.axios.get(this.$api.sysManager.getValidationPath, { params: { path: value, oldPath: this.oldPath } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
-          console.log(json.data)
           if (json.data === false) {
             return callback(new Error('这个菜单路径已经存在了'))
           } else {
@@ -300,7 +299,6 @@ export default {
       this.axios.get(this.$api.sysManager.getValidationName, { params: { name: value, oldName: this.oldName } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
-          console.log(json.data)
           if (json.data === false) {
             return callback(new Error('这个组件名称已经存在了'))
           } else {
@@ -313,7 +311,6 @@ export default {
       this.axios.get(this.$api.sysManager.getValidationComponent, { params: { component: value, oldComponent: this.oldComponent } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
-          console.log(json.data)
           if (json.data === false) {
             return callback(new Error('这个组件路径已经存在了'))
           } else {
@@ -640,7 +637,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.itemEditor = json.data
             this.oldPath = json.data.path
             this.oldName = json.data.name
@@ -657,7 +653,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.options1 = json.data
           }
         } else {

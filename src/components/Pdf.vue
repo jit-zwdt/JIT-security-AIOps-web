@@ -91,7 +91,6 @@ export default {
       }).then(response => {
         const binaryData = []
         binaryData.push(response.data)
-        console.log(response.data)
         var pdfUrl = window.URL.createObjectURL(new Blob(binaryData, { type: 'application/pdf' }))
         const fname = '巡检报告'
         const link = document.createElement('a')

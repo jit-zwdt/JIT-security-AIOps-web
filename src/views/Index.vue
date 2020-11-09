@@ -717,7 +717,6 @@ export default {
       return data
     },
     checkNullBoolean (value) {
-      console.log(value)
       if (value !== null && value !== '' && value !== undefined) {
         return true
       }

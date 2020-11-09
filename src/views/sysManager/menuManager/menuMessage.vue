@@ -115,7 +115,6 @@ export default {
       await this.axios.post(this.$api.sysManager.findBySysMenu + this.menuId).then(resp => {
         var json = resp.data
         if (json.code === 1) {
-          console.log(json.data)
           this.menu = json.data
         }
       })
@@ -125,7 +124,6 @@ export default {
         this.axios.post(this.$api.sysManager.findBySysMenu + this.menu.parentId).then(resp => {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             this.partentMenu = json.data
           }
         })

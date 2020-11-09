@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     handleChange (value, direction, movedKeys) {
-      // console.log(value, direction, movedKeys)
     },
     openDialog () {
       this.axios.get(this.$api.sysManager.getRoleUsers).then((resp) => {
