@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-import api from '@/api/api'
 import { clearToken } from '@/utils/common'
 import SIdentify from '@/components/identify'
 
@@ -89,7 +88,7 @@ export default {
                   message: '登录成功',
                   type: 'success'
                 })
-                this.$router.push({ path: api.index })
+                this.$router.push({ name: 'index' })
               } else if (resp.data.code === 1003 || resp.data.code === 1004) {
                 this.$message({
                   message: resp.data.msg,

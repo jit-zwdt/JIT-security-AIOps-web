@@ -5,9 +5,10 @@ module.exports = {
     https: false,
     disableHostCheck: true,
     proxy: {
-      '^/': {
+      '/api': {
         target: target,
-        changeOrigin: true
+        changeOrigin: true,
+        pathRewrite: {'^/api': '/api'}
       }
     }
   },
