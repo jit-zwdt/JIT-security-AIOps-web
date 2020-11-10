@@ -1997,6 +1997,7 @@ export default {
         }
       }
       this.form.gitems.splice(index, 1)
+      this.$refs.multipleTable.clearSelection()
     },
     showRandomColor () {
       var num = '#'
@@ -2099,6 +2100,7 @@ export default {
         gitems.itemid = _this[i].itemid
         this.form.gitems.push(gitems)
       }
+      this.$refs.multipleTable.clearSelection()
       this.$refs.gList.doClose()
     },
     toggleSelection () {
