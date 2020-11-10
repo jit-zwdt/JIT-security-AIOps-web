@@ -234,7 +234,8 @@ const api = {
     getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/',
     addDailyOperationReport: '/dailyOperationReport/addDailyOperationReport',
     getDailyOperationReports: '/dailyOperationReport/getDailyOperationReports/',
-    getDailyOperationReported: '/dailyOperationReport/getDailyOperationReported/'
+    getDailyOperationReported: '/dailyOperationReport/getDailyOperationReported/',
+    downLoadDaily: '/dailyOperationReport/downLoadDaily'
   },
   main: {
     // Index.vue
