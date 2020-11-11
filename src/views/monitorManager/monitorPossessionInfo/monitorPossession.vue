@@ -814,6 +814,7 @@ export default {
       forShowData: [],
       multipleSelection: [],
       multipleSelection1: [],
+      multipleSelectionTemp: [],
       color: '',
       graphData: [{
         graphid: '',
@@ -886,6 +887,7 @@ export default {
               }
             })
           })
+          this.multipleSelection1 = this.multipleSelection
         }
       })
     },
@@ -1970,7 +1972,7 @@ export default {
       return name
     },
     popoverFormInfo () {
-      this.multipleSelection.forEach(row => {
+      this.multipleSelection1.forEach(row => {
         this.$refs.multipleTable.toggleRowSelection(row, true) // 回显
       })
     },
@@ -1989,7 +1991,13 @@ export default {
       this.dialogVisible = false
     },
     handleDelete (index, row) {
+      for (var i = 0; i < this.multipleSelection1.length; i++) {
+        if (this.multipleSelection1[i].itemid === row.itemid) {
+          this.multipleSelection1.splice(i, 1)
+        }
+      }
       this.form.gitems.splice(index, 1)
+      this.$refs.multipleTable.clearSelection()
     },
     showRandomColor () {
       var num = '#'
@@ -2051,7 +2059,7 @@ export default {
       return flag
     },
     rightChose () {
-      var _this = this.multipleSelection1
+      var _this = this.multipleSelectionTemp
       if (!this.changeItemCheck(_this)) {
         this.$message({
           message: '请选择启用项',
@@ -2066,8 +2074,8 @@ export default {
         })
         return
       }
+      this.multipleSelection1 = _this
       this.form.gitems = []
-      this.multipleSelection = _this
       for (var i = 0; i < _this.length; i++) {
         var breaked = false
         var gitems = {
@@ -2092,18 +2100,16 @@ export default {
         gitems.itemid = _this[i].itemid
         this.form.gitems.push(gitems)
       }
+      this.$refs.multipleTable.clearSelection()
       this.$refs.gList.doClose()
     },
     toggleSelection () {
+      this.multipleSelectionTemp = this.multipleSelection1
       this.$refs.multipleTable.clearSelection()
-      this.multipleSelection1 = this.multipleSelection
-      this.multipleSelection.forEach(row => {
-        this.$refs.multipleTable.toggleRowSelection(row)
-      })
       this.$refs.gList.doClose()
     },
     handleSelectionChange (val) {
-      this.multipleSelection1 = val
+      this.multipleSelectionTemp = val
     },
     refreshGraphs (items, index) {
       if (this.setTimeoutGraphs === '') {
