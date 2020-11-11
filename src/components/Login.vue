@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="form" :model="loginForm" class="login-page" :rules="rules">
-      <h3 class="title">登录</h3>
+      <div style="text-align: center;"><img style="margin-bottom: 12px;" src="~@/assets/img/login_logo.png"/></div>
       <el-row>
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
@@ -179,7 +179,7 @@ export default {
     background: #4373a5;
     display: flex;
     align-items: center;
-    background: url('~@/assets/img/login.gif') center center no-repeat;
+    background: url('~@/assets/img/login.jpg') center center no-repeat;
     background-size: 100% 100%;
   }
 
