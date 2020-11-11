@@ -777,8 +777,8 @@ export default {
               this.tableData = json.data
               this.tableData.forEach(element => {
                 var hostName = ''
-                if (element.hostName !== null && element.hostName.length > 80) {
-                  hostName = element.hostName.substring(0, 80)
+                if (element.hostName !== null && element.hostName.length > 50) {
+                  hostName = element.hostName.substring(0, 50)
                   element.hostName = hostName + '...'
                 }
               })
@@ -1092,7 +1092,7 @@ export default {
       })
       if (yData.length === 0) {
         const pieCharts = document.getElementById(myChartName)
-        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%">监控项暂无数据</span></div>'
+        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%;color:#7df">监控项暂无数据</span></div>'
         return
       }
       const pieCharts = document.getElementById(myChartName)
