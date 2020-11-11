@@ -23,11 +23,8 @@ const History = {
     return this._history.length
   },
   dataBack (_history) {
-    if (_history !== null && _history.length > 0) {
-      _history = this._history.pop()
-      if (_history !== null && _history.length > 0) {
-        _history = _history[_history.length - 1]
-      }
+    if (_history !== null && _history !== undefined && _history.length > 0) {
+      _history = _history[_history.length - 1]
     }
     return _history
   },
