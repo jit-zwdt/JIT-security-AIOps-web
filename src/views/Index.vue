@@ -773,7 +773,16 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.tableData = json.data
+            if (json.data !== null) {
+              this.tableData = json.data
+              this.tableData.forEach(element => {
+                var hostName = ''
+                if (element.hostName !== null && element.hostName.length > 80) {
+                  hostName = element.hostName.substring(0, 80)
+                  element.hostName = hostName + '...'
+                }
+              })
+            }
           }
         } else {
           this.$message({
@@ -1081,6 +1090,11 @@ export default {
           yData.push('0.00')
         }
       })
+      if (yData.length === 0) {
+        const pieCharts = document.getElementById(myChartName)
+        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%">监控项暂无数据</span></div>'
+        return
+      }
       const pieCharts = document.getElementById(myChartName)
       const myChart = this.$echarts.init(pieCharts)
       const data = {
@@ -1467,7 +1481,7 @@ export default {
   display: flex;
   justify-content: space-between;
   float: left;
-  width: 30%;
+  width: 17%;
   font-size: 0.8rem;
 }
 .scroll_span_60 {
@@ -1475,7 +1489,7 @@ export default {
   display: flex;
   justify-content: space-between;
   float: left;
-  width: 60%;
+  width: 73%;
   font-size: 0.8rem;
 }
 .page-example {
