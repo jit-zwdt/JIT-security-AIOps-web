@@ -777,8 +777,8 @@ export default {
               this.tableData = json.data
               this.tableData.forEach(element => {
                 var hostName = ''
-                if (element.zabbixProblemDTO.name !== null && element.zabbixProblemDTO.name.length > 80) {
-                  hostName = element.zabbixProblemDTO.name.substring(0, 80)
+                if (element.zabbixProblemDTO.name !== null && element.zabbixProblemDTO.name.length > 95) {
+                  hostName = element.zabbixProblemDTO.name.substring(0, 95)
                   element.zabbixProblemDTO.name = hostName + '...'
                 }
               })
