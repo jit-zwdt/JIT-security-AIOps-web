@@ -341,6 +341,7 @@ export default {
   .grid-content {
     border-radius: 2px;
     min-height: 100%;
+    min-width: 500px;
   }
 
   .tree {
