@@ -1224,7 +1224,7 @@ export default {
       })
       if (yData.length === 0) {
         const pieCharts = document.getElementById(myChartName)
-        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%;color:#7df">监控项暂无数据</span></div>'
+        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%;color:#7df;height:50%">监控项暂无数据</span></div>'
         return
       }
       const pieCharts = document.getElementById(myChartName)
