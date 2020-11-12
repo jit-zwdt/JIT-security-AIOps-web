@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="5">
-      <el-col :span="8">
+      <el-col :span="11">
         <div class="grid-content bg-purple">
           <ToolBar>
             <div class="queryleft">
@@ -35,7 +35,9 @@
 
           <el-input
               placeholder="输入关键字进行过滤"
-              v-model="filterText">
+              v-model="filterText"
+              clearable
+              >
           </el-input>
           <div class="tree">
             <el-tree
@@ -54,7 +56,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="13">
         <div class="grid-content bg-purple showDetail" v-if="showDetail">
           <H6>详细信息：</H6>
           <el-form ref="showNode" :model="showNode" label-width="200px">
@@ -341,7 +343,6 @@ export default {
   .grid-content {
     border-radius: 2px;
     min-height: 100%;
-    min-width: 500px;
   }
 
   .tree {
