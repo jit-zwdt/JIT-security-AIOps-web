@@ -627,6 +627,7 @@
                     slot="reference"
                     icon="fa fa-external-link"
                     circle
+                    :style="{ display: checkbtnOfGraph() }"
                   ></el-button>
                 </el-popconfirm>
                   <el-button
@@ -674,9 +675,11 @@ import { timesMethod } from '@/utils/formatDate.js'
 export default {
   props: {
     hostid: String
+
   },
   data () {
     return {
+      status: 0,
       timefromselect: '',
       timetillselect: '',
       submitType: 0,
@@ -843,6 +846,7 @@ export default {
     }
   },
   created () {
+    this.getMonitorTypeItems()
     this.showInfo()
     this.showGraphsInfo()
     this.getShowData()
@@ -852,6 +856,30 @@ export default {
     this.form.graphtype = this.graphtypeOptions[0].value
   },
   methods: {
+    getMonitorTypeItems () {
+      const hostIds = []
+      hostIds.push(this.$route.query.hostId)
+      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(JSON.stringify(json.data))
+            json.data.forEach(element => {
+              if (element.jmx_available === 2 || element.available === 2 || element.ipmi_available === 2 || element.snmp_available === 2) {
+                this.status = 0
+              } else if (element.jmx_available === 1 || element.available === 1 || element.ipmi_available === 1 || element.snmp_available === 1) {
+                this.status = 1
+              }
+            })
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
     clearTime () {
       this.timefromselect = ''
       this.timetillselect = ''
@@ -1113,7 +1141,14 @@ export default {
       })
     },
     checkbtn (index, row) {
-      if (row.value_type === 1 || row.value_type === 2 || row.value_type === 4) {
+      if (row.value_type === 1 || row.value_type === 2 || row.value_type === 4 || row.status === 1 || this.status !== 1) {
+        return 'none'
+      } else {
+        return ''
+      }
+    },
+    checkbtnOfGraph () {
+      if (this.status !== 1) {
         return 'none'
       } else {
         return ''
@@ -1444,6 +1479,16 @@ export default {
           },
           color: colorData,
           legend: {
+            formatter: function (name) {
+              if (!name) return ''
+              if (name.length > 3) {
+                name = name.slice(0, 3) + '...'
+              }
+              return name
+            },
+            tooltip: {
+              show: true
+            },
             data: legendData
           },
           series: [
@@ -1552,6 +1597,16 @@ export default {
           },
           color: colorData,
           legend: {
+            formatter: function (name) {
+              if (!name) return ''
+              if (name.length > 3) {
+                name = name.slice(0, 3) + '...'
+              }
+              return name
+            },
+            tooltip: {
+              show: true
+            },
             data: legendData
           },
           toolbox: {
@@ -1684,6 +1739,16 @@ export default {
           },
           color: colorData,
           legend: {
+            formatter: function (name) {
+              if (!name) return ''
+              if (name.length > 3) {
+                name = name.slice(0, 3) + '...'
+              }
+              return name
+            },
+            tooltip: {
+              show: true
+            },
             data: legendData
           },
           toolbox: {
@@ -1756,6 +1821,16 @@ export default {
           },
           color: colorData,
           legend: {
+            formatter: function (name) {
+              if (!name) return ''
+              if (name.length > 3) {
+                name = name.slice(0, 3) + '...'
+              }
+              return name
+            },
+            tooltip: {
+              show: true
+            },
             data: legendData
           },
           toolbox: {
@@ -2109,7 +2184,17 @@ export default {
       this.$refs.gList.doClose()
     },
     handleSelectionChange (val) {
-      this.multipleSelectionTemp = val
+      if (val.length > 5) {
+        this.$message({
+          message: '监控项最多选择5项！',
+          type: 'error'
+        })
+        val.slice(5).forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row, false)
+        })
+      } else {
+        this.multipleSelectionTemp = val
+      }
     },
     refreshGraphs (items, index) {
       if (this.setTimeoutGraphs === '') {
