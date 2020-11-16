@@ -39,7 +39,11 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       getRouter = []
-      next()
+      if (to.fullPath === '/login') {
+        next()
+      } else {
+        next('/login')
+      }
     }
   } catch (e) {
     getRouter = []
