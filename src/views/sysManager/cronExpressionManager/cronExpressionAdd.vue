@@ -600,40 +600,6 @@
                     </el-row>
                   </el-radio-group>
                 </el-tab-pane>
-                <el-tab-pane>
-                  <span slot="label"><i class="el-icon-date"></i> 年</span>
-                  <el-radio-group @change="modifyYear" v-model="form.cron.year.cronEvery">
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="1">每年</el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="2">从
-                          <el-input v-model.number="form.cron.year.incrementStart" size="mini" style=" width: 100px" @blur="modifyYear('2')" :disabled="readOnlyStatus.year.cronEvery_2 ? false : 'disabled'"
-                                    placeholder="请输入内容"></el-input>
-                          年开始，每隔
-                          <el-input v-model.number="form.cron.year.incrementIncrement" size="mini" style=" width: 100px" @blur="modifyYear('2')" :disabled="readOnlyStatus.year.cronEvery_2 ? false : 'disabled'"
-                                    placeholder="请输入内容"></el-input>
-                          年执行一次
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-radio label="3">周期从
-                          <el-input v-model.number="form.cron.year.rangeStart" size="mini" style=" width: 100px" @blur="modifyYear('3')" :disabled="readOnlyStatus.year.cronEvery_3 ? false : 'disabled'"
-                                    placeholder="请输入内容"></el-input>
-                          到
-                          <el-input v-model.number="form.cron.year.rangeEnd" size="mini" style=" width: 100px" @blur="modifyYear('3')" :disabled="readOnlyStatus.year.cronEvery_3 ? false : 'disabled'"
-                                    placeholder="请输入内容"></el-input>
-                          年之间
-                        </el-radio>
-                      </el-col>
-                    </el-row>
-                  </el-radio-group>
-                </el-tab-pane>
               </el-tabs>
             </el-col>
           </el-row>
@@ -740,13 +706,6 @@ export default {
             rangeStart: 1,
             rangeEnd: 12,
             specificSpecific: []
-          },
-          year: {
-            cronEvery: '1',
-            incrementStart: 2020,
-            incrementIncrement: 1,
-            rangeStart: 2020,
-            rangeEnd: 2099
           }
         }
       },
@@ -788,7 +747,7 @@ export default {
         }
       ],
       // cron 数组
-      cronArray: ['*', '*', '*', '*', '*', '?', '*'],
+      cronArray: ['*', '*', '*', '*', '*', '?'],
       // readOnly 属性的动态操作属性
       readOnlyStatus: {
         second: {
@@ -832,11 +791,6 @@ export default {
           cronEvery_2: false,
           cronEvery_3: false,
           cronEvery_4: false
-        },
-        year: {
-          cronEvery_1: true,
-          cronEvery_2: false,
-          cronEvery_3: false
         }
       }
     }
@@ -1343,47 +1297,7 @@ export default {
       // 添加文字到数组的指定位置
       this.cronArray.splice(4, 0, monthCron)
     },
-    // 修改年调用的方法
-    modifyYear (cronEvery) {
-      // 清空 year 表单赋值
-      Object.assign(this.$data.readOnlyStatus.year, this.$options.data().readOnlyStatus.year)
-      // 判断是否选中
-      if (this.form.cron.year.cronEvery !== cronEvery) {
-        return
-      }
-      // 首先移除 年位的数组文字
-      this.cronArray.splice(6, 1)
-      // 声明需要添加的文字
-      let yearCron = '*'
-      if (cronEvery === '1') { // 每年
-        // 修改 readonly 状态
-        this.readOnlyStatus.year.cronEvery_1 = true
-        yearCron = '*'
-      } else if (cronEvery === '2') { // 从 ? 年开始 , 每隔 ? 年执行一次
-        // 修改 readonly 状态
-        this.readOnlyStatus.year.cronEvery_2 = true
-        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
-        this.form.cron.year.incrementStart = this.checkYear(this.form.cron.year.incrementStart) ? this.form.cron.year.incrementStart : '1970'
-        // 正常的拼接 cron 字符串
-        yearCron = this.form.cron.year.incrementStart + '/' + this.form.cron.year.incrementIncrement
-      } else if (cronEvery === '3') { // 周期从 ? 到 ? 年之间
-        // 修改 readonly 状态
-        this.readOnlyStatus.year.cronEvery_3 = true
-        // 判断输入的值 是否符合 如果符合则进行重新赋值 三元运算
-        this.form.cron.year.rangeStart = this.checkYear(this.form.cron.year.rangeStart) ? this.form.cron.year.rangeStart : '1970'
-        this.form.cron.year.rangeEnd = this.checkYear(this.form.cron.year.rangeEnd) ? this.form.cron.year.rangeEnd : '2099'
-        // 判断第一个值是否小于第二个值
-        if (this.form.cron.year.rangeStart > this.form.cron.year.rangeEnd) {
-          // 把大的值赋值给小的值
-          this.form.cron.year.rangeStart = this.form.cron.year.rangeEnd
-          this.$message.error('前面的值不能大于后面的值')
-        }
-        // 正常的拼接 cron 字符串
-        yearCron = this.form.cron.year.rangeStart + '-' + this.form.cron.year.rangeEnd
-      }
-      // 添加文字到数组的指定位置
-      this.cronArray.splice(6, 0, yearCron)
-    },
+
     // 校验分秒
     checkMinutesAndSeconds (value) {
       // 如果值为 null 直接返回 false 不是数字
@@ -1444,22 +1358,6 @@ export default {
         return false
       } else if (value > 12) { // 如果输入的值大于 12 返回 fasle
         this.$message.error('输入的值不能大于 12')
-        return false
-      }
-      return true
-    },
-    // 校验月
-    checkYear (value) {
-      // 如果值为 null 直接返回 false 不是数字
-      if (value === '') {
-        return false
-      }
-      // 如果输入的值小于 0 返回 fasle
-      if (value < 1970) {
-        this.$message.error('输入的值不能小于 1970')
-        return false
-      } else if (value > 2099) { // 如果输入的值大于 60 返回 fasle
-        this.$message.error('输入的值不能大于 2099')
         return false
       }
       return true
