@@ -286,10 +286,8 @@ export default {
       })
     },
     showClear () {
-      this.assetNameTop = ''
-      this.assetRegisterDateStartTop = ''
-      this.assetRegisterDateEndTop = ''
-      this.titleType = ''
+      this.hostObjectName = ''
+      this.hostType = ''
     },
     showAssetsAdd (id, typeId, subtypeIds, name) {
       this.id = id
