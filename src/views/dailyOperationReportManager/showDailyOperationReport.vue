@@ -79,10 +79,29 @@
   </div>
 </template>
 <script>
+import { formatTodate } from '@/utils/format.js'
 export default {
   methods: {
     reloadData () {
       this.showInfo()
+    },
+    // 导出 excel 文档的方法
+    exportReport () {
+      var gmtCreate = new Date(this.dailyOperationsData.gmtCreate)
+      var gmtModified = new Date(this.dailyOperationsData.gmtModified)
+      this.dailyOperationsData.gmtCreate = formatTodate(gmtCreate, 'YYYY-MM-DD HH:mm:ss')
+      this.dailyOperationsData.gmtModified = formatTodate(gmtModified, 'YYYY-MM-DD HH:mm:ss')
+      this.axios.post(this.$api.dailyOperationReportManager.downLoadDaily, this.dailyOperationsData, { responseType: 'blob' }).then((resp) => {
+        const url = window.URL.createObjectURL(resp.data) // 为文件流创建构建下载链接
+        const link = document.createElement('a') // 创建a标签
+
+        link.style.display = 'none'
+        link.href = url
+        link.setAttribute('download', '运维日报.xlsx') // 设置a标签的下载动作和下载文件名
+        document.body.appendChild(link)
+        link.click() // 执行下载
+        document.body.removeChild(link) // 释放标签
+      })
     },
     showInfo () {
       this.loading = true
