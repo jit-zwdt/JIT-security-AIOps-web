@@ -25,7 +25,7 @@
       </div>
       <div class="queryright">
         <el-button type="primary" size="small" v-print="'#print'">打印</el-button>
-        <el-button type="primary" size="small" @click="showClear() == false">导出</el-button>
+        <el-button type="primary" size="small" @click="exportReport() == false">导出</el-button>
       </div>
     </ToolBar>
     <div style="background-color: white;" id="print">
@@ -141,6 +141,19 @@ export default {
       this.resolveTimeEnd = ''
       this.getDate()
       this.getCurrentMonthFirst()
+    },
+    // 导出 excel 文档的方法
+    exportReport () {
+      this.axios.post(this.$api.malfunctionSolve.downLoadFailureToSolve, this.tableData, { responseType: 'blob' }).then((resp) => {
+        const url = window.URL.createObjectURL(resp.data) // 为文件流创建构建下载链接
+        const link = document.createElement('a') // 创建a标签
+        link.style.display = 'none'
+        link.href = url
+        link.setAttribute('download', '故障解决统计报表.xlsx') // 设置a标签的下载动作和下载文件名
+        document.body.appendChild(link)
+        link.click() // 执行下载
+        document.body.removeChild(link) // 释放标签
+      })
     },
     getDate: function () {
       const _this = this

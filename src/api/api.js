@@ -89,7 +89,8 @@ const api = {
     findAllRole: '/sys/role/findAllRole',
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
-    problemSolveReport: '/problem/problemSolveReport'
+    problemSolveReport: '/problem/problemSolveReport',
+    downLoadFailureToSolve: '/problem/downLoadFailureToSolve'
   },
   monitorManager: {
     // this.$api.monitorManager.
