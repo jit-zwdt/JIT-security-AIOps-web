@@ -863,7 +863,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(JSON.stringify(json.data))
             json.data.forEach(element => {
               if (element.jmx_available === 2 || element.available === 2 || element.ipmi_available === 2 || element.snmp_available === 2) {
                 this.status = 0
@@ -1874,6 +1873,9 @@ export default {
               units = element.units
               legendData.push(element.name)
             })
+            const pieCharts = document.getElementById('charts-graph-demo-' + i)
+            pieCharts.innerHTML = ''
+            pieCharts.removeAttribute('_echarts_instance_')
             this.makeEchartsGraphData(graphData[0].graphtype, finalResult, gItemData, graphData, i, units, legendData, itemData)
           }
         }
