@@ -115,7 +115,11 @@ export default {
   methods: {
     addMedium (row) {
       this.row = row
-      this.maxid = this.tableData[this.tableData.length - 1].mediaid
+      if (this.tableData.length > 0) {
+        this.maxid = this.tableData[this.tableData.length - 1].mediaid
+      } else {
+        this.maxid = 0
+      }
       this.addMediumDialog = true
     },
     openDialog () {
@@ -274,7 +278,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.tableData = json.data
+            // this.tableData = json.data
             this.$message({
               message: '更新成功',
               type: 'success'
