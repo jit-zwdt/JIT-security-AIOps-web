@@ -7,7 +7,7 @@
             type="text"
             v-model="hostObjectName"
             size="small"
-            placeholder="业务名称/备注"
+            placeholder="可见的名称/备注"
             clearable
           ></el-input>
         </el-col>
@@ -126,7 +126,7 @@
           <el-link type="primary" @click="showPossessionInfo(scope.row)">{{scope.row.objectName}}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="业务名称" prop="businessName" min-width="12%" v-if="datashow"></el-table-column>
+      <el-table-column label="可见的名称" prop="businessName" min-width="12%" v-if="datashow"></el-table-column>
       <el-table-column label="IP" prop="hostIp" min-width="7%" :resizable="false"></el-table-column>
       <el-table-column align="center" label="启用监控" min-width="6%" :resizable="false">
         <template slot-scope="scope">
