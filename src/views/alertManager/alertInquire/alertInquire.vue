@@ -4,202 +4,194 @@
       <div class="queryleft">
         <el-col :span="8">
           <el-select
-              v-model="severity"
-              class="datetop"
-              filterable
-              placeholder="告警级别"
-              clearable
+            v-model="severity"
+            class="datetop"
+            filterable
+            placeholder="告警级别"
+            clearable
           >
             <el-option
-                v-for="item in severityOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+              v-for="item in severityOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             >
             </el-option>
           </el-select>
         </el-col>
         <el-date-picker
-            v-model="timeFrom"
-            type="date"
-            placeholder="开始日期"
-            class="datetop"
+          v-model="timeFrom"
+          type="date"
+          placeholder="开始日期"
+          class="datetop"
         ></el-date-picker>
         <el-date-picker
-            v-model="timeTill"
-            type="date"
-            placeholder="结束日期"
-            class="datetop"
+          v-model="timeTill"
+          type="date"
+          placeholder="结束日期"
+          class="datetop"
         ></el-date-picker>
         <el-col :span="12">
           <el-input
-              type="text"
-              v-model="name"
-              size="small"
-              placeholder="告警标题"
-              clearable
+            type="text"
+            v-model="name"
+            size="small"
+            placeholder="告警标题"
+            clearable
           ></el-input>
         </el-col>
         <el-button
-            type="primary"
-            size="small"
-            @click="showInfo() == false"
-            icon="el-icon-search"
-        >查询
-        </el-button
-        >
+          type="primary"
+          size="small"
+          @click="showInfo() == false"
+          icon="el-icon-search"
+          >查询
+        </el-button>
         <el-button
-            type="primary"
-            size="small"
-            @click="showClear() == false"
-            icon="el-icon-refresh-left"
-        >重置
-        </el-button
-        >
+          type="primary"
+          size="small"
+          @click="showClear() == false"
+          icon="el-icon-refresh-left"
+          >重置
+        </el-button>
       </div>
       <div style="float: right">
         <el-button
-            type="primary"
-            size="small"
-            style="
-            background-color: #8E8E8E;
+          type="primary"
+          size="small"
+          style="
+            background-color: #8e8e8e;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-            @click="buttonClick(0)"
-        >未定义
-        </el-button
-        >
+          @click="buttonClick(0)"
+          >未定义
+        </el-button>
         <el-button
-            type="primary"
-            size="small"
-            style="
+          type="primary"
+          size="small"
+          style="
             background-color: #81c0c0;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-            @click="buttonClick(1)"
-        >信息
-        </el-button
-        >
+          @click="buttonClick(1)"
+          >信息
+        </el-button>
         <el-button
-            type="primary"
-            size="small"
-            style="
+          type="primary"
+          size="small"
+          style="
             background-color: #ffd306;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-            @click="buttonClick(2)"
-        >警告
-        </el-button
-        >
+          @click="buttonClick(2)"
+          >警告
+        </el-button>
         <el-button
-            type="primary"
-            size="small"
-            style="
+          type="primary"
+          size="small"
+          style="
             background-color: #ea7500;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-            @click="buttonClick(3)"
-        >一般严重
-        </el-button
-        >
+          @click="buttonClick(3)"
+          >一般严重
+        </el-button>
         <el-button
-            type="primary"
-            size="small"
-            style="
+          type="primary"
+          size="small"
+          style="
             background-color: #ff2020;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-            @click="buttonClick(4)"
-        >严重
-        </el-button
-        >
+          @click="buttonClick(4)"
+          >严重
+        </el-button>
         <el-button
-            type="primary"
-            size="small"
-            style="
+          type="primary"
+          size="small"
+          style="
             background-color: #800000;
             border: none;
             color: #ffffff;
             weight: 10;
             font-size: 15px;
           "
-            @click="buttonClick(5)"
-        >灾难
-        </el-button
-        >
+          @click="buttonClick(5)"
+          >灾难
+        </el-button>
       </div>
       <div class="queryright"></div>
     </ToolBar>
     <el-table
-        :data="tableData"
-        v-loading="loading"
-        border
-        style="width: 100%"
-        :row-style="tableRowStyle"
-        :cell-style="yellowBg"
-        :header-cell-style="tableHeaderColor"
+      :data="tableData"
+      v-loading="loading"
+      border
+      style="width: 100%"
+      :row-style="tableRowStyle"
+      :cell-style="yellowBg"
+      :header-cell-style="tableHeaderColor"
     >
       <el-table-column
-          label="告警时间"
-          prop="zabbixProblemDTO.clock"
-          :resizable="false"
-          :formatter="formatterdata"
-          width="250"
+        label="告警时间"
+        prop="zabbixProblemDTO.clock"
+        :resizable="false"
+        :formatter="formatterdata"
+        width="250"
       ></el-table-column>
       <el-table-column
-          label="主机名称"
-          prop="hostName"
-          :resizable="false"
-          width="200"
+        label="主机名称"
+        prop="hostName"
+        :resizable="false"
+        width="200"
       ></el-table-column>
       <el-table-column
-          label="主机IP"
-          prop="ip"
-          :resizable="false"
-          width="200"
+        label="主机IP"
+        prop="ip"
+        :resizable="false"
+        width="200"
       ></el-table-column>
       <el-table-column
-          label="告警标题"
-          prop="zabbixProblemDTO.name"
-          :resizable="false"
+        label="告警标题"
+        prop="zabbixProblemDTO.name"
+        :resizable="false"
       ></el-table-column>
       <el-table-column
-          label="持续时间"
-          prop="continuousTime"
-          :resizable="false"
-          :formatter="formattercontinuous"
-          width="250"
+        label="持续时间"
+        prop="continuousTime"
+        :resizable="false"
+        :formatter="formattercontinuous"
+        width="250"
       ></el-table-column>
       <el-table-column
-          label="级别"
-          prop="zabbixProblemDTO.severity"
-          min-width="10%"
-          :resizable="false"
-          :formatter="severityLevelFormat"
-          :v-show="false"
+        label="级别"
+        prop="zabbixProblemDTO.severity"
+        min-width="10%"
+        :resizable="false"
+        :formatter="severityLevelFormat"
+        :v-show="false"
       >
       </el-table-column>
     </el-table>
     <div>
       <ul
-          class="infinite-list"
-          v-infinite-scroll="load"
-          style="overflow: auto"
+        class="infinite-list"
+        v-infinite-scroll="load"
+        style="overflow: auto"
       ></ul>
     </div>
   </div>
@@ -266,9 +258,16 @@ export default {
     const severityVal = this.$route.query.severity
     if (typeof (severityVal) !== 'undefined' && severityVal !== '' && severityVal !== null) {
       this.severity = severityVal
-      this.$router.push({ name: 'alertInquire' })
+      // this.$router.push({ name: 'alertInquire', query: { 'severity': severityVal } })
     }
     this.showInfo()
+  },
+  watch: {
+    $route: function (to, from) {
+      const severity = this.$route.query.severity
+      this.severity = severity
+      this.showInfo()
+    }
   },
   mounted () {
     const _this = this // 声明一个变量指向Vue实例this，保证作用域一致
@@ -401,8 +400,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .datetop /deep/ input {
-    height: 32px !important;
-    margin-top: 1px !important;
-  }
+.datetop /deep/ input {
+  height: 32px !important;
+  margin-top: 1px !important;
+}
 </style>

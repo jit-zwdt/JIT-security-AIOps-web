@@ -1,25 +1,56 @@
 <template>
   <div class="login-container">
-    <el-form ref="form" :model="loginForm" class="login-page" :rules="rules">
-      <div style="text-align: center;"><img style="margin-bottom: 12px;" src="~@/assets/img/login_logo.png"/></div>
+    <div style="width: calc(100%);height: calc(100% - 30px);z-index: 99;position:fixed;">
+      <iframe
+        src="login.html"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        scrolling="no"
+        style="position: related; top: 2.8px;"
+      ></iframe>
+    </div>
+    <el-form ref="form" :model="loginForm" class="login-page" :rules="rules" style="z-index: 999">
+      <div style="text-align: center">
+        <img style="margin-bottom: 12px" src="~@/assets/img/login_logo.png" />
+      </div>
       <el-row>
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
+          <el-input
+            v-model="loginForm.username"
+            placeholder="请输入用户名"
+            clearable
+          ></el-input>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item prop="password">
-          <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password clearable></el-input>
+          <el-input
+            type="password"
+            v-model="loginForm.password"
+            placeholder="请输入密码"
+            show-password
+            clearable
+          ></el-input>
         </el-form-item>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="14">
           <el-form-item prop="verificationCode">
-            <el-input placeholder="请输入验证码" v-model="loginForm.verificationCode">
+            <el-input
+              placeholder="请输入验证码"
+              v-model="loginForm.verificationCode"
+            >
               <i
-                  v-if="identifyCode.toLowerCase() === loginForm.verificationCode.toLowerCase() && identifyCode !== ''"
-                  class="el-icon-success" style="color: #7df371;"
-                  slot="suffix">
+                v-if="
+                  identifyCode.toLowerCase() ===
+                    loginForm.verificationCode.toLowerCase() &&
+                  identifyCode !== ''
+                "
+                class="el-icon-success"
+                style="color: #7df371"
+                slot="suffix"
+              >
               </i>
             </el-input>
           </el-form-item>
@@ -30,7 +61,9 @@
           </div>
         </el-col>
       </el-row>
-      <el-button style="width: 100%" type="primary" @click="submitClick">登录</el-button>
+      <el-button style="width: 100%" type="primary" @click="submitClick"
+        >登录</el-button
+      >
     </el-form>
   </div>
 </template>
@@ -172,32 +205,30 @@ export default {
 }
 </script>
 <style>
+.login-container {
+  width: 100%;
+  height: 100%;
+  background: #4373a5;
+  display: flex;
+  align-items: center;
+  background: url('~@/assets/img/login.jpg') center center no-repeat;
+  background-size: 100% 100%;
+}
 
-  .login-container {
-    width: 100%;
-    height: 100%;
-    background: #4373a5;
-    display: flex;
-    align-items: center;
-    background: url('~@/assets/img/login.jpg') center center no-repeat;
-    background-size: 100% 100%;
-  }
+.login-page {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  margin: 0px auto;
+  width: 350px;
+  padding: 20px 20px 35px 20px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
+}
 
-  .login-page {
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    margin: 0px auto;
-    width: 350px;
-    padding: 20px 20px 35px 20px;
-    background: #fff;
-    border: 1px solid #eaeaea;
-    box-shadow: 0 0 25px #cac6c6;
-  }
-
-  .title {
-    display: block;
-    text-align: center;
-    color: #D5D6E2;
-  }
-
+.title {
+  display: block;
+  text-align: center;
+  color: #d5d6e2;
+}
 </style>
