@@ -30,7 +30,7 @@
             <el-form-item label="对象名称" prop="objectName">
               <el-input v-model="serverListForm.objectName" clearable></el-input>
             </el-form-item>
-            <el-form-item label="业务名称" prop="businessName">
+            <el-form-item label="可见的名称" prop="businessName">
               <el-input
                 v-model="serverListForm.businessName"
                 clearable
@@ -388,13 +388,13 @@ export default {
         }
       })
     }
-    // 业务名称不可重复'',businessName: '',
+    // 可见的名称不可重复'',businessName: '',
     var validationBusinessName = (rule, value, callback) => {
       this.axios.get(this.$api.monitorManager.checkBusinessName, { params: { businessName: value, odlBusinessName: this.odlBusinessName } }).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           if (json.data === false) {
-            return callback(new Error('这个业务名称已经存在了'))
+            return callback(new Error('这个可见的名称已经存在了'))
           } else {
             return callback()
           }
@@ -500,7 +500,7 @@ export default {
         businessName: [
           {
             required: true,
-            message: '请输入业务名称',
+            message: '请输入可见的名称',
             trigger: 'blur'
           },
           { validator: validationBusinessName, trigger: 'blur' }

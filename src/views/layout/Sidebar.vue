@@ -34,6 +34,7 @@
         :default-active="$route.path"
         style="border-color: #222d32"
         :collapse="system.miniSidebar === 1"
+        :unique-opened="true"
       >
         <template v-for="(menu_v, menu_k) in routes">
           <template v-if="menu_v.path !== '*'">

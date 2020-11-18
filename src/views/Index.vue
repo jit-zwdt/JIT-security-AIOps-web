@@ -769,7 +769,7 @@ export default {
             }
           },
           zlevel: 1,
-          show: true
+          show: false
         }, {
           type: 'category',
           gridIndex: 1,
@@ -1097,8 +1097,8 @@ export default {
         },
         grid: [
           {
-            top: 150,
-            bottom: 20,
+            top: 160,
+            bottom: 10,
             left: '12%'
           },
           {
@@ -1124,7 +1124,7 @@ export default {
             }
           },
           zlevel: 1,
-          show: true
+          show: false
         }, {
           type: 'category',
           gridIndex: 1,
@@ -1176,12 +1176,12 @@ export default {
       })
     },
     makeData6 () {
-      this.makeData6_info('2', 'myChart4', 'CPU使用率', '%')
-      this.makeData6_info('3', 'myChart5', '内存使用率', '%')
-      this.makeData6_info('5', 'myChart6', '系统盘使用率', '%')
-      this.makeData6_info('4', 'myChart7', '网络接口速率', 'MB/s')
+      this.makeData6_info('2', 'myChart4', 'CPU使用率', '%', 'CPU使用率暂无数据')
+      this.makeData6_info('3', 'myChart5', '内存使用率', '%', '内存使用率暂无数据')
+      this.makeData6_info('5', 'myChart6', '系统盘使用率', '%', '系统盘使用率暂无数据')
+      this.makeData6_info('4', 'myChart7', '网络接口速率', 'MB/s', '网络接口速率暂无数据')
     },
-    makeData6_info (itemKey, myChartName, name, type) {
+    makeData6_info (itemKey, myChartName, name, type, infoname) {
       const param = {
         typeId: '1',
         itemKey: itemKey,
@@ -1192,7 +1192,7 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData6_Chart(myChartName, json.data, name, type)
+            this.makeData6_Chart(myChartName, json.data, name, type, infoname)
           } else {
           }
         } else {
@@ -1203,7 +1203,7 @@ export default {
         }
       })
     },
-    makeData6_Chart (myChartName, myChartData, name, type) {
+    makeData6_Chart (myChartName, myChartData, name, type, infoname) {
       const xData = []
       const yData = []
       myChartData.forEach(element => {
@@ -1224,7 +1224,7 @@ export default {
       })
       if (yData.length === 0) {
         const pieCharts = document.getElementById(myChartName)
-        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%;color:#7df;height:50%">监控项暂无数据</span></div>'
+        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%;color:#7df;height:50%">' + infoname + '</span></div>'
         return
       }
       const pieCharts = document.getElementById(myChartName)

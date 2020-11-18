@@ -20,7 +20,6 @@
         style="width: 100%"
         :row-style="tableRowStyle"
         :header-cell-style="tableHeaderColor"
-        @sort-change="changeTableSort"
     >
       <el-table-column
           label="运维人"
