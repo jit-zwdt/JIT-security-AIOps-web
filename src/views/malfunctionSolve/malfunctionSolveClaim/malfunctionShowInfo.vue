@@ -2,7 +2,7 @@
     <el-dialog
             @opened="openDialog"
             :width="dialogWidth"
-            :title="title"
+            title="认领信息"
             :visible.sync="showEditDialog"
             :show-close="false"
             :close-on-click-modal="false"
