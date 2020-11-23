@@ -149,7 +149,7 @@ export default {
         const link = document.createElement('a') // 创建a标签
         link.style.display = 'none'
         link.href = url
-        link.setAttribute('download', '故障解决统计报表.xlsx') // 设置a标签的下载动作和下载文件名
+        link.setAttribute('download', '故障解决统计报表.xls') // 设置a标签的下载动作和下载文件名
         document.body.appendChild(link)
         link.click() // 执行下载
         document.body.removeChild(link) // 释放标签
