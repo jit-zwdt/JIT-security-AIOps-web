@@ -1480,8 +1480,8 @@ export default {
           legend: {
             formatter: function (name) {
               if (!name) return ''
-              if (name.length > 3) {
-                name = name.slice(0, 3) + '...'
+              if (name.length > 20) {
+                name = name.slice(0, 20) + '...'
               }
               return name
             },
@@ -1598,8 +1598,8 @@ export default {
           legend: {
             formatter: function (name) {
               if (!name) return ''
-              if (name.length > 3) {
-                name = name.slice(0, 3) + '...'
+              if (name.length > 20) {
+                name = name.slice(0, 20) + '...'
               }
               return name
             },
@@ -1740,8 +1740,8 @@ export default {
           legend: {
             formatter: function (name) {
               if (!name) return ''
-              if (name.length > 3) {
-                name = name.slice(0, 3) + '...'
+              if (name.length > 20) {
+                name = name.slice(0, 20) + '...'
               }
               return name
             },
