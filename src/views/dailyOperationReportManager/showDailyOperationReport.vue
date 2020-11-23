@@ -97,7 +97,7 @@ export default {
 
         link.style.display = 'none'
         link.href = url
-        link.setAttribute('download', '运维日报.xlsx') // 设置a标签的下载动作和下载文件名
+        link.setAttribute('download', '运维日报.xls') // 设置a标签的下载动作和下载文件名
         document.body.appendChild(link)
         link.click() // 执行下载
         document.body.removeChild(link) // 释放标签
