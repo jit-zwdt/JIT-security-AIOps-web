@@ -46,6 +46,7 @@
       <el-table-column label="任务类名" prop="jobClassName" min-width="120"></el-table-column>
       <el-table-column label="任务方法名" prop="jobMethodName" min-width="80"></el-table-column>
       <el-table-column label="cron表达式" prop="cronExpression" min-width="55"></el-table-column>
+      <el-table-column label="表达式名称" :formatter="formatterCronExpression" prop="cronExpression" min-width="55"></el-table-column>
       <el-table-column label="传递参数（json串格式）" prop="jsonParam" min-width="100"></el-table-column>
       <el-table-column label="分组" prop="jobGroup" min-width="30"></el-table-column>
       <el-table-column label="状态" prop="status" min-width="35" :formatter="statusFormat"></el-table-column>
@@ -114,6 +115,8 @@ export default {
       requestData: {
         id: ''
       },
+      // 所有的 Cron 表达式数据
+      cronExpressions: [],
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
@@ -164,6 +167,16 @@ export default {
           }
         }
         this.loading = false
+      })
+      // 请求所有的 Cron 表达式
+      this.axios.post(this.$api.sysManager.getAllCronExpressions).then(resp => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            // 赋值
+            this.cronExpressions = json.data
+          }
+        }
       })
     },
     pageChange (item) {
@@ -241,6 +254,20 @@ export default {
       } else {
         return data
       }
+    },
+    // 格式化日期时间表达式
+    formatterCronExpression (data) {
+      // 赋值初始值
+      let parseStr = ''
+      // 循环判断进行赋值
+      this.cronExpressions.forEach(function (value) {
+        if (value.cronExpression === data.cronExpression) {
+          parseStr = value.cronExpressionDesc
+          return false
+        }
+      })
+      // 返回解析字符串
+      return parseStr
     }
   },
   components: { Pagination, ScheduleTaskAdd }
