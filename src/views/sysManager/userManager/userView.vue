@@ -20,7 +20,7 @@
                     <el-row>
                         <el-col>
                             <el-form-item label="头像：" prop="picUrl">
-                                <img v-if="userForm.picUrl" :src="userForm.picUrl" class="avatar">
+                                <img v-if="userForm.picUrl" :src="url" class="avatar">
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -166,7 +166,8 @@ export default {
         hobby: '',
         status: 1,
         picUrl: ''
-      }
+      },
+      url: ''
     }
   },
   methods: {
@@ -174,8 +175,8 @@ export default {
       this.userForm.departmentId = e.id
       this.department = e.label
     },
-    openDialog () {
-      this.axios.post(this.$api.sysManager.findUserById + this.id).then(resp => {
+    async openDialog () {
+      await this.axios.post(this.$api.sysManager.findUserById + this.id).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -204,6 +205,23 @@ export default {
           }
         }
       })
+      if (this.userForm.picUrl !== null && this.userForm.picUrl !== '') {
+        this.axios.post(this.$api.sysManager.getPicBase64 + this.userForm.picUrl).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              var prefix = this.userForm.picUrl.substring(this.userForm.picUrl.lastIndexOf('.') + 1, this.userForm.picUrl.length)
+              if (prefix === 'jpg') {
+                this.url = 'data:image/jpg;base64,' + json.data
+              } else if (prefix === 'png') {
+                this.url = 'data:image/png;base64,' + json.data
+              } else {
+                this.url = 'data:image/jpeg;base64,' + json.data
+              }
+            }
+          }
+        })
+      }
     },
     closefrom () {
       this.clearform()
