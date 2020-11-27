@@ -107,6 +107,7 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.tableData = json.data.dataList
+              console.log(this.tableData)
               this.currentTotal = json.data.totalRow
               this.loading = false
             }
@@ -127,6 +128,7 @@ export default {
       if (data == null) {
         return ''
       }
+      console.log(data)
       return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
     },
     showDailyOperationReport (index, row) {
