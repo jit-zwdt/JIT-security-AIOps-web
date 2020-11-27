@@ -49,14 +49,14 @@
                 </td>
                 <th class="darkmainborderth">ip地址</th>
                 <td class="darkmainbordertd">{{ this.serverForm.agentIp }}</td>
+                <th class="darkmainborderth">运行时间</th>
+                <td class="darkmainbordertd" colspan="5">{{ this.runTime }}</td>
               </tr>
               <tr style="height: 40px">
                 <th class="darkmainborderth">操作系统</th>
                 <td class="darkmainbordertd" colspan="5">
                   {{ this.operateSystem }}
                 </td>
-                <th class="darkmainborderth">运行时间</th>
-                <td class="darkmainbordertd" colspan="5">{{ this.runTime }}</td>
               </tr>
             </table>
           </div>
