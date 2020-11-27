@@ -67,7 +67,7 @@
             font-size: 15px;
           "
           @click="buttonClick(0)"
-          >未定义
+          >未分类
         </el-button>
         <el-button
           type="primary"
@@ -212,7 +212,7 @@ export default {
       severityOptions: [
         {
           value: 0,
-          label: '未定义'
+          label: '未分类'
         },
         {
           value: 1,

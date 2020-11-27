@@ -25,7 +25,7 @@
                     </el-row>
                     <el-row>
                         <el-col>
-                            <el-form-item label="字典编号：" prop="dictCode">
+                            <el-form-item label="字典编码：" prop="dictCode">
                                 <el-input  v-model="dictionaryForm.dictCode" clearable style="width:100%"></el-input>
                             </el-form-item>
                         </el-col>

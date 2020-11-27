@@ -65,9 +65,6 @@
                   label="主机名称"
                   min-width="30%"
                 >
-                  <template slot-scope="scope">
-                    {{ showHostname(scope.row.hostid) }}
-                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="description"
