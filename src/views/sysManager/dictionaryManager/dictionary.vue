@@ -3,7 +3,7 @@
         <ToolBar>
             <div class="queryleft">
                 <el-input type="text" v-model="name" size="small" placeholder="字典名称" clearable></el-input>
-                <el-input type="text" v-model="code" size="small" placeholder="字典编号" clearable></el-input>
+                <el-input type="text" v-model="code" size="small" placeholder="字典编码" clearable></el-input>
                 <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
                 <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
             </div>
