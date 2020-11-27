@@ -94,7 +94,11 @@ export default {
     },
     showInfoTimeout () {
       console.log('http')
-      this.axios.get(this.$api.dailyOperationReportManager.getDailyOperationReport).then(resp => {
+      this.axios.get(this.$api.dailyOperationReportManager.getDailyOperationReport, {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        }
+      }).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           console.log(json)
