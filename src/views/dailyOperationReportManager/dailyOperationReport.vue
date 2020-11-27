@@ -97,7 +97,7 @@ export default {
       this.axios.get(this.$api.dailyOperationReportManager.getDailyOperationReport).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
-          console.log(json.code)
+          console.log(json)
           if (json.code === 1) {
             console.log('success')
             this.dailyOperationsData = json.data
