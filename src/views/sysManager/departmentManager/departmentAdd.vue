@@ -152,6 +152,8 @@ export default {
         status: 1,
         departNameEn: '',
         departNameAbbr: '',
+        createBy: '',
+        gmtCreate: '',
         remark: '',
         departOrder: '',
         description: ''
@@ -202,11 +204,14 @@ export default {
       this.isDisable = false
     },
     clearform () {
+      // 清空自定义字段
       this.rules.departCode[1].extend = ''
       for (var key in this.reqestData) {
         delete this.reqestData[key]
       }
       this.$refs.form.resetFields()
+      // 初始化 form
+      Object.assign(this.$data.form, this.$options.data().form)
     },
     submitOrUpdate () {
       this.isDisable = true
@@ -217,7 +222,7 @@ export default {
               var json = resp.data
               if (json.code === 1) {
                 this.$message({
-                  message: '修改成功',
+                  message: '操作失败',
                   type: 'success'
                 })
                 this.$emit('success')
@@ -225,7 +230,7 @@ export default {
               }
             } else {
               this.$message({
-                message: '修改失败',
+                message: '操作失败',
                 type: 'error'
               })
               this.clearform()
