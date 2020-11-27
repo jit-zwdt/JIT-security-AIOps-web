@@ -85,6 +85,7 @@ export default {
       this.showInfo()
     },
     showInfo () {
+      console.log('init')
       this.loading = true
       const _this = this
       this.setTimeoutster = window.setTimeout(() => {
@@ -92,10 +93,13 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
+      console.log('http')
       this.axios.get(this.$api.dailyOperationReportManager.getDailyOperationReport).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
+          console.log(json.code)
           if (json.code === 1) {
+            console.log('success')
             this.dailyOperationsData = json.data
             this.loading = false
           }
