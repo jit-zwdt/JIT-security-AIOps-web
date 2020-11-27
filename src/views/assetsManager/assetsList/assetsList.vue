@@ -231,7 +231,9 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      if (compareDate(this.registerDateStartTop, this.registerDateEndTop)) {
+      const registerDateStartTop = this.registerDateStartTop == null ? "" : this.registerDateStartTop;
+      const registerDateEndTop = this.registerDateEndTop == null ? "" : this.registerDateEndTop;
+      if (compareDate(registerDateStartTop, registerDateEndTop)) {
         Message({
           message: '开始日期大于结束日期！',
           type: 'warning'
@@ -241,8 +243,8 @@ export default {
       this.axios.post(api.assetsManager.assetsList.assetsList.findByCondition, {
         param: {
           name: this.nameTop,
-          registerStartDate: this.registerDateStartTop,
-          registerEndDate: this.registerDateEndTop
+          registerStartDate: registerDateStartTop,
+          registerEndDate: registerDateEndTop
         },
         page: this.currentPage,
         size: this.pageSize
