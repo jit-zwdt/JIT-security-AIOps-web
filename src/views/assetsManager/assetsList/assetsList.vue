@@ -231,8 +231,8 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      const registerDateStartTop = this.registerDateStartTop == null ? "" : this.registerDateStartTop;
-      const registerDateEndTop = this.registerDateEndTop == null ? "" : this.registerDateEndTop;
+      const registerDateStartTop = this.registerDateStartTop == null ? "" : this.registerDateStartTop
+      const registerDateEndTop = this.registerDateEndTop == null ? "" : this.registerDateEndTop
       if (compareDate(registerDateStartTop, registerDateEndTop)) {
         Message({
           message: '开始日期大于结束日期！',
