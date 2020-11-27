@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="5">
       <el-col :span="11">
-        <div class="grid-content bg-purple">
+        <div class="grid-content bg-purple showDetail">
           <ToolBar>
             <div class="queryleft">
               <el-button type="primary" size="small" @click="addDepartment('0') == false" icon="el-icon-plus">添加一级部门
@@ -58,7 +58,8 @@
       </el-col>
       <el-col :span="13">
         <div class="grid-content bg-purple showDetail" v-if="showDetail">
-          <H6>详细信息：</H6>
+          <H6 class="paddingTop">详细信息：</H6>
+          <hr class="marginTop"/>
           <el-form ref="showNode" :model="showNode" label-width="200px">
             <el-row>
               <el-col :span="24">
@@ -223,7 +224,7 @@ export default {
                   message: '操作成功！',
                   type: 'success'
                 })
-                this.getTreeNodes()
+                this.reloadData()
               } else {
                 this.$message({
                   message: '删除部门信息失败！',
@@ -262,6 +263,8 @@ export default {
     },
     reloadData () {
       this.getTreeNodes()
+      // 关闭右面 div
+      this.showDetail = false
     },
     showNodeDetail (id) {
       this.axios.get(this.$api.sysManager.getDepartment + id).then((resp) => {
@@ -354,5 +357,15 @@ export default {
 
   .showDetail {
     height: 770px;
+  }
+
+  .paddingTop{
+    padding-top: 19px;
+    padding-left: 10px;
+    color: #606266;
+  }
+
+  .marginTop{
+    margin-top: 15px;
   }
 </style>

@@ -3,7 +3,7 @@
         <ToolBar>
             <div class="queryleft">
                 <el-input type="text" v-model="name" size="small" placeholder="字典名称" clearable></el-input>
-                <el-input type="text" v-model="code" size="small" placeholder="字典编号" clearable></el-input>
+                <el-input type="text" v-model="code" size="small" placeholder="字典编码" clearable></el-input>
                 <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
                 <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
             </div>
@@ -19,6 +19,7 @@
         </ToolBar>
         <el-table
                 :data="tableData"
+                v-loading="loading"
                 border
                 style="width: 100%"
                 :row-style="tableRowStyle"
@@ -197,6 +198,7 @@ export default {
       itemText: '',
       status: '',
       dictId: '',
+      loading: true,
       statusList: [{
         value: 0,
         label: '未启用'
@@ -258,6 +260,7 @@ export default {
       return back
     },
     showInfo () {
+      this.loading = true
       this.tableData = this.tableDataclear
       const _this = this
       this.setTimeoutster = window.setTimeout(() => {
@@ -280,6 +283,7 @@ export default {
               this.totalCount = json.data.count
             }
           }
+          this.loading = false
         })
     },
     showClear () {
