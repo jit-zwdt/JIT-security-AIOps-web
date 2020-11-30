@@ -1075,6 +1075,9 @@ export default {
           for (var i = 0; i < this.itemstableData.length; i++) {
             const zabbixHistoryDTOs = this.itemstableData[i].zabbixHistoryDTOs
             const units = this.itemstableData[i].monitorHostDetailBindItems.units
+            const pieCharts = document.getElementById('charts-demo-' + i)
+            pieCharts.innerHTML = ''
+            pieCharts.removeAttribute('_echarts_instance_')
             this.makeEchartsItem(zabbixHistoryDTOs, units, i)
           }
         }
