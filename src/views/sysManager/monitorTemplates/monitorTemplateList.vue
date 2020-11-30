@@ -160,7 +160,7 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.tableData = json.data.dataList
-              this.currentTotal = json.data.totalRow
+              this.currentTotal = json.data.length
               this.loading = false
             }
           }

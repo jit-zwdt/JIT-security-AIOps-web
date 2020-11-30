@@ -1,41 +1,55 @@
 <template>
-  <div>
-    <Pdf ref="pdfSearch" :src="src" :fileId="fileId" />
-    <ToolBar>
-      <div class="queryleft">
-        <el-input type="text" style="width: 250px" @keyup.enter.native="showInfo" v-model="nameTop" size="small" placeholder="巡检报告名称" clearable></el-input>
-        <el-date-picker style="width: 400px" v-model="gmtCreate" type="datetimerange" size="small" value-format="yyyy-MM-ddTHH:mm:ss.SSSZ" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
-        <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
-      </div>
-      <div class="queryright"></div>
-    </ToolBar>
-    <el-table
-      :data="tableData"
-      v-loading="loading"
-      border
-      style="width: 100%"
-      :row-style="tableRowStyle"
-      :header-cell-style="tableHeaderColor"
-    >
-      <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
-      <el-table-column label="巡检名称" prop="schemeName" :resizable="false"></el-table-column>
-      <el-table-column label="创建时间" prop="gmtCreate" :formatter="formatDate" min-width="20%"></el-table-column>
-      <el-table-column align="center" label="操作" min-width="18">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            slot="reference"
-            icon="el-icon-edit-outline"
-            @click="loadinfo(scope.$index, scope.row)"
-          >预览</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页插件 -->
-    <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
-  </div>
+    <div>
+        <Pdf ref="pdfSearch" :src="src" :fileId="fileId" />
+        <ToolBar>
+            <div class="queryleft">
+                <el-input type="text" style="width: 250px" @keyup.enter.native="showInfo" v-model="nameTop" size="small" placeholder="巡检报告名称" clearable></el-input>
+                <!--<el-date-picker style="width: 400px" v-model="gmtCreate" type="datetimerange" size="small" value-format="yyyy-MM-ddTHH:mm:ss.SSSZ" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->
+                <el-date-picker
+                        size="small"
+                        v-model="timefrom"
+                        value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
+                        type="datetime"
+                        placeholder="选择开始日期时间">
+                </el-date-picker>
+                <el-date-picker
+                        size="small"
+                        v-model="timetill"
+                        value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
+                        type="datetime"
+                        placeholder="选择结束日期时间">
+                </el-date-picker>
+                <el-button type="primary" size="small" @click="selectTime" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
+            </div>
+            <div class="queryright"></div>
+        </ToolBar>
+        <el-table
+                :data="tableData"
+                v-loading="loading"
+                border
+                style="width: 100%"
+                :row-style="tableRowStyle"
+                :header-cell-style="tableHeaderColor"
+        >
+            <el-table-column label="id" prop="id" :resizable="false" v-if="show"></el-table-column>
+            <el-table-column label="巡检名称" prop="schemeName" :resizable="false"></el-table-column>
+            <el-table-column label="创建时间" prop="gmtCreate" :formatter="formatDate" min-width="20%"></el-table-column>
+            <el-table-column align="center" label="操作" min-width="18">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            type="primary"
+                            slot="reference"
+                            icon="el-icon-edit-outline"
+                            @click="loadinfo(scope.$index, scope.row)"
+                    >预览</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- 分页插件 -->
+        <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
+    </div>
 </template>
 <script>
 import Pdf from '@/components/Pdf.vue'
@@ -64,7 +78,9 @@ export default {
       currentTotal: 0,
       loading: true,
       // 需要显示的数据对象
-      tableData: []
+      tableData: [],
+      timefrom: '',
+      timetill: ''
     }
   },
   created () {
@@ -82,40 +98,62 @@ export default {
         return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
       }
     },
+    selectTime () {
+      if (this.timefrom !== '' && this.timetill !== '') {
+        if (this.timefrom <= this.timetill) {
+          this.timefrom = new Date(this.timefrom).getTime() / 1000
+          this.timetill = new Date(this.timetill).getTime() / 1000
+          this.showInfo()
+        } else {
+          this.$message({
+            message: '开始时间不能大于结束时间!',
+            type: 'error'
+          })
+        }
+      } else if (this.timefrom === '' && this.timetill === '') {
+        this.timefrom = ''
+        this.timetill = ''
+        this.showInfo()
+      } else {
+        this.$message({
+          message: '请选择完整时间范围!',
+          type: 'error'
+        })
+      }
+    },
     // 查询方法
     showInfo () {
       this.loading = true
-      this.setTimeoutster = window.setTimeout(() => {
-        this.axios.post(this.$api.inspectionManager.getMonitorSchemeTimerTasks, {
-          param: {
-            schemeName: this.nameTop,
-            parentId: '1',
-            startGmtCreate: this.gmtCreate[0],
-            endGmtCreate: this.gmtCreate[1]
-          },
-          page: this.currentPage,
-          size: this.pageSize
-        }).then((resp) => {
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              this.tableData = json.data.dataList
-              this.currentTotal = json.data.totalRow
-              this.loading = false
-            }
-          } else {
-            this.$message({
-              message: '查询失败',
-              type: 'error'
-            })
+      this.axios.post(this.$api.inspectionManager.getMonitorSchemeTimerTasks, {
+        param: {
+          schemeName: this.nameTop,
+          parentId: '1',
+          startGmtCreate: this.timefrom,
+          endGmtCreate: this.timetill
+        },
+        page: this.currentPage,
+        size: this.pageSize
+      }).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.tableData = json.data.dataList
+            this.currentTotal = json.data.totalRow
+            this.loading = false
           }
-        })
-      }, 300)
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
     },
     // 重置方法
     showClear () {
       this.nameTop = ''
-      this.gmtCreate = []
+      this.timefrom = ''
+      this.timetill = ''
       this.showInfo()
     },
     // 格式化日期

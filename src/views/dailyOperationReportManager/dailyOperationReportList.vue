@@ -3,12 +3,20 @@
     <ToolBar>
       <div class="queryleft">
         <el-date-picker
-            v-model="queryDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期">
+                size="small"
+                v-model="timefrom"
+                value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
+                type="datetime"
+                placeholder="选择开始日期时间">
         </el-date-picker>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-date-picker
+                size="small"
+                v-model="timetill"
+                value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
+                type="datetime"
+                placeholder="选择结束日期时间">
+        </el-date-picker>
+        <el-button type="primary" size="small" @click="selectTime" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright"></div>
@@ -66,7 +74,9 @@ export default {
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
-      loading: true
+      loading: true,
+      timefrom: '',
+      timetill: ''
     }
   },
   created () {
@@ -85,6 +95,29 @@ export default {
     reloadData () {
       this.showInfo()
     },
+    selectTime () {
+      if (this.timefrom !== '' && this.timetill !== '') {
+        if (this.timefrom <= this.timetill) {
+          this.timefrom = new Date(this.timefrom).getTime() / 1000
+          this.timetill = new Date(this.timetill).getTime() / 1000
+          this.showInfo()
+        } else {
+          this.$message({
+            message: '开始时间不能大于结束时间!',
+            type: 'error'
+          })
+        }
+      } else if (this.timefrom === '' && this.timetill === '') {
+        this.timefrom = ''
+        this.timetill = ''
+        this.showInfo()
+      } else {
+        this.$message({
+          message: '请选择完整时间范围!',
+          type: 'error'
+        })
+      }
+    },
     showInfo () {
       this.loading = true
       this.tableData = this.tableDataclear
@@ -97,7 +130,8 @@ export default {
       this.axios
         .post(this.$api.dailyOperationReportManager.getDailyOperationReports, {
           param: {
-            queryDate: this.queryDate
+            startGmtCreate: this.timefrom,
+            endGmtCreate: this.timetill
           },
           page: this.currentPage,
           size: this.pageSize
@@ -119,7 +153,8 @@ export default {
       this.showInfo()
     },
     showClear () {
-      this.queryDate = ''
+      this.timefrom = ''
+      this.timetill = ''
     },
     formatDate (row, column) {
       let data = ''

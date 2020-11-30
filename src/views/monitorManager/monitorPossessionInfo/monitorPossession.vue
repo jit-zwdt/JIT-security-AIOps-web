@@ -919,19 +919,26 @@ export default {
       })
     },
     selectTime () {
-      if (this.timefromselect <= this.timetillselect) {
-        if (this.timefromselect !== '' && this.timetillselect !== '') {
+      if (this.timefromselect !== '' && this.timetillselect !== '') {
+        if (this.timefromselect <= this.timetillselect) {
           this.timefrom = new Date(this.timefromselect).getTime() / 1000
           this.timetill = new Date(this.timetillselect).getTime() / 1000
+          this.getShowData()
+          this.getGraphData()
         } else {
-          this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
-          this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
+          this.$message({
+            message: '开始时间不能大于结束时间!',
+            type: 'error'
+          })
         }
+      } else if (this.timefromselect === '' && this.timetillselect === '') {
+        this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
+        this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
         this.getShowData()
         this.getGraphData()
       } else {
         this.$message({
-          message: '开始时间不能大于结束时间!',
+          message: '请选择完整时间范围!',
           type: 'error'
         })
       }
