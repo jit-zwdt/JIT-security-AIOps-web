@@ -93,7 +93,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log('success')
             this.dailyOperationsData = json.data
             this.loading = false
           }
