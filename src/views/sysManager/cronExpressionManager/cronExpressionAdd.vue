@@ -889,6 +889,8 @@ export default {
         })
       } else {
         this.$message.error('发送的表达式不合法')
+        this.clearform()
+        this.$emit('error')
       }
     },
     // 返回附带 cron表达式: 字头的 cron 字符串
