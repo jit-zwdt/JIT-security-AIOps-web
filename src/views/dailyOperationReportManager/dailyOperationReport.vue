@@ -4,7 +4,8 @@
       <div class="queryleft">
       </div>
       <div class="queryright">
-        <el-button type="primary" size="small" v-print="'#print'" @click="saveReport()">打印</el-button>
+        <el-button type="primary" size="small" @click="saveReport()">保存</el-button>
+        <el-button type="primary" size="small" v-print="'#print'">打印</el-button>
         <el-button type="primary" size="small" @click="exportReport() == false">导出</el-button>
       </div>
     </ToolBar>
@@ -105,13 +106,13 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: '保存成功',
               type: 'success'
             })
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: '保存失败',
             type: 'error'
           })
         }
