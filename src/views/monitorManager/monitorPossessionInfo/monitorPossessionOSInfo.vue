@@ -177,7 +177,7 @@ export default {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: systemName.startsWith('Window') ? 'system.uname' : 'linux.name.version'
+        key_: systemName.startsWith('Window') ? 'system.hostname' : 'system.hostname'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
