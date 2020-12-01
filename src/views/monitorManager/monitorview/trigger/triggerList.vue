@@ -129,6 +129,7 @@ export default {
       show: false,
       titleType: '',
       tableData: [{
+        flags: '',
         triggerid: '',
         description: '',
         status: ''
@@ -262,21 +263,35 @@ export default {
       this.currentPage = val
     },
     change_priority (rowData) {
-      this.$confirm('确定将严重性由【' + this.priorityMap.get(parseInt(this.priority)) + '】改为【' + this.priorityMap.get(parseInt(rowData.priority)) + '】?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.axios.put(this.$api.alertManager.alertDefine.alertDefinev1.updateTriggerPriority + rowData.triggerid, qs.stringify({
-          priority: rowData.priority
-        })).then((resp) => {
-          if (resp.status === 200) {
-            var json = resp.data
-            if (json.code === 1) {
-              this.$message({
-                message: '修改成功',
-                type: 'success'
-              })
+      if (rowData.flags === '4') {
+        this.$alert('此项为自动发现规则中的触发器,不能修改严重性', '提示', {
+          cancelButtonText: '确定',
+          type: 'warning'
+        })
+        rowData.priority = this.priority
+      } else {
+        this.$confirm('确定将严重性由【' + this.priorityMap.get(parseInt(this.priority)) + '】改为【' + this.priorityMap.get(parseInt(rowData.priority)) + '】?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.axios.put(this.$api.alertManager.alertDefine.alertDefinev1.updateTriggerPriority + rowData.triggerid, qs.stringify({
+            priority: rowData.priority
+          })).then((resp) => {
+            if (resp.status === 200) {
+              var json = resp.data
+              if (json.code === 1) {
+                this.$message({
+                  message: '修改成功',
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: '修改失败',
+                  type: 'error'
+                })
+                rowData.priority = this.priority
+              }
             } else {
               this.$message({
                 message: '修改失败',
@@ -284,21 +299,15 @@ export default {
               })
               rowData.priority = this.priority
             }
-          } else {
-            this.$message({
-              message: '修改失败',
-              type: 'error'
-            })
+          }).catch(error => {
+            alert('服务器异常')
             rowData.priority = this.priority
-          }
-        }).catch(error => {
-          alert('服务器异常')
+            console.log(error)
+          })
+        }).catch(() => {
           rowData.priority = this.priority
-          console.log(error)
         })
-      }).catch(() => {
-        rowData.priority = this.priority
-      })
+      }
     },
     default_priority (rowData) {
       this.priority = rowData.priority

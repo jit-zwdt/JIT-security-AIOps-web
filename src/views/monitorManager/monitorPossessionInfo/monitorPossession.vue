@@ -730,6 +730,8 @@ export default {
         }]
       },
       graphstableData: [],
+      graphDataAll: null,
+      oldName: '',
       form: {
         graphid: '',
         hostids: [this.$route.query.hostId],
@@ -892,6 +894,7 @@ export default {
       this.dialogVisible = true
       this.form.graphid = row.graphid
       this.form.name = row.name
+      this.oldName = row.name
       this.form.ymax_type = row.ymax_type
       this.form.ymin_type = row.ymin_type
       this.form.graphtype = row.graphtype
@@ -1915,6 +1918,9 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.graphData = json.data
+            if (this.graphDataAll === null) {
+              this.graphDataAll = json.data
+            }
             this.currentPage = 1
           }
         } else {
@@ -1927,7 +1933,8 @@ export default {
       })
     },
     // 提交表单
-    onSubmit () {
+    async onSubmit () {
+      let flag = true
       this.visible = false
       if (!this.form.name) {
         this.$message({
@@ -1935,14 +1942,30 @@ export default {
           type: 'error'
         })
         return
-      } else if (this.form.gitems.length === 0) {
+      }
+      if (this.form.gitems.length === 0) {
         this.$message({
           message: '监控项不能为空',
           type: 'error'
         })
         return
       }
-      if (this.submitType === 1) {
+      if (this.form.name !== null) {
+        if (this.oldName !== this.form.name) {
+          alert('2' + this.submitType)
+          this.graphDataAll.forEach((e) => {
+            if (e.name === this.form.name) {
+              this.$message({
+                message: '图形名称已存在，请重新输入',
+                type: 'error'
+              })
+              flag = false
+              return false
+            }
+          })
+        }
+      }
+      if (this.submitType === 1 && flag) {
         this.axios.post(this.$api.monitorManager.createGpro, this.form).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
@@ -1974,7 +1997,7 @@ export default {
           this.$refs.multipleTable.clearSelection()
           this.dialogVisible = false
         })
-      } else {
+      } if (this.submitType === 2 && flag) {
         this.axios.post(this.$api.monitorManager.updateGpro, this.form).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
@@ -2009,7 +2032,9 @@ export default {
       }
       this.getGraphData()
       this.showGraphsInfo()
-      this.submitType = 0
+      if (flag) {
+        this.submitType = 0
+      }
       // this.$refs.gPopover.doClose()
     },
     valuetypeformatter (row) {
