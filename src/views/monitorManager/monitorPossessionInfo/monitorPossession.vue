@@ -919,7 +919,16 @@ export default {
       })
     },
     selectTime () {
-      if (this.timefromselect !== '' && this.timetillselect !== '') {
+      if ((this.timefromselect === '' || this.timefromselect === null) && (this.timetillselect === '' || this.timetillselect === null)) { // 在两个值都是 null 的时候查询所有的数据
+        this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
+        this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
+        this.getShowData()
+        this.getGraphData()
+      } else if (this.timefromselect === '' || this.timefromselect === null) { // 当结束时间为 null 的时候
+        this.$message.error('开始日期时间不能为空')
+      } else if (this.timetillselect === '' || this.timetillselect === null) { // 当开始日期时间为 null 的时候
+        this.$message.error('结束日期时间不能为空')
+      } else {
         if (this.timefromselect <= this.timetillselect) {
           this.timefrom = new Date(this.timefromselect).getTime() / 1000
           this.timetill = new Date(this.timetillselect).getTime() / 1000
@@ -931,16 +940,6 @@ export default {
             type: 'error'
           })
         }
-      } else if (this.timefromselect === '' && this.timetillselect === '') {
-        this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
-        this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
-        this.getShowData()
-        this.getGraphData()
-      } else {
-        this.$message({
-          message: '请选择完整时间范围!',
-          type: 'error'
-        })
       }
     },
     selectable (row, index) {
