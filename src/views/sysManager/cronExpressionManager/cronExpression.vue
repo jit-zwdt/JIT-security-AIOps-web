@@ -76,6 +76,7 @@ export default {
       requestData: {
         id: ''
       },
+      tableData: [],
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0,
@@ -149,6 +150,10 @@ export default {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {
+            // 防止删除第一条数据造成分页查询数据为 null 的情况
+            if (this.tableData.length === 1) {
+              this.currentPage = this.currentPage - 1
+            }
             this.$message({
               message: '删除成功',
               type: 'success'

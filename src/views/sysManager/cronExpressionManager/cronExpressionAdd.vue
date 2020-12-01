@@ -657,7 +657,7 @@ export default {
             incrementIncrement: 5,
             rangeStart: 0,
             rangeEnd: 59,
-            specificSpecific: []
+            specificSpecific: ['0']
           },
           minute: {
             cronEvery: '1',
@@ -665,7 +665,7 @@ export default {
             incrementIncrement: 5,
             rangeStart: 0,
             rangeEnd: 59,
-            specificSpecific: []
+            specificSpecific: ['0']
           },
           hour: {
             cronEvery: '1',
@@ -673,7 +673,7 @@ export default {
             incrementIncrement: 5,
             rangeStart: 0,
             rangeEnd: 23,
-            specificSpecific: []
+            specificSpecific: ['0']
           },
           day: {
             cronEvery: '2',
@@ -681,7 +681,7 @@ export default {
             incrementIncrement: 1,
             rangeStart: 1,
             rangeEnd: 31,
-            specificSpecific: [],
+            specificSpecific: ['1'],
             cronLastSpecificDomDay: 1,
             cronLastSpecificWorkDay: 1
           },
@@ -691,7 +691,7 @@ export default {
             incrementIncrement: 1,
             rangeStart: 1,
             rangeEnd: 7,
-            specificSpecific: [],
+            specificSpecific: ['1'],
             // 本月最后一个星期 ?
             cronLastWeek: 1,
             // 第几周
@@ -705,7 +705,7 @@ export default {
             incrementIncrement: 5,
             rangeStart: 1,
             rangeEnd: 12,
-            specificSpecific: []
+            specificSpecific: ['1']
           }
         }
       },
@@ -841,45 +841,57 @@ export default {
     // 添加或者修改的方法
     submitOrUpdate () {
       this.isDisable = true
-      const cronExpression = {
-        id: this.form.id,
-        cronExpressionDesc: this.form.cronExpressionDesc,
-        cronExpression: this.parseCronArray()
-      }
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.axios.post(this.$api.sysManager.addCronExpression, cronExpression).then((resp) => {
-            if (resp.status === 200) {
-              var json = resp.data
-              if (json.code === 1) {
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                })
-                this.$emit('success')
-                this.closefrom()
+      // 如果 cron 的值有不合法 的话就不发送请求了
+      if (this.form.cron.second.specificSpecific.length > 0 &&
+          this.form.cron.minute.specificSpecific.length > 0 &&
+          this.form.cron.hour.specificSpecific.length > 0 &&
+          this.form.cron.day.specificSpecific.length > 0 &&
+          this.form.cron.week.specificSpecific.length > 0 &&
+          this.form.cron.month.specificSpecific.length > 0) {
+        const cronExpression = {
+          id: this.form.id,
+          cronExpressionDesc: this.form.cronExpressionDesc,
+          cronExpression: this.parseCronArray()
+        }
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.axios.post(this.$api.sysManager.addCronExpression, cronExpression).then((resp) => {
+              if (resp.status === 200) {
+                var json = resp.data
+                if (json.code === 1) {
+                  this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                  })
+                  this.$emit('success')
+                  this.closefrom()
+                } else {
+                  this.$message({
+                    message: json.msg,
+                    type: 'error'
+                  })
+                  this.isDisable = false
+                  return false
+                }
               } else {
                 this.$message({
-                  message: json.msg,
+                  message: '添加失败',
                   type: 'error'
                 })
-                this.isDisable = false
-                return false
+                this.clearform()
+                this.$emit('error')
               }
-            } else {
-              this.$message({
-                message: '修改失败',
-                type: 'error'
-              })
-              this.clearform()
-              this.$emit('error')
-            }
-          })
-        } else {
-          this.isDisable = false
-          return false
-        }
-      })
+            })
+          } else {
+            this.isDisable = false
+            return false
+          }
+        })
+      } else {
+        this.$message.error('发送的表达式不合法')
+        this.clearform()
+        this.$emit('error')
+      }
     },
     // 返回附带 cron表达式: 字头的 cron 字符串
     getCronString () {

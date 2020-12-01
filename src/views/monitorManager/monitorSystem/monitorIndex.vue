@@ -355,7 +355,28 @@ export default {
     },
     getioRateTop5ByItem () {
       this.ioRateloading = true
-      this.ioRateloading = false
+      const param = {
+        typeId: this.metaTypeId,
+        itemKey: '4',
+        valueType: '0',
+        method: 'top5ByItem'
+      }
+      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.ioRateTop5 = json.data
+            this.ioRateloading = false
+          } else {
+            this.ioRateloading = false
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
     },
     gotoList (groupId) {
       this.$router.push({

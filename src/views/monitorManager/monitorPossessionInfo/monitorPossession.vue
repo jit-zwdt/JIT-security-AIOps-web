@@ -922,21 +922,27 @@ export default {
       })
     },
     selectTime () {
-      if (this.timefromselect <= this.timetillselect) {
-        if (this.timefromselect !== '' && this.timetillselect !== '') {
-          this.timefrom = new Date(this.timefromselect).getTime() / 1000
-          this.timetill = new Date(this.timetillselect).getTime() / 1000
-        } else {
-          this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
-          this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
-        }
+      if ((this.timefromselect === '' || this.timefromselect === null) && (this.timetillselect === '' || this.timetillselect === null)) { // 在两个值都是 null 的时候查询所有的数据
+        this.timefrom = timesMethod.getDatestamp(timesMethod.fun_date(0))
+        this.timetill = timesMethod.getDatestamp(timesMethod.fun_date(1))
         this.getShowData()
         this.getGraphData()
+      } else if (this.timefromselect === '' || this.timefromselect === null) { // 当结束时间为 null 的时候
+        this.$message.error('开始日期时间不能为空')
+      } else if (this.timetillselect === '' || this.timetillselect === null) { // 当开始日期时间为 null 的时候
+        this.$message.error('结束日期时间不能为空')
       } else {
-        this.$message({
-          message: '开始时间不能大于结束时间!',
-          type: 'error'
-        })
+        if (this.timefromselect <= this.timetillselect) {
+          this.timefrom = new Date(this.timefromselect).getTime() / 1000
+          this.timetill = new Date(this.timetillselect).getTime() / 1000
+          this.getShowData()
+          this.getGraphData()
+        } else {
+          this.$message({
+            message: '开始时间不能大于结束时间!',
+            type: 'error'
+          })
+        }
       }
     },
     selectable (row, index) {
@@ -1071,6 +1077,9 @@ export default {
           for (var i = 0; i < this.itemstableData.length; i++) {
             const zabbixHistoryDTOs = this.itemstableData[i].zabbixHistoryDTOs
             const units = this.itemstableData[i].monitorHostDetailBindItems.units
+            const pieCharts = document.getElementById('charts-demo-' + i)
+            pieCharts.innerHTML = ''
+            pieCharts.removeAttribute('_echarts_instance_')
             this.makeEchartsItem(zabbixHistoryDTOs, units, i)
           }
         }

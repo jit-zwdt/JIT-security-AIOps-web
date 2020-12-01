@@ -209,8 +209,8 @@ const api = {
     checkUserName: '/sys/user/checkUserName/',
     findUserById: '/sys/user/findUserById/',
     getUserInfo: '/sys/user/getUserInfo',
-    uploadPic: '/sys/user/uploadPic',
-    getPicBase64: '/sys/user/getPicBase64/',
+    uploadPic: '/sys/user/uploadSftpPic',
+    getPicBase64: '/sys/user/getSftpPicBase64/',
     // scheduleTaskManager
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
@@ -225,7 +225,7 @@ const api = {
     getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions'
   },
   inspectionManager: {
-    makePdf: '/inspection/makePdf',
+    makePdf: '/inspection/makeSftpPdf',
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
     getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks',
@@ -233,7 +233,7 @@ const api = {
     deleteMonitorSchemeTimerTask: '/inspection/deleteMonitorSchemeTimerTask/'
   },
   dailyOperationReportManager: {
-    getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport/',
+    getDailyOperationReport: '/dailyOperationReport/getDailyOperationReport',
     addDailyOperationReport: '/dailyOperationReport/addDailyOperationReport',
     getDailyOperationReports: '/dailyOperationReport/getDailyOperationReports/',
     getDailyOperationReported: '/dailyOperationReport/getDailyOperationReported/',

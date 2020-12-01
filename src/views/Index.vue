@@ -1179,7 +1179,7 @@ export default {
       this.makeData6_info('2', 'myChart4', 'CPU使用率', '%', 'CPU使用率暂无数据')
       this.makeData6_info('3', 'myChart5', '内存使用率', '%', '内存使用率暂无数据')
       this.makeData6_info('5', 'myChart6', '系统盘使用率', '%', '系统盘使用率暂无数据')
-      this.makeData6_info('4', 'myChart7', '网络接口速率', 'MB/s', '网络接口速率暂无数据')
+      this.makeData6_info('4', 'myChart7', '网络接口速率', '!w/s', '网络接口速率暂无数据')
     },
     makeData6_info (itemKey, myChartName, name, type, infoname) {
       const param = {
