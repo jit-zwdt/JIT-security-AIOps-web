@@ -124,30 +124,32 @@ export default {
     // 查询方法
     showInfo () {
       this.loading = true
-      this.axios.post(this.$api.inspectionManager.getMonitorSchemeTimerTasks, {
-        param: {
-          schemeName: this.nameTop,
-          parentId: '1',
-          startGmtCreate: this.timefrom,
-          endGmtCreate: this.timetill
-        },
-        page: this.currentPage,
-        size: this.pageSize
-      }).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.tableData = json.data.dataList
-            this.currentTotal = json.data.totalRow
-            this.loading = false
+      this.setTimeoutster = window.setTimeout(() => {
+        this.axios.post(this.$api.inspectionManager.getMonitorSchemeTimerTasks, {
+          param: {
+            schemeName: this.nameTop,
+            parentId: '1',
+            startGmtCreate: this.timefrom,
+            endGmtCreate: this.timetill
+          },
+          page: this.currentPage,
+          size: this.pageSize
+        }).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.tableData = json.data.dataList
+              this.currentTotal = json.data.totalRow
+              this.loading = false
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
           }
-        } else {
-          this.$message({
-            message: '查询失败',
-            type: 'error'
-          })
-        }
-      })
+        })
+      }, 300)
     },
     // 重置方法
     showClear () {
