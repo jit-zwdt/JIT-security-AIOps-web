@@ -227,9 +227,11 @@ export default {
       if (val !== null) {
         // 获取数组最后的一个元素
         const element = val[val.length - 1]
-        element.hostid = this.tophostid
-        // 将主机名称放入
-        element.hostname = this.hostname
+        if (element !== undefined) {
+          element.hostid = this.tophostid
+          // 将主机名称放入
+          element.hostname = this.hostname
+        }
       }
       this.selectionData = val
     },
