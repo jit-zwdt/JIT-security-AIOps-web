@@ -647,7 +647,7 @@ export default {
       } else if (row.typeId === '1') {
         this.$router.push({ name: 'monitorPossessionOSInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '3') {
-        this.$router.push({ name: 'monitorPossessionJmxInfo', query: { hostId: row.hostid, hostName: row.objectName } })
+        this.$router.push({ name: 'monitorPossessionMiddlewareInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '28') {
         this.$router.push({ name: 'monitorPossessionJvmInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '5') {

@@ -164,7 +164,7 @@ export default {
       const region = {
         hostids: [this.$route.query.hostId],
         status: '',
-        key_: 'jmx["Catalina:type=Server",serverInfo]'
+        key_: 'jmx["java.lang:type=Runtime","VmVersion"]'
       }
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
