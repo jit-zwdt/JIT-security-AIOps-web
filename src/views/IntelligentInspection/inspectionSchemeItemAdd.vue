@@ -38,7 +38,8 @@
       ref="selectionTable"
       tooltip-effect="dark"
       :row-key="getRowKey"
-      @selection-change="handleSelectionChange"
+      @select="handleSelectionChangeOne"
+      @select-all="handleSelectionSelectAll"
     >
       <el-table-column
         type="selection"
@@ -223,15 +224,24 @@ export default {
     getRowKey (row) {
       return row.triggerid
     },
-    handleSelectionChange (val) {
-      if (val !== null) {
-        // 获取数组最后的一个元素
-        const element = val[val.length - 1]
-        if (element !== undefined) {
-          element.hostid = this.tophostid
-          // 将主机名称放入
-          element.hostname = this.hostname
-        }
+    handleSelectionChangeOne (val, row) {
+      row.hostid = this.tophostid
+      // 将主机名称放入
+      row.hostname = this.hostname
+      this.selectionData = val
+    },
+    handleSelectionSelectAll (val) {
+      if (val != null) {
+        val.forEach(e => {
+          if (e.hostid === undefined) {
+            // 放入主机 id
+            e.hostid = this.tophostid
+          }
+          if (e.hostname === undefined) {
+            // 放入主机名称
+            e.hostname = this.hostname
+          }
+        })
       }
       this.selectionData = val
     },
@@ -303,5 +313,8 @@ export default {
 }
 .redchangeColor {
   color: red;
+}
+.from{
+  width: 100%;
 }
 </style>
