@@ -314,7 +314,4 @@ export default {
 .redchangeColor {
   color: red;
 }
-.from{
-  width: 100%;
-}
 </style>

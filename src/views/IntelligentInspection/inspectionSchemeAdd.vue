@@ -363,3 +363,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.fromadd {
+  width: 100%;
+}
+</style>
