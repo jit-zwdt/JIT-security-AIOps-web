@@ -225,6 +225,19 @@ export default {
       return row.triggerid
     },
     handleSelectionChangeOne (val, row) {
+      // 解决在切换回列表的时候添加的数据全部清空的 bug 估计是重新赋值了 没找到原因只能变成 undefined 的值全部覆盖
+      if (val != null) {
+        val.forEach(e => {
+          if (e.hostid === undefined) {
+            // 放入主机 id
+            e.hostid = this.tophostid
+          }
+          if (e.hostname === undefined) {
+            // 放入主机名称
+            e.hostname = this.hostname
+          }
+        })
+      }
       row.hostid = this.tophostid
       // 将主机名称放入
       row.hostname = this.hostname
