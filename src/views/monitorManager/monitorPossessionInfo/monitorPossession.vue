@@ -1996,12 +1996,12 @@ export default {
           }
           this.multipleSelection = []
           this.multipleSelection1 = []
-          this.form.graphtype = ''
           this.form.gitems = []
           this.form.graphid = ''
           this.form.name = ''
-          this.form.ymax_type = ''
-          this.form.ymin_type = ''
+          this.form.ymax_type = this.yOptions[0].value
+          this.form.ymin_type = this.yOptions[0].value
+          this.form.graphtype = this.graphtypeOptions[0].value
           this.$refs.multipleTable.clearSelection()
           this.dialogVisible = false
         })
@@ -2029,11 +2029,11 @@ export default {
           this.multipleSelection = []
           this.multipleSelection1 = []
           this.form.graphid = ''
-          this.form.graphtype = ''
           this.form.gitems = []
           this.form.name = ''
-          this.form.ymax_type = ''
-          this.form.ymin_type = ''
+          this.form.ymax_type = this.yOptions[0].value
+          this.form.ymin_type = this.yOptions[0].value
+          this.form.graphtype = this.graphtypeOptions[0].value
           this.$refs.multipleTable.clearSelection()
           this.dialogVisible = false
         })
@@ -2090,14 +2090,14 @@ export default {
       // this.$refs.gPopover.doClose()
       this.submitType = 0
       this.visible = false
-      this.form.graphtype = ''
       this.form.gitems = []
       this.form.name = ''
-      this.form.ymax_type = ''
-      this.form.ymin_type = ''
       this.$refs.multipleTable.clearSelection()
       this.multipleSelection = []
       this.multipleSelection1 = []
+      this.form.ymax_type = this.yOptions[0].value
+      this.form.ymin_type = this.yOptions[0].value
+      this.form.graphtype = this.graphtypeOptions[0].value
       this.dialogVisible = false
     },
     handleDelete (index, row) {
