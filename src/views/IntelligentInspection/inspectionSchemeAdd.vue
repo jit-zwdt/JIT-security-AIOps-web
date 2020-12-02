@@ -325,6 +325,7 @@ export default {
       })
     },
     reloadData (value) {
+      console.log(value)
       value.forEach(element => {
         this.tableData.push({
           hostid: element.hostid,
@@ -363,3 +364,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.fromadd {
+  width: 100%;
+}
+</style>
