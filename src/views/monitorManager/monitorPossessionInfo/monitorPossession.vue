@@ -1961,7 +1961,6 @@ export default {
       }
       if (this.form.name !== null) {
         if (this.oldName !== this.form.name) {
-          alert('2' + this.submitType)
           this.graphDataAll.forEach((e) => {
             if (e.name === this.form.name) {
               this.$message({
