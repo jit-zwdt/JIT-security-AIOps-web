@@ -4,6 +4,7 @@
       :width="dialogWidth"
       :title="title"
       :visible.sync="showEditDialog"
+      :before-close="closefrom"
       :show-close="false"
       :close-on-click-modal="false"
   >
