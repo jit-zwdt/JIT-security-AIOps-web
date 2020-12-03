@@ -325,7 +325,6 @@ export default {
       })
     },
     reloadData (value) {
-      console.log(value)
       value.forEach(element => {
         this.tableData.push({
           hostid: element.hostid,
@@ -346,7 +345,8 @@ export default {
     sortList (lists) {
       return lists.sort((a, b) => {
         // return a['hostid'].localeCompare(b['hostid'])
-        return a.triggerid - b.triggerid
+        // return a.triggerid - b.triggerid
+        return a.hostid - b.hostid
       })
     },
     showHostname (id) {
