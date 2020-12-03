@@ -38,8 +38,7 @@
       ref="selectionTable"
       tooltip-effect="dark"
       :row-key="getRowKey"
-      @select="handleSelectionChangeOne"
-      @select-all="handleSelectionSelectAll"
+      @selection-change="handleSelectionChange"
     >
       <el-table-column
         type="selection"
@@ -195,6 +194,8 @@ export default {
             // 进行筛选添加
             json.data.forEach(item => {
               if (item.status !== 1) {
+                item.hostid = value
+                item.hostname = this.hostname
                 this.forShowData.push(item)
               }
             })
@@ -224,38 +225,7 @@ export default {
     getRowKey (row) {
       return row.triggerid
     },
-    handleSelectionChangeOne (val, row) {
-      // 解决在切换回列表的时候添加的数据全部清空的 bug 估计是重新赋值了 没找到原因只能变成 undefined 的值全部覆盖
-      if (val != null) {
-        val.forEach(e => {
-          if (e.hostid === undefined) {
-            // 放入主机 id
-            e.hostid = this.tophostid
-          }
-          if (e.hostname === undefined) {
-            // 放入主机名称
-            e.hostname = this.hostname
-          }
-        })
-      }
-      row.hostid = this.tophostid
-      // 将主机名称放入
-      row.hostname = this.hostname
-      this.selectionData = val
-    },
-    handleSelectionSelectAll (val) {
-      if (val != null) {
-        val.forEach(e => {
-          if (e.hostid === undefined) {
-            // 放入主机 id
-            e.hostid = this.tophostid
-          }
-          if (e.hostname === undefined) {
-            // 放入主机名称
-            e.hostname = this.hostname
-          }
-        })
-      }
+    handleSelectionChange (val) {
       this.selectionData = val
     },
     valuetypeformatter (row) {
