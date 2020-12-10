@@ -323,7 +323,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="200" :push="1">
-                        <el-form-item label="纵轴最小值">
+                        <el-form-item label="纵轴最小值" v-if="false">
                           <el-select v-model="form.ymin_type">
                             <el-option
                               v-for="item in yOptions"
@@ -335,7 +335,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="200" :push="2">
-                        <el-form-item label="纵轴最大值">
+                        <el-form-item label="纵轴最大值" v-if="false">
                           <el-select v-model="form.ymax_type">
                             <el-option
                               v-for="item in yOptions"
@@ -672,6 +672,7 @@
 </template>
 <script>
 import { timesMethod } from '@/utils/formatDate.js'
+import qs from 'qs'
 export default {
   props: {
     hostid: String
@@ -821,6 +822,7 @@ export default {
       multipleSelection1: [],
       multipleSelectionTemp: [],
       color: '',
+      // 图形项目列表
       graphData: [{
         graphid: '',
         name: '',
@@ -844,7 +846,9 @@ export default {
           label: '30分钟',
           value: '3'
         }
-      ]
+      ],
+      // 获取的所有图形监控项的数组
+      GItemByGraphIdAll: []
     }
   },
   created () {
@@ -1917,12 +1921,12 @@ export default {
         }
       })
     },
-    showGraphInfoTimeout (str) {
+    async showGraphInfoTimeout (str) {
       const region = {
         hostids: [this.$route.query.hostId],
         name: this.nameTopPic
       }
-      this.axios.post(this.$api.monitorManager.getGProInfoList, region).then((resp) => {
+      await this.axios.post(this.$api.monitorManager.getGProInfoList, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1940,6 +1944,8 @@ export default {
         }
         this.loading = false
       })
+      // 过滤 GraphData 图形项目
+      this.filterGraphData()
     },
     // 提交表单
     async onSubmit () {
@@ -2309,6 +2315,71 @@ export default {
           this.refreshInfo()
         }, 1000 * 60 * 30)
       }
+    },
+    // 过滤图形项目
+    filterGraphData () {
+      const graphids = []
+      for (var i = 0; i < this.graphData.length; i++) {
+        graphids[i] = this.graphData[i].graphid
+      }
+      // 调用后端接口查询所有的监控项目 再删除监控项不匹配的图
+      this.axios.post(this.$api.monitorManager.getGItemByGraphIdAll, qs.stringify({ graphids: graphids }, { arrayFormat: 'brackets' })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          this.GItemByGraphIdAll = json.data
+          /* // 遍历外面图形列表
+          this.graphData.forEach((e, i) => {
+            // 遍历外面的监控项
+            this.forShowData.forEach((e1, i1) => {
+              // 遍历图形列表里面的监控项
+              let flag2 = true
+              this.GItemByGraphIdAll.forEach((e2, i2) => {
+                // 如果外面的图形的值和里面的进行比对成功
+                if (e.graphid === e2.graphid) {
+                  // 并且里面的值和外面的监控项比对失败则移除现在的 list 集合内的值
+                  if (e1.itemid === e2.itemid) {
+                    flag2 = false
+                  }
+                }
+              })
+              if (!flag2) {
+                this.graphData.splice(i, 1)
+              }
+            })
+          }) */
+          // 遍历图形列表
+          for (var i = 0; i < this.graphData.length;) {
+            // 遍历外面的监控项
+            // 定义一个值 做自增操作
+            let count = 0
+            for (var c = 0; c < this.GItemByGraphIdAll.length; c++) {
+              // 如果外面的图形的值和里面的进行比对成功 3 <==> 3
+              if (this.graphData[i].graphid === this.GItemByGraphIdAll[c].graphid) {
+                // 如果进来了计数 +1
+                count++
+                // 遍历图形列表里面的监控项
+                for (var b = 0; b < this.forShowData.length; b++) {
+                  // 并且里面的值和外面的监控项比对失败则移除现在的 list 集合内的值 104 <==> 2
+                  if (this.forShowData[b].itemid === this.GItemByGraphIdAll[c].itemid) {
+                    // 就代表里面有一个值是比对成功的 进行计数器减少 1 的操作
+                    count--
+                    // 结束当次循环
+                    continue
+                  }
+                }
+              }
+            }
+            // 如果上面的 for 循环走全了都没有匹配到监控项 count 就不是 0
+            if (count !== 0) {
+              // 删除当前图形数据
+              this.graphData.splice(i, 1)
+            } else {
+              // 迭代
+              i++
+            }
+          }
+        }
+      })
     }
   },
   mounted () {

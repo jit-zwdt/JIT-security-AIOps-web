@@ -119,6 +119,7 @@ const api = {
     updateGpro: '/gPrototype/updateGpro',
     deleteGPro: '/gPrototype/deleteGpro',
     getGItemByGraphId: '/gItem/getGItemByGraphId/',
+    getGItemByGraphIdAll: '/gItem/getGItemByGraphIdAll',
     // monitorDBOracleInfo 上面的 monitorDBMysqlInfo 都有
     // monitorMiddleware 上面的 monitorDBMysqlInfo 都有
     // monitorPossessionInfo 上面的 monitorDBMysqlInfo 都有
