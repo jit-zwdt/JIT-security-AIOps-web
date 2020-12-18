@@ -538,8 +538,8 @@ export default {
       const xNameData = []
       myChartData.forEach(element => {
         var newname = element.name
-        if (newname !== null && newname.length > 50) {
-          newname = newname.substring(0, 50) + '...'
+        if (newname !== null && newname.length > 40) {
+          newname = newname.substring(0, 40) + '...'
         }
         xData.push(newname)
         xNameData.push(element.name)
