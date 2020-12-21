@@ -19,8 +19,20 @@ router.beforeEach((to, from, next) => {
             if (res.status === 200) {
               if (res.data.code === 1) {
                 getRouter = res.data.data
-                saveObjArr('router', getRouter)
-                routerGo(to, next)
+                if (getRouter === null) {
+                  MessageBox({
+                    message: '该用户未分配权限！',
+                    type: 'error'
+                  })
+                  if (to.fullPath === '/login') {
+                    next()
+                  } else {
+                    next('/login')
+                  }
+                } else {
+                  saveObjArr('router', getRouter)
+                  routerGo(to, next)
+                }
               } else {
                 MessageBox({
                   message: '获取菜单失败',
@@ -79,6 +91,7 @@ function getObjArr (name) {
 }
 const _import = require('./router/_import_' + process.env.NODE_ENV)
 function filterAsyncRouter (asyncRouterMap) {
+  console.log(asyncRouterMap)
   const accessedRouters = asyncRouterMap.filter(route => {
     if (route.component) {
       if (route.component === 'Layout') {
