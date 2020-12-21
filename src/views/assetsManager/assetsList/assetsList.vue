@@ -234,6 +234,10 @@ export default {
       const registerDateStartTop = this.registerDateStartTop == null ? '' : this.registerDateStartTop
       const registerDateEndTop = this.registerDateEndTop == null ? '' : this.registerDateEndTop
       if (compareDate(registerDateStartTop, registerDateEndTop)) {
+        // 清空元素
+        this.tableData = []
+        // 关闭加载
+        this.loading = false
         Message({
           message: '开始日期大于结束日期！',
           type: 'warning'

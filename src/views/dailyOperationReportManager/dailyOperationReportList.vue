@@ -98,8 +98,6 @@ export default {
     selectTime () {
       if (this.timefrom !== '' && this.timetill !== '') {
         if (this.timefrom <= this.timetill) {
-          this.timefrom = new Date(this.timefrom).getTime()
-          this.timetill = new Date(this.timetill).getTime()
           this.showInfo()
         } else {
           this.$message({
@@ -130,8 +128,8 @@ export default {
       this.axios
         .post(this.$api.dailyOperationReportManager.getDailyOperationReports, {
           param: {
-            startGmtCreate: this.timefrom,
-            endGmtCreate: this.timetill
+            startGmtCreate: new Date(this.timefrom).getTime(),
+            endGmtCreate: new Date(this.timetill).getTime()
           },
           page: this.currentPage,
           size: this.pageSize
