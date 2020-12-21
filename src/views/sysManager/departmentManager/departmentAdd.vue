@@ -223,7 +223,7 @@ export default {
               var json = resp.data
               if (json.code === 1) {
                 this.$message({
-                  message: '操作失败',
+                  message: '操作成功',
                   type: 'success'
                 })
                 this.$emit('success')

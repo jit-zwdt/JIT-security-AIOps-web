@@ -10,6 +10,7 @@
                         v-model="timefrom"
                         value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
                         type="datetime"
+                        clearable
                         placeholder="选择开始日期时间">
                 </el-date-picker>
                 <el-date-picker
@@ -17,6 +18,7 @@
                         v-model="timetill"
                         value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
                         type="datetime"
+                        clearable
                         placeholder="选择结束日期时间">
                 </el-date-picker>
                 <el-button type="primary" size="small" @click="selectTime" icon="el-icon-search">查询</el-button>
