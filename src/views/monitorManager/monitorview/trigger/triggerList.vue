@@ -33,7 +33,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="showInfo() == false"
+            @click="handleCurrentChange = 1 ;showInfo() == false"
             icon="el-icon-search"
           >查询</el-button>
           <el-button

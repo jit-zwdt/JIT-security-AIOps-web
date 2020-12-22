@@ -11,7 +11,7 @@
         <el-select v-model="status" class="datetop" filterable placeholder="用户状态" clearable>
           <el-option v-for="item in statuses" :key="item.id" :label="item.type" :value="item.id"></el-option>
         </el-select>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="currentPage = 1 ;showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright">

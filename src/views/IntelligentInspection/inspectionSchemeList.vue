@@ -5,7 +5,7 @@
         <el-col :span="13">
           <el-input type="text" v-model="schemeName" size="small" placeholder="巡检计划名称" clearable></el-input>
         </el-col>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="currentPage = 1 ;showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
           type="primary"
           size="small"
