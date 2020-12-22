@@ -2322,31 +2322,14 @@ export default {
       for (var i = 0; i < this.graphData.length; i++) {
         graphids[i] = this.graphData[i].graphid
       }
+      if (graphids.length === 0) {
+        return
+      }
       // 调用后端接口查询所有的监控项目 再删除监控项不匹配的图
       this.axios.post(this.$api.monitorManager.getGItemByGraphIdAll, qs.stringify({ graphids: graphids }, { arrayFormat: 'brackets' })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           this.GItemByGraphIdAll = json.data
-          /* // 遍历外面图形列表
-          this.graphData.forEach((e, i) => {
-            // 遍历外面的监控项
-            this.forShowData.forEach((e1, i1) => {
-              // 遍历图形列表里面的监控项
-              let flag2 = true
-              this.GItemByGraphIdAll.forEach((e2, i2) => {
-                // 如果外面的图形的值和里面的进行比对成功
-                if (e.graphid === e2.graphid) {
-                  // 并且里面的值和外面的监控项比对失败则移除现在的 list 集合内的值
-                  if (e1.itemid === e2.itemid) {
-                    flag2 = false
-                  }
-                }
-              })
-              if (!flag2) {
-                this.graphData.splice(i, 1)
-              }
-            })
-          }) */
           // 遍历图形列表
           for (var i = 0; i < this.graphData.length;) {
             // 遍历外面的监控项
