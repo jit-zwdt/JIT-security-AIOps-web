@@ -1016,6 +1016,8 @@ export default {
         hostids: [this.$route.query.hostId],
         name: this.nameTop
       }
+      // 清空数据
+      this.forShowData = []
       this.axios.post(this.$api.monitorManager.getItemInfoListItem, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
