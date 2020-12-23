@@ -1,0 +1,281 @@
+<template>
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="登录日志" :name="0"></el-tab-pane>
+    <el-tab-pane label="操作日志" :name="1"></el-tab-pane>
+    <el-tab-pane label="错误日志" :name="2"></el-tab-pane>
+      <ToolBar>
+      <div class="queryleft">
+            <el-input type="text" style="width: 250px" @keyup.enter.native="showInfo" v-model="nameTop" size="small" placeholder="日志名称" clearable></el-input>
+            <!--<el-date-picker style="width: 400px" v-model="gmtCreate" type="datetimerange" size="small" value-format="yyyy-MM-ddTHH:mm:ss.SSSZ" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->
+            <el-date-picker
+                    size="small"
+                    v-model="timefrom"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    type="datetime"
+                    clearable
+                    placeholder="选择开始日期时间">
+            </el-date-picker>
+            <el-date-picker
+                    size="small"
+                    v-model="timetill"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    type="datetime"
+                    clearable
+                    placeholder="选择结束日期时间">
+            </el-date-picker>
+            <el-col :span="4">
+            <el-select
+                v-model="operation_Type"
+                class="datetop"
+                style="height: 32px;"
+                filterable
+                placeholder="选择操作类型"
+                @change="current_operationtype"
+            >
+                <el-option
+                v-for="item in operationTypes"
+                :key="item.id"
+                :label="item.type"
+                :value="item.id"
+                ></el-option>
+            </el-select>
+            </el-col>
+                <el-button type="primary" size="small" @click="currentPage = 1;selectTime()" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
+      </div>
+    </ToolBar>
+    <el-table
+      :data="tableData"
+      v-loading="loading"
+      border
+      style="width: 100%"
+      :row-style="tableRowStyle"
+      :header-cell-style="tableHeaderColor"
+    >
+    <el-table-column type="expand">
+        <template slot-scope="props">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="请求方法">
+            <p>{{ props.row.method }}</p>
+          </el-form-item>
+          <el-form-item label="请求参数">
+            <p>{{ props.row.requestParam }}</p>
+          </el-form-item>
+          <el-form-item label="错误日志" v-if="logType === 2">
+            <p>{{ props.row.errorLog }}</p>
+          </el-form-item>
+        </el-form>
+      </template>
+      </el-table-column>
+      <el-table-column type="index" label="序号" prop="num" min-width="5%" :resizable="false"></el-table-column>
+      <el-table-column prop="logContent" label="日志内容" min-width="40%"></el-table-column>
+      <el-table-column prop="userUsername" label="操作人ID" min-width="20%"></el-table-column>
+      <el-table-column prop="userName" label="操作人名称" min-width="20%"></el-table-column>
+      <el-table-column prop="ip" label="IP" min-width="30%"></el-table-column>
+      <el-table-column prop="costTime" label="耗时(毫秒)" min-width="20%"></el-table-column>
+      <el-table-column prop="logType" label="日志类型" min-width="20%"  align="center" :formatter="logTypeFormat"></el-table-column>
+      <el-table-column prop="operationType" label="操作类型" min-width="20%"  align="center" :formatter="operationTypeFormat"></el-table-column>
+      <el-table-column
+        label="创建时间"
+        prop="gmtCreate"
+        min-width="20%"
+        :resizable="false"
+        :formatter="formatDate"
+      ></el-table-column>
+    </el-table>
+    <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
+  </el-tabs>
+</template>
+<script>
+import Pagination from '@/components/Pagination.vue'
+import { formatTodate } from '@/utils/format.js'
+import qs from 'qs'
+export default {
+  data () {
+    return {
+      activeName: 0,
+      nameTop: '',
+      timefrom: '',
+      timetill: '',
+      logType: 0,
+      operation_Type: 0,
+      tableData: [{
+        id: '',
+        logContent: '',
+        userUsername: '',
+        userName: '',
+        ip: '',
+        costTime: '',
+        logType: '',
+        operationType: ''
+      }],
+      // 0:未定义;1:添加;2:查询;3:修改;4:删除
+      operationTypes: [{ id: 0, type: '未定义' }, { id: 1, type: '添加' }, { id: 2, type: '查询' }, { id: 3, type: '修改' }, { id: 4, type: '删除' }],
+      currentPage: 1,
+      pageSize: 15,
+      currentTotal: 0
+    }
+  },
+  created () {
+    this.showInfo()
+  },
+  methods: {
+    handleClick (tab, event) {
+      this.logType = this.activeName
+      this.showInfo()
+      this.showClear()
+    },
+    logTypeFormat (row, column) {
+      const data = row.logType
+      if (data === 0) {
+        return '登录日志'
+      } else if (data === 1) {
+        return '操作日志'
+      } else if (data === 2) {
+        return '错误日志'
+      } else {
+        return data
+      }
+    },
+    operationTypeFormat (row, column) {
+      const data = row.operationType
+      if (data === 0) {
+        return '未定义'
+      } else if (data === 1) {
+        return '添加'
+      } else if (data === 2) {
+        return '查询'
+      } else if (data === 3) {
+        return '修改'
+      } else if (data === 4) {
+        return '删除'
+      } else {
+        return data
+      }
+    },
+    selectTime () {
+      if (this.timefrom !== '' && this.timetill !== '') {
+        if (this.timefrom <= this.timetill) {
+          this.showInfo()
+        } else {
+          this.$message({
+            message: '开始时间不能大于结束时间!',
+            type: 'error'
+          })
+        }
+      } else if (this.timefrom === '' && this.timetill === '') {
+        this.timefrom = ''
+        this.timetill = ''
+        this.showInfo()
+      } else {
+        this.$message({
+          message: '请选择完整时间范围!',
+          type: 'error'
+        })
+      }
+    },
+    // 查询方法
+    showInfo () {
+      this.loading = true
+      this.setTimeoutster = window.setTimeout(() => {
+        this.axios.post(this.$api.sysManager.findSysLog, qs.stringify({
+          logContent: this.nameTop,
+          startTime: this.timefrom,
+          endTime: this.timetill,
+          operationType: this.operation_Type,
+          logType: this.logType,
+          currentPage: this.currentPage,
+          currentSize: this.pageSize
+        })).then((resp) => {
+          if (resp.status === 200) {
+            var json = resp.data
+            if (json.code === 1) {
+              this.tableData = json.data.content
+              this.currentTotal = json.data.totalElements
+              this.loading = false
+            }
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          }
+        })
+      }, 300)
+    },
+    // 重置方法
+    showClear () {
+      this.nameTop = ''
+      this.timefrom = ''
+      this.timetill = ''
+      this.logType = 0
+    },
+    // 日期格式化
+    formatDate (row, column) {
+      let data = ''
+      data = row[column.property]
+      if (data == null) {
+        return ''
+      }
+      return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    },
+    // 改变当前页数
+    pageChange (item) {
+      this.currentPage = item.page_currentPage
+      this.pageSize = item.page_pageSize
+      this.showInfo()
+    },
+    // 操作类型选择
+    current_operationtype (selVal) {
+      this.current_operationtype = selVal
+    },
+    // 修改table tr行的背景色
+    tableRowStyle ({ row, column, rowIndex, columnIndex }) {
+    },
+    // 修改table header的背景色
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #0086f1;color: #FFFFFF;font-weight: 500;font-size:15px'
+      }
+    }
+  },
+  components: { Pagination }
+}
+</script>
+<style lang="scss" scoped>
+.queryleft {
+  float: left;
+  margin-left: 0%;
+}
+.queryright {
+  float: right;
+}
+.tableHeaderColor {
+  font-size: 20px;
+}
+.datetop /deep/ input {
+  height: 32px !important;
+  margin-top: 1px !important;
+}
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+/deep/.is-top {
+  font-size: 18px;
+}
+/deep/.el-tabs__nav{
+  margin-left: 20px;
+}
+/deep/.toolbar > div:last-child{
+  justify-content: flex-start;
+}
+</style>

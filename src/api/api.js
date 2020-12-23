@@ -223,7 +223,9 @@ const api = {
     addCronExpression: '/sys/cronExpression/addCronExpression',
     delCronExpression: '/sys/cronExpression/delCronExpression/',
     getCronExpression: '/sys/cronExpression/getCronExpression/',
-    getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions'
+    getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions',
+    // logManager
+    findSysLog: '/sys/syslog/findSysLog'
   },
   inspectionManager: {
     makePdf: '/inspection/makeSftpPdf',
