@@ -21,7 +21,7 @@
                         clearable
                         placeholder="选择结束日期时间">
                 </el-date-picker>
-                <el-button type="primary" size="small" @click="currentPage = 1 ;selectTime" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" size="small" @click="currentPage = 1 ;selectTime()" icon="el-icon-search">查询</el-button>
                 <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
             </div>
             <div class="queryright"></div>
