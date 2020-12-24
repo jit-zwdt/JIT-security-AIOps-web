@@ -91,7 +91,6 @@ function getObjArr (name) {
 }
 const _import = require('./router/_import_' + process.env.NODE_ENV)
 function filterAsyncRouter (asyncRouterMap) {
-  console.log(asyncRouterMap)
   const accessedRouters = asyncRouterMap.filter(route => {
     if (route.component) {
       if (route.component === 'Layout') {

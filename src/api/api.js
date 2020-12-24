@@ -249,6 +249,12 @@ const api = {
     getDailyOperationReported: '/dailyOperationReport/getDailyOperationReported/',
     exportDaily: '/dailyOperationReport/exportDaily'
   },
+  networkTopology: {
+    addTopologyInfo: '/topology/addTopologyInfo',
+    getTopologyOneInfo: '/topology/getTopologyOneInfo/',
+    getTopologyAllInfo: '/topology/getTopologyAllInfo',
+    getTopologyItemInfo: '/topology/getTopologyItemInfo'
+  },
   main: {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
