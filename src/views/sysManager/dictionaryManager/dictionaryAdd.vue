@@ -141,7 +141,7 @@ export default {
     openDialog () {
       if (this.id !== -1) {
         this.axios
-          .post(this.$api.sysManager.findDictionaryById + this.id)
+          .post(this.$api.sysManager.getDictionary + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data

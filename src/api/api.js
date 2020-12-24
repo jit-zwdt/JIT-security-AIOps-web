@@ -11,7 +11,7 @@ const api = {
       assetsAdd: {
         addAssets: '/assets/addAssets',
         updateAssets: '/assets/updateAssets/',
-        findById: '/assets/findById/',
+        getAsset: '/assets/getAsset/',
         validateIp: '/assets/validateIp',
         validateNumber: '/assets/validateNumber'
       },
@@ -39,7 +39,7 @@ const api = {
       alertDefineAdd: {
       },
       alertDefinev1: {
-        findTriggerAll: '/trigger/findTriggerAll',
+        getTriggers: '/trigger/getTriggers',
         updateTriggerStatus: '/trigger/updateTriggerStatus/',
         updateTriggerPriority: '/trigger/updateTriggerPriority/'
       },
@@ -65,7 +65,7 @@ const api = {
       alertTypeAdd: {
         addMediaType: '/mediaType/addMediaType',
         updateMediaType: '/mediaType/updateMediaType/',
-        findByMediaTypeId: '/mediaType/findByMediaTypeId/'
+        getMediaType: '/mediaType/getMediaType/'
       }
     },
     queryAlert: {
@@ -85,8 +85,8 @@ const api = {
     // malfunctionSolveClaim
     findByProblemId: '/problem/findByProblemId',
     findBySeverityLevel: '/problem/findBySeverityLevel',
-    findUserByRole: '/user/findUserByRole',
-    findAllRole: '/sys/role/findAllRole',
+    getUserByRole: '/user/getUserByRole',
+    getRoles: '/sys/role/getRoles',
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
     problemSolveReport: '/problem/problemSolveReport',
@@ -102,8 +102,8 @@ const api = {
     // monitorDBMysqlInfo
     updateHostEnableMonitor: '/host/updateHostEnableMonitor/',
     getItemInfoListItem: '/item/getItemInfoList',
-    findHostIdinfo: '/host/findHostIdinfo/',
-    findHostAvailable: '/host/findHostAvailable',
+    getHostIdInfo: '/host/getHostIdInfo/',
+    getHostAvailable: '/host/getHostAvailable',
     findHostDetailItems: '/trend/findHostDetailItems/',
     getItemInfoListTrend: '/trend/getItemInfoList',
     checkHostDetailItem: '/trend/checkHostDetailItem',
@@ -113,7 +113,7 @@ const api = {
     addHostDetailGraph: '/trend/addHostDetailGraph',
     checkHostDetailGraph: '/trend/checkHostDetailGraph',
     getResultList: '/gItem/getResultList',
-    findHostDetailGraphs: '/trend/findHostDetailGraphs/',
+    getHostDetailGraphs: '/trend/getHostDetailGraphs/',
     getGProInfoList: '/gPrototype/getGProInfoList',
     createGpro: '/gPrototype/createGpro',
     updateGpro: '/gPrototype/updateGpro',
@@ -131,15 +131,15 @@ const api = {
     // monitorview
     updateItemStatus: '/item/updateItemStatus/',
     findByCondition: '/trigger/findByCondition',
-    findById: '/host/findById/',
+    getHost: '/host/getHost/',
     getZabbixHostGroup: '/hostGroup/getZabbixHostGroup',
     getJsonTypes: '/monitorType/getJsonTypes',
-    findByConditionInfo: '/assets/findByConditionInfo',
+    getConditionInfo: '/assets/getConditionInfo',
     addHost: '/host/addHost',
     updateHost: '/host/updateHost/',
     getTemplates: '/monitorTemplates/getTemplates',
     deleteHost: '/host/deleteHost/',
-    hostinfo: '/host/hostinfo',
+    getHosts: '/host/getHosts',
     getMonitorSubTypes: '/monitorType/getMonitorSubTypes',
     checkObjectName: '/host/checkObjectName',
     checkBusinessName: '/host/checkBusinessName'
@@ -161,13 +161,13 @@ const api = {
     findDictionaryItemByDicId: '/sys/dictionary/findDictionaryItemByDicId',
     // dictionaryManager/dictionaryAdd
     addDictionary: '/sys/dictionary/addDictionary',
-    findDictionaryById: '/sys/dictionary/findDictionaryById/',
+    getDictionary: '/sys/dictionary/getDictionary/',
     checkDictCode: '/sys/dictionary/checkDictCode/',
     checkDictName: '/sys/dictionary/checkDictName/',
     // dictionaryManager/dictionaryItemAdd
     checkItemText: '/sys/dictionary/checkItemText',
     addDictionaryItem: '/sys/dictionary/addDictionaryItem',
-    findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
+    getDictionaryItem: '/sys/dictionary/getDictionaryItem/',
     getDictByCode: '/sys/dictionary/getDictByCode/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
@@ -221,7 +221,7 @@ const api = {
     // cronExpressionManager
     getCronExpressions: '/sys/cronExpression/getCronExpressions',
     addCronExpression: '/sys/cronExpression/addCronExpression',
-    delCronExpression: '/sys/cronExpression/delCronExpression/',
+    deleteCronExpression: '/sys/cronExpression/deleteCronExpression/',
     getCronExpression: '/sys/cronExpression/getCronExpression/',
     getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions',
     // logManager

@@ -529,7 +529,7 @@ export default {
     },
     showInfo (assetid) {
       if (assetid != null && assetid !== '') {
-        this.axios.post(api.assetsManager.assetsList.assetsAdd.findById + assetid, {
+        this.axios.post(api.assetsManager.assetsList.assetsAdd.getAsset + assetid, {
           id: this.id
         }).then((resp) => {
           if (resp.status === 200) {

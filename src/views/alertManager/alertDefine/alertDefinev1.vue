@@ -161,7 +161,7 @@ export default {
         status: this.enableItemTop,
         description: this.nameTop
       }
-      this.axios.put(api.alertManager.alertDefine.alertDefinev1.findTriggerAll, region).then((resp) => {
+      this.axios.put(api.alertManager.alertDefine.alertDefinev1.getTriggers, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
