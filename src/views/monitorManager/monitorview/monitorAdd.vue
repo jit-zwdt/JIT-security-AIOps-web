@@ -608,7 +608,7 @@ export default {
       this.$refs.queryCenter.scrollTop = 0
     },
     showform (id) {
-      this.axios.post(this.$api.monitorManager.findById + id).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHost + id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -667,7 +667,7 @@ export default {
       })
     },
     getAssetInfo () {
-      this.axios.post(this.$api.monitorManager.findByConditionInfo).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getConditionInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

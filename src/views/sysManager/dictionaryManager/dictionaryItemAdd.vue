@@ -75,7 +75,7 @@ import qs from 'qs'
 export default {
   props: {
     titleType: {},
-    id: {},
+    id: String,
     dictId: {},
     showEditDialog: Boolean,
     dialogWidth: {
@@ -146,7 +146,7 @@ export default {
     openDialog () {
       if (this.id !== -1) {
         this.axios
-          .post(this.$api.sysManager.findDictionaryItemById + this.id)
+          .post(this.$api.sysManager.getDictionaryItem + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
@@ -181,12 +181,12 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.$api.sysManager.addDictionaryItem, this.dictionaryItemForm).then((resp) => {
+      this.axios.post(this.id !== -1 ? this.$api.sysManager.updateDictionaryItem : this.$api.sysManager.addDictionaryItem, this.dictionaryItemForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: this.title + '成功',
               type: 'success'
             })
             this.clearform()
@@ -195,7 +195,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: this.title + '添加失败',
             type: 'error'
           })
           this.clearform()

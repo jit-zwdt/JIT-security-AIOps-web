@@ -865,7 +865,7 @@ export default {
     getMonitorTypeItems () {
       const hostIds = []
       hostIds.push(this.$route.query.hostId)
-      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHostAvailable, hostIds).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1906,7 +1906,7 @@ export default {
         timefrom: this.timefrom,
         timetill: this.timetill
       }
-      this.axios.post(this.$api.monitorManager.findHostDetailGraphs + this.$route.query.hostId, params).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHostDetailGraphs + this.$route.query.hostId, params).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

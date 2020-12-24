@@ -201,7 +201,7 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post(this.$api.sysManager.getRoles, {
+      this.axios.post(this.$api.sysManager.getPageRoles, {
         param: {
           roleName: this.roleName
         },
@@ -236,7 +236,7 @@ export default {
       this.showEditDialog = true
     },
     deleteRole (id) {
-      this.axios.delete(this.$api.sysManager.delRole + id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.deleteRole + id).then((resp) => {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {

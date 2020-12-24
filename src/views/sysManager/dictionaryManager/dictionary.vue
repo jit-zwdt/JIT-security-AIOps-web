@@ -269,7 +269,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post(this.$api.sysManager.getDictionary, qs.stringify({
+        .post(this.$api.sysManager.getDictionarys, qs.stringify({
           name: this.name,
           code: this.code,
           currentPage: this.currentPage,

@@ -263,7 +263,7 @@ import chooseDepartment from '@/views/sysManager/userManager/userChooseDepartmen
 export default {
   props: {
     titleType: {},
-    id: {},
+    id: String,
     isReadOnly: {},
     departmentId: {},
     showEditDialog: Boolean,
@@ -461,12 +461,12 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
+      this.axios.post(this.id !== -1 ? this.$api.sysManager.updateUser : this.$api.sysManager.addUser, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: '操作成功',
               type: 'success'
             })
             this.closefrom()
@@ -474,7 +474,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: '操作失败',
             type: 'error'
           })
           this.closefrom()

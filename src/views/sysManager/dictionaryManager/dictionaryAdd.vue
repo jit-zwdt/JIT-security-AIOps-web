@@ -51,7 +51,7 @@ import { resetObject } from '@/utils/common'
 export default {
   props: {
     titleType: {},
-    id: {},
+    id: String,
     showEditDialog: Boolean,
     dialogWidth: {
       type: String,
@@ -141,7 +141,7 @@ export default {
     openDialog () {
       if (this.id !== -1) {
         this.axios
-          .post(this.$api.sysManager.findDictionaryById + this.id)
+          .post(this.$api.sysManager.getDictionary + this.id)
           .then(resp => {
             if (resp.status === 200) {
               var json = resp.data
@@ -174,12 +174,12 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.$api.sysManager.addDictionary, this.dictionaryForm).then((resp) => {
+      this.axios.post(this.id !== -1 ? this.$api.sysManager.updateDictionary : this.$api.sysManager.addDictionary, this.dictionaryForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: this.title + '成功',
               type: 'success'
             })
             this.clearform()
@@ -188,7 +188,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: this.title + '失败',
             type: 'error'
           })
           this.clearform()

@@ -216,7 +216,7 @@ export default {
           ids.push(ele.id)
         })
         if (ids.length > 0) {
-          this.axios.delete(this.$api.sysManager.delDepartment + ids.join(',')).then((resp) => {
+          this.axios.delete(this.$api.sysManager.deleteDepartment + ids.join(',')).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {

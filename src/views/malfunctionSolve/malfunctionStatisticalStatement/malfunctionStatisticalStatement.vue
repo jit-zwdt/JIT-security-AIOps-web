@@ -144,7 +144,7 @@ export default {
     },
     // 导出 excel 文档的方法
     exportReport () {
-      this.axios.post(this.$api.malfunctionSolve.downLoadFailureToSolve, this.tableData, { responseType: 'blob' }).then((resp) => {
+      this.axios.post(this.$api.malfunctionSolve.exportFailureToSolve, this.tableData, { responseType: 'blob' }).then((resp) => {
         const url = window.URL.createObjectURL(resp.data) // 为文件流创建构建下载链接
         const link = document.createElement('a') // 创建a标签
         link.style.display = 'none'

@@ -599,7 +599,7 @@ export default {
     },
     showInfo (mediatypeid) {
       if (mediatypeid != null && mediatypeid !== '-1') {
-        this.axios.post(api.alertManager.alertType.alertTypeAdd.findByMediaTypeId + mediatypeid).then((resp) => {
+        this.axios.post(api.alertManager.alertType.alertTypeAdd.getMediaType + mediatypeid).then((resp) => {
           if (resp.status === 200) {
             this.showSMTP = false
             this.showSMS = false

@@ -83,7 +83,7 @@ export default {
     download () {
       axios({
         method: 'post',
-        url: this.$api.inspectionManager.makePdf,
+        url: this.$api.inspectionManager.downloadSftpPdf,
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         },

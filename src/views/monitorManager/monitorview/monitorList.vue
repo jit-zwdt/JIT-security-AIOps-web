@@ -384,7 +384,7 @@ export default {
       this.setTimeoutster = window.setTimeout(() => { _this.showInfoTimeout() }, 300)
     },
     showInfoTimeout (str) {
-      this.axios.post(this.$api.monitorManager.hostinfo, {
+      this.axios.post(this.$api.monitorManager.getHosts, {
         param: {
           hostObjectName: this.hostObjectName,
           hostIp: this.hostIp,
@@ -557,7 +557,7 @@ export default {
       this.tableData.forEach(element => {
         hostIds.push(element.hostid)
       })
-      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHostAvailable, hostIds).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

@@ -176,7 +176,7 @@ export default {
       this.findHostIdinfo()
     },
     findHostIdinfo () {
-      this.axios.post(this.$api.monitorManager.findHostIdinfo + this.$route.query.hostId).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHostIdInfo + this.$route.query.hostId).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -354,7 +354,7 @@ export default {
     getMonitorTypeItems () {
       const hostIds = []
       hostIds.push(this.$route.query.hostId)
-      this.axios.post(this.$api.monitorManager.findHostAvailable, hostIds).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHostAvailable, hostIds).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

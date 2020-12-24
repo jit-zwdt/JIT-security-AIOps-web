@@ -145,12 +145,13 @@ export default {
       this.isDisable = true
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.axios.post(this.$api.sysManager.addRole, this.form).then((resp) => {
+          const id = this.requestData.id
+          this.axios.post(id !== undefined && id !== '' ? this.$api.sysManager.updateRole : this.$api.sysManager.addRole, this.form).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {
                 this.$message({
-                  message: '修改成功',
+                  message: '操作成功',
                   type: 'success'
                 })
                 this.$emit('success')
@@ -158,7 +159,7 @@ export default {
               }
             } else {
               this.$message({
-                message: '修改失败',
+                message: '操作失败',
                 type: 'error'
               })
               this.clearform()

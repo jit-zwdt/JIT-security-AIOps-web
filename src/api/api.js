@@ -11,7 +11,7 @@ const api = {
       assetsAdd: {
         addAssets: '/assets/addAssets',
         updateAssets: '/assets/updateAssets/',
-        findById: '/assets/findById/',
+        getAsset: '/assets/getAsset/',
         validateIp: '/assets/validateIp',
         validateNumber: '/assets/validateNumber'
       },
@@ -39,7 +39,7 @@ const api = {
       alertDefineAdd: {
       },
       alertDefinev1: {
-        findTriggerAll: '/trigger/findTriggerAll',
+        getTriggers: '/trigger/getTriggers',
         updateTriggerStatus: '/trigger/updateTriggerStatus/',
         updateTriggerPriority: '/trigger/updateTriggerPriority/'
       },
@@ -65,7 +65,7 @@ const api = {
       alertTypeAdd: {
         addMediaType: '/mediaType/addMediaType',
         updateMediaType: '/mediaType/updateMediaType/',
-        findByMediaTypeId: '/mediaType/findByMediaTypeId/'
+        getMediaType: '/mediaType/getMediaType/'
       }
     },
     queryAlert: {
@@ -85,8 +85,8 @@ const api = {
     // malfunctionSolveClaim
     getByProblemIds: '/problem/getByProblemIds', // find
     getBySeverityLevels: '/problem/getBySeverityLevels', // find
-    findUserByRole: '/user/findUserByRole',
-    findAllRole: '/sys/role/findAllRole',
+    getUserByRole: '/user/getUserByRole',
+    getRoles: '/sys/role/getRoles',
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
     getProblemSolveReports: '/problem/getProblemSolveReports', // problemSolveReport
@@ -102,8 +102,8 @@ const api = {
     // monitorDBMysqlInfo
     updateHostEnableMonitor: '/host/updateHostEnableMonitor/',
     getItemInfoListItem: '/item/getItemInfoList',
-    findHostIdinfo: '/host/findHostIdinfo/',
-    findHostAvailable: '/host/findHostAvailable',
+    getHostIdInfo: '/host/getHostIdInfo/',
+    getHostAvailable: '/host/getHostAvailable',
     getHostDetailItems: '/trend/getHostDetailItems/',
     getItemInfoListTrends: '/trend/getItemInfoListTrends',
     checkHostDetailItem: '/trend/checkHostDetailItem',
@@ -113,7 +113,7 @@ const api = {
     addHostDetailGraph: '/trend/addHostDetailGraph',
     checkHostDetailGraph: '/trend/checkHostDetailGraph',
     getResultList: '/gItem/getResultList',
-    findHostDetailGraphs: '/trend/findHostDetailGraphs/',
+    getHostDetailGraphs: '/trend/getHostDetailGraphs/',
     getGProInfoList: '/gPrototype/getGProInfoList',
     addGpro: '/gPrototype/addGpro', // create
     updateGpro: '/gPrototype/updateGpro',
@@ -131,15 +131,15 @@ const api = {
     // monitorview
     updateItemStatus: '/item/updateItemStatus/',
     getByConditions: '/trigger/getByConditions',
-    findById: '/host/findById/',
+    getHost: '/host/getHost/',
     getZabbixHostGroup: '/hostGroup/getZabbixHostGroup',
     getJsonTypes: '/monitorType/getJsonTypes',
-    findByConditionInfo: '/assets/findByConditionInfo',
+    getConditionInfo: '/assets/getConditionInfo',
     addHost: '/host/addHost',
     updateHost: '/host/updateHost/',
     getTemplates: '/monitorTemplates/getTemplates',
     deleteHost: '/host/deleteHost/',
-    hostinfo: '/host/hostinfo',
+    getHosts: '/host/getHosts',
     getMonitorSubTypes: '/monitorType/getMonitorSubTypes',
     checkObjectName: '/host/checkObjectName',
     checkBusinessName: '/host/checkBusinessName'
@@ -148,26 +148,29 @@ const api = {
     // departmentManager/department
     getDepartment: '/sys/department/getDepartment/',
     getDepartmentInfos: '/sys/department/getDepartmentInfos',
-    delDepartment: '/sys/department/delDepartment/',
+    deleteDepartment: '/sys/department/deleteDepartment/',
     // departmentManager/departmentAdd
     addDepartment: '/sys/department/addDepartment',
+    updateDepartment: '/sys/department/updateDepartment',
     // departmentManager/vallidator.js
     checkDepartCode: '/sys/department/checkDepartCode/',
     // dictionaryManager/dictionary
-    getDictionary: '/sys/dictionary/getDictionarys',
+    getDictionarys: '/sys/dictionary/getDictionarys',
     getDictionaryByCode: '/sys/dictionary/getDictionaryByCode/',
     deleteDictionary: '/sys/dictionary/deleteDictionary/',
     deleteDictionaryItem: '/sys/dictionary/deleteDictionaryItem/',
     getDictionaryItemByDicId: '/sys/dictionary/getDictionaryItemByDicId',
     // dictionaryManager/dictionaryAdd
     addDictionary: '/sys/dictionary/addDictionary',
-    findDictionaryById: '/sys/dictionary/findDictionaryById/',
+    updateDictionary: '/sys/dictionary/updateDictionary',
+    getDictionary: '/sys/dictionary/getDictionary/',
     checkDictCode: '/sys/dictionary/checkDictCode/',
     checkDictName: '/sys/dictionary/checkDictName/',
     // dictionaryManager/dictionaryItemAdd
     checkItemText: '/sys/dictionary/checkItemText',
     addDictionaryItem: '/sys/dictionary/addDictionaryItem',
-    findDictionaryItemById: '/sys/dictionary/findDictionaryItemById/',
+    updateDictionaryItem: '/sys/dictionary/updateDictionaryItem',
+    getDictionaryItem: '/sys/dictionary/getDictionaryItem/',
     getDictByCode: '/sys/dictionary/getDictByCode/',
     // menuManager/menu
     getMenus: '/sys/menu/getMenus',
@@ -175,7 +178,7 @@ const api = {
     getSysMenuFirst: '/sys/menu/getSysMenuFirst',
     addMenus: '/sys/menu/addMenus',
     updateMenus: '/sys/menu/updateMenus',
-    delMenus: '/sys/menu/delMenus/',
+    deleteMenus: '/sys/menu/deleteMenus/',
     judgeOfChild: '/sys/menu/judgeOfChild/',
     getMenuTitle: '/sys/menu/getMenuTitle',
     getValidationPath: '/sys/menu/getValidationPath',
@@ -187,9 +190,10 @@ const api = {
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
+    updateRole: '/sys/role/updateRole',
     // roleManager/role
-    getRoles: '/sys/role/getRoles',
-    delRole: '/sys/role/delRole/',
+    getPageRoles: '/sys/role/getPageRoles',
+    deleteRole: '/sys/role/deleteRole/',
     // roleManager/roleAddUser
     getRoleUsers: '/sys/role/getUsers',
     getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
@@ -205,6 +209,7 @@ const api = {
     getAllDepartment: '/sys/department/getAllDepartment',
     deleteUser: '/sys/user/deleteUser/',
     addUser: '/sys/user/addUser',
+    updateUser: '/sys/user/updateUser',
     updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
@@ -215,22 +220,24 @@ const api = {
     // scheduleTaskManager
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
-    delScheduleTask: '/sys/scheduleTask/delScheduleTask/',
+    updateScheduleTask: '/sys/scheduleTask/updateScheduleTask',
+    deleteScheduleTask: '/sys/scheduleTask/deleteScheduleTask/',
     changeStatus: '/sys/scheduleTask/updateStatus/', // changeStatus
     getScheduleTask: '/sys/scheduleTask/getScheduleTask/',
     // cronExpressionManager
     getCronExpressions: '/sys/cronExpression/getCronExpressions',
     addCronExpression: '/sys/cronExpression/addCronExpression',
-    delCronExpression: '/sys/cronExpression/delCronExpression/',
+    deleteCronExpression: '/sys/cronExpression/deleteCronExpression/',
     getCronExpression: '/sys/cronExpression/getCronExpression/',
     getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions',
     // logManager
     getSysLogs: '/sys/syslog/getSysLogs'
   },
   inspectionManager: {
-    makePdf: '/inspection/makeSftpPdf',
+    downloadSftpPdf: '/inspection/downloadSftpPdf',
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
+    updateTimerTaskInfo: '/inspection/updateTimerTaskInfo/',
     getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks',
     getCronExpressionObject: '/sys/cronExpression/getCronExpressionObject',
     deleteMonitorSchemeTimerTask: '/inspection/deleteMonitorSchemeTimerTask/'
@@ -240,7 +247,13 @@ const api = {
     addDailyOperationReport: '/dailyOperationReport/addDailyOperationReport',
     getDailyOperationReports: '/dailyOperationReport/getDailyOperationReports/',
     getDailyOperationReported: '/dailyOperationReport/getDailyOperationReported/',
-    downLoadDaily: '/dailyOperationReport/downLoadDaily'
+    exportDaily: '/dailyOperationReport/exportDaily'
+  },
+  networkTopology: {
+    addTopologyInfo: '/topology/addTopologyInfo',
+    getTopologyOneInfo: '/topology/getTopologyOneInfo/',
+    getTopologyAllInfo: '/topology/getTopologyAllInfo',
+    getTopologyItemInfo: '/topology/getTopologyItemInfo'
   },
   main: {
     // Index.vue

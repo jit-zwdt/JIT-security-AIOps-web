@@ -179,7 +179,7 @@ export default {
     loadinfo (index, row) {
       axios({
         method: 'post',
-        url: this.$api.inspectionManager.makePdf,
+        url: this.$api.inspectionManager.downloadSftpPdf,
         params: {
           ftpFilePath: row.ftpUrl
         },
