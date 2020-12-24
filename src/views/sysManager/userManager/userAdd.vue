@@ -466,7 +466,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: '操作成功',
               type: 'success'
             })
             this.closefrom()
@@ -474,7 +474,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: '操作失败',
             type: 'error'
           })
           this.closefrom()

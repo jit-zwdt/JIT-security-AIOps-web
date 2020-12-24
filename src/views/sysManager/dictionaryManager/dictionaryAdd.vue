@@ -179,7 +179,7 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '添加成功',
+              message: this.title + '成功',
               type: 'success'
             })
             this.clearform()
@@ -188,7 +188,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '添加失败',
+            message: this.title + '失败',
             type: 'error'
           })
           this.clearform()
