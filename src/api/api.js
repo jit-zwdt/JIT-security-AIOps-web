@@ -154,7 +154,7 @@ const api = {
     // departmentManager/vallidator.js
     checkDepartCode: '/sys/department/checkDepartCode/',
     // dictionaryManager/dictionary
-    getDictionary: '/sys/dictionary/getDictionary',
+    getDictionarys: '/sys/dictionary/getDictionarys',
     getDictionaryByCode: '/sys/dictionary/getDictionaryByCode/',
     deleteDictionary: '/sys/dictionary/deleteDictionary/',
     deleteDictionaryItem: '/sys/dictionary/deleteDictionaryItem/',
@@ -188,7 +188,7 @@ const api = {
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
     // roleManager/role
-    getRoles: '/sys/role/getRoles',
+    getPageRoles: '/sys/role/getPageRoles',
     deleteRole: '/sys/role/deleteRole/',
     // roleManager/roleAddUser
     getRoleUsers: '/sys/role/getUsers',

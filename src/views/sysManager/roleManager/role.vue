@@ -201,7 +201,7 @@ export default {
       }, 300)
     },
     showInfoTimeout () {
-      this.axios.post(this.$api.sysManager.getRoles, {
+      this.axios.post(this.$api.sysManager.getPageRoles, {
         param: {
           roleName: this.roleName
         },
