@@ -727,7 +727,7 @@ export default {
     },
     // 调用后台逻辑删除的方法
     deleteMenu (id) {
-      this.axios.post(this.$api.sysManager.delMenus + id).then(resp => {
+      this.axios.post(this.$api.sysManager.deleteMenus + id).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

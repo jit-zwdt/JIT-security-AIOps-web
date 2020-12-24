@@ -90,7 +90,7 @@ const api = {
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
     problemSolveReport: '/problem/problemSolveReport',
-    downLoadFailureToSolve: '/problem/downLoadFailureToSolve'
+    exportFailureToSolve: '/problem/exportFailureToSolve'
   },
   monitorManager: {
     // this.$api.monitorManager.
@@ -148,7 +148,7 @@ const api = {
     // departmentManager/department
     getDepartment: '/sys/department/getDepartment/',
     getDepartmentInfos: '/sys/department/getDepartmentInfos',
-    delDepartment: '/sys/department/delDepartment/',
+    deleteDepartment: '/sys/department/deleteDepartment/',
     // departmentManager/departmentAdd
     addDepartment: '/sys/department/addDepartment',
     // departmentManager/vallidator.js
@@ -175,7 +175,7 @@ const api = {
     getSysMenuFirst: '/sys/menu/getSysMenuFirst',
     addMenus: '/sys/menu/addMenus',
     updateMenus: '/sys/menu/updateMenus',
-    delMenus: '/sys/menu/delMenus/',
+    deleteMenus: '/sys/menu/deleteMenus/',
     judgeOfChild: '/sys/menu/judgeOfChild/',
     getMenuTitle: '/sys/menu/getMenuTitle',
     getValidationPath: '/sys/menu/getValidationPath',
@@ -189,7 +189,7 @@ const api = {
     addRole: '/sys/role/addRole',
     // roleManager/role
     getRoles: '/sys/role/getRoles',
-    delRole: '/sys/role/delRole/',
+    deleteRole: '/sys/role/deleteRole/',
     // roleManager/roleAddUser
     getRoleUsers: '/sys/role/getUsers',
     getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
@@ -215,7 +215,7 @@ const api = {
     // scheduleTaskManager
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
-    delScheduleTask: '/sys/scheduleTask/delScheduleTask/',
+    deleteScheduleTask: '/sys/scheduleTask/deleteScheduleTask/',
     changeStatus: '/sys/scheduleTask/changeStatus/',
     getScheduleTask: '/sys/scheduleTask/getScheduleTask/',
     // cronExpressionManager
@@ -226,7 +226,7 @@ const api = {
     getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions'
   },
   inspectionManager: {
-    makePdf: '/inspection/makeSftpPdf',
+    downloadSftpPdf: '/inspection/downloadSftpPdf',
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
     getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks',
@@ -238,7 +238,7 @@ const api = {
     addDailyOperationReport: '/dailyOperationReport/addDailyOperationReport',
     getDailyOperationReports: '/dailyOperationReport/getDailyOperationReports/',
     getDailyOperationReported: '/dailyOperationReport/getDailyOperationReported/',
-    downLoadDaily: '/dailyOperationReport/downLoadDaily'
+    exportDaily: '/dailyOperationReport/exportDaily'
   },
   main: {
     // Index.vue

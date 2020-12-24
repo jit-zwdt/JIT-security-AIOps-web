@@ -91,7 +91,7 @@ export default {
       var gmtModified = new Date(this.dailyOperationsData.gmtModified)
       this.dailyOperationsData.gmtCreate = formatTodate(gmtCreate, 'YYYY-MM-DD HH:mm:ss')
       this.dailyOperationsData.gmtModified = formatTodate(gmtModified, 'YYYY-MM-DD HH:mm:ss')
-      this.axios.post(this.$api.dailyOperationReportManager.downLoadDaily, this.dailyOperationsData, { responseType: 'blob' }).then((resp) => {
+      this.axios.post(this.$api.dailyOperationReportManager.exportDaily, this.dailyOperationsData, { responseType: 'blob' }).then((resp) => {
         const url = window.URL.createObjectURL(resp.data) // 为文件流创建构建下载链接
         const link = document.createElement('a') // 创建a标签
 

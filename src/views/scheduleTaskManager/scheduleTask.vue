@@ -222,7 +222,7 @@ export default {
       this.showEditDialog = true
     },
     deleteScheduleTask (id) {
-      this.axios.delete(this.$api.sysManager.delScheduleTask + id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.deleteScheduleTask + id).then((resp) => {
         if (resp.status === 200) {
           const json = resp.data
           if (json.code === 1) {
