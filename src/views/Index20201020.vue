@@ -1093,7 +1093,7 @@ export default {
       })
     },
     getUserInfo () {
-      this.axios.post(this.$api.main.getUserInfo).then((resp) => {
+      this.axios.post(this.$api.main.getUsers).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

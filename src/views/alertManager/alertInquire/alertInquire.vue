@@ -330,7 +330,7 @@ export default {
         timeTill: endTimestr,
         name: this.name
       }
-      this.axios.post(api.alertManager.alertInquire.findProblemHost, region).then((resp) => {
+      this.axios.post(api.alertManager.alertInquire.getProblemHosts, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

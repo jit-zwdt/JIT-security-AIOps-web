@@ -240,7 +240,7 @@ export default {
         })
         return
       }
-      this.axios.post(api.assetsManager.assetsList.assetsList.findByCondition, {
+      this.axios.post(api.assetsManager.assetsList.assetsList.getByCondition, {
         param: {
           name: this.nameTop,
           registerStartDate: registerDateStartTop,

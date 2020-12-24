@@ -633,7 +633,7 @@ export default {
       this.title = '修改'
       this.editorDrawer = true
       this.id = row.id
-      this.axios.post(this.$api.sysManager.findBySysMenu + this.id).then(resp => {
+      this.axios.post(this.$api.sysManager.getBySysMenu + this.id).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

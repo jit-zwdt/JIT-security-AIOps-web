@@ -114,7 +114,7 @@ export default {
         roleId: this.requestData.id,
         value: this.value
       }
-      this.axios.post(this.$api.sysManager.bindingUsers, params).then((resp) => {
+      this.axios.post(this.$api.sysManager.updateBindingUsers, params).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

@@ -298,7 +298,7 @@ export default {
         valueType: '0',
         method: 'top5ByItem'
       }
-      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getTop5Msgs, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -347,7 +347,7 @@ export default {
         valueType: '0',
         method: 'top5ByItem'
       }
-      this.axios.post(this.$api.monitorManager.getTop5Msg, param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getTop5Msgs, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

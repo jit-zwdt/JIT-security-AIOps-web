@@ -332,7 +332,7 @@ export default {
         roleId: this.drawerId,
         keys: this.$refs.tree.getCheckedKeys(false)
       }
-      this.axios.post(this.$api.sysManager.bindingMenus, params).then((resp) => {
+      this.axios.post(this.$api.sysManager.updateBindingMenus, params).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

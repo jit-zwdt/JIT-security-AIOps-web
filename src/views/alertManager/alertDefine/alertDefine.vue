@@ -101,7 +101,7 @@ export default {
     },
     showInfoTimeout (str) {
       var alias = this.nameTop
-      this.axios.post(api.alertManager.alertDefine.alertDefine.getUserInfo, qs.stringify({
+      this.axios.post(api.alertManager.alertDefine.alertDefine.getUsers, qs.stringify({
         alias: alias
       })).then((resp) => {
         if (resp.status === 200) {
