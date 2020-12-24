@@ -9,9 +9,9 @@
           <div class="queryleft">
             <p class="title-bar-description" style>
               <span
-                >{{ this.$route.query.hostName }}\{{
+                >{{ this.$route.query.hostName }}({{
                   this.serverForm.jmxIp
-                }}</span
+                }})</span
               >
             </p>
           </div>
