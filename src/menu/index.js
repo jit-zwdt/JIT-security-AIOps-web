@@ -38,6 +38,12 @@ const sysManager = {
       icon: 'fa el-icon-notebook-2',
       path: '/sysManager/dictionary',
       permissionsKey: ''
+    },
+    logManager: {
+      name: '日志管理',
+      icon: 'fa el-icon-notebook-2',
+      path: '/sysManager/log',
+      permissionsKey: ''
     }
   }
 }
