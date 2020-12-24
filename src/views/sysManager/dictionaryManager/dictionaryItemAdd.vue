@@ -75,7 +75,7 @@ import qs from 'qs'
 export default {
   props: {
     titleType: {},
-    id: {},
+    id: String,
     dictId: {},
     showEditDialog: Boolean,
     dialogWidth: {
@@ -181,7 +181,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.$api.sysManager.addDictionaryItem, this.dictionaryItemForm).then((resp) => {
+      this.axios.post(this.id !== -1 ? this.$api.sysManager.updateDictionaryItem : this.$api.sysManager.addDictionaryItem, this.dictionaryItemForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

@@ -285,7 +285,7 @@ export default {
       const param = new URLSearchParams()
       param.append('param', JSON.stringify(paramInfo))
       param.append('id', this.id)
-      this.axios.post(this.$api.inspectionManager.addTimerTaskInfo, param).then((resp) => {
+      this.axios.post(this.$api.inspectionManager.updateTimerTaskInfo, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

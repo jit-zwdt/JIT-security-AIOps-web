@@ -342,12 +342,12 @@ export default {
       } else {
         this.userForm.status = 1
       }
-      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
+      this.axios.post(this.$api.sysManager.updateUser, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '修改成功',
+              message: '冻结成功',
               type: 'success'
             })
             this.userForm = {}
@@ -356,7 +356,7 @@ export default {
           }
         } else {
           this.$message({
-            message: '修改失败',
+            message: '冻结失败',
             type: 'error'
           })
           this.userForm = {}

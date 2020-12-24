@@ -218,7 +218,8 @@ export default {
       this.isDisable = true
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.axios.post(this.$api.sysManager.addDepartment, this.form).then((resp) => {
+          const id = this.reqestData.id
+          this.axios.post(id !== undefined && id !== '' ? this.$api.sysManager.updateDepartment : this.$api.sysManager.addDepartment, this.form).then((resp) => {
             if (resp.status === 200) {
               var json = resp.data
               if (json.code === 1) {

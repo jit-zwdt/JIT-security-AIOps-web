@@ -151,6 +151,7 @@ const api = {
     deleteDepartment: '/sys/department/deleteDepartment/',
     // departmentManager/departmentAdd
     addDepartment: '/sys/department/addDepartment',
+    updateDepartment: '/sys/department/updateDepartment',
     // departmentManager/vallidator.js
     checkDepartCode: '/sys/department/checkDepartCode/',
     // dictionaryManager/dictionary
@@ -161,12 +162,14 @@ const api = {
     findDictionaryItemByDicId: '/sys/dictionary/findDictionaryItemByDicId',
     // dictionaryManager/dictionaryAdd
     addDictionary: '/sys/dictionary/addDictionary',
+    updateDictionary: '/sys/dictionary/updateDictionary',
     getDictionary: '/sys/dictionary/getDictionary/',
     checkDictCode: '/sys/dictionary/checkDictCode/',
     checkDictName: '/sys/dictionary/checkDictName/',
     // dictionaryManager/dictionaryItemAdd
     checkItemText: '/sys/dictionary/checkItemText',
     addDictionaryItem: '/sys/dictionary/addDictionaryItem',
+    updateDictionaryItem: '/sys/dictionary/updateDictionaryItem',
     getDictionaryItem: '/sys/dictionary/getDictionaryItem/',
     getDictByCode: '/sys/dictionary/getDictByCode/',
     // menuManager/menu
@@ -205,6 +208,7 @@ const api = {
     getAllDepartment: '/sys/department/getAllDepartment',
     deleteUser: '/sys/user/deleteUser/',
     addUser: '/sys/user/addUser',
+    updateUser: '/sys/user/updateUser',
     updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
@@ -215,6 +219,7 @@ const api = {
     // scheduleTaskManager
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
+    updateScheduleTask: '/sys/scheduleTask/updateScheduleTask',
     deleteScheduleTask: '/sys/scheduleTask/deleteScheduleTask/',
     changeStatus: '/sys/scheduleTask/changeStatus/',
     getScheduleTask: '/sys/scheduleTask/getScheduleTask/',
@@ -231,6 +236,7 @@ const api = {
     downloadSftpPdf: '/inspection/downloadSftpPdf',
     inspectionGetHostInfo: '/inspection/getHostInfo/',
     addTimerTaskInfo: '/inspection/addTimerTaskInfo/',
+    updateTimerTaskInfo: '/inspection/updateTimerTaskInfo/',
     getMonitorSchemeTimerTasks: '/inspection/getMonitorSchemeTimerTasks',
     getCronExpressionObject: '/sys/cronExpression/getCronExpressionObject',
     deleteMonitorSchemeTimerTask: '/inspection/deleteMonitorSchemeTimerTask/'

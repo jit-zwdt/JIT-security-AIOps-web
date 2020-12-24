@@ -234,37 +234,6 @@ export default {
       resetObject(this.userForm)
       this.$refs.userForm.resetFields()
     },
-    submitOrUpdate (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.submit()
-        } else {
-          return false
-        }
-      })
-    },
-    submit () {
-      this.axios.post(this.$api.sysManager.addUser, this.userForm).then((resp) => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.$message({
-              message: '添加成功',
-              type: 'success'
-            })
-            this.closefrom()
-            this.$emit('success')
-          }
-        } else {
-          this.$message({
-            message: '添加失败',
-            type: 'error'
-          })
-          this.closefrom()
-          this.$emit('error')
-        }
-      })
-    },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
