@@ -190,6 +190,7 @@ const api = {
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
     addRole: '/sys/role/addRole',
+    updateRole: '/sys/role/updateRole',
     // roleManager/role
     getPageRoles: '/sys/role/getPageRoles',
     deleteRole: '/sys/role/deleteRole/',
