@@ -1,8 +1,8 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="登录日志" :name="0"></el-tab-pane>
-    <el-tab-pane label="操作日志" :name="1"></el-tab-pane>
-    <el-tab-pane label="错误日志" :name="2"></el-tab-pane>
+    <el-tab-pane label="登录日志" name=0></el-tab-pane>
+    <el-tab-pane label="操作日志" name=1></el-tab-pane>
+    <el-tab-pane label="错误日志" name=2></el-tab-pane>
       <ToolBar>
       <div class="queryleft">
             <el-input type="text" style="width: 250px" @keyup.enter.native="showInfo" v-model="nameTop" size="small" placeholder="日志名称" clearable></el-input>
@@ -178,7 +178,7 @@ export default {
     showInfo () {
       this.loading = true
       this.setTimeoutster = window.setTimeout(() => {
-        this.axios.post(this.$api.sysManager.findSysLog, qs.stringify({
+        this.axios.post(this.$api.sysManager.getSysLogs, qs.stringify({
           logContent: this.nameTop,
           startTime: this.timefrom,
           endTime: this.timetill,

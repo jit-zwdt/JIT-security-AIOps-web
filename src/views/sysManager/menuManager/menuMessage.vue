@@ -112,7 +112,7 @@ export default {
   methods: {
     // 打开抽屉的时候执行的方法
     async preOpen () {
-      await this.axios.post(this.$api.sysManager.findBySysMenu + this.menuId).then(resp => {
+      await this.axios.post(this.$api.sysManager.getBySysMenu + this.menuId).then(resp => {
         var json = resp.data
         if (json.code === 1) {
           this.menu = json.data
@@ -121,7 +121,7 @@ export default {
 
       if (this.menu.parentId !== '0') {
         // 根据 父级菜单 查询父级菜单的数据
-        this.axios.post(this.$api.sysManager.findBySysMenu + this.menu.parentId).then(resp => {
+        this.axios.post(this.$api.sysManager.getBySysMenu + this.menu.parentId).then(resp => {
           var json = resp.data
           if (json.code === 1) {
             this.partentMenu = json.data

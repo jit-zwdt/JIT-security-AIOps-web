@@ -113,7 +113,7 @@ export default {
       const param = new URLSearchParams()
       param.append('id', this.editform.id)
       param.append('templates', this.tempform.templates)
-      this.axios.post(api.alertManager.alertTemplate.alertTemplate.bindTemplates, param).then((resp) => {
+      this.axios.post(api.alertManager.alertTemplate.alertTemplate.updateTemplates, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

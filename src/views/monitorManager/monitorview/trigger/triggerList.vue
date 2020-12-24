@@ -191,7 +191,7 @@ export default {
         status: this.enableItemTop,
         description: this.nameTop
       }
-      this.axios.post(this.$api.monitorManager.findByCondition, region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getByConditions, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

@@ -200,7 +200,7 @@ export default {
         claimType: this.claimType
       }
       this.axios
-        .post(this.$api.malfunctionSolve.findBySeverityLevel, params)
+        .post(this.$api.malfunctionSolve.getBySeverityLevels, params)
         .then(resp => {
           if (resp.status === 200) {
             var json = resp.data

@@ -1057,7 +1057,7 @@ export default {
         timefrom: this.timefrom,
         timetill: this.timetill
       }
-      this.axios.post(this.$api.monitorManager.findHostDetailItems + this.$route.query.hostId, param).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getHostDetailItems + this.$route.query.hostId, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1269,7 +1269,7 @@ export default {
         timefrom: this.timefrom,
         timetill: this.timetill
       }
-      this.axios.post(this.$api.monitorManager.getItemInfoListTrend, region).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getItemInfoListTrends, region).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -1980,7 +1980,7 @@ export default {
         }
       }
       if (this.submitType === 1 && flag) {
-        this.axios.post(this.$api.monitorManager.createGpro, this.form).then((resp) => {
+        this.axios.post(this.$api.monitorManager.addGpro, this.form).then((resp) => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {

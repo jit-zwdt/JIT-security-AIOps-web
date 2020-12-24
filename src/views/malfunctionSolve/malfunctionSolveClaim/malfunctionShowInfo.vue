@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     openDialog () {
-      this.axios.post(this.$api.malfunctionSolve.findByProblemId, qs.stringify({
+      this.axios.post(this.$api.malfunctionSolve.getByProblemIds, qs.stringify({
         problemId: this.assetform.eventid
       })).then(resp => {
         if (resp.status === 200) {

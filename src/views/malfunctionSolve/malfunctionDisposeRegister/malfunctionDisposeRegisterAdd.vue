@@ -387,7 +387,7 @@ export default {
     },
     showInfo (claimId) {
       if (claimId != null && claimId !== '') {
-        this.axios.post(this.$api.malfunctionSolve.findRegisterByClaimId + claimId, {
+        this.axios.post(this.$api.malfunctionSolve.getRegisterByClaimIds + claimId, {
           id: claimId
         }).then((resp) => {
           if (resp.status === 200) {

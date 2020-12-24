@@ -119,7 +119,7 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post(this.$api.malfunctionSolve.problemSolveReport, qs.stringify({
+        .post(this.$api.malfunctionSolve.getProblemSolveReports, qs.stringify({
           problemType: '',
           problemName: '',
           resolveTimeStart: this.resolveTimeStart,

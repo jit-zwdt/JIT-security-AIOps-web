@@ -17,7 +17,7 @@ const api = {
       },
       assetsList: {
         deleteAssets: '/assets/deleteAssets/',
-        findByCondition: '/assets/findByCondition'
+        getByCondition: '/assets/getByConditions'
       },
       getHardwareInfo: '/assets/getHardwareInfo/'
     }
@@ -34,7 +34,7 @@ const api = {
         updateUserAndMediaInfo: '/user/updateUserAndMediaInfo/'
       },
       alertDefine: {
-        getUserInfo: '/user/getUserInfo'
+        getUsers: '/user/getUsers'
       },
       alertDefineAdd: {
       },
@@ -47,11 +47,11 @@ const api = {
       }
     },
     alertInquire: {
-      findProblemHost: '/problem/findProblemHost'
+      getProblemHosts: '/problem/getProblemHosts'
     },
     alertTemplate: {
       alertTemplate: {
-        bindTemplates: '/monitorTemplates/bindTemplates',
+        updateTemplates: '/monitorTemplates/updateTemplates', // bindTemplates
         getZabbixTemplates: '/monitorTemplates/getZabbixTemplates',
         checkItems: '/monitorTemplates/checkItems'
       }
@@ -70,7 +70,7 @@ const api = {
     },
     queryAlert: {
       queryAlert: {
-        bindTemplates: '/monitorTemplates/bindTemplates',
+        updateTemplates: '/monitorTemplates/updateTemplates', // bindTemplates
         getZabbixTemplates: '/monitorTemplates/getZabbixTemplates',
         checkItems: '/monitorTemplates/checkItems'
       }
@@ -78,18 +78,18 @@ const api = {
   },
   malfunctionSolve: {
     // malfunctionDisposeRegister
-    findClaimByUser: '/problem/findClaimByUser',
+    getClaimByUsers: '/problem/getClaimByUsers', // find
     addRegister: '/register/addRegister',
     updateClaimAfterRegister: '/problem/updateClaimAfterRegister',
-    findRegisterByClaimId: '/register/findRegisterByClaimId/',
+    getRegisterByClaimIds: '/register/getRegisterByClaimIds/', // find
     // malfunctionSolveClaim
-    findByProblemId: '/problem/findByProblemId',
-    findBySeverityLevel: '/problem/findBySeverityLevel',
+    getByProblemIds: '/problem/getByProblemIds', // find
+    getBySeverityLevels: '/problem/getBySeverityLevels', // find
     findUserByRole: '/user/findUserByRole',
     findAllRole: '/sys/role/findAllRole',
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
-    problemSolveReport: '/problem/problemSolveReport',
+    getProblemSolveReports: '/problem/getProblemSolveReports', // problemSolveReport
     downLoadFailureToSolve: '/problem/downLoadFailureToSolve'
   },
   monitorManager: {
@@ -97,15 +97,15 @@ const api = {
     // helpTemplates
     // monitorDB
     getZabbixHostGroupByHostType: '/host/getZabbixHostGroupByHostType',
-    getTop5Msg: '/top5/getTop5Msg',
-    getTop5ByTrigger: '/host/getTop5ByTrigger',
+    getTop5Msgs: '/top5/getTop5Msgs',
+    getTop5ByTrigger: '/host/getTop5ByTriggers',
     // monitorDBMysqlInfo
     updateHostEnableMonitor: '/host/updateHostEnableMonitor/',
     getItemInfoListItem: '/item/getItemInfoList',
     findHostIdinfo: '/host/findHostIdinfo/',
     findHostAvailable: '/host/findHostAvailable',
-    findHostDetailItems: '/trend/findHostDetailItems/',
-    getItemInfoListTrend: '/trend/getItemInfoList',
+    getHostDetailItems: '/trend/getHostDetailItems/',
+    getItemInfoListTrends: '/trend/getItemInfoListTrends',
     checkHostDetailItem: '/trend/checkHostDetailItem',
     addHostDetailItem: '/trend/addHostDetailItem',
     deleteHostDetailItem: '/trend/deleteHostDetailItem/',
@@ -115,7 +115,7 @@ const api = {
     getResultList: '/gItem/getResultList',
     findHostDetailGraphs: '/trend/findHostDetailGraphs/',
     getGProInfoList: '/gPrototype/getGProInfoList',
-    createGpro: '/gPrototype/createGpro',
+    addGpro: '/gPrototype/addGpro', // create
     updateGpro: '/gPrototype/updateGpro',
     deleteGPro: '/gPrototype/deleteGpro',
     getGItemByGraphId: '/gItem/getGItemByGraphId/',
@@ -130,7 +130,7 @@ const api = {
     getMonitorTypes: '/monitorType/getMonitorTypes',
     // monitorview
     updateItemStatus: '/item/updateItemStatus/',
-    findByCondition: '/trigger/findByCondition',
+    getByConditions: '/trigger/getByConditions',
     findById: '/host/findById/',
     getZabbixHostGroup: '/hostGroup/getZabbixHostGroup',
     getJsonTypes: '/monitorType/getJsonTypes',
@@ -154,11 +154,11 @@ const api = {
     // departmentManager/vallidator.js
     checkDepartCode: '/sys/department/checkDepartCode/',
     // dictionaryManager/dictionary
-    getDictionary: '/sys/dictionary/getDictionary',
+    getDictionary: '/sys/dictionary/getDictionarys',
     getDictionaryByCode: '/sys/dictionary/getDictionaryByCode/',
     deleteDictionary: '/sys/dictionary/deleteDictionary/',
     deleteDictionaryItem: '/sys/dictionary/deleteDictionaryItem/',
-    findDictionaryItemByDicId: '/sys/dictionary/findDictionaryItemByDicId',
+    getDictionaryItemByDicId: '/sys/dictionary/getDictionaryItemByDicId',
     // dictionaryManager/dictionaryAdd
     addDictionary: '/sys/dictionary/addDictionary',
     findDictionaryById: '/sys/dictionary/findDictionaryById/',
@@ -182,7 +182,7 @@ const api = {
     getValidationName: '/sys/menu/getValidationName',
     getValidationComponent: '/sys/menu/getValidationComponent',
     // menuManager/menuMessage
-    findBySysMenu: '/sys/menu/findBySysMenu/',
+    getBySysMenu: '/sys/menu/getBySysMenu/',
     updateIsShow: '/sys/menu/updateIsShow/',
     // roleManager/roleAdd
     getRole: '/sys/role/getRole/',
@@ -193,10 +193,10 @@ const api = {
     // roleManager/roleAddUser
     getRoleUsers: '/sys/role/getUsers',
     getRoleUsersByRoleId: '/sys/role/getRoleUsers/',
-    bindingUsers: '/sys/role/bindingUsers',
+    updateBindingUsers: '/sys/role/updateBindingUsers', // bindingUsers
     getRoleMenus: '/sys/role/getMenus',
     getRoleMenusByRoleId: '/sys/role/getRoleMenus/',
-    bindingMenus: '/sys/role/bindingMenus',
+    updateBindingMenus: '/sys/role/updateBindingMenus',
     // roleManager/validators.js
     checkRoleName: '/sys/role/checkRoleName/',
     checkRoleSign: '/sys/role/checkRoleSign/',
@@ -208,7 +208,7 @@ const api = {
     updatePassword: '/sys/user/updatePassword',
     // userManager/userAdd
     checkUserName: '/sys/user/checkUserName/',
-    findUserById: '/sys/user/findUserById/',
+    getUserById: '/sys/user/getUserById/',
     getUserInfo: '/sys/user/getUserInfo',
     uploadPic: '/sys/user/uploadSftpPic',
     getPicBase64: '/sys/user/getSftpPicBase64/',
@@ -216,7 +216,7 @@ const api = {
     getScheduleTasks: '/sys/scheduleTask/getScheduleTasks',
     addScheduleTask: '/sys/scheduleTask/addScheduleTask',
     delScheduleTask: '/sys/scheduleTask/delScheduleTask/',
-    changeStatus: '/sys/scheduleTask/changeStatus/',
+    changeStatus: '/sys/scheduleTask/updateStatus/', // changeStatus
     getScheduleTask: '/sys/scheduleTask/getScheduleTask/',
     // cronExpressionManager
     getCronExpressions: '/sys/cronExpression/getCronExpressions',
@@ -225,7 +225,7 @@ const api = {
     getCronExpression: '/sys/cronExpression/getCronExpression/',
     getAllCronExpressions: '/sys/cronExpression/getAllCronExpressions',
     // logManager
-    findSysLog: '/sys/syslog/findSysLog'
+    getSysLogs: '/sys/syslog/getSysLogs'
   },
   inspectionManager: {
     makePdf: '/inspection/makeSftpPdf',
@@ -246,7 +246,7 @@ const api = {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
     getTimeTop5ItemInfo: '/homePage/getTimeTop5ItemInfo/',
-    getUserInfo: '/user/getUserInfo',
+    getUsers: '/user/getUsers',
     getAlertdata: '/problem/getAlertdata',
     getInformationStatistics: '/homePage/getInformationStatistics',
     getFAQTop5: '/homePage/getFAQTop5',

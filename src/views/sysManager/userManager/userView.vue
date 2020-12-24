@@ -176,7 +176,7 @@ export default {
       this.department = e.label
     },
     async openDialog () {
-      await this.axios.post(this.$api.sysManager.findUserById + this.id).then(resp => {
+      await this.axios.post(this.$api.sysManager.getUserById + this.id).then(resp => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

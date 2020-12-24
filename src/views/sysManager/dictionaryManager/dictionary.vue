@@ -364,7 +364,7 @@ export default {
       this.showDictItemInfo()
     },
     showDictItemInfo () {
-      this.axios.post(this.$api.sysManager.findDictionaryItemByDicId, qs.stringify({
+      this.axios.post(this.$api.sysManager.getDictionaryItemByDicId, qs.stringify({
         id: this.dictId,
         itemText: this.itemText,
         status: this.status,
