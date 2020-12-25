@@ -47,8 +47,6 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="生日：" prop="birth">
-                                <!-- <span v-if="userForm.birth !== null&&userForm.sex !== ''">{{userForm.birth.substring(0,userForm.birth.indexOf('T'))}}</span>
-                                <span v-else></span> -->
                                 <span>{{ userForm.birth }}</span>
                             </el-form-item>
                         </el-col>
