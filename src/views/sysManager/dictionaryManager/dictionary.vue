@@ -4,7 +4,7 @@
             <div class="queryleft">
                 <el-input type="text" v-model="name" size="small" placeholder="字典名称" clearable></el-input>
                 <el-input type="text" v-model="code" size="small" placeholder="字典编码" clearable></el-input>
-                <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" size="small" @click="currentPage = 1 ; showInfo() == false" icon="el-icon-search">查询</el-button>
                 <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
             </div>
             <div class="queryright">
@@ -101,7 +101,7 @@
                         </el-col>
                     </div>
                     <div class="queryright" style="width: 50%">
-                        <el-button type="primary" size="small" @click="showDictItem()" icon="el-icon-search">查询</el-button>
+                        <el-button type="primary" size="small" @click="currentPageDictItem = 1 ; showDictItem()" icon="el-icon-search">查询</el-button>
                         <el-button type="primary" size="small" @click="showDictItemClear()">重置</el-button>
                     </div>
                 </ToolBar>
