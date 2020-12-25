@@ -74,7 +74,9 @@
         </el-form>
       </template>
       </el-table-column>
-      <el-table-column type="index" label="序号" prop="num" min-width="20px" :resizable="false"></el-table-column>
+      <el-table-column label="序号" min-width="10%">
+        <template slot-scope="scope"> {{(currentPage - 1) * pageSize + scope.$index + 1}} </template>
+      </el-table-column>
       <el-table-column prop="logContent" label="日志内容" min-width="40%"></el-table-column>
       <el-table-column prop="userUsername" label="操作人ID" min-width="20%"></el-table-column>
       <el-table-column prop="userName" label="操作人名称" min-width="20%"></el-table-column>
@@ -105,7 +107,7 @@ export default {
       timefrom: '',
       timetill: '',
       logType: 0,
-      operation_Type: 0,
+      operation_Type: '',
       tableData: [{
         id: '',
         logContent: '',
@@ -215,7 +217,7 @@ export default {
       this.nameTop = ''
       this.timefrom = ''
       this.timetill = ''
-      this.operation_Type = 0
+      this.operation_Type = ''
     },
     // 日期格式化
     formatDate (row, column) {
