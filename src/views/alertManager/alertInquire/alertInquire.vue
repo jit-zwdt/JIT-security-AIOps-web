@@ -316,6 +316,10 @@ export default {
       let endTimestr = ''
       endTimestr = formatTodate(this.timeTill, 'YYYY-MM-DD 23:59:59')
       if (compareDate(startTimestr, endTimestr)) {
+        // 清空数据
+        this.tableData = []
+        // 关闭加载
+        this.loading = false
         Message({
           message: '开始日期大于结束日期！',
           type: 'warning'

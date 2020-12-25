@@ -103,8 +103,8 @@ export default {
     selectTime () {
       if (this.timefrom !== '' && this.timetill !== '') {
         if (this.timefrom <= this.timetill) {
-          this.timefrom = new Date(this.timefrom).getTime() / 1000
-          this.timetill = new Date(this.timetill).getTime() / 1000
+          this.timefrom = new Date(this.timefrom).getTime()
+          this.timetill = new Date(this.timetill).getTime()
           this.showInfo()
         } else {
           this.$message({
