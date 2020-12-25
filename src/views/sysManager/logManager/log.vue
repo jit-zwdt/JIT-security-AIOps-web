@@ -303,7 +303,21 @@ export default {
       }
     },
     selectTime () {
-      if (this.timefrom !== '' && this.timetill !== '') {
+      if ((this.timefrom === '' || this.timefrom === null) && (this.timetill === '' || this.timetill === null)) { // 都是无
+        this.timefrom = ''
+        this.timetill = ''
+        this.showInfo()
+      } else if (this.timefrom === '' || this.timefrom === null) { // 写了一半的情况
+        this.$message({
+          message: '请选择开始时间!',
+          type: 'error'
+        })
+      } else if (this.timetill === '' || this.timetill === null) {
+        this.$message({
+          message: '请选择结束时间!',
+          type: 'error'
+        })
+      } else {
         if (this.timefrom <= this.timetill) {
           this.showInfo()
         } else {
@@ -312,15 +326,6 @@ export default {
             type: 'error'
           })
         }
-      } else if (this.timefrom === '' && this.timetill === '') {
-        this.timefrom = ''
-        this.timetill = ''
-        this.showInfo()
-      } else {
-        this.$message({
-          message: '请选择完整时间范围!',
-          type: 'error'
-        })
       }
     },
     // 查询方法
