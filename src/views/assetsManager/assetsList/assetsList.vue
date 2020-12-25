@@ -19,7 +19,7 @@
           value-format="yyyy-MM-dd"
           class="datetop"
         ></el-date-picker>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="currentPage = 1 ;showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button
           type="primary"
           size="small"
@@ -234,6 +234,10 @@ export default {
       const registerDateStartTop = this.registerDateStartTop == null ? '' : this.registerDateStartTop
       const registerDateEndTop = this.registerDateEndTop == null ? '' : this.registerDateEndTop
       if (compareDate(registerDateStartTop, registerDateEndTop)) {
+        // 清空元素
+        this.tableData = []
+        // 关闭加载
+        this.loading = false
         Message({
           message: '开始日期大于结束日期！',
           type: 'warning'

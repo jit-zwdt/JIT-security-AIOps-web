@@ -16,7 +16,7 @@
                 type="datetime"
                 placeholder="选择结束日期时间">
         </el-date-picker>
-        <el-button type="primary" size="small" @click="selectTime" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="currentPage = 1 ;selectTime()" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright"></div>
@@ -98,8 +98,6 @@ export default {
     selectTime () {
       if (this.timefrom !== '' && this.timetill !== '') {
         if (this.timefrom <= this.timetill) {
-          this.timefrom = new Date(this.timefrom).getTime()
-          this.timetill = new Date(this.timetill).getTime()
           this.showInfo()
         } else {
           this.$message({
@@ -130,8 +128,8 @@ export default {
       this.axios
         .post(this.$api.dailyOperationReportManager.getDailyOperationReports, {
           param: {
-            startGmtCreate: this.timefrom,
-            endGmtCreate: this.timetill
+            startGmtCreate: new Date(this.timefrom).getTime(),
+            endGmtCreate: new Date(this.timetill).getTime()
           },
           page: this.currentPage,
           size: this.pageSize

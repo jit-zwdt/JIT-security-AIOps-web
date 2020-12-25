@@ -21,7 +21,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" size="small" @click="currentPage = 1 ;showInfo() == false" icon="el-icon-search">查询</el-button>
         <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
       <div class="queryright">

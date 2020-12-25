@@ -459,6 +459,7 @@ export default {
     },
     closefrom () {
       // this.showfooter = true
+      this.oldAssetNumber = ''
       this.clearform()
       Object.assign(this.$data.serverListForm, this.$options.data().serverListForm)
       this.$emit('close')
