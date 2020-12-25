@@ -115,7 +115,7 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="序号" min-width="3%">
+      <el-table-column label="序号" min-width="3%" align="center" :resizable="false">
         <template slot-scope="scope">
           {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
         </template>
@@ -123,30 +123,33 @@
       <el-table-column
         prop="logContent"
         label="日志内容"
-        min-width="20%"
+        min-width="37%"
         :resizable="false"
       ></el-table-column>
       <el-table-column
         prop="userUsername"
         label="操作人ID"
         min-width="10%"
+        align="center"
         :resizable="false"
       ></el-table-column>
       <el-table-column
         prop="userName"
         label="操作人名称"
         min-width="10%"
+        align="center"
         :resizable="false"
       ></el-table-column>
-      <el-table-column prop="ip" label="IP" min-width="10%"></el-table-column>
+      <el-table-column prop="ip" label="IP" min-width="10%" :resizable="false"></el-table-column>
       <el-table-column
         prop="costTime"
         label="耗时(毫秒)"
         min-width="10%"
         :resizable="false"
+        align="center"
         filter-placement="bottom-end">
         <template slot-scope="scope">
-          <el-tag
+          <el-tag style="width:80px"
             :type="scope.row.costTime < 1000 ? 'success' : scope.row.costTime > 3000 ? 'danger' : 'warning'  "
             disable-transitions>{{scope.row.costTime}}</el-tag>
         </template>
