@@ -144,6 +144,12 @@
         label="耗时(毫秒)"
         min-width="10%"
         :resizable="false"
+        filter-placement="bottom-end">
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.costTime < 1000 ? 'success' : scope.row.costTime > 3000 ? 'danger' : 'warning'  "
+            disable-transitions>{{scope.row.costTime}}</el-tag>
+        </template>
       ></el-table-column>
       <el-table-column
         prop="logType"
