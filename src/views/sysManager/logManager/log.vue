@@ -123,7 +123,7 @@
       <el-table-column
         prop="logContent"
         label="日志内容"
-        min-width="37%"
+        min-width="35%"
         :resizable="false"
       ></el-table-column>
       <el-table-column
@@ -174,7 +174,7 @@
       <el-table-column
         label="创建时间"
         prop="gmtCreate"
-        min-width="10%"
+        min-width="12%"
         :resizable="false"
         :formatter="formatDate"
       ></el-table-column>
