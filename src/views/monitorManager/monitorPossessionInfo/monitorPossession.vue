@@ -630,7 +630,7 @@
                     :style="{ display: checkbtnOfGraph() }"
                   ></el-button>
                 </el-popconfirm>
-                  <el-button
+                  <el-button v-if="scope.row.templateid === 0 && scope.row.flags === 0"
                           size="mini"
                           type="primary"
                           slot="reference"
