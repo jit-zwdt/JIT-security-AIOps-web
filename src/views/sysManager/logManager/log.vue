@@ -42,10 +42,8 @@
                 ></el-option>
             </el-select>
             </el-col>
-            <el-col :span="4">
-                <el-button type="primary" size="small" @click="currentPage = 1;selectTime()" icon="el-icon-search">查询</el-button>
-                <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
-            </el-col>
+              <el-button type="primary" size="small" @click="currentPage = 1;selectTime()" icon="el-icon-search">查询</el-button>
+              <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
       </div>
     </ToolBar>
     <el-table
@@ -118,8 +116,18 @@ export default {
         logType: '',
         operationType: ''
       }],
-      // 0:未定义;1:添加;2:查询;3:修改;4:删除
-      operationTypes: [{ id: 0, type: '未定义' }, { id: 1, type: '添加' }, { id: 2, type: '查询' }, { id: 3, type: '修改' }, { id: 4, type: '删除' }],
+      // 0:未定义;1:添加;2:查询;3:修改;4:删除;5:导入;6:导出;7:上传;8:下载
+      operationTypes: [
+        { id: 0, type: '未定义' },
+        { id: 1, type: '添加' },
+        { id: 2, type: '查询' },
+        { id: 3, type: '修改' },
+        { id: 4, type: '删除' },
+        { id: 5, type: '导入' },
+        { id: 6, type: '导出' },
+        { id: 7, type: '上传' },
+        { id: 8, type: '下载' }
+      ],
       currentPage: 1,
       pageSize: 15,
       currentTotal: 0
@@ -146,6 +154,7 @@ export default {
         return data
       }
     },
+    // 0:未定义;1:添加;2:查询;3:修改;4:删除;5:导入;6:导出;7:上传;8:下载
     operationTypeFormat (row, column) {
       const data = row.operationType
       if (data === 0) {
@@ -158,6 +167,14 @@ export default {
         return '修改'
       } else if (data === 4) {
         return '删除'
+      } else if (data === 5) {
+        return '导入'
+      } else if (data === 6) {
+        return '导出'
+      } else if (data === 7) {
+        return '上传'
+      } else if (data === 8) {
+        return '下载'
       } else {
         return data
       }
