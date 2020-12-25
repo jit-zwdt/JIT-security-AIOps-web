@@ -79,7 +79,7 @@
             <el-form-item>
               <span slot="label">
                 <span class="span-box">
-                  <i class="fa fa-circle" style="color:#FFBB00"></i>
+                  <i class="fa fa-circle" style="color: #ffbb00"></i>
                   <span class="form-item-bold">请求方法</span>
                 </span>
               </span>
@@ -88,7 +88,7 @@
             <el-form-item>
               <span slot="label">
                 <span class="span-box">
-                  <i class="fa fa-circle" style="color:#BBFF00"></i>
+                  <i class="fa fa-circle" style="color: #bbff00"></i>
                   <span class="form-item-bold">请求参数</span>
                 </span>
               </span>
@@ -97,7 +97,7 @@
             <el-form-item>
               <span slot="label">
                 <span class="span-box">
-                  <i class="fa fa-circle" style="color:#00FFFF"></i>
+                  <i class="fa fa-circle" style="color: #00ffff"></i>
                   <span class="form-item-bold">请求方式</span>
                 </span>
               </span>
@@ -106,7 +106,7 @@
             <el-form-item v-if="logType == 2">
               <span slot="label">
                 <span class="span-box">
-                  <i class="fa fa-circle" style="color:#FF0000"></i>
+                  <i class="fa fa-circle" style="color: #ff0000"></i>
                   <span class="form-item-bold">错误日志</span>
                 </span>
               </span>
@@ -115,7 +115,13 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="序号" min-width="3%" align="center" :resizable="false">
+      <el-table-column
+        label="序号"
+        align="center"
+        min-width="3%"
+        :width="columnwidth + 'rem'"
+        :resizable="false"
+      >
         <template slot-scope="scope">
           {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
         </template>
@@ -123,7 +129,7 @@
       <el-table-column
         prop="logContent"
         label="日志内容"
-        min-width="35%"
+        min-width="28%"
         :resizable="false"
       ></el-table-column>
       <el-table-column
@@ -140,20 +146,36 @@
         align="center"
         :resizable="false"
       ></el-table-column>
-      <el-table-column prop="ip" label="IP" min-width="10%" :resizable="false"></el-table-column>
+      <el-table-column
+        prop="ip"
+        label="IP"
+        min-width="10%"
+        :resizable="false"
+      ></el-table-column>
       <el-table-column
         prop="costTime"
         label="耗时(毫秒)"
         min-width="10%"
         :resizable="false"
         align="center"
-        filter-placement="bottom-end">
+        filter-placement="bottom-end"
+      >
         <template slot-scope="scope">
-          <el-tag style="width:80px"
-            :type="scope.row.costTime < 1000 ? 'success' : scope.row.costTime > 3000 ? 'danger' : 'warning'  "
-            disable-transitions>{{scope.row.costTime}}</el-tag>
+          <el-tag
+            style="width: 80px"
+            :type="
+              scope.row.costTime < 1000
+                ? 'success'
+                : scope.row.costTime > 3000
+                ? 'danger'
+                : 'warning'
+            "
+            disable-transitions
+            >{{ scope.row.costTime }}</el-tag
+          >
         </template>
-      ></el-table-column>
+        ></el-table-column
+      >
       <el-table-column
         prop="logType"
         label="日志类型"
@@ -223,13 +245,21 @@ export default {
       ],
       currentPage: 1,
       pageSize: 15,
-      currentTotal: 0
+      currentTotal: 0,
+      columnwidth: ''
     }
   },
   created () {
     this.showInfo()
   },
   methods: {
+    makecolumnNoWidth () {
+      var value = String(this.currentTotal)
+      var length = value.length
+      var num = 5
+      this.columnwidth = String(length + num) + '0'
+      console.log(this.columnwidth)
+    },
     handleClick (tab, event) {
       this.currentPage = 1
       this.logType = this.activeName
@@ -317,6 +347,7 @@ export default {
               this.tableData = json.data.content
               this.currentTotal = json.data.totalElements
               this.loading = false
+              this.makecolumnNoWidth()
             }
           } else {
             this.$message({
