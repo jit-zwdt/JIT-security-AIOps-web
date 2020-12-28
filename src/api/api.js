@@ -90,7 +90,7 @@ const api = {
     addClaim: '/problem/addClaim',
     // malfunctionStatisticalStatement
     getProblemSolveReports: '/problem/getProblemSolveReports', // problemSolveReport
-    downLoadFailureToSolve: '/problem/downLoadFailureToSolve'
+    exportFailureToSolve: '/problem/exportFailureToSolve'
   },
   monitorManager: {
     // this.$api.monitorManager.
