@@ -338,7 +338,7 @@ export default {
   components: { departmentAdd }
 }
 </script>
-<style>
+<style scoped>
   .bg-purple {
     background: #ffffff;
   }
@@ -351,8 +351,8 @@ export default {
   .tree {
     overflow-y: auto;
     overflow-x: scroll;
-    height: 680px;
     overflow-x: hidden;
+    height: 677px;
   }
 
   .showDetail {
