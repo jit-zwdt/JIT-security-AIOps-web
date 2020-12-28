@@ -215,6 +215,7 @@ import qs from 'qs'
 export default {
   data () {
     return {
+      loading: true,
       activeName: 0,
       nameTop: '',
       timefrom: '',
@@ -306,25 +307,8 @@ export default {
         this.timefrom = ''
         this.timetill = ''
         this.showInfo()
-      } else if (this.timefrom === '' || this.timefrom === null) { // 写了一半的情况
-        this.$message({
-          message: '请选择开始时间!',
-          type: 'error'
-        })
-      } else if (this.timetill === '' || this.timetill === null) {
-        this.$message({
-          message: '请选择结束时间!',
-          type: 'error'
-        })
       } else {
-        if (this.timefrom <= this.timetill) {
-          this.showInfo()
-        } else {
-          this.$message({
-            message: '开始时间不能大于结束时间!',
-            type: 'error'
-          })
-        }
+        this.showInfo()
       }
     },
     // 查询方法
