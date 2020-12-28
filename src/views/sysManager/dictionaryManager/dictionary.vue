@@ -280,6 +280,10 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.tableData = json.data.list
+              if (this.tableData.length === 0 && this.currentPage !== 1) {
+                this.currentPage = this.currentPage - 1
+                this.showInfo()
+              }
               this.totalCount = json.data.count
             }
           }
@@ -375,6 +379,10 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableItemData = json.data.list
+            if (this.tableItemData.length === 0 && this.currentPageDictItem !== 1) {
+              this.currentPageDictItem = this.currentPageDictItem - 1
+              this.showDictItemInfo()
+            }
             this.totalDictItemCount = json.data.count
           }
         }

@@ -202,6 +202,10 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             var data = json.data.dataList
+            if (data.length === 0 && this.currentPage !== 1) {
+              this.currentPage = this.currentPage - 1
+              this.showInfo()
+            }
             this.currentTotal = json.data.totalRow
             this.loading = false
             this.axios.get(this.$api.sysManager.getAllDepartment).then((resp) => {
