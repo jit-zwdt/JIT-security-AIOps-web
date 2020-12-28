@@ -184,7 +184,6 @@ export default {
 }
 /deep/.el-table {
   z-index: 1;
-  min-height: 550px;
   overflow: hidden;
   overflow-y: auto;
 }
