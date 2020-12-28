@@ -344,6 +344,10 @@ export default {
             var json = resp.data
             if (json.code === 1) {
               this.tableData = json.data.content
+              if (this.tableData.length === 0 && this.currentPage !== 1) {
+                this.currentPage = this.currentPage - 1
+                this.showInfo()
+              }
               this.currentTotal = json.data.totalElements
               this.loading = false
               this.makecolumnNoWidth()
