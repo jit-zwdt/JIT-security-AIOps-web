@@ -519,6 +519,16 @@ export default {
           this.statusflag = true
           this.itemForm.component = ''
           this.isDisable = false
+          // 遍历出来对应的表单框
+          this.$refs.itemForm.fields.map(i => {
+            // 通过prop属性值相同来判断是哪个输入框，比如：要移除prop为'user'
+            if (i.prop === 'component') {
+              // 重置
+              i.resetField()
+              // 返回 false
+              return false
+            }
+          })
           break
         default:
           this.statusflag = false
