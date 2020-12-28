@@ -258,7 +258,6 @@ export default {
       var length = value.length
       var num = 5
       this.columnwidth = String(length + num) + '0'
-      console.log(this.columnwidth)
     },
     handleClick (tab, event) {
       this.currentPage = 1

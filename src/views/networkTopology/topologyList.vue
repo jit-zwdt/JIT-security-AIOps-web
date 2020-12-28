@@ -2,7 +2,7 @@
   <div>
     <ul
       id="contextmenu"
-      class="notice_box notice_color_default"
+      class="notice_box notice_color_default notice_box_margin"
       style="display: none"
     >
       <li><a>顺时针旋转</a></li>
@@ -13,7 +13,7 @@
     </ul>
     <ul
       id="linemenu"
-      class="notice_box notice_color_default"
+      class="notice_box notice_color_default notice_box_margin"
       style="display: none"
     >
       <li><a>删除该连线</a></li>
@@ -166,24 +166,28 @@
                     name="infoData"
                     v-model="infoData"
                   />
-                  <label style="width: 40px; margin-top: 5px; margin-left: 20px"
-                    >名称</label
-                  >
-                  <input
-                    type="text"
-                    id="infoName"
-                    name="infoName"
-                    class="form-control"
-                    style="margin-left: 5px; width: 200px"
-                  />
-                  <input
-                    type="hidden"
-                    id="infoId"
-                    name="infoId"
-                  />
+                  <input type="hidden" id="infoId" name="infoId" />
                 </div>
                 <div>
-                  <canvas width="760" height="560" id="target"></canvas>
+                  <div style="width: 100%; background-color: #f8f9fa">
+                    <label
+                      style="
+                        width: 100px;
+                        margin-top: 5px;
+                        margin-left: 20px;
+                        float: left;
+                      "
+                      >拓扑图名称</label
+                    >
+                    <input
+                      type="text"
+                      id="infoName"
+                      name="infoName"
+                      class="form-control"
+                      style="margin-left: 5px; width: 40.75rem;"
+                    />
+                  </div>
+                  <canvas width="760" height="630" id="target"></canvas>
                 </div>
               </div>
             </div>
@@ -302,16 +306,17 @@
                       <div class="col-sm-9 new_wid_100per">
                         <el-select
                           v-model="assetsId"
-                          placeholder="请选择"
+                          placeholder="请选择资产信息"
                           @change="changeAssetsId"
                           filterable
                           style="width: 100%"
+                          id="assetsId"
                         >
                           <el-option
                             v-for="item in assetOptions"
-                            :key="item[0]"
-                            :label="item[1] + '(' + item[2] + ')'"
-                            :value="item[0]"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
                           >
                           </el-option>
                         </el-select>
@@ -329,11 +334,12 @@
                           id="node_ip"
                           name="node_ip"
                           class="form-control"
+                          readonly="true"
                         />
                       </div>
                     </div>
                   </div>
-                  <div class="schedule" id="slimtest3">
+                  <!-- <div class="schedule" id="slimtest3">
                     <div class="form-group">
                       <label class="col-sm-3 new_wid_100per control-label"
                         >信息</label
@@ -348,7 +354,7 @@
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="schedule" id="slimtest3">
                     <div class="form-group" align="right">
                       <input
@@ -406,14 +412,27 @@ export default {
     this.getAssetInfo()
     window.saveTopologyInfo = this.saveTopologyInfo
     window.openTopologyItemList = this.openTopologyItemList
+    window.showErrorMessageInfo = this.showErrorMessageInfo
+    window.showAssetsChange = this.showAssetsChange
   },
   methods: {
     getAssetInfo () {
-      this.axios.post(this.$api.monitorManager.findByConditionInfo).then((resp) => {
+      this.axios.post(this.$api.monitorManager.getConditionInfo).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.assetOptions = json.data
+            // this.assetOptions.push({
+            //   label: '请选择资产信息',
+            //   value: '',
+            //   ip: ''
+            // })
+            json.data.forEach(res => {
+              this.assetOptions.push({
+                label: res[1] + '(' + res[2] + ')',
+                value: res[0],
+                ip: res[3]
+              })
+            })
           }
         } else {
           this.$message({
@@ -422,6 +441,28 @@ export default {
           })
         }
       })
+    },
+    showErrorMessageInfo (str) {
+      this.$message({
+        message: str,
+        type: 'error'
+      })
+    },
+    showAssetsChange (str) {
+      var checkflag = false
+      if (str !== null && str !== '' && str !== 'undefined' && str !== undefined) {
+        this.assetOptions.forEach(res => {
+          if (res.ip === str) {
+            this.assetsId = res.value
+            checkflag = true
+          }
+        })
+        if (!checkflag) {
+          this.assetsId = ''
+        }
+      } else {
+        this.assetsId = ''
+      }
     },
     openTopologyItemList () {
       this.showEditDialog = true
@@ -439,8 +480,8 @@ export default {
     changeAssetsId () {
       const assetOptions = this.assetOptions
       for (let i = 0; i < assetOptions.length; i++) {
-        if (assetOptions[i][0] === this.assetsId) {
-          document.getElementById('node_ip').value = assetOptions[i][3]
+        if (assetOptions[i].value === this.assetsId) {
+          document.getElementById('node_ip').value = assetOptions[i].ip
           break
         }
       }
@@ -617,7 +658,7 @@ export default {
         })
         $('#printButton').click(function () {
           if ($('#infoName').val() === '') {
-            alert('请输入拓扑图名称！')
+            window.showErrorMessageInfo('请输入拓扑图名称！')
           } else {
             window.saveTopologyInfo(JSON.stringify(expertElement(stage)))
           }
@@ -661,7 +702,7 @@ export default {
           // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
           // gettopologydata(jsonData)
           if (clearInfoData()) {
-            alert('请刷新页面后再次选择！')
+            window.showErrorMessageInfo('请刷新页面后再次选择！')
           } else {
             window.openTopologyItemList()
             var timer = setInterval(() => {
@@ -872,6 +913,7 @@ export default {
         }
       }
       function handler (e) {
+        window.showAssetsChange(e.target.nodeip)
         if (e.button === 2) { // 右键
           // 当前位置弹出菜单（div）
           $('#contextmenu').css({
@@ -924,7 +966,7 @@ export default {
           currentNode.text = $('#node_name').val()
           currentNode.nodeip = $('#node_ip').val()
         } else {
-          alert('请先选择设备！')
+          window.showErrorMessageInfo('请先选择设备！')
         }
       })
 
@@ -962,7 +1004,7 @@ export default {
 
       $('#redalert').click(function () {
         if ($('#node_name').val() === '') {
-          alert('请先选择设备！')
+          window.showErrorMessageInfo('请先选择设备！')
           return
         }
         var alertid = $('#node_id').val()
@@ -1000,6 +1042,7 @@ export default {
         $('#node_w').val('')
         $('#node_h').val('')
         $('#node_ip').val('')
+        window.showAssetsChange('')
       }
     })
   },
@@ -1023,5 +1066,14 @@ export default {
 .jtopo_toolbar .active {
   background-color: #2b52d4 !important;
   border-color: #2b52d4 !important;
+}
+.notice_box_margin {
+  margin-left: -180px !important;
+}
+.new_wid_r {
+  height: 48rem;
+}
+.form-group {
+  margin-bottom: 1.8rem;
 }
 </style>
