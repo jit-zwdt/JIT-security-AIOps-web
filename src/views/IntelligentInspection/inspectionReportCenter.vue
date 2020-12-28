@@ -101,10 +101,16 @@ export default {
       }
     },
     selectTime () {
-      if (this.timefrom !== '' && this.timetill !== '') {
+      if ((this.timefrom === null || this.timefrom === '') && (this.timetill === null || this.timetill === '')) { // 如果两个都是 null 的情况
+        this.timefrom = ''
+        this.timetill = ''
+        this.showInfo()
+      } else if (this.timefrom === null || this.timefrom === '') { // 开始时间为 null
+        this.$message.error('请选择开始时间')
+      } else if (this.timetill === null || this.timetill === '') { // 结束时间为 null
+        this.$message.error('请选择结束时间')
+      } else { // 都不为空的情况
         if (this.timefrom <= this.timetill) {
-          this.timefrom = new Date(this.timefrom)
-          this.timetill = new Date(this.timetill)
           this.showInfo()
         } else {
           this.$message({
@@ -112,15 +118,6 @@ export default {
             type: 'error'
           })
         }
-      } else if (this.timefrom === '' && this.timetill === '') {
-        this.timefrom = ''
-        this.timetill = ''
-        this.showInfo()
-      } else {
-        this.$message({
-          message: '请选择完整时间范围!',
-          type: 'error'
-        })
       }
     },
     // 查询方法
