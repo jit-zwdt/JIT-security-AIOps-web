@@ -230,6 +230,7 @@ export default {
             $('#infoName').html(infoData.infoName)
             $('#infoId').val(infoData.id)
           }
+          stage.centerAndZoom()
         }
         var timer = setInterval(() => {
           var infoData = $('#infoData').val()

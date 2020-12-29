@@ -697,6 +697,7 @@ export default {
             $('#infoName').val(infoData.infoName)
             $('#infoId').val(infoData.id)
           }
+          stage.centerAndZoom()
         }
         $('#buildButton').click(function () {
           // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
