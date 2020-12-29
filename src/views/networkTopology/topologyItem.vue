@@ -1,20 +1,42 @@
 <template>
   <div>
+    <ul
+      id="contextmenu"
+      class="notice_box notice_color_default notice_box_margin"
+      style="display: none"
+    >
+      <li style="padding: 10px">资产名称：<span id="assetsName"></span></li>
+      <li style="padding: 10px">资产IP：<span id="assetsIp"></span></li>
+      <li style="text-align: right"><a id="contextmenuClose">关闭</a></li>
+    </ul>
     <!--弹窗结束-->
     <div class="container index_container">
       <div class="row">
         <div class="col-sm-9">
           <div class="row">
             <div class="col-sm-8 new_wid_c result animated fadeInRight">
-              <div>
-                <label style="width: 100px; margin-top: 5px; margin-left: 20px"
+              <div style="float: left">
+                <label
+                  style="width: 100px; margin-top: -100px; margin-left: 5px"
                   >拓扑图名称：</label
                 >
                 <span id="infoName" name="infoName"></span>
               </div>
+              <div
+                class="btn-group jtopo_toolbar"
+                data-toggle="buttons"
+                style="height: 40px; margin-left: 200px; float: right"
+              >
+                <button id="zoomOut" name="zoomOut" class="btn btn-secondary">
+                  <i class="fa fa-arrows-alt"></i>
+                </button>
+                <button id="zoomIn" name="zoomIn" class="btn btn-secondary">
+                  <i class="fa fa-crosshairs"></i>
+                </button>
+              </div>
               <div id="test" class="btn-toolbar ibox whitebg" role="toolbar">
                 <div>
-                  <canvas width="760" height="560" id="target"></canvas>
+                  <canvas width="1600" height="670" id="target"></canvas>
                 </div>
               </div>
               <input
@@ -45,6 +67,7 @@ export default {
   created () {
     this.getTopologyOneInfo()
     window.showHostInfo = this.showHostInfo
+    window.showAssetsChange = this.showAssetsChange
   },
   methods: {
     async getTopologyOneInfo () {
@@ -90,13 +113,33 @@ export default {
         }
       })
       return agenttypeInfo
+    },
+    async showAssetsChange (str) {
+      var ip = ''
+      await this.axios.post(this.$api.monitorManager.getConditionInfo).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            json.data.forEach(res => {
+              if (res !== null && res[3] === str) {
+                ip = res[1] + '(' + res[2] + ')'
+              }
+            })
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      return ip
     }
   },
   mounted () {
     // initInfo()
     var beginNode = null
     var currentNode = null
-    var currentLine = null
     $(function () {
       var canvas = document.getElementById('target')
       if (canvas !== null) {
@@ -114,6 +157,14 @@ export default {
           tempNodeZ.setLocation(e.x, e.y)
         })
       }
+      $('#zoomOut').click(function () {
+        stage.zoomOut()
+        $('#zoomOut').parent('label').removeClass('active')
+      })
+      $('#zoomIn').click(function () {
+        stage.zoomIn()
+        $('#zoomOut').parent('label').removeClass('active')
+      })
       function showJTopoToobar (stage, canvas) {
         function evil (fn) {
           var Fn = Function
@@ -139,10 +190,11 @@ export default {
                 agenttypeInfo.then(re => {
                   if (re !== null && re !== '') {
                     var alertid = e.id
-                    var alertinfo = e.name + '：出现问题:' + re
+                    // var alertinfo = e.name + '：' + re
+                    var alertinfo = re
                     var alertelement = forEachStagesElement(stage, alertid)
                     alertelement.alarm = alertinfo
-                    alertelement.alarmColor = '255,0,0'
+                    alertelement.alarmColor = '255,215,0'
                     alertelement.alarmAlpha = 0.9
                     setInterval(function () {
                       if (alertelement.alarm === alertinfo) {
@@ -150,7 +202,7 @@ export default {
                       } else {
                         alertelement.alarm = alertinfo
                       }
-                    }, 600)
+                    }, 2000)
                     var inlinks = alertelement.inLinks
                     if (inlinks !== null) {
                       $.each(inlinks, function (i, link) {
@@ -273,7 +325,6 @@ export default {
       function addLink (l) {
         scene.add(l)
         l.addEventListener('mouseup', function (e) {
-          currentLine = this
           handlerLine(e)
         })
       }
@@ -306,6 +357,11 @@ export default {
             left: e.pageX
           }).show()
           scene.remove(link)
+          $('#assetsIp').text(e.target.nodeip)
+          var assets = window.showAssetsChange(e.target.nodeip)
+          assets.then(res => {
+            $('#assetsName').text(res)
+          })
         } else {
           if (e.target !== null && e.target instanceof jTopo.Node && $('input[name="modeRadio"]:checked').val() === 'normal') {
             if (beginNode === null) {
@@ -355,36 +411,8 @@ export default {
         }
       })
 
-      $('#contextmenu a').click(function (e) {
-        var text = $(this).text()
-        if (text === '删除该节点') {
-          scene.remove(currentNode)
-          currentNode = null
-        } else if (text === '更改颜色') {
-          currentNode.fillColor = jTopo.util.randomColor()
-        } else if (text === '顺时针旋转') {
-          currentNode.rotate += 0.5
-        } else if (text === '逆时针旋转') {
-          currentNode.rotate -= 0.5
-        } else if (text === '放大') {
-          currentNode.scaleX += 0.2
-          currentNode.scaleY += 0.2
-        } else if (text === '缩小') {
-          currentNode.scaleX -= 0.2
-          currentNode.scaleY -= 0.2
-        } else {
-          currentNode.save()
-        }
+      $('#contextmenuClose').click(function (e) {
         $('#contextmenu').hide()
-      })
-
-      $('#linemenu a').click(function () {
-        var text = $(this).text()
-        if (text === '删除该连线') {
-          scene.remove(currentLine)
-          currentLine = null
-        }
-        $('#linemenu').hide()
       })
 
       $('#redalert').click(function () {
@@ -449,5 +477,19 @@ export default {
 .jtopo_toolbar .active {
   background-color: #2b52d4 !important;
   border-color: #2b52d4 !important;
+}
+.col-sm-8 {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 0;
+}
+.col-sm-9 {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 0;
+}
+.notice_box_margin {
+  margin-left: -180px !important;
+  width: 28rem !important;
 }
 </style>
