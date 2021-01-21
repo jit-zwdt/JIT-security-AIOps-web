@@ -557,7 +557,7 @@ export default {
         stage.eagleEye.visible = false
         var scene = new jTopo.Scene(stage)
         showJTopoToobar(stage, canvas)
-        scene.background = require('../../assets/topology/images/bg.png')
+        scene.background = require('../../assets/topology/images/white_bg.jpg')
         $('input[name="modeRadio"]').get(0).checked = true
         $('input[name="modeRadio"]:checked').parent('label').addClass('active')
         var tempNodeA = new jTopo.Node('tempA')
@@ -733,7 +733,7 @@ export default {
         n.setLocation(node.left, node.top)
         var imgeurl = data.devicesimg[index]
         n.setImage(imgeurl)
-        n.fontColor = '155,123,2'
+        n.fontColor = '26,145,238'
         n.font = 'bold 12px 微软雅黑'
         n.setSize(data.devicessize[index][0], data.devicessize[index][1])
         scene.add(n)
@@ -761,7 +761,7 @@ export default {
         if (linestyle === 'defaultline') {
           l = new jTopo.Link(nodeA, nodeZ)
           l.lineWidth = 2
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.arrowsRadius = 12
           l.shadow = false
           l.bundleGap = 20
@@ -774,7 +774,7 @@ export default {
           l.bundleOffset = 60
           l.bundleGap = 20
           l.textOffsetY = 3
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'simpleline'
         } else if (linestyle === 'polyline') {
           l = new jTopo.FoldLink(nodeA, nodeZ)
@@ -784,7 +784,7 @@ export default {
           l.bundleOffset = 60 // 折线拐角处的长度
           l.bundleGap = 20 // 线条之间的间隔
           l.textOffsetY = 3 // 文本偏移量（向下3个像素）
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'polyline'
           // l.dashedPattern = 5
         } else if (linestyle === 'dbpolyline') {
@@ -795,14 +795,14 @@ export default {
           l.offsetGap = 35
           l.bundleGap = 15 // 线条之间的间隔
           l.textOffsetY = 10 // 文本偏移量（向下15个像素）
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'dbpolyline'
           // l.dashedPattern = 3
         } else if (linestyle === 'curve') {
           l = new jTopo.CurveLink(nodeA, nodeZ)
           l.lineWidth = 2 // 线宽
           l.arrowsRadius = 12
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'curve'
         }
         return l
@@ -905,7 +905,7 @@ export default {
               })
             }
             var spans = $('<span></span>')
-            var imgs = $("<img src='" + imageList[i] + "'>")
+            var imgs = $("<img style='width:120%;height:120%' src='" + imageList[i] + "'>")
             spans.append(imgs)
             sna.append(spans)
             parentdiv.append(sna)
