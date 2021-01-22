@@ -203,7 +203,7 @@ export default {
     },
     loopTypeNum () {
       this.getTypeNum()
-      this.timer = setInterval(this.getTypeNum, 30000)
+      this.timer = setInterval(this.getTypeNum, 300000)
     },
     getTypeNum () {
       this.axios.post(this.$api.main.getInformationStatistics).then((resp) => {
