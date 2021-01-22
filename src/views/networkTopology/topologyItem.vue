@@ -73,7 +73,8 @@ export default {
     async getTopologyOneInfo () {
       var data = ''
       const param = {
-        id: '2c908ff6768e901801768ebcb6cb0006'
+        // id: '4028cb8177230464017723b53117000d'
+        id: '4028cb8177230464017723b53117000d'
       }
       await this.axios.post(this.$api.networkTopology.getTopologyOneInfo, param).then((resp) => {
         if (resp.status === 200) {
@@ -147,7 +148,7 @@ export default {
         stage.eagleEye.visible = false
         var scene = new jTopo.Scene(stage)
         showJTopoToobar(stage, canvas)
-        scene.background = require('../../assets/topology/images/bg.png')
+        scene.background = require('../../assets/topology/images/white_bg.jpg')
         var tempNodeA = new jTopo.Node('tempA')
         tempNodeA.setSize(1, 1)
         var tempNodeZ = new jTopo.Node('tempZ')
@@ -186,37 +187,42 @@ export default {
                   ip: e.ip
                 }
                 addNode(tmpnode)
-                var agenttypeInfo = window.showHostInfo(e.ip)
-                agenttypeInfo.then(re => {
-                  if (re !== null && re !== '') {
-                    var alertid = e.id
-                    // var alertinfo = e.name + '：' + re
-                    var alertinfo = re
-                    var alertelement = forEachStagesElement(stage, alertid)
-                    alertelement.alarm = alertinfo
-                    alertelement.alarmColor = '255,215,0'
-                    alertelement.alarmAlpha = 0.9
-                    setInterval(function () {
-                      if (alertelement.alarm === alertinfo) {
-                        alertelement.alarm = null
-                      } else {
-                        alertelement.alarm = alertinfo
+                if (e.ip !== null && e.ip !== '' && e.ip !== undefined && e.ip !== 'ndefined') {
+                  var agenttypeInfo = window.showHostInfo(e.ip)
+                  agenttypeInfo.then(re => {
+                    if (re !== null && re !== '') {
+                      var alertid = e.id
+                      // var alertinfo = e.name + '：' + re
+                      if (re !== null && re.length > 100) {
+                        re = re.substring(0, 100) + '...'
                       }
-                    }, 2000)
-                    var inlinks = alertelement.inLinks
-                    if (inlinks !== null) {
-                      $.each(inlinks, function (i, link) {
-                        link.strokeColor = '255,0,0'
-                      })
+                      var alertinfo = re
+                      var alertelement = forEachStagesElement(stage, alertid)
+                      alertelement.alarm = alertinfo
+                      alertelement.alarmColor = '255,215,0'
+                      alertelement.alarmAlpha = 0.9
+                      setInterval(function () {
+                        if (alertelement.alarm === alertinfo) {
+                          alertelement.alarm = null
+                        } else {
+                          alertelement.alarm = alertinfo
+                        }
+                      }, 2000)
+                      var inlinks = alertelement.inLinks
+                      if (inlinks !== null) {
+                        $.each(inlinks, function (i, link) {
+                          link.strokeColor = '255,0,0'
+                        })
+                      }
+                      var outlinks = alertelement.outLinks
+                      if (outlinks !== null) {
+                        $.each(outlinks, function (i, link) {
+                          link.strokeColor = '255,0,0'
+                        })
+                      }
                     }
-                    var outlinks = alertelement.outLinks
-                    if (outlinks !== null) {
-                      $.each(outlinks, function (i, link) {
-                        link.strokeColor = '255,0,0'
-                      })
-                    }
-                  }
-                })
+                  })
+                }
               })
             }
             if (jsonObj.linkList != null) {
@@ -249,7 +255,7 @@ export default {
         n.setLocation(node.left, node.top)
         var imgeurl = data.devicesimg[index]
         n.setImage(imgeurl)
-        n.fontColor = '155,123,2'
+        n.fontColor = '26,145,238'
         n.font = 'bold 12px 微软雅黑'
         n.setSize(data.devicessize[index][0], data.devicessize[index][1])
         scene.add(n)
@@ -277,7 +283,7 @@ export default {
         if (linestyle === 'defaultline') {
           l = new jTopo.Link(nodeA, nodeZ)
           l.lineWidth = 2
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.arrowsRadius = 12
           l.shadow = false
           l.bundleGap = 20
@@ -290,7 +296,7 @@ export default {
           l.bundleOffset = 60
           l.bundleGap = 20
           l.textOffsetY = 3
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'simpleline'
         } else if (linestyle === 'polyline') {
           l = new jTopo.FoldLink(nodeA, nodeZ)
@@ -300,7 +306,7 @@ export default {
           l.bundleOffset = 60 // 折线拐角处的长度
           l.bundleGap = 20 // 线条之间的间隔
           l.textOffsetY = 3 // 文本偏移量（向下3个像素）
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'polyline'
           // l.dashedPattern = 5
         } else if (linestyle === 'dbpolyline') {
@@ -311,14 +317,14 @@ export default {
           l.offsetGap = 35
           l.bundleGap = 15 // 线条之间的间隔
           l.textOffsetY = 10 // 文本偏移量（向下15个像素）
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'dbpolyline'
           // l.dashedPattern = 3
         } else if (linestyle === 'curve') {
           l = new jTopo.CurveLink(nodeA, nodeZ)
           l.lineWidth = 2 // 线宽
           l.arrowsRadius = 12
-          l.strokeColor = '0,250,0'
+          l.strokeColor = '26,145,238'
           l.linktype = 'curve'
         }
         return l
@@ -358,11 +364,16 @@ export default {
             left: e.pageX
           }).show()
           scene.remove(link)
-          $('#assetsIp').text(e.target.nodeip)
-          var assets = window.showAssetsChange(e.target.nodeip)
-          assets.then(res => {
-            $('#assetsName').text(res)
-          })
+          if (e.target.nodeip !== null && e.target.nodeip !== '' && e.target.nodeip !== undefined && e.target.nodeip !== 'ndefined') {
+            $('#assetsIp').text(e.target.nodeip)
+            var assets = window.showAssetsChange(e.target.nodeip)
+            assets.then(res => {
+              $('#assetsName').text(res)
+            })
+          } else {
+            $('#assetsIp').text('')
+            $('#assetsName').text('')
+          }
         } else {
           if (e.target !== null && e.target instanceof jTopo.Node && $('input[name="modeRadio"]:checked').val() === 'normal') {
             if (beginNode === null) {

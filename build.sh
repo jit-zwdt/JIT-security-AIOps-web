@@ -1,7 +1,7 @@
 imagesid=`docker images | grep -i jit/jitaiops-web | awk '{print $3}'| head -1`
 project=/var/lib/jenkins/workspace/JIT-security-AIOps-web
 IMAGENAME=jit/jitaiops-web
-HARBORURI=www.harbor.mobi
+HARBORURI=124.70.13.193
 HARBORREPONAME=harbor
 if [ -z "$VERSION" ];then
 	VERSION=`date +%Y%m%d%H%M`
@@ -24,7 +24,7 @@ docker build -t $IMAGENAME:$VERSION $project
 docker run -e TZ="Asia/Shanghai" -p 8080:80 -idt --name jit-aiops-web --network zabbix_net  --ip=172.19.0.7 $IMAGENAME:$VERSION
 
 
-# docker tag $IMAGENAME:$VERSION $HARBORURI/$HARBORREPONAME/$IMAGENAME:$VERSION
-# docker login -u ggzw -p Dotacsjit3368 $HARBORURI
-# docker push $HARBORURI/$HARBORREPONAME/$IMAGENAME:$VERSION
-# docker rmi $HARBORURI/$HARBORREPONAME/$IMAGENAME:$VERSION
+docker tag $IMAGENAME:$VERSION $HARBORURI/$HARBORREPONAME/$IMAGENAME:$VERSION
+docker login -u ggzw -p Dotacsjit3368 $HARBORURI
+docker push $HARBORURI/$HARBORREPONAME/$IMAGENAME:$VERSION
+docker rmi $HARBORURI/$HARBORREPONAME/$IMAGENAME:$VERSION
