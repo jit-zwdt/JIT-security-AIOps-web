@@ -322,7 +322,6 @@ export default {
       image: '',
       userForm: {
         picUrl: '',
-        password: '',
         username: '',
         name: '',
         workNo: '',
@@ -331,9 +330,6 @@ export default {
         sex: 0,
         email: '',
         mobile: '',
-        /* zabbixUsername: '',
-        zabbixPassword: '',
-        isZabbixActive: 1, */
         province: '',
         city: '',
         liveAddress: '',

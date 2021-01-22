@@ -341,31 +341,33 @@ export default {
       this.dialogVisible = true
     },
     freezeUser () {
+      var msg = ''
       if (this.userForm.status === 1) {
         this.userForm.status = 0
+        msg = '冻结'
       } else {
         this.userForm.status = 1
+        msg = '取消冻结'
       }
+      this.dialogVisible = false
       this.axios.post(this.$api.sysManager.updateUser, this.userForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.$message({
-              message: '冻结成功',
+              message: msg + '成功',
               type: 'success'
             })
-            this.userForm = {}
-            this.dialogVisible = false
             this.$emit('success')
+            this.userForm = {}
           }
         } else {
           this.$message({
-            message: '冻结失败',
+            message: msg + '失败',
             type: 'error'
           })
-          this.userForm = {}
-          this.dialogVisible = false
           this.$emit('error')
+          this.userForm = {}
         }
       })
     }
