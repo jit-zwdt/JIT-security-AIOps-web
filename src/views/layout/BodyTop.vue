@@ -3,79 +3,28 @@
     <div class="body-top-btn" @click="hiddenSidebar">
       <i class="el-icon-menu"></i>
     </div>
+
     <div class="right">
-      <span class="body-top-btn-disaster" @click="showAlertInfo(5)">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="灾难"
-          placement="bottom-start"
-        >
-          <el-badge is-dot class="badge">
-            <i class="el-icon-message-solid"></i>
-          </el-badge>
-        </el-tooltip>
-      </span>
-      <span class="body-top-btn-high" @click="showAlertInfo(4)">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="严重"
-          placement="bottom-start"
-        >
-          <el-badge is-dot class="badge">
-            <i class="el-icon-message-solid"></i>
-          </el-badge>
-        </el-tooltip>
-      </span>
-      <span class="body-top-btn-average" @click="showAlertInfo(3)">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="一般严重"
-          placement="bottom-start"
-        >
-          <el-badge is-dot class="badge">
-            <i class="el-icon-message-solid"></i>
-          </el-badge>
-        </el-tooltip>
-      </span>
-      <span class="body-top-btn-warning" @click="showAlertInfo(2)">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="警告"
-          placement="bottom-start"
-        >
-          <el-badge is-dot class="badge">
-            <i class="el-icon-message-solid"></i>
-          </el-badge>
-        </el-tooltip>
-      </span>
-      <span class="body-top-btn-information" @click="showAlertInfo(1)">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="信息"
-          placement="bottom-start"
-        >
-          <el-badge is-dot class="badge">
-            <i class="el-icon-message-solid"></i>
-          </el-badge>
-        </el-tooltip>
-      </span>
-      <span class="body-top-btn-notClassified" @click="showAlertInfo(0)">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="未分类"
-          placement="bottom-start"
-        >
-          <el-badge is-dot class="badge">
-            <i class="el-icon-message-solid"></i>
-          </el-badge>
-        </el-tooltip>
-      </span>
+      <ul class="prompt_icon">
+        <a href="javascript:void(0)" @click="showAlertInfo(5)" title="灾难">
+          <li class="prompt_purple"><a href="javascript:void(0)">{{this.typeNum.disaster}}</a></li>
+        </a>
+        <a href="javascript:void(0)" title="严重">
+          <li class="prompt_red" @click="showAlertInfo(4)"><a href="javascript:void(0)">{{this.typeNum.high}}</a></li>
+        </a>
+        <a href="javascript:void(0)" title="一般严重">
+          <li class="prompt_orange" @click="showAlertInfo(3)"><a href="javascript:void(0)">{{this.typeNum.average}}</a></li>
+        </a>
+        <a href="javascript:void(0)" title="警告">
+          <li class="prompt_yellow" @click="showAlertInfo(2)"><a href="javascript:void(0)">{{this.typeNum.warning}}</a></li>
+        </a>
+        <a href="javascript:void(0)" title="信息">
+          <li class="prompt_green" @click="showAlertInfo(1)"><a href="javascript:void(0)">{{this.typeNum.information}}</a></li>
+        </a>
+        <a href="javascript:void(0)" title="未分类">
+          <li class="prompt_gray" @click="showAlertInfo(0)"><a href="javascript:void(0)">{{this.typeNum.notClassified}}</a></li>
+        </a>
+      </ul>
       <span @click="screenFullToggle(1)" :class="fullToggleStyle1">
         <i class="fa fa-arrows-alt"></i>
       </span>
@@ -109,10 +58,10 @@
       </span> -->
       <span class="body-top-btn imageStyle">
         <el-avatar
-          v-if="imageurl"
-          shape="square"
-          :size="20"
-          :src="imageurl"
+            v-if="imageurl"
+            shape="square"
+            :size="20"
+            :src="imageurl"
         ></el-avatar>
       </span>
       <el-dropdown>
@@ -130,10 +79,10 @@
         </el-dropdown-menu>
       </el-dropdown>
       <UserMassage
-        :showUserMassage="showUserMassage"
-        :user="user"
-        @close="showUserMassage = false"
-        @success="showUserMassage = false"
+          :showUserMassage="showUserMassage"
+          :user="user"
+          @close="showUserMassage = false"
+          @success="showUserMassage = false"
       ></UserMassage>
     </div>
   </div>
@@ -143,15 +92,31 @@
 import ScreenFull from 'screenfull'
 import { mapState } from 'vuex'
 import UserMassage from './UserMassage'
+
 export default {
   name: 'BodyTop',
   data () {
     return {
+      timer: {},
       user: {},
       showUserMassage: false,
       imageurl: '',
       fullToggleStyle1: '',
-      fullToggleStyle0: ''
+      fullToggleStyle0: '',
+      typeNum: {
+        // 未定义
+        notClassified: 0,
+        // 信息
+        information: 0,
+        // 警告
+        warning: 0,
+        // 一般严重
+        average: 0,
+        // 严重
+        high: 0,
+        // 灾难
+        disaster: 0
+      }
     }
   },
   // 添加组件
@@ -159,6 +124,7 @@ export default {
     UserMassage
   },
   created () {
+    this.loopTypeNum()
     this.axios.get(this.$api.sysManager.getUserInfo).then(resp => {
       var json = resp.data
       if (json.code === 1) {
@@ -234,175 +200,259 @@ export default {
           }
         })
       }
+    },
+    loopTypeNum () {
+      this.getTypeNum()
+      this.timer = setInterval(this.getTypeNum, 30000)
+    },
+    getTypeNum () {
+      this.axios.post(this.$api.main.getInformationStatistics).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.typeNum.information = json.data.information < 10 ? json.data.information : '9+'
+            this.typeNum.warning = json.data.warning < 10 ? json.data.warning : '9+'
+            this.typeNum.average = json.data.average < 10 ? json.data.average : '9+'
+            this.typeNum.high = json.data.high < 10 ? json.data.high : '9+'
+            this.typeNum.disaster = json.data.disaster < 10 ? json.data.disaster : '9+'
+            this.typeNum.notClassified = json.data.not_classified < 10 ? json.data.not_classified : '9+'
+          } else {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          }
+        }
+      })
     }
   },
-  computed: mapState(['system'])
+  computed: mapState(['system']),
+  beforeDestroy () {
+    clearInterval(this.timer)
+  }
 }
 </script>
 <style lang="scss">
-@import '~@/assets/css/variables.scss';
-.body-top {
-  width: 100%;
-  display: flex;
-  height: 50px;
-  background-color: mix(#000, $--color-primary, 5%);
-  z-index: 10;
-  .body-top-btn {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #fff;
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
+  @import '~@/assets/css/variables.scss';
 
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .body-top-btn-disaster {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #800000;
-
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
-
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .body-top-btn-high {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #ff2020;
-
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
-
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .body-top-btn-average {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #ea7500;
-
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
-
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .body-top-btn-warning {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #ffd306;
-
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
-
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .body-top-btn-information {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #81c0c0;
-
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
-
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .body-top-btn-notClassified {
-    overflow: hidden;
-    height: $--top-height;
-    display: inline-block;
-    text-align: center;
-    line-height: $--top-height;
-    cursor: pointer;
-    padding: 0 14px;
-    color: #8e8e8e;
-
-    .badge {
-      .el-badge__content {
-        margin-top: 10px;
-      }
-    }
-
-    &:hover {
-      background-color: mix(#000, $--color-primary, 10%);
-    }
-  }
-
-  .right {
-    flex: 1;
+  .body-top {
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    height: 50px;
+    background-color: mix(#000, $--color-primary, 5%);
+    z-index: 10;
+
+    .body-top-btn {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #fff;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .body-top-btn-disaster {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #800000;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .body-top-btn-high {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #ff2020;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .body-top-btn-average {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #ea7500;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .body-top-btn-warning {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #ffd306;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .body-top-btn-information {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #81c0c0;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .body-top-btn-notClassified {
+      overflow: hidden;
+      height: $--top-height;
+      display: inline-block;
+      text-align: center;
+      line-height: $--top-height;
+      cursor: pointer;
+      padding: 0 14px;
+      color: #8e8e8e;
+
+      .badge {
+        .el-badge__content {
+          margin-top: 10px;
+        }
+      }
+
+      &:hover {
+        background-color: mix(#000, $--color-primary, 10%);
+      }
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .imageStyle {
+      padding: 5px 0px 5px 20px;
+    }
+
+    .fullToggledisplay {
+      display: none;
+    }
   }
-  .imageStyle {
-    padding: 5px 0px 5px 20px;
+</style>
+
+<style lang="css" scoped>
+  /deep/ .prompt_icon {
+    float: left;
+    width: 13%;
+    text-align: center
   }
-  .fullToggledisplay {
-    display: none;
+
+  /deep/ .prompt_icon li {
+    display: inline-block;
+    width: 15%;
+    height: 22px;
+    margin-top: 14px;
+    position: relative;
   }
-}
+
+  /deep/ .prompt_icon li a {
+    display: inline-block;
+    position: absolute;
+    width: 22px;
+    height: 15px;
+    right: -6px;
+    top: -3px;
+    font-size: 12px;
+    text-align: left;
+    color: #fff
+  }
+
+  /deep/ .prompt_purple {
+    background: url(~@/assets/img/icon_prompt_purple.png) center no-repeat
+  }
+
+  /deep/ .prompt_red {
+    background: url(~@/assets/img/icon_prompt_red.png) center no-repeat
+  }
+
+  /deep/ .prompt_orange {
+    background: url(~@/assets/img/icon_prompt_orange.png) center no-repeat
+  }
+
+  /deep/ .prompt_yellow {
+    background: url(~@/assets/img/icon_prompt_yellow.png) center no-repeat
+  }
+
+  /deep/ .prompt_green {
+    background: url(~@/assets/img/icon_prompt_green.png) center no-repeat
+  }
+
+  /deep/ .prompt_gray {
+    background: url(~@/assets/img/icon_prompt_gray.png) center no-repeat
+  }
 </style>
