@@ -253,7 +253,8 @@ const api = {
     addTopologyInfo: '/topology/addTopologyInfo',
     getTopologyOneInfo: '/topology/getTopologyOneInfo/',
     getTopologyAllInfo: '/topology/getTopologyAllInfo',
-    getTopologyItemInfo: '/topology/getTopologyItemInfo'
+    getTopologyItemInfo: '/topology/getTopologyItemInfo',
+    deleteTopology: '/topology/deleteTopology/'
   },
   main: {
     // Index.vue

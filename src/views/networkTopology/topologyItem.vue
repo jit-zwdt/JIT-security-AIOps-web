@@ -16,6 +16,13 @@
           <div class="row">
             <div class="col-sm-8 new_wid_c result animated fadeInRight">
               <div style="float: left">
+                <button
+                  id="buildButton"
+                  name="buildButton"
+                  class="btn btn-secondary"
+                >
+                  <i class="fa fa-folder-open"></i>
+                </button>
                 <label
                   style="width: 100px; margin-top: -100px; margin-left: 5px"
                   >拓扑图名称：</label
@@ -52,29 +59,39 @@
         <div style="clear: both"></div>
       </div>
     </div>
+    <TopologyItemList
+      :showEditDialog="showEditDialog"
+      @close="showEditDialog = false"
+      @success="changeReloadData"
+      @error="reloadData"
+    ></TopologyItemList>
   </div>
 </template>
 <script>
+import TopologyItemList from '@/views/networkTopology/topologyItemList.vue'
 import jTopo from 'jtopo-in-node'
 import $ from 'jquery'
 import { data } from '@/assets/topology/devices.js'
 export default {
   data () {
     return {
+      showEditDialog: false,
       infoData: ''
     }
   },
   created () {
-    this.getTopologyOneInfo()
+    // this.getTopologyOneInfo()
     window.showHostInfo = this.showHostInfo
     window.showAssetsChange = this.showAssetsChange
+    window.showErrorMessageInfo = this.showErrorMessageInfo
+    window.openTopologyItemList = this.openTopologyItemList
   },
   methods: {
-    async getTopologyOneInfo () {
+    async getTopologyOneInfo (id) {
       var data = ''
       const param = {
         // id: '4028cb8177230464017723b53117000d'
-        id: '4028cb8177230464017723b53117000d'
+        id: id
       }
       await this.axios.post(this.$api.networkTopology.getTopologyOneInfo, param).then((resp) => {
         if (resp.status === 200) {
@@ -135,6 +152,25 @@ export default {
         }
       })
       return ip
+    },
+    showErrorMessageInfo (str) {
+      this.$message({
+        message: str,
+        type: 'error'
+      })
+    },
+    openTopologyItemList () {
+      this.showEditDialog = true
+    },
+    noReloadData () {
+      this.showEditDialog = false
+    },
+    reloadData () {
+      this.showEditDialog = false
+    },
+    changeReloadData (id) {
+      this.showEditDialog = false
+      this.getTopologyOneInfo(id)
     }
   },
   mounted () {
@@ -238,13 +274,22 @@ export default {
           }
           stage.centerAndZoom()
         }
-        var timer = setInterval(() => {
-          var infoData = $('#infoData').val()
-          if (infoData !== null && infoData !== '') {
-            gettopologydata(infoData)
-            clearInterval(timer)
+        $('#buildButton').click(function () {
+          // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
+          // gettopologydata(jsonData)
+          if (clearInfoData()) {
+            window.showErrorMessageInfo('请刷新页面后再次选择！')
+          } else {
+            window.openTopologyItemList()
+            var timer = setInterval(() => {
+              var infoData = $('#infoData').val()
+              if (infoData !== null && infoData !== '') {
+                gettopologydata(infoData)
+                clearInterval(timer)
+              }
+            }, 1000)
           }
-        }, 1000)
+        })
       }
       function addNode (node) {
         var n = new jTopo.Node(node.name)
@@ -413,7 +458,14 @@ export default {
           $('#linemenu').hide()
         }
       })
-
+      function clearInfoData () {
+        var infoData = $('#infoData').val()
+        if (infoData !== null && infoData !== '') {
+          return true
+        } else {
+          return false
+        }
+      }
       $('#subconfirm').click(function (e) {
         if ($('#node_name').val() !== '') {
           currentNode.text = $('#node_name').val()
@@ -469,7 +521,8 @@ export default {
         $('#node_ip').val('')
       }
     })
-  }
+  },
+  components: { TopologyItemList }
 }
 </script>
 <style lang="scss" scoped>
