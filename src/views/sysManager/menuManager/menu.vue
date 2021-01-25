@@ -359,7 +359,8 @@ export default {
         icon: '',
         isShow: '0',
         isRoute: '1',
-        orderNum: ''
+        orderNum: '',
+        parentId: ''
       },
       rules: {
         title: [
@@ -651,23 +652,26 @@ export default {
             this.oldPath = json.data.path
             this.oldName = json.data.name
             this.oldComponent = json.data.component
+            // 子菜单时显示
+            if (this.itemEditor.parentId !== '0') {
+              this.axios.get(this.$api.sysManager.getMenuTitle).then(resp => {
+                if (resp.status === 200) {
+                  var json = resp.data
+                  if (json.code === 1) {
+                    this.options1 = json.data
+                  }
+                } else {
+                  this.$message({
+                    message: '获取信息失败',
+                    type: 'error'
+                  })
+                }
+              })
+            }
           }
         } else {
           this.$message({
             message: '获取回显信息失败',
-            type: 'error'
-          })
-        }
-      })
-      this.axios.get(this.$api.sysManager.getMenuTitle).then(resp => {
-        if (resp.status === 200) {
-          var json = resp.data
-          if (json.code === 1) {
-            this.options1 = json.data
-          }
-        } else {
-          this.$message({
-            message: '获取信息失败',
             type: 'error'
           })
         }
