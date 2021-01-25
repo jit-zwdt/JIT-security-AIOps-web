@@ -290,13 +290,6 @@ export default {
             }, 1000)
           }
         })
-        var timer = setInterval(() => {
-          var infoData = $('#infoData').val()
-          if (infoData !== null && infoData !== '') {
-            gettopologydata(infoData)
-            clearInterval(timer)
-          }
-        }, 1000)
       }
       function addNode (node) {
         var n = new jTopo.Node(node.name)

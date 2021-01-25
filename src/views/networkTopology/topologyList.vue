@@ -176,7 +176,7 @@
                         margin-top: 5px;
                         margin-left: 20px;
                         float: left;
-                        display: none
+                        display: none;
                       "
                       >拓扑图名称</label
                     >
@@ -1099,6 +1099,12 @@ export default {
         $('#node_h').val('')
         $('#node_ip').val('')
         window.showAssetsChange('')
+      }
+      window.onbeforeunload = function () {
+        console.log(111)
+      }
+      window.onunload = function () {
+        console.log(222)
       }
     })
   },
