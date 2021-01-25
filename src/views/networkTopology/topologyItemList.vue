@@ -65,6 +65,22 @@
           :formatter="formatDate"
           min-width="30%"
         ></el-table-column>
+        <el-table-column align="center" label="操作" min-width="18">
+          <template slot-scope="scope">
+            <el-popconfirm
+              title="确定删除吗？"
+              @onConfirm="confirmdelete(scope.$index, scope.row)"
+            >
+              <el-button
+                size="mini"
+                type="danger"
+                slot="reference"
+                icon="el-icon-delete"
+                >删除</el-button
+              >
+            </el-popconfirm>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block" style="margin-top: 15px">
         <el-pagination
@@ -165,6 +181,26 @@ export default {
         this.loading = false
       })
     },
+    confirmdelete (index, row) {
+      this.axios.delete(this.$api.networkTopology.deleteTopology + row.id).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.showInfo()
+          }
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+          this.showInfo()
+        }
+      })
+    },
     showTopologyInfo (id) {
       this.$emit('success', id)
     },
@@ -218,7 +254,7 @@ export default {
 }
 /deep/.el-table {
   z-index: 1;
-  max-height: 550px;
+  max-height: 600px;
   overflow: hidden;
   overflow-y: auto;
 }

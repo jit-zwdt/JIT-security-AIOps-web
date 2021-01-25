@@ -45,7 +45,7 @@ a:focus{ outline:0;} */
 .panel-group {width: 100%; margin-bottom: 20px}
 .panel-group .panel{}
 .panel-heading {padding: 10px 16px; background: #f5f7fb;border: 1px solid #d3d6e2;}
-.panel-title {display: block; margin-top: 0;margin-bottom: 0;font-size: 16px;color:#42475b}
+.panel-title {display: block; margin-top: 0;margin-bottom: 0;font-size: 18px;color:#42475b}
 .panel-title:hover{color:#42475b }
 .panel-title i{float: right; font-size: 14px; line-height: 22px;color:#9da1ae }
 .panel-title:hover i{color: #42475b}

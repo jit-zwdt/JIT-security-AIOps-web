@@ -176,25 +176,35 @@
                         margin-top: 5px;
                         margin-left: 20px;
                         float: left;
+                        display: none
                       "
                       >拓扑图名称</label
                     >
                     <input
-                      type="text"
+                      type="hidden"
                       id="infoName"
                       name="infoName"
                       class="form-control"
-                      style="margin-left: 5px; width: 40.75rem;"
+                      v-model="infoName"
+                      style="margin-left: 5px; width: 40.75rem"
+                    />
+                    <input
+                      type="hidden"
+                      id="infoNameBtn"
+                      name="infoNameBtn"
+                      class="form-control"
+                      v-model="infoNameBtn"
+                      style="margin-left: 5px; width: 40.75rem"
                     />
                   </div>
-                  <canvas width="760" height="630" id="target"></canvas>
+                  <canvas width="760" height="665" id="target"></canvas>
                 </div>
               </div>
             </div>
             <div class="col-sm-4 new_wid_r result animated fadeInRight delay1">
               <div class="ibox">
                 <div class="ibox_title">
-                  <h4>属性编辑</h4>
+                  <h4 style="font-size: 18px">属性编辑</h4>
                   <a href="#" class="ibox_title_more">
                     <!-- <i class="fa fa-angle-right"></i> -->
                   </a>
@@ -356,7 +366,11 @@
                     </div>
                   </div> -->
                   <div class="schedule" id="slimtest3">
-                    <div class="form-group" align="right">
+                    <div
+                      class="form-group"
+                      align="center"
+                      style="width: 50%; float: left"
+                    >
                       <input
                         type="button"
                         id="subconfirm"
@@ -367,7 +381,7 @@
                     </div>
                   </div>
                   <div class="schedule" id="slimtest3">
-                    <div class="form-group" align="right">
+                    <div class="form-group" align="center">
                       <input
                         type="button"
                         id="redalert"
@@ -391,10 +405,19 @@
       @success="changeReloadData"
       @error="reloadData"
     ></TopologyItemList>
+    <TopologyName
+      :showNameDialog="showNameDialog"
+      @close="showNameDialog = false"
+      :showNameform="showNameform"
+      @success="changeReloadDataName"
+      @error="reloadDataName"
+    >
+    </TopologyName>
   </div>
 </template>
 <script>
 import TopologyItemList from '@/views/networkTopology/topologyItemList.vue'
+import TopologyName from '@/views/networkTopology/topologyName.vue'
 import jTopo from 'jtopo-in-node'
 import $ from 'jquery'
 import { data } from '@/assets/topology/devices.js'
@@ -405,7 +428,11 @@ export default {
       assetOptions: [],
       topologyOneInfo: '',
       showEditDialog: false,
-      infoData: ''
+      showNameDialog: false,
+      infoData: '',
+      infoName: '',
+      infoNameBtn: '',
+      showNameform: {}
     }
   },
   created () {
@@ -414,6 +441,7 @@ export default {
     window.openTopologyItemList = this.openTopologyItemList
     window.showErrorMessageInfo = this.showErrorMessageInfo
     window.showAssetsChange = this.showAssetsChange
+    window.openTopologyName = this.openTopologyName
   },
   methods: {
     getAssetInfo () {
@@ -476,6 +504,24 @@ export default {
     changeReloadData (id) {
       this.showEditDialog = false
       this.getTopologyOneInfo(id)
+    },
+    openTopologyName (infoName) {
+      this.infoNameBtn = ''
+      this.showNameDialog = true
+      this.showNameform.name = infoName
+    },
+    noReloadDataName () {
+      this.infoNameBtn = ''
+      this.showNameDialog = false
+    },
+    reloadDataName () {
+      this.infoNameBtn = ''
+      this.showNameDialog = false
+    },
+    changeReloadDataName (name) {
+      this.showNameDialog = false
+      this.infoNameBtn = '1'
+      this.infoName = name
     },
     changeAssetsId () {
       const assetOptions = this.assetOptions
@@ -657,12 +703,21 @@ export default {
           stage.saveImageInfo()
         })
         $('#printButton').click(function () {
-          if ($('#infoName').val() === '') {
-            window.showErrorMessageInfo('请输入拓扑图名称！')
-          } else {
-            window.saveTopologyInfo(JSON.stringify(expertElement(stage)))
-          }
-          // this.saveTopologyInfo(JSON.stringify(expertElement(stage)))
+          window.openTopologyName($('#infoName').val())
+          var timername = setInterval(() => {
+            var infoName = $('#infoName').val()
+            var infoNameBtn = $('#infoNameBtn').val()
+            if (infoName !== null && infoName !== '' && infoNameBtn === '1') {
+              clearInterval(timername)
+              window.saveTopologyInfo(JSON.stringify(expertElement(stage)))
+              var infoId = $('#infoId').val()
+              if (infoId === null || infoId === '') {
+                $('#infoName').val('')
+              }
+            } else {
+              // window.showErrorMessageInfo('请输入拓扑图名称！')
+            }
+          }, 1000)
         })
         function evil (fn) {
           var Fn = Function
@@ -1047,7 +1102,7 @@ export default {
       }
     })
   },
-  components: { TopologyItemList }
+  components: { TopologyItemList, TopologyName }
 }
 </script>
 <style lang="scss" scoped>
@@ -1072,9 +1127,16 @@ export default {
   margin-left: -180px !important;
 }
 .new_wid_r {
-  height: 48rem;
+  height: 48.4rem;
+  background-color: #fff;
 }
 .form-group {
   margin-bottom: 1.8rem;
+}
+.control-label {
+  font-size: 16px;
+}
+.form-control {
+  font-size: 16px;
 }
 </style>
