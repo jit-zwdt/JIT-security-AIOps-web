@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     openDialog () {
-      if (this.id !== -1) {
+      if (this.id !== '-1') {
         this.axios
           .post(this.$api.sysManager.getDictionary + this.id)
           .then(resp => {
@@ -174,7 +174,7 @@ export default {
       })
     },
     submit () {
-      this.axios.post(this.id !== -1 ? this.$api.sysManager.updateDictionary : this.$api.sysManager.addDictionary, this.dictionaryForm).then((resp) => {
+      this.axios.post(this.id !== '-1' ? this.$api.sysManager.updateDictionary : this.$api.sysManager.addDictionary, this.dictionaryForm).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

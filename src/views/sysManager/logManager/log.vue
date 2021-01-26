@@ -11,7 +11,7 @@
           @keyup.enter.native="showInfo"
           v-model="nameTop"
           size="small"
-          placeholder="日志名称"
+          placeholder="日志内容"
           clearable
         ></el-input>
         <!--<el-date-picker style="width: 400px" v-model="gmtCreate" type="datetimerange" size="small" value-format="yyyy-MM-ddTHH:mm:ss.SSSZ" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->

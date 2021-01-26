@@ -4,7 +4,7 @@
             <div class="queryleft">
                 <el-input type="text" v-model="name" size="small" placeholder="字典名称" clearable></el-input>
                 <el-input type="text" v-model="code" size="small" placeholder="字典编码" clearable></el-input>
-                <el-button type="primary" size="small" @click="currentPage = 1 ; showInfo() == false" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" size="small" @click="showInfo() == false" icon="el-icon-search">查询</el-button>
                 <el-button type="primary" size="small" @click="showClear() == false">重置</el-button>
             </div>
             <div class="queryright">
@@ -26,14 +26,14 @@
                 :header-cell-style="tableHeaderColor"
         >
             <el-table-column label="序号" prop="num" min-width="5%" :resizable="false"></el-table-column>
-            <el-table-column label="字典名称" prop="dictionaryEntity.dictName" min-width="10%" :resizable="false"></el-table-column>
+            <el-table-column label="字典名称" prop="sysDictionaryDTO.dictName" min-width="10%" :resizable="false"></el-table-column>
             <el-table-column
                     label="字典编码"
-                    prop="dictionaryEntity.dictCode"
+                    prop="sysDictionaryDTO.dictCode"
                     min-width="10%"
                     :resizable="false"
             ></el-table-column>
-            <el-table-column label="描述" prop="dictionaryEntity.description" min-width="20%" :resizable="false"></el-table-column>
+            <el-table-column label="描述" prop="sysDictionaryDTO.description" min-width="20%" :resizable="false"></el-table-column>
             <el-table-column align="center" label="操作" min-width="10%">
                 <template slot-scope="scope">
                     <el-popconfirm title="确定删除吗？" @onConfirm="confirmdelete(scope.$index, scope.row)">
@@ -101,7 +101,7 @@
                         </el-col>
                     </div>
                     <div class="queryright" style="width: 50%">
-                        <el-button type="primary" size="small" @click="currentPageDictItem = 1 ; showDictItem()" icon="el-icon-search">查询</el-button>
+                        <el-button type="primary" size="small" @click="showDictItem()" icon="el-icon-search">查询</el-button>
                         <el-button type="primary" size="small" @click="showDictItemClear()">重置</el-button>
                     </div>
                 </ToolBar>
@@ -175,6 +175,7 @@
 import qs from 'qs'
 import dictionaryAdd from '@/views/sysManager/dictionaryManager/dictionaryAdd.vue'
 import dictionaryItemAdd from '@/views/sysManager/dictionaryManager/dictionaryItemAdd.vue'
+
 export default {
   data () {
     return {
@@ -279,11 +280,11 @@ export default {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
-              this.tableData = json.data.list
-              if (this.tableData.length === 0 && this.currentPage !== 1) {
+              if (json.data.count === 0 && this.currentPage !== 1) {
                 this.currentPage = this.currentPage - 1
                 this.showInfo()
               }
+              this.tableData = json.data.list
               this.totalCount = json.data.count
             }
           }
@@ -300,16 +301,16 @@ export default {
     },
     showDictionaryAdd () {
       this.titleType = '添加'
-      this.id = -1
+      this.id = '-1'
       this.showEditDialog = true
     },
     showDictionaryItemAdd () {
       this.titleType = '添加'
-      this.id = -1
+      this.id = '-1'
       this.showEditDictItemDialog = true
     },
     confirmdelete (index, row) {
-      this.axios.delete(this.$api.sysManager.deleteDictionary + row.dictionaryEntity.id).then((resp) => {
+      this.axios.delete(this.$api.sysManager.deleteDictionary + row.sysDictionaryDTO.id).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
@@ -350,7 +351,7 @@ export default {
     },
     dictionaryUpdate (index, row) {
       this.titleType = '修改'
-      this.id = row.dictionaryEntity.id
+      this.id = row.sysDictionaryDTO.id
       this.showEditDialog = true
     },
     dictionaryItemUpdate (index, row) {
@@ -359,8 +360,8 @@ export default {
       this.showEditDictItemDialog = true
     },
     dictionaryConfig (row) {
-      this.dictId = row.dictionaryEntity.id
-      this.title = '字典项列表（' + row.dictionaryEntity.dictName + '）'
+      this.dictId = row.sysDictionaryDTO.id
+      this.title = '字典项列表（' + row.sysDictionaryDTO.dictName + '）'
       this.showDictItemInfo()
     },
     showDictItem () {
@@ -378,11 +379,11 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.tableItemData = json.data.list
-            if (this.tableItemData.length === 0 && this.currentPageDictItem !== 1) {
+            if (json.data.count === 0 && this.currentPageDictItem !== 1) {
               this.currentPageDictItem = this.currentPageDictItem - 1
               this.showDictItemInfo()
             }
+            this.tableItemData = json.data.list
             this.totalDictItemCount = json.data.count
           }
         }
