@@ -69,7 +69,7 @@
                       value="drag"
                       id="r3"
                       checked="true"
-                    /><i for="r3" class="fa fa-mouse-pointer"></i>
+                    /><i for="r3" class="fa fa-mouse-pointer1"></i>
                   </label>
                   <label class="btn btn-secondary">
                     <input
@@ -77,7 +77,7 @@
                       name="modeRadio"
                       value="select"
                       id="r2"
-                    /><i for="r2" class="fa fa-crop"></i>
+                    /><i for="r2" class="fa fa-crop1"></i>
                   </label>
                   <label class="btn btn-secondary">
                     <input
@@ -85,7 +85,7 @@
                       name="modeRadio"
                       value="normal"
                       id="r4"
-                    /><i for="r4" class="fa fa-arrows-h"></i>
+                    /><i for="r4" class="fa fa-arrows-h1"></i>
                   </label>
                 </div>
                 <div class="btn-group jtopo_toolbar" data-toggle="buttons">
@@ -95,7 +95,7 @@
                       name="linestyle"
                       value="simpleline"
                       id="l1"
-                    /><i for="l1" class="fa fa-arrows-v"></i>
+                    /><i for="l1" class="fa fa-arrows-v1"></i>
                   </label>
                   <label class="btn btn-secondary">
                     <input
@@ -103,7 +103,7 @@
                       name="linestyle"
                       value="polyline"
                       id="l2"
-                    /><i for="l2" class="fa fa-level-up"></i>
+                    /><i for="l2" class="fa fa-level-up1"></i>
                   </label>
                   <label class="btn btn-secondary">
                     <input
@@ -111,7 +111,7 @@
                       name="linestyle"
                       value="dbpolyline"
                       id="l3"
-                    /><i for="l3" class="fa fa-line-chart"></i>
+                    /><i for="l3" class="fa fa-line-chart1"></i>
                   </label>
                   <label class="btn btn-secondary">
                     <input
@@ -119,7 +119,7 @@
                       name="linestyle"
                       value="curve"
                       id="l4"
-                    /><i for="l4" class="fa fa-share"></i>
+                    /><i for="l4" class="fa fa-share1"></i>
                   </label>
                 </div>
                 <div
@@ -128,10 +128,10 @@
                   style="height: 100%"
                 >
                   <button id="zoomOut" name="zoomOut" class="btn btn-secondary">
-                    <i class="fa fa-arrows-alt"></i>
+                    <i class="fa fa-arrows-alt1"></i>
                   </button>
                   <button id="zoomIn" name="zoomIn" class="btn btn-secondary">
-                    <i class="fa fa-crosshairs"></i>
+                    <i class="fa fa-crosshairs1"></i>
                   </button>
                 </div>
                 <div
@@ -144,21 +144,21 @@
                     name="exportButton"
                     class="btn btn-secondary"
                   >
-                    <i class="fa fa-file-image-o"></i>
+                    <i class="fa fa-file-image-o1"></i>
                   </button>
                   <button
                     id="printButton"
                     name="printButton"
                     class="btn btn-secondary"
                   >
-                    <i class="fa fa-floppy-o"></i>
+                    <i class="fa fa-floppy-o1"></i>
                   </button>
                   <button
                     id="buildButton"
                     name="buildButton"
                     class="btn btn-secondary"
                   >
-                    <i class="fa fa-folder-open"></i>
+                    <i class="fa fa-folder-open1"></i>
                   </button>
                   <input
                     type="hidden"
@@ -192,7 +192,7 @@
                       >拓扑图名称</label
                     >
                   </div>
-                  <canvas width="760" height="665" id="target"></canvas>
+                  <canvas width="760" height="660" id="target"></canvas>
                 </div>
               </div>
             </div>
@@ -515,7 +515,7 @@ export default {
     changeReloadDataName (name) {
       this.showNameDialog = false
       this.infoNameBtn = '1'
-      this.infoName = name
+      document.getElementById('infoName').value = name
     },
     changeAssetsId () {
       const assetOptions = this.assetOptions
@@ -1127,7 +1127,7 @@ export default {
   margin-left: -180px !important;
 }
 .new_wid_r {
-  height: 48.4rem;
+  height: 48.5rem;
   background-color: #fff;
 }
 .form-group {
@@ -1138,5 +1138,76 @@ export default {
 }
 .form-control {
   font-size: 16px;
+}
+.fa-mouse-pointer1 {
+  background: url('~@/assets/topology/images/icon_toolbar1.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-crop1 {
+  background: url('~@/assets/topology/images/icon_toolbar2.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-arrows-h1 {
+  background: url('~@/assets/topology/images/icon_toolbar3.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-arrows-v1 {
+  background: url('~@/assets/topology/images/icon_toolbar4.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-level-up1 {
+  background: url('~@/assets/topology/images/icon_toolbar5.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-line-chart1 {
+  background: url('~@/assets/topology/images/icon_toolbar6.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-share1 {
+  background: url('~@/assets/topology/images/icon_toolbar7.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-arrows-alt1 {
+  background: url('~@/assets/topology/images/icon_toolbar8.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-crosshairs1 {
+  background: url('~@/assets/topology/images/icon_toolbar9.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-file-image-o1 {
+  background: url('~@/assets/topology/images/icon_toolbar10.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}.fa-floppy-o1 {
+  background: url('~@/assets/topology/images/icon_toolbar11.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
+}
+.fa-folder-open1 {
+  background: url('~@/assets/topology/images/icon_toolbar12.png') no-repeat;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 5px;
 }
 </style>
