@@ -167,6 +167,17 @@
                     v-model="infoData"
                   />
                   <input type="hidden" id="infoId" name="infoId" />
+                  <input
+                    type="hidden"
+                    id="infoName"
+                    name="infoName"
+                  />
+                  <input
+                    type="hidden"
+                    id="infoNameBtn"
+                    name="infoNameBtn"
+                    v-model="infoNameBtn"
+                  />
                 </div>
                 <div>
                   <div style="width: 100%; background-color: #f8f9fa">
@@ -180,22 +191,6 @@
                       "
                       >拓扑图名称</label
                     >
-                    <input
-                      type="hidden"
-                      id="infoName"
-                      name="infoName"
-                      class="form-control"
-                      v-model="infoName"
-                      style="margin-left: 5px; width: 40.75rem"
-                    />
-                    <input
-                      type="hidden"
-                      id="infoNameBtn"
-                      name="infoNameBtn"
-                      class="form-control"
-                      v-model="infoNameBtn"
-                      style="margin-left: 5px; width: 40.75rem"
-                    />
                   </div>
                   <canvas width="760" height="665" id="target"></canvas>
                 </div>
@@ -430,7 +425,6 @@ export default {
       showEditDialog: false,
       showNameDialog: false,
       infoData: '',
-      infoName: '',
       infoNameBtn: '',
       showNameform: {}
     }
@@ -528,7 +522,7 @@ export default {
       for (let i = 0; i < assetOptions.length; i++) {
         if (assetOptions[i].value === this.assetsId) {
           document.getElementById('node_ip').value = assetOptions[i].ip
-          break
+          return
         }
       }
     },
@@ -1100,12 +1094,12 @@ export default {
         $('#node_ip').val('')
         window.showAssetsChange('')
       }
-      window.onbeforeunload = function () {
-        console.log(111)
-      }
-      window.onunload = function () {
-        console.log(222)
-      }
+      // window.onbeforeunload = function () {
+      //   console.log(111)
+      // }
+      // window.onunload = function () {
+      //   console.log(222)
+      // }
     })
   },
   components: { TopologyItemList, TopologyName }

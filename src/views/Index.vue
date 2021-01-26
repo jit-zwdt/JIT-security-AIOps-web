@@ -152,7 +152,7 @@
                   </div>
                 </div>
                 <div class="box3_con_right_bot">
-                  <div class="row_index row_table">
+                  <div class="row_index_table row_table">
                     <div class="data_bg">
                       <p>{{ this.hostOneCount }}台</p>
                       <small>{{ this.hostOneType }}</small>
@@ -165,6 +165,8 @@
                       <p>{{ this.hostThreeCount }}台</p>
                       <small>{{ this.hostThreeType }}</small>
                     </div>
+                  </div>
+                  <div class="row_index_table row_table">
                     <div class="data_bg">
                       <p>{{ this.hostFourCount }}台</p>
                       <small>{{ this.hostFourType }}</small>
@@ -176,6 +178,19 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="box6 m-20">
+            <div class="title_index">网络拓扑图</div>
+            <div class="box6_con" id="box6">
+              <canvas width="600" height="250" id="target"></canvas>
+              <input
+                type="hidden"
+                id="infoData"
+                name="infoData"
+                v-model="infoData"
+              />
+              <input type="hidden" id="infoId" name="infoId" />
             </div>
           </div>
           <div class="box4 m-20">
@@ -318,6 +333,9 @@
 <script>
 // import 'echarts-liquidfill'
 import { formatTodate } from '@/utils/format.js'
+import jTopo from 'jtopo-in-node'
+import $ from 'jquery'
+import { data } from '@/assets/topology/devices.js'
 export default {
   data () {
     return {
@@ -360,10 +378,13 @@ export default {
       hostFiveTypeId: '',
       hostFiveType: 'JVM',
       hostFiveCount: '0',
-      timer: ''
+      timer: '',
+      infoData: ''
     }
   },
   created () {
+    this.getTopologyOneInfo()
+    window.showHostInfo = this.showHostInfo
   },
   mounted () {
     this.showInfo()
@@ -376,6 +397,360 @@ export default {
         this.showInfo()
       }, 1000 * 60 * 5)
     }
+    var beginNode = null
+    var currentNode = null
+    $(function () {
+      var canvas = document.getElementById('target')
+      if (canvas !== null) {
+        var stage = new jTopo.Stage(canvas)
+        stage.eagleEye.visible = false
+        var scene = new jTopo.Scene(stage)
+        showJTopoToobar(stage, canvas)
+        scene.background = require('../assets/topology/images/small_blue_bg_.png')
+        var tempNodeA = new jTopo.Node('tempA')
+        tempNodeA.setSize(1, 1)
+        var tempNodeZ = new jTopo.Node('tempZ')
+        tempNodeZ.setSize(1, 1)
+        var link = newLink(tempNodeA, tempNodeZ, 'defaultline')
+        scene.mousemove(function (e) {
+          tempNodeZ.setLocation(e.x, e.y)
+        })
+      }
+      $('#zoomOut').click(function () {
+        stage.zoomOut()
+        $('#zoomOut').parent('label').removeClass('active')
+      })
+      $('#zoomIn').click(function () {
+        stage.zoomIn()
+        $('#zoomOut').parent('label').removeClass('active')
+      })
+      function showJTopoToobar (stage, canvas) {
+        function evil (fn) {
+          var Fn = Function
+          return new Fn('return ' + fn)()
+        }
+        function gettopologydata (jsonData) {
+          var infoData = evil(jsonData)
+          var jsonObj = evil(infoData.jsonParam)
+          if (jsonObj != null) {
+            scene.clear()
+            if (jsonObj.nodeList != null) {
+              $.each(jsonObj.nodeList, function (i, e) {
+                var tmpnode = {
+                  name: e.name,
+                  type: e.type,
+                  id: e.id,
+                  left: e.x,
+                  top: e.y,
+                  ip: e.ip
+                }
+                addNode(tmpnode)
+                if (e.ip !== null && e.ip !== '' && e.ip !== undefined && e.ip !== 'ndefined') {
+                  var agenttypeInfo = window.showHostInfo(e.ip)
+                  agenttypeInfo.then(re => {
+                    if (re !== null && re !== '') {
+                      var alertid = e.id
+                      // var alertinfo = e.name + '：' + re
+                      if (re !== null && re.length > 100) {
+                        re = re.substring(0, 100) + '...'
+                      }
+                      var alertinfo = re
+                      var alertelement = forEachStagesElement(stage, alertid)
+                      alertelement.alarm = alertinfo
+                      alertelement.alarmColor = '255,215,0'
+                      alertelement.alarmAlpha = 0.9
+                      setInterval(function () {
+                        if (alertelement.alarm === alertinfo) {
+                          alertelement.alarm = null
+                        } else {
+                          alertelement.alarm = alertinfo
+                        }
+                      }, 2000)
+                      var inlinks = alertelement.inLinks
+                      if (inlinks !== null) {
+                        $.each(inlinks, function (i, link) {
+                          link.strokeColor = '255,0,0'
+                        })
+                      }
+                      var outlinks = alertelement.outLinks
+                      if (outlinks !== null) {
+                        $.each(outlinks, function (i, link) {
+                          link.strokeColor = '255,0,0'
+                        })
+                      }
+                    }
+                  })
+                }
+              })
+            }
+            if (jsonObj.linkList != null) {
+              $.each(jsonObj.linkList, function (i, e) {
+                var startNode = forEachStagesElement(stage, e.start)
+                var endNode = forEachStagesElement(stage, e.end)
+                var l = newLink(startNode, endNode, e.type)
+                addLink(l)
+              })
+            }
+            $('#infoName').html(infoData.infoName)
+            $('#infoId').val(infoData.id)
+          }
+          stage.centerAndZoom()
+        }
+        // $('#buildButton').click(function () {
+        //   // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
+        //   // gettopologydata(jsonData)
+        //   if (clearInfoData()) {
+        //     window.showErrorMessageInfo('请刷新页面后再次选择！')
+        //   } else {
+        //     window.openTopologyItemList()
+        //     var timer = setInterval(() => {
+        //       var infoData = $('#infoData').val()
+        //       if (infoData !== null && infoData !== '') {
+        //         gettopologydata(infoData)
+        //         clearInterval(timer)
+        //       }
+        //     }, 1000)
+        //   }
+        // })
+        var timer = setInterval(() => {
+          console.log(timer)
+          var infoData = $('#infoData').val()
+          if (infoData !== null && infoData !== '') {
+            gettopologydata(infoData)
+            clearInterval(timer)
+          }
+        }, 1000)
+      }
+      function addNode (node) {
+        var n = new jTopo.Node(node.name)
+        var index = getArrayIndex(data.devices, node.type)
+        n.id = node.id
+        n.nodetype = node.type
+        n.nodeip = node.ip
+        n.setLocation(node.left, node.top)
+        var imgeurl = data.devicesimg[index]
+        n.setImage(imgeurl)
+        n.fontColor = '26,145,238'
+        n.font = 'bold 12px 微软雅黑'
+        n.setSize(data.devicessize[index][0], data.devicessize[index][1])
+        scene.add(n)
+        n.addEventListener('mouseup', function (e) {
+          currentNode = this
+          handler(e)
+        })
+        n.mousedown(function (e) {
+          if (e.target === null || e.target === beginNode || e.target === link) {
+            scene.remove(link)
+          }
+        })
+      }
+      function getArrayIndex (arr, obj) {
+        var i = arr.length
+        while (i--) {
+          if (arr[i] === obj) {
+            return i
+          }
+        }
+        return -1
+      }
+      function newLink (nodeA, nodeZ, linestyle) {
+        var l = null
+        if (linestyle === 'defaultline') {
+          l = new jTopo.Link(nodeA, nodeZ)
+          l.lineWidth = 2
+          l.strokeColor = '26,145,238'
+          l.arrowsRadius = 12
+          l.shadow = false
+          l.bundleGap = 20
+          l.linktype = 'defaultline'
+        } else if (linestyle === 'simpleline') {
+          l = new jTopo.Link(nodeA, nodeZ)
+          l.lineWidth = 2
+          // l.dashedPattern = 5
+          l.arrowsRadius = 12
+          l.bundleOffset = 60
+          l.bundleGap = 20
+          l.textOffsetY = 3
+          l.strokeColor = '26,145,238'
+          l.linktype = 'simpleline'
+        } else if (linestyle === 'polyline') {
+          l = new jTopo.FoldLink(nodeA, nodeZ)
+          l.direction = 'horizontal'
+          l.arrowsRadius = 12
+          l.lineWidth = 2
+          l.bundleOffset = 60 // 折线拐角处的长度
+          l.bundleGap = 20 // 线条之间的间隔
+          l.textOffsetY = 3 // 文本偏移量（向下3个像素）
+          l.strokeColor = '26,145,238'
+          l.linktype = 'polyline'
+          // l.dashedPattern = 5
+        } else if (linestyle === 'dbpolyline') {
+          l = new jTopo.FlexionalLink(nodeA, nodeZ)
+          l.direction = 'horizontal'
+          l.arrowsRadius = 12
+          l.lineWidth = 2 // 线宽
+          l.offsetGap = 35
+          l.bundleGap = 15 // 线条之间的间隔
+          l.textOffsetY = 10 // 文本偏移量（向下15个像素）
+          l.strokeColor = '26,145,238'
+          l.linktype = 'dbpolyline'
+          // l.dashedPattern = 3
+        } else if (linestyle === 'curve') {
+          l = new jTopo.CurveLink(nodeA, nodeZ)
+          l.lineWidth = 2 // 线宽
+          l.arrowsRadius = 12
+          l.strokeColor = '26,145,238'
+          l.linktype = 'curve'
+        }
+        return l
+      }
+      function addLink (l) {
+        scene.add(l)
+        l.addEventListener('mouseup', function (e) {
+          handlerLine(e)
+        })
+      }
+      function handlerLine (e) {
+        if (e.button === 2) { // 右键
+          // 当前位置弹出菜单（div）
+          $('#linemenu').css({
+            top: e.pageY,
+            left: e.pageX
+          }).show()
+        }
+      }
+      function forEachStagesElement (stage, id) {
+        for (var i = 0; i < stage.childs.length; i++) {
+          var scene = stage.childs[i]
+          for (var j = 0; j < scene.childs.length; j++) {
+            var e = scene.childs[j]
+            if (e.id === id) {
+              return e
+            }
+          }
+        }
+        return null
+      }
+      function handler (e) {
+        if (e.button === 2) { // 右键
+          // 当前位置弹出菜单（div）
+          $('#contextmenu').css({
+            top: e.pageY,
+            left: e.pageX
+          }).show()
+          scene.remove(link)
+          if (e.target.nodeip !== null && e.target.nodeip !== '' && e.target.nodeip !== undefined && e.target.nodeip !== 'ndefined') {
+            $('#assetsIp').text(e.target.nodeip)
+            var assets = window.showAssetsChange(e.target.nodeip)
+            assets.then(res => {
+              $('#assetsName').text(res)
+            })
+          } else {
+            $('#assetsIp').text('')
+            $('#assetsName').text('')
+          }
+        } else {
+          if (e.target !== null && e.target instanceof jTopo.Node && $('input[name="modeRadio"]:checked').val() === 'normal') {
+            if (beginNode === null) {
+              beginNode = e.target
+              addLink(link)
+              tempNodeA.setLocation(e.x, e.y)
+              tempNodeZ.setLocation(e.x, e.y)
+            } else if (beginNode !== e.target) {
+              var endNode = e.target
+              var l = newLink(beginNode, endNode, $('input[name="linestyle"]:checked').val())
+              addLink(l)
+              beginNode = null
+              scene.remove(link)
+            } else {
+              beginNode = null
+            }
+          } if (e.target !== null && e.target instanceof jTopo.Node) {
+            $('#node_id').val(e.target.id)
+            $('#node_name').val(e.target.text)
+            $('#node_type').val(e.target.nodetype)
+            $('#node_x').val(e.target.x)
+            $('#node_y').val(e.target.y)
+            $('#node_w').val(e.target.width)
+            $('#node_h').val(e.target.height)
+            $('#node_ip').val(e.target.nodeip)
+          } else {
+            scene.remove(link)
+          }
+        }
+      }
+      stage.click(function (event) {
+        if (scene.selectedElements.length === 0) {
+          propReset()
+        }
+        if (event.button === 0) {
+          $('#contextmenu').hide()
+          $('#linemenu').hide()
+        }
+      })
+      // function clearInfoData () {
+      //   var infoData = $('#infoData').val()
+      //   if (infoData !== null && infoData !== '') {
+      //     return true
+      //   } else {
+      //     return false
+      //   }
+      // }
+      $('#subconfirm').click(function (e) {
+        if ($('#node_name').val() !== '') {
+          currentNode.text = $('#node_name').val()
+          currentNode.nodeip = $('#node_ip').val()
+        } else {
+          alert('请先选择设备！')
+        }
+      })
+
+      $('#contextmenuClose').click(function (e) {
+        $('#contextmenu').hide()
+      })
+
+      $('#redalert').click(function () {
+        if ($('#node_name').val() === '') {
+          alert('请先选择设备！')
+          return
+        }
+        var alertid = $('#node_id').val()
+        var alertinfo = $('#node_name').val() + '：出现问题！'
+        var alertelement = forEachStagesElement(stage, alertid)
+        alertelement.alarm = alertinfo
+        alertelement.alarmColor = '255,0,0'
+        alertelement.alarmAlpha = 0.9
+        setInterval(function () {
+          if (alertelement.alarm === alertinfo) {
+            alertelement.alarm = null
+          } else {
+            alertelement.alarm = alertinfo
+          }
+        }, 600)
+        var inlinks = alertelement.inLinks
+        if (inlinks !== null) {
+          $.each(inlinks, function (i, link) {
+            link.strokeColor = '255,0,0'
+          })
+        }
+        var outlinks = alertelement.outLinks
+        if (outlinks !== null) {
+          $.each(outlinks, function (i, link) {
+            link.strokeColor = '255,0,0'
+          })
+        }
+      })
+      function propReset () {
+        $('#node_id').val('')
+        $('#node_name').val('')
+        $('#node_type').val('')
+        $('#node_x').val('')
+        $('#node_y').val('')
+        $('#node_w').val('')
+        $('#node_h').val('')
+        $('#node_ip').val('')
+      }
+    })
   },
   beforeDestroy () {
     // window.removeEventListener('resize', this.getResize)
@@ -910,7 +1285,7 @@ export default {
               this.tableData.forEach(element => {
                 var hostName = ''
                 if (element.zabbixProblemDTO.name !== null && element.zabbixProblemDTO.name.length > 95) {
-                  hostName = element.zabbixProblemDTO.name.substring(0, 95)
+                  hostName = element.zabbixProblemDTO.name.substring(0, 80)
                   element.zabbixProblemDTO.name = hostName + '...'
                 }
               })
@@ -1359,7 +1734,7 @@ export default {
             top: '30%',
             bottom: 20,
             left: 35,
-            right: 1
+            right: 10
           },
           {
             height: 0,
@@ -1576,6 +1951,54 @@ export default {
     },
     formatterName (value) {
       return value
+    },
+    async showHostInfo (hostIp) {
+      if (hostIp === null || hostIp === '') {
+        return ''
+      }
+      var agenttypeInfo = ''
+      const param = {
+        ip: hostIp
+      }
+      await this.axios.post(this.$api.networkTopology.getTopologyItemInfo, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            agenttypeInfo = json.data
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      return agenttypeInfo
+    },
+    async getTopologyOneInfo () {
+      var indexid = this.$api.networkTopology.indexId
+      if (indexid !== null) {
+        indexid = indexid.replace('/api', '')
+      }
+      var data = ''
+      const param = {
+        id: indexid
+      }
+      await this.axios.post(this.$api.networkTopology.getTopologyOneInfo, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            data = json.data
+            this.infoData = JSON.stringify(json.data)
+          }
+        } else {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        }
+      })
+      return data
     }
   },
   computed: {
@@ -1653,7 +2076,7 @@ export default {
   font-size: 0.8rem;
 }
 .page-example {
-  height: 100%;
+  height: 60%;
   overflow: hidden;
   .ul-scoll {
     li {
@@ -1664,4 +2087,11 @@ export default {
   }
 }
 @import '~@/assets/css/index.css';
+#target {
+  min-height: 210px;
+  min-width: 650px;
+  border: 0px solid #ccc !important;
+  padding: 0px !important;
+  margin-left: 9%;
+}
 </style>
