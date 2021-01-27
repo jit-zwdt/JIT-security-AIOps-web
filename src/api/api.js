@@ -254,7 +254,8 @@ const api = {
     getTopologyOneInfo: '/topology/getTopologyOneInfo/',
     getTopologyAllInfo: '/topology/getTopologyAllInfo',
     getTopologyItemInfo: '/topology/getTopologyItemInfo',
-    deleteTopology: '/topology/deleteTopology/'
+    deleteTopology: '/topology/deleteTopology/',
+    indexId: '2c908ff67737a47b017738be6f17027e'
   },
   main: {
     // Index.vue
