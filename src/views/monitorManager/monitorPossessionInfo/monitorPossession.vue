@@ -458,12 +458,10 @@
                             ref="gList"
                           >
                             <el-table
-                              :data="
-                                forShowData.slice(
+                              :data="forShowData.slice(
                                   (currentInsidePage - 1) * pageSize,
                                   currentInsidePage * pageSize
-                                )
-                              "
+                                )"
                               v-loading="loading"
                               border
                               style="width: 100%"
@@ -869,13 +867,15 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            json.data.forEach(element => {
-              if (element.jmx_available === 2 || element.available === 2 || element.ipmi_available === 2 || element.snmp_available === 2) {
-                this.status = 0
-              } else if (element.jmx_available === 1 || element.available === 1 || element.ipmi_available === 1 || element.snmp_available === 1) {
-                this.status = 1
-              }
-            })
+            if (typeof (json.data) !== 'undefined') {
+              json.data.forEach(element => {
+                if (element.jmx_available === 2 || element.available === 2 || element.ipmi_available === 2 || element.snmp_available === 2) {
+                  this.status = 0
+                } else if (element.jmx_available === 1 || element.available === 1 || element.ipmi_available === 1 || element.snmp_available === 1) {
+                  this.status = 1
+                }
+              })
+            }
           }
         } else {
           this.$message({
@@ -906,21 +906,25 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           this.form.gitems = json.data
-          this.form.gitems.forEach(element => {
-            this.forShowData.forEach(element1 => {
-              if (element.itemid === element1.itemid) {
-                element.name = element1.name
-              }
+          if (typeof (this.form.gitems) !== 'undefined') {
+            this.form.gitems.forEach(element => {
+              this.forShowData.forEach(element1 => {
+                if (element.itemid === element1.itemid) {
+                  element.name = element1.name
+                }
+              })
+              element.color = '#' + element.color
             })
-            element.color = '#' + element.color
-          })
-          this.form.gitems.forEach(element => {
-            this.forShowData.forEach(element1 => {
-              if (element.itemid === element1.itemid) {
-                this.multipleSelection.push(element1)
-              }
+          }
+          if (typeof (this.form.gitems) !== 'undefined') {
+            this.form.gitems.forEach(element => {
+              this.forShowData.forEach(element1 => {
+                if (element.itemid === element1.itemid) {
+                  this.multipleSelection.push(element1)
+                }
+              })
             })
-          })
+          }
           this.multipleSelection1 = this.multipleSelection
         }
       })
@@ -1023,11 +1027,13 @@ export default {
           var json = resp.data
           if (json.code === 1) {
             this.tableData = json.data
-            json.data.forEach(element => {
-              if (element.value_type !== 1 && element.value_type !== 2 && element.value_type !== 4) {
-                this.forShowData.push(element)
-              }
-            })
+            if (typeof (json.data) !== 'undefined') {
+              json.data.forEach(element => {
+                if (element.value_type !== 1 && element.value_type !== 2 && element.value_type !== 4) {
+                  this.forShowData.push(element)
+                }
+              })
+            }
             this.currentPage = 1
           }
         } else {
@@ -1099,11 +1105,13 @@ export default {
       }
       const returndataclock = []
       const returndataavg = []
-      data.forEach(element => {
-        var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
-        returndataclock.push(clock)
-        returndataavg.push(element.value)
-      })
+      if (typeof (data) !== 'undefined') {
+        data.forEach(element => {
+          var clock = timesMethod.getTimestamp(timesMethod.getDatestamp(element.clock))
+          returndataclock.push(clock)
+          returndataavg.push(element.value)
+        })
+      }
       const countjson = data.length
       const newcount = Math.floor(countjson / 10)
       // 基于准备好的dom，初始化echarts实例
@@ -1450,10 +1458,12 @@ export default {
         }
       })
       var units = ''
-      itemData.forEach(element => {
-        units = element.units
-        legendData.push(element.name)
-      })
+      if (typeof (itemData.forEach) !== 'undefined') {
+        itemData.forEach(element => {
+          units = element.units
+          legendData.push(element.name)
+        })
+      }
       this.makeEchartsGraphData(graphData[0].graphtype, finalResult, gItemData, graphData, index1, units, legendData, itemData)
       if (this.graphsloading !== '') {
         this.graphsloading.close()
@@ -1887,10 +1897,12 @@ export default {
             gItemData = finalResult.gItemData
             graphData = finalResult.graphData
             var units = ''
-            itemData.forEach(element => {
-              units = element.units
-              legendData.push(element.name)
-            })
+            if (typeof (itemData) !== 'undefined') {
+              itemData.forEach(element => {
+                units = element.units
+                legendData.push(element.name)
+              })
+            }
             const pieCharts = document.getElementById('charts-graph-demo-' + i)
             pieCharts.innerHTML = ''
             pieCharts.removeAttribute('_echarts_instance_')
@@ -1969,16 +1981,18 @@ export default {
       }
       if (this.form.name !== null) {
         if (this.oldName !== this.form.name) {
-          this.graphDataAll.forEach((e) => {
-            if (e.name === this.form.name) {
-              this.$message({
-                message: '图形名称已存在，请重新输入',
-                type: 'error'
-              })
-              flag = false
-              return false
-            }
-          })
+          if (typeof (this.graphDataAll) !== 'undefined') {
+            this.graphDataAll.forEach((e) => {
+              if (e.name === this.form.name) {
+                this.$message({
+                  message: '图形名称已存在，请重新输入',
+                  type: 'error'
+                })
+                flag = false
+                return false
+              }
+            })
+          }
         }
       }
       if (this.submitType === 1 && flag) {
@@ -2090,9 +2104,11 @@ export default {
       return name
     },
     popoverFormInfo () {
-      this.multipleSelection1.forEach(row => {
-        this.$refs.multipleTable.toggleRowSelection(row, true) // 回显
-      })
+      if (typeof (this.multipleSelection1) !== 'undefined') {
+        this.multipleSelection1.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row, true) // 回显
+        })
+      }
     },
     closePopover () {
       // this.$refs.gPopover.doClose()
@@ -2232,9 +2248,11 @@ export default {
           message: '监控项最多选择5项！',
           type: 'error'
         })
-        val.slice(5).forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row, false)
-        })
+        if (typeof (val.slice(5)) !== 'undefined') {
+          val.slice(5).forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row, false)
+          })
+        }
       } else {
         this.multipleSelectionTemp = val
       }
