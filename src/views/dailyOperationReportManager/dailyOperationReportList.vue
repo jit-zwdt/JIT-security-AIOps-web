@@ -5,14 +5,14 @@
         <el-date-picker
                 size="small"
                 v-model="timefrom"
-                value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 type="datetime"
                 placeholder="选择开始日期时间">
         </el-date-picker>
         <el-date-picker
                 size="small"
                 v-model="timetill"
-                value-format="yyyy-MM-ddTHH:mm:ss.SSSZ"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 type="datetime"
                 placeholder="选择结束日期时间">
         </el-date-picker>
