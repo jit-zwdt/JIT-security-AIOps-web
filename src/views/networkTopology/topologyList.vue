@@ -1095,10 +1095,8 @@ export default {
         window.showAssetsChange('')
       }
       // window.onbeforeunload = function () {
-      //   console.log(111)
       // }
       // window.onunload = function () {
-      //   console.log(222)
       // }
     })
   },

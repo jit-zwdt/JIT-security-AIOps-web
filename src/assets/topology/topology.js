@@ -335,10 +335,8 @@ function createDevices (panel, deviceList, nameList, sizeList, imageList) {
         })
       }
       var spans = $('<span></span>')
-      console.log(spans)
       var imgs = $('<img src="images/' + imageList[i] + "'>")
       spans.append(imgs)
-      console.log(spans)
       sna.append(spans)
       parentdiv.append(sna)
       $(panel).append(parentdiv)

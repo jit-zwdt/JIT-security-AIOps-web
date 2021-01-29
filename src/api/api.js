@@ -261,9 +261,11 @@ const api = {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
     getTimeTop5ItemInfo: '/homePage/getTimeTop5ItemInfo/',
+    getTimeTop2ItemInfo: '/homePage/getTimeTop2ItemInfo/',
     getUsers: '/user/getUsers',
     getAlertdata: '/problem/getAlertdata',
     getInformationStatistics: '/homePage/getInformationStatistics',
+    getInformationStatisticsWeek: '/homePage/getInformationStatisticsWeek',
     getFAQTop5: '/homePage/getFAQTop5',
     getHostErrorTop10: '/homePage/getHostErrorTop10',
     getAssetData: '/homePage/getAssetData'
