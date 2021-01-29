@@ -513,7 +513,6 @@ export default {
         //   }
         // })
         var timer = setInterval(() => {
-          console.log(timer)
           var infoData = $('#infoData').val()
           if (infoData !== null && infoData !== '') {
             gettopologydata(infoData)
@@ -1847,7 +1846,6 @@ export default {
       this.liquidFill(param)
     },
     liquidFill (param) {
-      console.log(param)
       var liquid = this.$echarts.init(document.getElementById(param.elementid))
       liquid.setOption({
         series: [{

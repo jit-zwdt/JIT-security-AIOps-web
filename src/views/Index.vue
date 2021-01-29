@@ -1,333 +1,249 @@
 <template>
   <div class="headerbackground">
-    <header class="header_index">一体化智能运维管理平台</header>
-    <div class="container-cus">
-      <div class="row_index">
-        <div class="col-lg-3">
-          <div class="box1">
-            <div class="title_index">问题类别占比</div>
-            <div class="box1_con" id="myChart1"></div>
-          </div>
-          <div class="box2 m-20">
-            <div class="title_index">常见问题排名</div>
-            <div class="box2_con" id="myChart2"></div>
-          </div>
+    <!--第一列-->
+    <div class="col_box30per">
+      <div class="white_box height1">
+        <h3 class="public_title">操作系统</h3>
+        <div class="e_box1-1">
+          <div
+            id="ibox_content_echarts1"
+            style="height: 100%; margin-top: -30px"
+          ></div>
+          <div id="ibox_content_echarts2" style="height: 100%"></div>
         </div>
-        <div class="col-lg-6">
-          <div class="box3">
-            <div class="title_index">运维指数</div>
-            <div class="box3_con">
-              <div :class="errorStyle">
-                <small class="small_index">{{ this.operation }}</small>
-                <!-- <div
+      </div>
+      <div class="white_box mar_t20 height2">
+        <h3 class="public_title">数据库</h3>
+        <div class="e_box1-2">
+          <div id="ibox_content_echarts3" style="height: 100%"></div>
+          <div id="ibox_content_echarts4" style="height: 100%"></div>
+        </div>
+      </div>
+    </div>
+    <!--第一列结束-->
+    <!--第二列-->
+    <div class="col_box40per">
+      <div class="white_box height3">
+        <h3 class="public_title">运维指数</h3>
+        <div class="content_box">
+          <div class="ywzs_left_box">
+            <div :class="errorStyle">
+              <!-- <div
                   id="liquidFillrun"
                   style="width: 18rem; height: 18rem; margin-left:30%"
                 ></div> -->
-                <div class="svg-contain" id="svg_sky" style="display: none">
-                  <svg
-                    version="1.1"
-                    class="clear-sky-svg"
-                    x="300px"
-                    y="300px"
-                    viewBox="0 0 72.3 52.6"
-                    style="enable-background: new 0 0 72.3 52.6"
-                    xml:space="preserve"
-                  >
-                    <g>
-                      <path
-                        class="sun"
-                        d="M50.8,25.7c0,7.9-6.4,14.4-14.4,14.4s-14.4-6.4-14.4-14.4s6.4-14.4,14.4-14.4S50.8,17.8,50.8,25.7z"
-                      />
-                      <path class="line big-path line-1" d="M54.5,25.8h6" />
-                      <path class="line big-path line-2" d="M12.4,25.8h6" />
-                      <path class="line big-path line-3" d="M36.5,44.3v6" />
-                      <path class="line big-path line-4" d="M36.5,8.2v-6" />
-                      <path
-                        class="line big-path line-5"
-                        d="M23,38.8l-4.8,4.8"
-                      />
-                      <path
-                        class="line big-path line-6"
-                        d="M54.9,8.9L50,13.8"
-                      />
-                      <path class="line big-path line-7" d="M50,38.8l4.4,4.4" />
-                      <path
-                        class="line big-path line-8"
-                        d="M18.8,9.6l4.2,4.2"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div class="svg-contain" id="svg_clouds" style="display: none">
-                  <svg
-                    class="overcast-clouds"
-                    version="1.1"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 82.6 52.3"
-                    style="enable-background: new 0 0 82.6 52.3"
-                    xml:space="preserve"
-                  >
-                    <g id="Layer_1">
-                      <path
-                        class="cloud-still"
-                        d="M21.8,24.2c0.1,0,0.3-1.1,0.4-1.2c0.5-1.2,1.1-2.4,1.8-3.4c3.9-5.7,12.6-7.1,18.2-3.1c0,0,3.7-6,11-5.9c0,0,5.6-0.6,10.3,4.9c0,0,2.8,3.3,2.9,7.4c0,0,3.2-0.5,5.4,1c0,0,6.2,2.6,5.9,10.8H56.3c0,0-2-3.5-7.3-3.6c0.2,0-0.5-2.2-0.6-2.4c-1.4-4.4-5.5-6.9-9.9-7.4c-3.4-0.4-6.6,0.8-9,3.2c-0.1,0.1-1.2,1.3-1.2,1.3S25.3,23.6,21.8,24.2z"
-                      />
-                      <path
-                        class="cloud-still"
-                        d="M57.6,40.7c0-4.8-3.9-8.6-8.6-8.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h12.9h0.7C57.6,41.8,57.6,41.4,57.6,40.7z"
-                      />
-                    </g>
-                    <g id="Layer_2"></g>
-                  </svg>
-                </div>
-                <div
-                  class="svg-contain"
-                  id="svg_hurricane"
-                  style="display: none"
+              <div class="svg-contain" id="svg_sky" style="display: none">
+                <svg
+                  version="1.1"
+                  class="clear-sky-svg"
+                  x="300px"
+                  y="300px"
+                  viewBox="0 0 72.3 52.6"
+                  style="enable-background: new 0 0 72.3 52.6"
+                  xml:space="preserve"
                 >
-                  <svg
-                    class="hurricane-svg"
-                    version="1.1"
-                    id="Layer_1"
-                    x="0px"
-                    y="0px"
-                    viewBox="-437 254.4 85 52.6"
-                    style="enable-background: new -437 254.4 85 52.6"
-                    xml:space="preserve"
-                  >
+                  <g>
                     <path
-                      class="cloud"
-                      d="M-361.9,280.5c1.4,0,2.6,0.7,3.4,1.7h1.1c0.4-8.2-5.9-10.8-5.9-10.8c-2.2-1.5-5.4-1-5.4-1c-0.1-4.1-2.9-7.4-2.9-7.4c-4.7-5.5-10.3-4.9-10.3-4.9c-7.4-0.2-11,5.9-11,5.9c-5.6-4-14.3-2.6-18.2,3.1c-0.7,1.1-1.3,2.2-1.8,3.4c0,0.1-0.3,1.2-0.4,1.2c3.5-0.6,6.6,1.6,6.6,1.6s1.1-1.1,1.2-1.3c2.4-2.4,5.6-3.6,9-3.2c4.4,0.5,8.5,3,9.9,7.4c0.1,0.2,0.8,2.4,0.6,2.4c5.3,0.1,7.3,3.6,7.3,3.6h13.4C-364.5,281.2-363.3,280.5-361.9,280.5z"
+                      class="sun"
+                      d="M50.8,25.7c0,7.9-6.4,14.4-14.4,14.4s-14.4-6.4-14.4-14.4s6.4-14.4,14.4-14.4S50.8,17.8,50.8,25.7z"
+                    />
+                    <path class="line big-path line-1" d="M54.5,25.8h6" />
+                    <path class="line big-path line-2" d="M12.4,25.8h6" />
+                    <path class="line big-path line-3" d="M36.5,44.3v6" />
+                    <path class="line big-path line-4" d="M36.5,8.2v-6" />
+                    <path class="line big-path line-5" d="M23,38.8l-4.8,4.8" />
+                    <path class="line big-path line-6" d="M54.9,8.9L50,13.8" />
+                    <path class="line big-path line-7" d="M50,38.8l4.4,4.4" />
+                    <path class="line big-path line-8" d="M18.8,9.6l4.2,4.2" />
+                  </g>
+                </svg>
+              </div>
+              <div class="svg-contain" id="svg_clouds" style="display: none">
+                <svg
+                  class="overcast-clouds"
+                  version="1.1"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 82.6 52.3"
+                  style="enable-background: new 0 0 82.6 52.3"
+                  xml:space="preserve"
+                >
+                  <g id="Layer_1">
+                    <path
+                      class="cloud-still"
+                      d="M21.8,24.2c0.1,0,0.3-1.1,0.4-1.2c0.5-1.2,1.1-2.4,1.8-3.4c3.9-5.7,12.6-7.1,18.2-3.1c0,0,3.7-6,11-5.9c0,0,5.6-0.6,10.3,4.9c0,0,2.8,3.3,2.9,7.4c0,0,3.2-0.5,5.4,1c0,0,6.2,2.6,5.9,10.8H56.3c0,0-2-3.5-7.3-3.6c0.2,0-0.5-2.2-0.6-2.4c-1.4-4.4-5.5-6.9-9.9-7.4c-3.4-0.4-6.6,0.8-9,3.2c-0.1,0.1-1.2,1.3-1.2,1.3S25.3,23.6,21.8,24.2z"
                     />
                     <path
-                      class="cloud"
-                      d="M-386,279.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h2.3l4.7-6.2c0.6-0.8,1.7-0.9,2.5-0.3s0.9,1.7,0.3,2.5l-3.1,4h0.5h5.6h0.7c0.1,0,0.2-0.4,0.2-1.1C-377.4,283.5-381.3,279.6-386,279.6z"
+                      class="cloud-still"
+                      d="M57.6,40.7c0-4.8-3.9-8.6-8.6-8.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h12.9h0.7C57.6,41.8,57.6,41.4,57.6,40.7z"
                     />
-                    <polyline
-                      class="lightening"
-                      points="-382.8,284.2 -387.9,290.9 -380.6,291.2 -387.9,302 "
+                  </g>
+                  <g id="Layer_2"></g>
+                </svg>
+              </div>
+              <div class="svg-contain" id="svg_hurricane" style="display: none">
+                <svg
+                  class="hurricane-svg"
+                  version="1.1"
+                  id="Layer_1"
+                  x="0px"
+                  y="0px"
+                  viewBox="-437 254.4 85 52.6"
+                  style="enable-background: new -437 254.4 85 52.6"
+                  xml:space="preserve"
+                >
+                  <path
+                    class="cloud"
+                    d="M-361.9,280.5c1.4,0,2.6,0.7,3.4,1.7h1.1c0.4-8.2-5.9-10.8-5.9-10.8c-2.2-1.5-5.4-1-5.4-1c-0.1-4.1-2.9-7.4-2.9-7.4c-4.7-5.5-10.3-4.9-10.3-4.9c-7.4-0.2-11,5.9-11,5.9c-5.6-4-14.3-2.6-18.2,3.1c-0.7,1.1-1.3,2.2-1.8,3.4c0,0.1-0.3,1.2-0.4,1.2c3.5-0.6,6.6,1.6,6.6,1.6s1.1-1.1,1.2-1.3c2.4-2.4,5.6-3.6,9-3.2c4.4,0.5,8.5,3,9.9,7.4c0.1,0.2,0.8,2.4,0.6,2.4c5.3,0.1,7.3,3.6,7.3,3.6h13.4C-364.5,281.2-363.3,280.5-361.9,280.5z"
+                  />
+                  <path
+                    class="cloud"
+                    d="M-386,279.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h2.3l4.7-6.2c0.6-0.8,1.7-0.9,2.5-0.3s0.9,1.7,0.3,2.5l-3.1,4h0.5h5.6h0.7c0.1,0,0.2-0.4,0.2-1.1C-377.4,283.5-381.3,279.6-386,279.6z"
+                  />
+                  <polyline
+                    class="lightening"
+                    points="-382.8,284.2 -387.9,290.9 -380.6,291.2 -387.9,302 "
+                  />
+                  <path class="line" d="M-426.9,294.4l-5.1,7.3" />
+                  <path class="line" d="M-420.8,294.4l-5.1,7.3" />
+                  <path class="line" d="M-415.4,294.4l-5.1,7.3" />
+                  <path class="line" d="M-409.9,294.4l-5.1,7.3" />
+                  <path class="line" d="M-404.5,294.4l-5.1,7.3" />
+                  <path class="line" d="M-399.1,294.4l-5.1,7.3" />
+                  <path class="line" d="M-393.7,294.4l-5.1,7.3" />
+                  <path class="line" d="M-388.2,294.4l-5.1,7.3" />
+                  <g>
+                    <path class="little-path path-1" d="M-374.8,287.2h10.6" />
+                    <path class="little-path path-2" d="M-373.8,289.3h10.9" />
+                    <path
+                      class="big-path"
+                      d="M-376,288.3c0,0,14,0,14,0c1.7,0,3.1-1.4,3.3-3.1c0-0.5,0-1-0.3-1.4c-0.9-2.3-4.1-2.7-5.6-0.7c-0.4,0.6-0.7,1.3-0.7,1.9"
                     />
-                    <path class="line" d="M-426.9,294.4l-5.1,7.3" />
-                    <path class="line" d="M-420.8,294.4l-5.1,7.3" />
-                    <path class="line" d="M-415.4,294.4l-5.1,7.3" />
-                    <path class="line" d="M-409.9,294.4l-5.1,7.3" />
-                    <path class="line" d="M-404.5,294.4l-5.1,7.3" />
-                    <path class="line" d="M-399.1,294.4l-5.1,7.3" />
-                    <path class="line" d="M-393.7,294.4l-5.1,7.3" />
-                    <path class="line" d="M-388.2,294.4l-5.1,7.3" />
-                    <g>
-                      <path class="little-path path-1" d="M-374.8,287.2h10.6" />
-                      <path class="little-path path-2" d="M-373.8,289.3h10.9" />
-                      <path
-                        class="big-path"
-                        d="M-376,288.3c0,0,14,0,14,0c1.7,0,3.1-1.4,3.3-3.1c0-0.5,0-1-0.3-1.4c-0.9-2.3-4.1-2.7-5.6-0.7c-0.4,0.6-0.7,1.3-0.7,1.9"
-                      />
-                      <path
-                        class="little-path path-3"
-                        d="M-364.1,285c0-1.2,1-2.2,2.2-2.2s2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2"
-                      />
-                    </g>
-                  </svg>
-                </div>
+                    <path
+                      class="little-path path-3"
+                      d="M-364.1,285c0-1.2,1-2.2,2.2-2.2s2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2"
+                    />
+                  </g>
+                </svg>
               </div>
-              <div class="div_cut_off_rule">
-                <table
-                  border="1px"
-                  cellpadding="0"
-                  cellspacing="0"
-                  class="table_cut_off_rule"
-                ></table>
-              </div>
-              <div class="box3_con_right">
-                <div class="box3_con_right_top">
-                  <div class="con_right_top">
-                    <small>总设备：{{ this.hostSumNum }}台</small>
-                  </div>
-                  <div class="con_right_top">
-                    <small>总磁盘：{{ this.hostSumHardDisk }}G</small>
-                  </div>
-                  <div class="con_right_top">
-                    <small>总内存：{{ this.hostSumMemory }}G</small>
-                  </div>
-                </div>
-                <div class="box3_con_right_bot">
-                  <div class="row_index_table row_table">
-                    <div class="data_bg">
-                      <p>{{ this.hostOneCount }}台</p>
-                      <small>{{ this.hostOneType }}</small>
-                    </div>
-                    <div class="data_bg">
-                      <p>{{ this.hostTwoCount }}台</p>
-                      <small>{{ this.hostTwoType }}</small>
-                    </div>
-                    <div class="data_bg">
-                      <p>{{ this.hostThreeCount }}台</p>
-                      <small>{{ this.hostThreeType }}</small>
-                    </div>
-                  </div>
-                  <div class="row_index_table row_table">
-                    <div class="data_bg">
-                      <p>{{ this.hostFourCount }}台</p>
-                      <small>{{ this.hostFourType }}</small>
-                    </div>
-                    <div class="data_bg">
-                      <p>{{ this.hostFiveCount }}台</p>
-                      <small>{{ this.hostFiveType }}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <small :class="small_index">{{ this.operation }}</small>
             </div>
           </div>
-          <div class="box6 m-20">
-            <div class="title_index">网络拓扑图</div>
-            <div class="box6_con" id="box6">
-              <canvas width="600" height="250" id="target"></canvas>
-              <input
-                type="hidden"
-                id="infoData"
-                name="infoData"
-                v-model="infoData"
-              />
-              <input type="hidden" id="infoId" name="infoId" />
-            </div>
-          </div>
-          <div class="box4 m-20">
-            <div class="title_index">问题列表</div>
-            <div class="box4_con" id="box4">
-              <div
-                style="
-                  height: 2.3rem;
-                  color: white;
-                  font-weight: 500;
-                  background-color: rgba(148, 144, 144, 0.3);
-                "
+          <ul class="ywzs_num">
+            <li>
+              <h3 class="number">{{ this.hostOneCount }}</h3>
+              <p>{{ this.hostOneType }}(台)</p>
+            </li>
+            <li>
+              <h3 class="number">{{ this.hostTwoCount }}</h3>
+              <p>{{ this.hostTwoType }}(台)</p>
+            </li>
+            <li>
+              <h3 class="number">{{ this.hostThreeCount }}</h3>
+              <p>{{ this.hostThreeType }}(台)</p>
+            </li>
+            <li>
+              <h3 class="number">{{ this.hostFourCount }}</h3>
+              <p>{{ this.hostFourType }}(台)</p>
+            </li>
+            <li>
+              <h3 class="number">{{ this.hostFiveCount }}</h3>
+              <p>{{ this.hostFiveType }}(台)</p>
+            </li>
+            <li>
+              <div class="">
+                <span>总设备：</span
+                ><span class="yellow">{{ this.hostSumNum }}台</span>
+              </div>
+              <br />
+              <div class="">
+                <span>总磁盘：</span
+                ><span class="yellow">{{ this.hostSumHardDisk }}G</span>
+              </div>
+              <br />
+              <div class="">
+                <span>总内存：</span
+                ><span class="yellow">{{ this.hostSumMemory }}G</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="white_box mar_t20 height4">
+        <h3 class="public_title">网络拓扑</h3>
+        <div class="content_box">
+          <canvas width="600" height="300" id="target"></canvas>
+          <input
+            type="hidden"
+            id="infoData"
+            name="infoData"
+            v-model="infoData"
+          />
+          <input type="hidden" id="infoId" name="infoId" />
+        </div>
+      </div>
+      <div class="white_box mar_t20 height5">
+        <h3 class="public_title">问题列表</h3>
+        <ul class="scroll_tit">
+          <li>
+            <span class="wid_20per blue_font">日期</span
+            ><span class="wid_70per blue_font">名称</span
+            ><span class="wid_10per blue_font">级别</span>
+          </li>
+        </ul>
+        <div class="myscroll">
+          <vue-seamless-scroll
+            :data="tableData"
+            class="seamless-warp"
+            :class-option="defaultOption"
+          >
+            <ul class="ul-scoll">
+              <li
+                v-for="(item, index) in tableData"
+                :key="index"
+                :class="rowClassName(index)"
               >
-                <h1
-                  style="
-                    float: left;
-                    color: rgb(162, 180, 230);
-                    width: 20%;
-                    text-align: center;
-                    font-size: 1.2rem;
-                    margin-top: 0.3rem;
-                  "
-                >
-                  日期
-                </h1>
-                <h1
-                  style="
-                    float: left;
-                    color: rgb(162, 180, 230);
-                    width: 60%;
-                    text-align: center;
-                    font-size: 1.2rem;
-                    margin-top: 0.3rem;
-                  "
-                >
-                  名称
-                </h1>
-                <h1
-                  style="
-                    float: left;
-                    color: rgb(162, 180, 230);
-                    width: 20%;
-                    text-align: center;
-                    font-size: 1.2rem;
-                    margin-top: 0.3rem;
-                  "
-                >
-                  级别
-                </h1>
-              </div>
-              <div class="page-example">
-                <vue-seamless-scroll
-                  :data="tableData"
-                  class="seamless-warp"
-                  :class-option="defaultOption"
-                >
-                  <ul class="ul-scoll">
-                    <li v-for="(item, index) in tableData" :key="index">
-                      <span class="scroll_span_30">{{
-                        formatterdata(item.zabbixProblemDTO.clock)
-                      }}</span>
-                      <span class="scroll_span_60">{{
-                        item.zabbixProblemDTO.name
-                      }}</span>
-                      <span class="scroll_span_10">{{
-                        formattertype(item.zabbixProblemDTO.severity)
-                      }}</span>
-                    </li>
-                  </ul>
-                  <!-- <el-table
-                  :data="tableData"
-                  :show-header="hideRow"
-                  class="ul-scoll"
-                >
-                  <el-table-column
-                    prop="zabbixProblemDTO.clock"
-                    label="日期"
-                    width="180"
-                  >
-                    <template slot-scope="scope">
-                      <el-link
-                        type="primary"
-                        v-html="formatterdata(scope.row.zabbixProblemDTO.clock)"
-                      ></el-link>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    prop="zabbixProblemDTO.name"
-                    label="名称"
-                    width="auto"
-                  >
-                    <template slot-scope="scope">
-                      <el-link
-                        type="primary"
-                        v-html="formatterName(scope.row.zabbixProblemDTO.name)"
-                      ></el-link>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    prop="zabbixProblemDTO.severity"
-                    label="级别"
-                    width="100"
-                  >
-                    <template slot-scope="scope">
-                      <el-link
-                        type="primary"
-                        v-html="
-                          formattertype(scope.row.zabbixProblemDTO.severity)
-                        "
-                      ></el-link>
-                    </template>
-                  </el-table-column>
-                </el-table> -->
-                </vue-seamless-scroll>
-              </div>
-            </div>
+                <span class="scroll_span_30">{{
+                  formatterdata(item.zabbixProblemDTO.clock)
+                }}</span>
+                <span class="scroll_span_60">{{
+                  item.zabbixProblemDTO.name
+                }}</span>
+                <span class="scroll_span_10">
+                  <div
+                    v-html="formattertype(item.zabbixProblemDTO.severity)"
+                  ></div
+                ></span>
+              </li>
+            </ul>
+          </vue-seamless-scroll>
+        </div>
+      </div>
+    </div>
+    <!--第二列结束-->
+    <!--第三列-->
+    <div class="col_box30per col_box100per new_pad new_t20">
+      <div class="flo_screen">
+        <div class="white_box height1">
+          <h3 class="public_title">中间件</h3>
+          <div class="e_box1-3">
+            <div id="ibox_content_echarts8" style="height: 100%"></div>
+            <div id="ibox_content_echarts9" style="height: 100%"></div>
           </div>
         </div>
-        <div class="col-lg-3">
-          <div class="box5">
-            <div class="title_index">设备异常服务器TOP10</div>
-            <div class="box5_con_top" id="myChart3"></div>
-            <div class="box5_con">
-              <div class="title_index m-20">设备参数运行TOP5</div>
-              <div class="queryCon">
-                <div class="box5_con_bot queryleft" id="myChart4"></div>
-                <div class="box5_con_bot queryleft" id="myChart5"></div>
-              </div>
-              <div class="queryCon">
-                <div class="box5_con_bot queryleft" id="myChart6"></div>
-                <div class="box5_con_bot queryleft" id="myChart7"></div>
-              </div>
-            </div>
+      </div>
+      <div class="flo_screen">
+        <div
+          class="white_box height2 flo_screen new_height mar_t20 mar_t0 mar_b20"
+        >
+          <h3 class="public_title">JVM</h3>
+          <div class="e_box1-4">
+            <div id="ibox_content_echarts10" style="height: 100%"></div>
           </div>
         </div>
       </div>
     </div>
+    <!--第三列结束-->
   </div>
 </template>
 <script>
@@ -336,6 +252,8 @@ import { formatTodate } from '@/utils/format.js'
 import jTopo from 'jtopo-in-node'
 import $ from 'jquery'
 import { data } from '@/assets/topology/devices.js'
+import qs from 'qs'
+import { timesMethod } from '@/utils/formatDate.js'
 export default {
   data () {
     return {
@@ -343,6 +261,7 @@ export default {
       hideRow: false,
       errorCount: 0,
       errorStyle: '',
+      small_index: '',
       hostSumNum: '0',
       hostSumMemory: '0',
       hostSumHardDisk: '0',
@@ -379,7 +298,10 @@ export default {
       hostFiveType: 'JVM',
       hostFiveCount: '0',
       timer: '',
-      infoData: ''
+      infoData: '',
+      timermakeData1: '',
+      timermakeData1_2: '',
+      timermakeData2_1: ''
     }
   },
   created () {
@@ -406,7 +328,7 @@ export default {
         stage.eagleEye.visible = false
         var scene = new jTopo.Scene(stage)
         showJTopoToobar(stage, canvas)
-        scene.background = require('../assets/topology/images/small_blue_bg_.png')
+        scene.background = require('../assets/topology/images/white_bg.jpg')
         var tempNodeA = new jTopo.Node('tempA')
         tempNodeA.setSize(1, 1)
         var tempNodeZ = new jTopo.Node('tempZ')
@@ -513,7 +435,6 @@ export default {
         //   }
         // })
         var timer = setInterval(() => {
-          console.log(timer)
           var infoData = $('#infoData').val()
           if (infoData !== null && infoData !== '') {
             gettopologydata(infoData)
@@ -757,36 +678,33 @@ export default {
     if (this.timer) {
       clearInterval(this.timer)
     }
+    if (this.timermakeData1) {
+      clearInterval(this.timermakeData1)
+    }
+    if (this.timermakeData1_2) {
+      clearInterval(this.timermakeData1_2)
+    }
+    if (this.timermakeData2_1) {
+      clearInterval(this.timermakeData2_1)
+    }
   },
   methods: {
-    getResize () {
-      // this.conheight.height = window.innerHeight - 151 + 'px'
-      var timer = null
-      return function () {
-        if (timer) {
-          clearTimeout(timer)
-        }
-        timer = setTimeout(function () {
-          const pieCharts = document.getElementById('myChart2')
-          const myChart = this.$echarts.init(pieCharts)
-          myChart.resize()
-        }, 500)
-      }
-    },
     showInfo () {
       this.makeData1()
       this.makeData2()
       this.makeData3()
       this.makeData4()
-      this.makeData5()
-      this.makeData6()
+      // this.makeData5()
+      // this.makeData6()
       // this.getOperationRunInfo()
     },
     situation () {
       var errorCount = this.errorCount
+      errorCount = 17
       if (errorCount !== null && (errorCount >= 5 && errorCount <= 15)) {
         this.errorStyle = 'box3_con_left'
-        this.operation = '设备运行出现故障'
+        this.small_index = 'small_index_2'
+        this.operation = '运行出现故障'
         var svgclouds2 = document.getElementById('svg_clouds')
         svgclouds2.style = 'display: block'
         var svghurricane2 = document.getElementById('svg_hurricane')
@@ -796,7 +714,8 @@ export default {
         // this.getOperationRunInfoTwo()
       } else if (errorCount !== null && (errorCount > 15)) {
         this.errorStyle = 'box3_con_left'
-        this.operation = '设备运行故障较多'
+        this.small_index = 'small_index_3'
+        this.operation = '运行故障较多'
         var svgclouds3 = document.getElementById('svg_clouds')
         svgclouds3.style = 'display: none'
         var svghurricane3 = document.getElementById('svg_hurricane')
@@ -806,7 +725,8 @@ export default {
         // this.getOperationRunInfoThree()
       } else {
         this.errorStyle = 'box3_con_left'
-        this.operation = '设备运行良好'
+        this.small_index = 'small_index_1'
+        this.operation = '运行良好'
         var svgclouds1 = document.getElementById('svg_clouds')
         svgclouds1.style = 'display: none'
         var svghurricane1 = document.getElementById('svg_hurricane')
@@ -824,11 +744,11 @@ export default {
           if (json.code === 1) {
             this.errorCount = json.data.average + json.data.high + json.data.disaster
             xdata.push(
-              { value: json.data.information, name: '信息' },
-              { value: json.data.warning, name: '警告' },
-              { value: json.data.average, name: '一般严重' },
-              { value: json.data.high, name: '严重' },
-              { value: json.data.disaster, name: '灾难' }
+              { name: '信息', value: json.data.information },
+              { name: '警告', value: json.data.warning },
+              { name: '一般严重', value: json.data.average },
+              { name: '严重', value: json.data.high },
+              { name: '灾难', value: json.data.disaster }
             )
             this.situation()
             this.makeData1_info(xdata)
@@ -840,360 +760,730 @@ export default {
           })
         }
       })
+      this.makeData1_2()
     },
     makeData1_info (xdata) {
-      const pieCharts = document.getElementById('myChart1')
+      const pieCharts = document.getElementById('ibox_content_echarts1')
       const myChart = this.$echarts.init(pieCharts)
-      myChart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+      var colorList = [{
+        type: 'linear',
+        x: 0,
+        y: 0,
+        x2: 1,
+        y2: 1,
+        colorStops: [{
+          offset: 0,
+          color: 'rgba(3,70,248,0.2)' // 0% 处的颜色
+        },
+        {
+          offset: 1,
+          color: 'rgba(3,70,248,0.8)' // 100% 处的颜色
+        }
+        ],
+        globalCoord: false // 缺省为 false
+      },
+      {
+        type: 'linear',
+        x: 1,
+        y: 0,
+        x2: 0,
+        y2: 1,
+        colorStops: [{
+          offset: 0,
+          color: 'rgba(0,127,229,0.2)' // 0% 处的颜色
+        },
+        {
+          offset: 1,
+          color: 'rgba(0,127,229,0.8)' // 100% 处的颜色
+        }
+        ],
+        globalCoord: false // 缺省为 false
+      },
+      {
+        type: 'linear',
+        x: 1,
+        y: 0,
+        x2: 0,
+        y2: 0,
+        colorStops: [{
+          offset: 0,
+          color: 'rgba(0,228,255,0.2)' // 0% 处的颜色
+        },
+        {
+          offset: 1,
+          color: 'rgba(0,228,255,0.8)' // 100% 处的颜色
+        }
+        ],
+        globalCoord: false // 缺省为 false
+      },
+      {
+        type: 'linear',
+        x: 0,
+        y: 1,
+        x2: 0,
+        y2: 0,
+        colorStops: [{
+          offset: 0,
+          color: 'rgba(245,172,43,0.2)' // 0% 处的颜色
+        },
+        {
+          offset: 1,
+          color: 'rgba(245,172,43,0.8)' // 100% 处的颜色
+        }
+        ],
+        globalCoord: false // 缺省为 false
+      },
+      {
+        type: 'linear',
+        x: 1,
+        y: 1,
+        x2: 1,
+        y2: 0,
+        colorStops: [{
+          offset: 0,
+          color: 'rgba(252,75,75,0.2)' // 0% 处的颜色
+        },
+        {
+          offset: 1,
+          color: 'rgba(252,75,75,0.8)' // 100% 处的颜色
+        }
+        ],
+        globalCoord: false // 缺省为 false
+      }
+      ]
+      var colorLine = ['#0346f8', '#0179f7', '#00e4ff', '#f5ac2b', '#FE6969']
+
+      function getRich () {
+        var result = {}
+        colorLine.forEach((v, i) => {
+          result[`hr${i}`] = {
+            backgroundColor: colorLine[i],
+            borderRadius: 3,
+            width: 3,
+            height: 3,
+            padding: [3, 3, 0, -12]
+          }
+          result[`a${i}`] = {
+            padding: [8, -60, -20, -20],
+            color: colorLine[i],
+            fontSize: 12
+          }
+        })
+        return result
+      }
+      var data = xdata.sort((a, b) => {
+        return b.value - a.value
+      })
+      data.forEach((v, i) => {
+        v.labelLine = {
+          lineStyle: {
+            width: 1,
+            color: colorLine[i]
+          }
+        }
+      })
+      var option = {
+        title: {
+          text: '问题类别占比',
+          x: 'center',
+          y: 'center',
+          top: '55%',
+          left: '28.5%',
+          textStyle: {
+            color: '#AAAFC8',
+            fontWeight: 'normal',
+            fontSize: 9
+          }
         },
         legend: {
-          x: '100rem',
-          y: '50rem',
-          orient: 'vertical',
-          left: 'left',
           data: ['信息', '警告', '一般严重', '严重', '灾难'],
+          orient: 'vertical',
+          right: '5%',
+          top: '20%',
+          itemWidth: 20,
+          itemHeight: 10,
+          itemGap: 30,
           textStyle: {
-            fontSize: 10,
-            color: []
+            color: '#000',
+            fontSize: 12
           }
         },
-        // color: ['rgb(129, 192, 192)', 'rgb(255, 211, 6)', 'rgb(234, 117, 0)', 'rgb(255, 32, 32)', 'rgb(128, 0, 0)'],
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF'],
-        series: [
-          {
-            name: '分类',
-            type: 'pie',
-            radius: '65%',
-            center: ['60%', '40%'],
-            data: xdata,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                normal: {
-                  color: function (params) {
-                    var colorList = ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622']
-                    return colorList[params.dataIndex]
-                  }
-                }
-              }
+        series: [{
+          type: 'pie',
+          radius: ['25%', '65%'],
+          center: ['35%', '58%'],
+          clockwise: true,
+          avoidLabelOverlap: true,
+          hoverAnimation: true,
+          label: {
+            show: false,
+            position: 'outside',
+            formatter: function (params) {
+              const name = params.name
+              const percent = params.percent + '%'
+              const index = params.dataIndex
+              return [`{a${index}|${name}：${percent}}`, `{hr${index}|}`].join('\n')
             },
-            label: {
-              normal: {
-                position: 'inner',
-                show: false
+            rich: getRich(),
+            emphasis: {
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: function (params) {
+                return colorList[params.dataIndex]
               }
             }
-          }
-        ]
-      })
+          },
+          labelLine: {
+            normal: {
+              show: false,
+              length: 10,
+              length2: 45,
+              smooth: true,
+              lineStyle: {
+                width: 2
+
+              }
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          data,
+          roseType: 'radius'
+        }]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      this.timermakeData1 = setInterval(function () {
+        var dataLen = option.series[0].data.length
+        // 取消之前高亮的图形
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        app.currentIndex = (app.currentIndex + 1) % dataLen
+        // 高亮当前图形
+        myChart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        // 显示 tooltip
+        myChart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+      }, 1000)
     },
-    makeData2 () {
-      this.axios.post(this.$api.main.getFAQTop5).then((resp) => {
+    makeData1_2 () {
+      var starttime = timesMethod.fun_date(-6)
+      var timefrom = timesMethod.getDatestamp(starttime)
+      var endtime = timesMethod.fun_date(1)
+      var timetill = timesMethod.getDatestamp(endtime)
+      this.axios.post(this.$api.main.getInformationStatisticsWeek, qs.stringify({
+        timeFrom: timefrom,
+        timeTill: timetill
+      })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData2_info(json.data)
+            this.makeData1_2_info(json.data)
           }
         } else {
           this.$message({
-            message: '查询失败',
+            message: '获取分组信息失败',
             type: 'error'
           })
         }
       })
     },
-    makeData2_info (myChartData) {
-      const xData = []
-      const yData = []
-      const xNameData = []
-      myChartData.forEach(element => {
-        var newname = element.name
-        if (newname !== null && newname.length > 40) {
-          newname = newname.substring(0, 40) + '...'
-        }
-        xData.push(newname)
-        xNameData.push(element.name)
-        yData.push(element.count)
-      })
-      const pieCharts = document.getElementById('myChart2')
-      const myChart = this.$echarts.init(pieCharts)
-      const data = {
-        xData: xData,
-        yData: yData,
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF'],
-        xNameData: xNameData
+    makeData1_2_info (makeData) {
+      var dateTime = []
+      for (var i = 0; i < 7; i++) {
+        var tempDate = new Date() // 获取今天的日期
+        tempDate.setDate(tempDate.getDate() - i) // 今天的前N天的日期，N自定义
+        var endDate = (tempDate.getMonth() + 1) + '月' + tempDate.getDate() + '日'
+        dateTime.push(endDate)
       }
-      const namedata = [{
-        name: '',
-        data: data.yData,
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
+      dateTime = dateTime.reverse()
+      var dom2 = document.getElementById('ibox_content_echarts2')
+      var myChart = this.$echarts.init(dom2)
+      var option = {
+        grid: {
+          left: '10%',
+          width: '83%',
+          height: '40%',
+          x: 60,
+          y: 20
+        },
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(240,240,240,0.8)',
           textStyle: {
-            color: '#555'
+            color: 'rgba(34,139,34)'
           },
-          normal: {
+          axisPointer: {
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                top: '40%',
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(255, 0, 0,0)'
+                }, {
+                  offset: 0.5,
+                  color: 'rgba(255, 0, 0,1)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(0, 255, 0,0)'
+                }],
+                global: false
+              }
+            }
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: dateTime,
+          axisLabel: {
+            textStyle: {
+              color: '#667ba7',
+              fontSize: 10
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              type: 'solid',
+              color: '#667ba7',
+              width: '1'
+            }
+          },
+          axisTick: {
             show: false
           }
         },
-        barWidth: '50%',
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              const colors = data.color
-              return colors[params.dataIndex]
-            }
-          }
-        },
-        xAxisIndex: 0,
-        yAxisIndex: 0
-      }, {
-        data: [{
-          name: data.xData[0],
-          value: 1
-        }],
-        name: data.xData[0],
-        label: {
-          show: false,
-          position: 'inside',
-          formatter: '{b}',
-          offset: [0, 10],
-          textStyle: {
-            color: '#FFFFFF'
-          }
-        },
-        type: 'bar',
-        barGap: 0,
-        barWidth: '20%',
-        itemStyle: {
-          normal: {
-            color: data.color[0]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        data: [{
-          name: data.xData[1],
-          value: 1
-        }],
-        name: data.xData[1],
-        label: {
-          show: false,
-          position: 'inside',
-          formatter: '{b}',
-          offset: [0, 10],
-          textStyle: {
-            color: '#FFFFFF'
-          }
-        },
-        type: 'bar',
-        barGap: 0,
-        barWidth: '20%',
-        itemStyle: {
-          normal: {
-            color: data.color[1]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        data: [{
-          name: data.xData[2],
-          value: 1
-        }],
-        name: data.xData[2],
-        label: {
-          show: false,
-          position: 'inside',
-          formatter: '{b}',
-          offset: [0, 10],
-          textStyle: {
-            color: '#FFFFFF'
-          }
-        },
-        type: 'bar',
-        barGap: 0,
-        barWidth: '20%',
-        itemStyle: {
-          normal: {
-            color: data.color[2]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        data: [{
-          name: data.xData[3],
-          value: 1
-        }],
-        name: data.xData[3],
-        label: {
-          show: false,
-          position: 'inside',
-          formatter: '{b}',
-          offset: [0, 10],
-          textStyle: {
-            color: '#FFFFFF'
-          }
-        },
-        type: 'bar',
-        barGap: 0,
-        barWidth: '20%',
-        itemStyle: {
-          normal: {
-            color: data.color[3]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        data: [{
-          name: data.xData[4],
-          value: 1
-        }],
-        name: data.xData[4],
-        label: {
-          show: false,
-          position: 'inside',
-          formatter: '{b}',
-          offset: [0, 10],
-          textStyle: {
-            color: '#FFFFFF'
-          }
-        },
-        type: 'bar',
-        barGap: 0,
-        barWidth: '20%',
-        itemStyle: {
-          normal: {
-            color: data.color[4]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }]
-      myChart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          extraCssText: 'width:6rem',
-          axisPointer: {
-            lineStyle: {
-              color: 'rgba(0, 255, 233,0)'
+        yAxis: {
+          splitLine: {
+            show: true
+          },
+          type: 'value',
+          splitNumber: 3,
+          axisLabel: {
+            textStyle: {
+              color: '#667ba7',
+              fontSize: 10
             }
           },
-          formatter: function (params, ticket, callback) {
-            var res = ''
-            if (data.xNameData[0] !== null && data.xNameData[0] !== '' && data.xNameData[0] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xNameData[0] + '<br>'
+          axisLine: {
+            lineStyle: {
+              type: 'solid',
+              color: '#667ba7',
+              width: '0'
             }
-            if (data.xNameData[1] !== null && data.xNameData[1] !== '' && data.xNameData[1] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xNameData[1] + '<br>'
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [{
+          data: makeData.information,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#00e4ff'
             }
-            if (data.xNameData[2] !== null && data.xNameData[2] !== '' && data.xNameData[2] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xNameData[2] + '<br>'
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(0,228,255, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,228,255, 0)' // 100% 处的颜色
+                }],
+                global: false
+              }
             }
-            if (data.xNameData[3] !== null && data.xNameData[3] !== '' && data.xNameData[3] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xNameData[3] + '<br>'
+          }
+        }, {
+          data: makeData.warning,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#0179f7'
             }
-            if (data.xNameData[4] !== null && data.xNameData[4] !== '' && data.xNameData[4] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xNameData[4] + '<br>'
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(1,121,247, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(1,121,247, 0)' // 100% 处的颜色
+                }],
+                global: false
+              }
             }
-            return res
+          }
+        }, {
+          data: makeData.average,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#0346f8'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(3,70,248, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(3,70,248, 0)' // 100% 处的颜色
+                }],
+                global: false
+              }
+            }
+          }
+        }, {
+          data: makeData.high,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#f5ac2b'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(245,172,43, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(245,172,43, 0)' // 100% 处的颜色
+                }],
+                global: false
+              }
+            }
+          }
+        }, {
+          data: makeData.disaster,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#FE6969'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(254,105,105, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(254,105,105, 0)' // 100% 处的颜色
+                }],
+                global: false
+              }
+            }
+          }
+        }]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      this.timermakeData1_2 = setInterval(function () {
+        var dataLen = option.series[0].data.length
+        // 取消之前高亮的图形
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        app.currentIndex = (app.currentIndex + 1) % dataLen
+        // 高亮当前图形
+        myChart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        // 显示 tooltip
+        myChart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+      }, 1000)
+    },
+    makeData2 () {
+      var param3 = 'rates'
+      var bordercolor3 = ['rgba(201,231,255,0.8)', 'rgba(255,233,194,0.8)']
+      var color3 = ['#007fe5', '#ffb32a']
+      this.makeData2_Data(param3, '3', '每秒查询数', color3, bordercolor3)
+      var param4 = 'connecteds'
+      var bordercolor4 = ['rgba(201,231,255,0.8)', 'rgba(201,255,239,0.8)']
+      var color4 = ['#007fe5', '#44e6c2']
+      this.makeData2_Data(param4, '4', '用户连接数', color4, bordercolor4)
+    },
+    async makeData2_Data (param, num, str, color, bordercolor) {
+      await this.axios.post(this.$api.main.getTimeTop2ItemInfo + param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.makeData2_info(json.data, num, str, color, bordercolor)
+          } else {
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    makeData2_info (myChartData, num, str, color, bordercolor) {
+      if (myChartData === null) {
+        return
+      }
+      var returndataclocktime = []
+      if (myChartData.xAxis !== null) {
+        myChartData.xAxis.forEach(element => {
+          if (element === '00') {
+            returndataclocktime.push('0时')
+          } else {
+            returndataclocktime.push(element + '时')
+          }
+        })
+      }
+      var dom3 = document.getElementById('ibox_content_echarts' + num)
+      var myChart = this.$echarts.init(dom3)
+      var fontColor = '#667ba7'
+      var option = {
+        backgroundColor: '#ffffff',
+        title: {
+          text: str,
+          textStyle: {
+            fontSize: 14,
+            fontWeight: 400
+          },
+          left: '10%',
+          top: '10%'
+        },
+        grid: {
+          left: '2%',
+          right: '5%',
+          top: '30%',
+          bottom: '15%',
+          containLabel: true
+        },
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(240,240,240,0.8)',
+          textStyle: {
+            color: 'rgba(34,139,34)'
+          },
+          axisPointer: {
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                top: '40%',
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(255, 0, 0,0)'
+                }, {
+                  offset: 0.5,
+                  color: 'rgba(255, 0, 0,1)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(0, 255, 0,0)'
+                }],
+                global: false
+              }
+            }
           }
         },
         legend: {
-          top: '5%',
-          data: data.xData,
+          show: true,
+          right: '5%',
+          y: '10',
+          icon: 'circle',
+          itemWidth: 10,
+          itemHeight: 10,
+          itemGap: 10,
           textStyle: {
-            fontSize: 12,
-            color: []
-          }
-        },
-        grid: [
-          {
-            top: 200,
-            bottom: 20
+            fontSize: 10,
+            color: '#667ba7'
           },
-          {
-            height: 0,
-            bottom: 0
-          }
-        ],
+          data: myChartData.legend
+        },
         xAxis: [{
           type: 'category',
-          data: data.yData,
-          gridIndex: 0,
+          boundaryGap: false,
           axisLabel: {
-            color: '#3eb2e8'
+            color: fontColor,
+            fontSize: 10
           },
           axisLine: {
+            show: true,
             lineStyle: {
-              color: '#3eb2e8'
+              color: '#667ba7'
             }
           },
           axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          zlevel: 1,
-          show: false
-        }, {
-          type: 'category',
-          gridIndex: 1,
-          axisLine: {
             show: false
           },
-          zlevel: 1
+          splitLine: {
+            show: true
+          },
+          data: returndataclocktime
         }],
         yAxis: [{
           type: 'value',
-          gridIndex: 0,
+          splitNumber: 4,
           axisLabel: {
-            color: '#3eb2e8',
-            formatter: '{value} 个'
+            formatter: '{value}',
+            textStyle: {
+              color: '#667ba7',
+              fontSize: 10
+            }
           },
           axisLine: {
             lineStyle: {
-              color: '#3eb2e8'
+              color: '#667ba7'
             }
           },
           axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#4784e8'
-            }
-          }
-        }, {
-          type: 'value',
-          gridIndex: 1,
-          axisLabel: {
-            show: false
-          },
-          axisLine: {
             show: false
           },
           splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
+            show: true
           }
-        }],
-        series: namedata
-      })
+        }
+        ],
+        series: [{
+          name: myChartData.legend[0],
+          type: 'line',
+          stack: myChartData.legend[0],
+          symbol: 'circle',
+          symbolSize: 6,
+          itemStyle: {
+            color: color[0],
+            borderColor: bordercolor[0],
+            borderWidth: 1,
+            shadowColor: 'rgba(0, 0, 0,)',
+            shadowBlur: 0,
+            shadowOffsetY: 2,
+            shadowOffsetX: 2
+          },
+          markPoint: {
+            itemStyle: {
+              normal: {
+                color: 'red'
+              }
+            }
+          },
+          data: myChartData.series[0].data
+        },
+        {
+          name: myChartData.legend[1],
+          type: 'line',
+          stack: myChartData.legend[1],
+          symbol: 'circle',
+          symbolSize: 6,
+          itemStyle: {
+            color: color[1],
+            borderColor: bordercolor[1],
+            borderWidth: 1,
+            shadowColor: 'rgba(0, 0, 0,)',
+            shadowBlur: 0,
+            shadowOffsetY: 2,
+            shadowOffsetX: 2
+          },
+          data: myChartData.series[1].data
+        }
+        ]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      this.timermakeData2_1 = setInterval(function () {
+        var dataLen = option.series[0].data.length
+        // 取消之前高亮的图形
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        app.currentIndex = (app.currentIndex + 1) % dataLen
+        // 高亮当前图形
+        myChart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        // 显示 tooltip
+        myChart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+      }, 1000)
     },
     makeData3 () {
       this.makeData3_info()
@@ -1283,10 +1573,21 @@ export default {
             if (json.data !== null) {
               this.tableData = json.data
               this.tableData.forEach(element => {
-                var hostName = ''
-                if (element.zabbixProblemDTO.name !== null && element.zabbixProblemDTO.name.length > 95) {
-                  hostName = element.zabbixProblemDTO.name.substring(0, 80)
-                  element.zabbixProblemDTO.name = hostName + '...'
+                var proname = element.zabbixProblemDTO.name
+                if (proname !== null) {
+                  var hostName = ''
+                  var cnReg = /([\u4e00-\u9fa5]|[\u3000-\u303F]|[\uFF00-\uFF60])/g
+                  var mat = proname.match(cnReg)
+                  var length = 0
+                  if (mat) {
+                    length = proname.length + mat.length
+                  } else {
+                    length = proname.length
+                  }
+                  if (length > 70) {
+                    hostName = element.zabbixProblemDTO.name.substring(0, 70 - (mat.length * 2))
+                    element.zabbixProblemDTO.name = hostName + '...'
+                  }
                 }
               })
             }
@@ -1847,7 +2148,6 @@ export default {
       this.liquidFill(param)
     },
     liquidFill (param) {
-      console.log(param)
       var liquid = this.$echarts.init(document.getElementById(param.elementid))
       liquid.setOption({
         series: [{
@@ -1929,19 +2229,19 @@ export default {
       var name = ''
       switch (severity) {
         case 1:
-          name = '信息'
+          name = '<span class="blue3_font">●&nbsp;信息</span>'
           break
         case 2:
-          name = '警告'
+          name = '<span class="blue2_font">●&nbsp;警告</span>'
           break
         case 3:
-          name = '一般严重'
+          name = '<span class="blue1_font">●&nbsp;一般严重</span>'
           break
         case 4:
-          name = '严重'
+          name = '<span class="orange_font">●&nbsp;严重</span>'
           break
         case 5:
-          name = '灾难'
+          name = '<span class="pink_font">●&nbsp;灾难</span>'
           break
       }
       return name
@@ -1999,6 +2299,12 @@ export default {
         }
       })
       return data
+    },
+    rowClassName (index) {
+      if (index % 2 !== 1) {
+        return 'zebra_bg'
+      }
+      return ''
     }
   },
   computed: {
@@ -2022,76 +2328,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// .queryleft {
-//   float: left;
-//   width: 50%;
-//   height: 11rem;
-// }
-// .queryright {
-//   float: right;
-// }
-.queryCenter {
-  text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.headerbackground {
-  // padding: 0px;
-  background: url('~@/assets/img/bg_body.jpg') no-repeat;
-  background-size: 100% 100%;
-  width: 100%;
-  height: 63.5rem;
-}
-/deep/ .el-table .el-table__body {
-  width: 100% !important;
-}
-.seamless-warp {
-  height: 100%;
-  overflow: hidden;
-}
-.scroll_span_10 {
-  color: #77ddff;
-  display: flex;
-  justify-content: space-between;
-  float: left;
-  width: 10%;
-  font-size: 0.8rem;
-}
-.scroll_span_30 {
-  // color: rgb(162, 180, 230);
-  color: #77ddff;
-  display: flex;
-  justify-content: space-between;
-  float: left;
-  width: 17%;
-  font-size: 0.8rem;
-}
-.scroll_span_60 {
-  color: #77ddff;
-  display: flex;
-  justify-content: space-between;
-  float: left;
-  width: 73%;
-  font-size: 0.8rem;
-}
-.page-example {
-  height: 60%;
-  overflow: hidden;
-  .ul-scoll {
-    li {
-      border-bottom: 1px solid rgba(148, 144, 144, 0.3);
-      margin: 6px;
-      padding: 5px;
-    }
-  }
-}
-@import '~@/assets/css/index.css';
+@import '~@/assets/css/index-main.css';
 #target {
-  min-height: 210px;
-  min-width: 650px;
+  min-height: 260px;
+  min-width: 700px;
   border: 0px solid #ccc !important;
   padding: 0px !important;
-  margin-left: 9%;
+  margin-left: 2%;
 }
 </style>
