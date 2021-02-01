@@ -304,7 +304,8 @@ export default {
       timermakeData2_1: '',
       timermakeData2_2: '',
       timermakeData5_2: '',
-      timermakeData6_1: ''
+      timermakeData6_1: '',
+      intervalFlag: ''
     }
   },
   created () {
@@ -315,13 +316,14 @@ export default {
     this.showInfo()
     // window.addEventListener('resize', this.getResize)
     // this.getResize()
-    if (this.timer) {
-      clearInterval(this.timer)
-    } else {
-      this.timer = setInterval(() => {
-        this.showInfo()
-      }, 1000 * 60 * 5)
-    }
+    // if (this.timer) {
+    //   clearInterval(this.timer)
+    // } else {
+    //   this.timer = setInterval(() => {
+    //     this.intervalFlag = '999'
+    //     this.showInfo()
+    //   }, 1000 * 60 * 5)
+    // }
     var beginNode = null
     var currentNode = null
     $(function () {
