@@ -301,7 +301,11 @@ export default {
       infoData: '',
       timermakeData1: '',
       timermakeData1_2: '',
-      timermakeData2_1: ''
+      timermakeData2_1: '',
+      timermakeData2_2: '',
+      timermakeData5_2: '',
+      timermakeData6_1: '',
+      intervalFlag: ''
     }
   },
   created () {
@@ -312,13 +316,14 @@ export default {
     this.showInfo()
     // window.addEventListener('resize', this.getResize)
     // this.getResize()
-    if (this.timer) {
-      clearInterval(this.timer)
-    } else {
-      this.timer = setInterval(() => {
-        this.showInfo()
-      }, 1000 * 60 * 5)
-    }
+    // if (this.timer) {
+    //   clearInterval(this.timer)
+    // } else {
+    //   this.timer = setInterval(() => {
+    //     this.intervalFlag = '999'
+    //     this.showInfo()
+    //   }, 1000 * 60 * 5)
+    // }
     var beginNode = null
     var currentNode = null
     $(function () {
@@ -328,7 +333,7 @@ export default {
         stage.eagleEye.visible = false
         var scene = new jTopo.Scene(stage)
         showJTopoToobar(stage, canvas)
-        scene.background = require('../assets/topology/images/white_bg.jpg')
+        scene.background = require('../assets/topology/images/white_bg_small.jpg')
         var tempNodeA = new jTopo.Node('tempA')
         tempNodeA.setSize(1, 1)
         var tempNodeZ = new jTopo.Node('tempZ')
@@ -418,22 +423,6 @@ export default {
           }
           stage.centerAndZoom()
         }
-        // $('#buildButton').click(function () {
-        //   // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
-        //   // gettopologydata(jsonData)
-        //   if (clearInfoData()) {
-        //     window.showErrorMessageInfo('请刷新页面后再次选择！')
-        //   } else {
-        //     window.openTopologyItemList()
-        //     var timer = setInterval(() => {
-        //       var infoData = $('#infoData').val()
-        //       if (infoData !== null && infoData !== '') {
-        //         gettopologydata(infoData)
-        //         clearInterval(timer)
-        //       }
-        //     }, 1000)
-        //   }
-        // })
         var timer = setInterval(() => {
           var infoData = $('#infoData').val()
           if (infoData !== null && infoData !== '') {
@@ -687,6 +676,15 @@ export default {
     if (this.timermakeData2_1) {
       clearInterval(this.timermakeData2_1)
     }
+    if (this.timermakeData2_2) {
+      clearInterval(this.timermakeData2_2)
+    }
+    if (this.timermakeData5_2) {
+      clearInterval(this.timermakeData5_2)
+    }
+    if (this.timermakeData6_1) {
+      clearInterval(this.timermakeData6_1)
+    }
   },
   methods: {
     showInfo () {
@@ -694,9 +692,8 @@ export default {
       this.makeData2()
       this.makeData3()
       this.makeData4()
-      // this.makeData5()
-      // this.makeData6()
-      // this.getOperationRunInfo()
+      this.makeData5()
+      this.makeData6()
     },
     situation () {
       var errorCount = this.errorCount
@@ -711,7 +708,6 @@ export default {
         svghurricane2.style = 'display: none'
         var svgsky2 = document.getElementById('svg_sky')
         svgsky2.style = 'display: none'
-        // this.getOperationRunInfoTwo()
       } else if (errorCount !== null && (errorCount > 15)) {
         this.errorStyle = 'box3_con_left'
         this.small_index = 'small_index_3'
@@ -722,7 +718,6 @@ export default {
         svghurricane3.style = 'display: block'
         var svgsky3 = document.getElementById('svg_sky')
         svgsky3.style = 'display: none'
-        // this.getOperationRunInfoThree()
       } else {
         this.errorStyle = 'box3_con_left'
         this.small_index = 'small_index_1'
@@ -733,7 +728,6 @@ export default {
         svghurricane1.style = 'display: none'
         var svgsky1 = document.getElementById('svg_sky')
         svgsky1.style = 'display: block'
-        // this.getOperationRunInfoOne()
       }
     },
     makeData1 () {
@@ -959,7 +953,7 @@ export default {
       var app = {
         currentIndex: -1
       }
-      this.timermakeData1 = setInterval(function () {
+      this.timermakeData1 = setInterval(() => {
         var dataLen = option.series[0].data.length
         // 取消之前高亮的图形
         myChart.dispatchAction({
@@ -980,7 +974,10 @@ export default {
           seriesIndex: 0,
           dataIndex: app.currentIndex
         })
-      }, 1000)
+        if (this.timermakeData1) {
+          this.timermakeData1 = ''
+        }
+      }, 2000)
     },
     makeData1_2 () {
       var starttime = timesMethod.fun_date(-6)
@@ -1243,7 +1240,7 @@ export default {
       var app = {
         currentIndex: -1
       }
-      this.timermakeData1_2 = setInterval(function () {
+      this.timermakeData1_2 = setInterval(() => {
         var dataLen = option.series[0].data.length
         // 取消之前高亮的图形
         myChart.dispatchAction({
@@ -1264,24 +1261,30 @@ export default {
           seriesIndex: 0,
           dataIndex: app.currentIndex
         })
-      }, 1000)
+        if (this.timermakeData1_2) {
+          this.timermakeData1_2 = ''
+        }
+      }, 2000)
     },
     makeData2 () {
       var param3 = 'rates'
       var bordercolor3 = ['rgba(201,231,255,0.8)', 'rgba(255,233,194,0.8)']
       var color3 = ['#007fe5', '#ffb32a']
-      this.makeData2_Data(param3, '3', '每秒查询数', color3, bordercolor3)
+      this.makeData2_Data(param3, '3', '每秒查询数', color3, bordercolor3, 1)
       var param4 = 'connecteds'
       var bordercolor4 = ['rgba(201,231,255,0.8)', 'rgba(201,255,239,0.8)']
       var color4 = ['#007fe5', '#44e6c2']
-      this.makeData2_Data(param4, '4', '用户连接数', color4, bordercolor4)
+      this.makeData2_Data(param4, '4', '用户连接数', color4, bordercolor4, 2)
     },
-    async makeData2_Data (param, num, str, color, bordercolor) {
-      await this.axios.post(this.$api.main.getTimeTop2ItemInfo + param).then((resp) => {
+    async makeData2_Data (param, num, str, color, bordercolor, flag) {
+      await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
+        item: param,
+        num: 2
+      })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData2_info(json.data, num, str, color, bordercolor)
+            this.makeData2_info(json.data, num, str, color, bordercolor, flag)
           } else {
           }
         } else {
@@ -1292,7 +1295,7 @@ export default {
         }
       })
     },
-    makeData2_info (myChartData, num, str, color, bordercolor) {
+    makeData2_info (myChartData, num, str, color, bordercolor, flag) {
       if (myChartData === null) {
         return
       }
@@ -1462,28 +1465,59 @@ export default {
       var app = {
         currentIndex: -1
       }
-      this.timermakeData2_1 = setInterval(function () {
-        var dataLen = option.series[0].data.length
-        // 取消之前高亮的图形
-        myChart.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        app.currentIndex = (app.currentIndex + 1) % dataLen
-        // 高亮当前图形
-        myChart.dispatchAction({
-          type: 'highlight',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        // 显示 tooltip
-        myChart.dispatchAction({
-          type: 'showTip',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-      }, 1000)
+      if (flag === 1) {
+        this.timermakeData2_1 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData2_1) {
+            this.timermakeData2_1 = ''
+          }
+        }, 2000)
+      } else if (flag === 2) {
+        this.timermakeData2_2 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData2_2) {
+            this.timermakeData2_2 = ''
+          }
+        }, 2000)
+      }
     },
     makeData3 () {
       this.makeData3_info()
@@ -1601,629 +1635,637 @@ export default {
       })
     },
     makeData5 () {
-      this.axios.post(this.$api.main.getHostErrorTop10).then((resp) => {
+      var param = 'utilization'
+      this.makeData5_Data(param, '内存使用率')
+    },
+    async makeData5_Data (param, str) {
+      await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
+        item: param,
+        num: 3
+      })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
             this.makeData5_info(json.data)
+            this.makeData5_2_info(json.data, str)
+          } else {
           }
         } else {
           this.$message({
-            message: '查询失败',
+            message: '获取分组信息失败',
             type: 'error'
           })
         }
       })
     },
     makeData5_info (myChartData) {
-      const xData = []
-      const yData = []
-      const xNameData = []
-      myChartData.forEach(element => {
-        var newname = element.name
-        if (newname !== null && newname.length > 50) {
-          newname = newname.substring(0, 50) + '...'
-        }
-        xData.push(newname)
-        xNameData.push(element.name)
-        yData.push(element.count)
-      })
-      const pieCharts = document.getElementById('myChart3')
-      const myChart = this.$echarts.init(pieCharts)
-      const data = {
-        xData: xData,
-        yData: yData,
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF', '#40E0D0', '#87CECB', '#B0E0E6', '#AFEEEE', '#E0FFFF'],
-        xNameData: xNameData
+      var data = []
+      var series = myChartData.series
+      if (series !== null) {
+        series.forEach(element => {
+          var value = parseFloat(element.data[element.data.length - 1]).toFixed(1)
+          data.push({
+            name: element.name,
+            value: value
+          })
+        })
       }
-      const namedata = [{
-        name: '',
-        data: data.yData,
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#555'
-          },
-          normal: {
-            show: false
-          }
-        },
-        barWidth: '50%',
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              const colors = data.color
-              return colors[params.dataIndex]
-            }
-          }
-        },
-        xAxisIndex: 0,
-        yAxisIndex: 0
-      }, {
-        name: data.xData[0],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[0]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[1],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[1]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[2],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[2]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[3],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[3]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[4],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[4]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[5],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[5]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[6],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[6]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[7],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[7]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[8],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[8]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[9],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[9]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }]
-      myChart.setOption({
-        legend: {
-          top: '5%',
-          data: data.xData,
-          textStyle: {
-            fontSize: 12,
-            color: []
-          }
-        },
-        grid: [
+      var dom = document.getElementById('ibox_content_echarts8')
+      var echarts = this.$echarts
+      var myChart = echarts.init(dom)
+      var titleArr = []
+      var seriesArr = []
+      var sCenter = {}
+      var TitleXy = {}
+      var colors = [['#00b06c', '#E7E7E7'], ['#ff8400', '#E7E7E7'], ['#cb1d5f', '#E7E7E7']]
+      data.forEach(function (item, index) {
+        sCenter = [(index) * 35 + 14 + '%', '40%']
+        TitleXy = {
+          left: (index) * 35 + 14 + '%',
+          top: '70%'
+        }
+        titleArr.push(
           {
-            top: 160,
-            bottom: 10,
-            left: '12%'
-          },
+            text: item.name,
+            left: TitleXy.left,
+            top: TitleXy.top,
+            textAlign: 'center',
+            textStyle: {
+              fontWeight: 'normal',
+              fontSize: '14',
+              color: '#848484',
+              textAlign: 'center'
+            }
+          }
+        )
+        seriesArr.push(
           {
-            height: 0,
-            bottom: 0
+            name: item.name,
+            type: 'pie',
+            clockWise: true,
+            radius: [30, 35],
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(
+                  0, 1, 1, 0,
+                  [{
+                    offset: 0,
+                    color: colors[index][0]
+                  },
+                  {
+                    offset: 1,
+                    color: colors[index][1]
+                  }
+                  ]
+                ),
+                shadowBlur: 0,
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                }
+              }
+            },
+            roundCap: true,
+            barGap: '-100%',
+            hoverAnimation: false,
+            center: sCenter,
+            data: [{
+              value: item.value,
+              label: {
+                normal: {
+                  formatter: function (params) {
+                    return params.value + '%'
+                  },
+                  position: 'center',
+                  show: true,
+                  textStyle: {
+                    fontSize: '20',
+                    fontWeight: 'bold',
+                    color: colors[index][0]
+                  }
+                }
+              }
+            }, {
+              value: 100 - item.value,
+              name: 'invisible',
+              itemStyle: {
+                normal: {
+                  color: colors[index][1]
+                },
+                emphasis: {
+                  color: colors[index][1]
+                }
+              }
+            }]
           }
-        ],
-        xAxis: [{
-          type: 'category',
-          data: data.yData,
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          zlevel: 1,
-          show: false
-        }, {
-          type: 'category',
-          gridIndex: 1,
-          axisLine: {
-            show: false
-          },
-          zlevel: 1
-        }],
-        yAxis: [{
-          type: 'value',
-          gridIndex: 0,
-          axisLabel: {
-            color: '#3eb2e8',
-            formatter: '{value} 次'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#4784e8'
-            }
-          }
-        }, {
-          type: 'value',
-          gridIndex: 1,
-          axisLabel: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          }
-        }],
-        series: namedata
+        )
       })
+      var option = {
+        backgroundColor: '#fff',
+        title: titleArr,
+        series: seriesArr
+      }
+      myChart.setOption(option, true)
+    },
+    makeData5_2_info (myChartData, str) {
+      if (myChartData === null) {
+        return
+      }
+      var returndataclocktime = []
+      if (myChartData.xAxis !== null) {
+        myChartData.xAxis.forEach(element => {
+          if (element === '00') {
+            returndataclocktime.push('0时')
+          } else {
+            returndataclocktime.push(element + '时')
+          }
+        })
+      }
+      var dom = document.getElementById('ibox_content_echarts9')
+      var myChart = this.$echarts.init(dom)
+      var option = {
+        grid: {
+          left: '2%',
+          right: '5%',
+          top: '20%',
+          bottom: '5%',
+          containLabel: true
+        },
+        title: {
+          text: str,
+          textStyle: {
+            fontSize: 14,
+            fontWeight: 400
+          },
+          left: '42.5%',
+          top: '5%'
+        },
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(240,240,240,0.8)',
+          textStyle: {
+            color: 'rgba(34,139,34)'
+          },
+          axisPointer: {
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                top: '40%',
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(255, 0, 0,0)'
+                }, {
+                  offset: 0.5,
+                  color: 'rgba(255, 0, 0,1)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(0, 255, 0,0)'
+                }],
+                global: false
+              }
+            }
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: returndataclocktime,
+          axisLabel: {
+            textStyle: {
+              color: '#667ba7',
+              fontSize: 10
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              type: 'solid',
+              color: '#667ba7',
+              width: '1'
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        yAxis: {
+          splitLine: {
+            show: true
+          },
+          type: 'value',
+          splitNumber: 5,
+          axisLabel: {
+            textStyle: {
+              color: '#667ba7',
+              fontSize: 10
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              type: 'solid',
+              color: '#667ba7',
+              width: '0'
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [{
+          name: myChartData.legend[0],
+          data: myChartData.series[0].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#00b06c'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(0,176,108, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,176,108, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }, {
+          name: myChartData.legend[1],
+          data: myChartData.series[1].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#ff8400'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(255,132,0, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(255,132,0, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }, {
+          name: myChartData.legend[2],
+          data: myChartData.series[2].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#cb1d5f'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(203,29,95, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(203,29,95, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      this.timermakeData5_2 = setInterval(() => {
+        var dataLen = option.series[0].data.length
+        // 取消之前高亮的图形
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        app.currentIndex = (app.currentIndex + 1) % dataLen
+        // 高亮当前图形
+        myChart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        // 显示 tooltip
+        myChart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        if (this.timermakeData5_2) {
+          this.timermakeData5_2 = ''
+        }
+      }, 2000)
     },
     makeData6 () {
-      this.makeData6_info('2', 'myChart4', 'CPU使用率', '%', 'CPU使用率暂无数据')
-      this.makeData6_info('3', 'myChart5', '内存使用率', '%', '内存使用率暂无数据')
-      this.makeData6_info('5', 'myChart6', '系统盘使用率', '%', '系统盘使用率暂无数据')
-      this.makeData6_info('4', 'myChart7', '网络接口速率', '!w/s', '网络接口速率暂无数据')
+      var param = 'loadedClass'
+      this.makeData6_Data(param, '加载的类总数')
     },
-    makeData6_info (itemKey, myChartName, name, type, infoname) {
-      const param = {
-        typeId: '1',
-        itemKey: itemKey,
-        valueType: '0',
-        method: 'top5ByItem'
-      }
-      this.axios.post(this.$api.monitorManager.getTop5Msgs, param).then((resp) => {
+    async makeData6_Data (param, str) {
+      await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
+        item: param,
+        num: 3
+      })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData6_Chart(myChartName, json.data, name, type, infoname)
+            this.makeData6_info(json.data, str)
           } else {
           }
         } else {
           this.$message({
-            message: '获取信息失败',
+            message: '获取分组信息失败',
             type: 'error'
           })
         }
       })
     },
-    makeData6_Chart (myChartName, myChartData, name, type, infoname) {
-      const xData = []
-      const yData = []
-      myChartData.forEach(element => {
-        xData.push(element.hostName)
-        var realVal = '0.00'
-        if (element.value !== null) {
-          if (type === 'MB/s') {
-            const realValnew = element.value / (1000 * 1000)
-            realVal = realValnew
-            yData.push(parseFloat(realVal).toFixed(1))
-          } else {
-            realVal = element.value
-            yData.push(parseFloat(realVal).toFixed(1))
-          }
-        } else {
-          yData.push('0.00')
-        }
-      })
-      if (yData.length === 0) {
-        const pieCharts = document.getElementById(myChartName)
-        pieCharts.innerHTML = '<div style="text-align: center;justify-content: center;display: flex;position: relative;height:100%"><span style="text-align: center;justify-content: center;display: flex;position: relative;top:50%;color:#7df;height:50%">' + infoname + '</span></div>'
+    makeData6_info (myChartData, str) {
+      if (myChartData === null) {
         return
       }
-      const pieCharts = document.getElementById(myChartName)
-      const myChart = this.$echarts.init(pieCharts)
-      const data = {
-        xData: xData,
-        yData: yData,
-        color: ['#6699FF', '#006699', '#4cabce', '#138CEB', '#77DDFF']
+      var returndataclocktime = []
+      if (myChartData.xAxis !== null) {
+        myChartData.xAxis.forEach(element => {
+          if (element === '00') {
+            returndataclocktime.push('0时')
+          } else {
+            returndataclocktime.push(element + '时')
+          }
+        })
       }
-      const namedata = [{
-        name: '',
-        data: data.yData,
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#555'
-          },
-          normal: {
-            show: false
-          }
-        },
-        barWidth: '50%',
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              const colors = data.color
-              return colors[params.dataIndex]
-            }
-          }
-        },
-        xAxisIndex: 0,
-        yAxisIndex: 0
-      }, {
-        name: data.xData[0],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[0]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[1],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[1]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[2],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[2]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[3],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[3]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }, {
-        name: data.xData[4],
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            color: data.color[4]
-          }
-        },
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      }]
-      myChart.setOption({
-        title: {
-          top: 10,
-          text: name,
-          subtext: '单位：' + type,
-          x: 'center',
-          textStyle: {
-            color: '#4cabce',
-            fontSize: '16',
-            fontWeight: 'bold'
-          },
-          subtextStyle: {
-            color: '#006699',
-            fontSize: '12',
-            fontWeight: 'bold'
-          }
-        },
+      var dom = document.getElementById('ibox_content_echarts10')
+      var echarts = this.$echarts
+      var myChart = echarts.init(dom)
+      var xData = returndataclocktime
+      var lines = [
+        myChartData.series[0].data,
+        myChartData.series[1].data,
+        myChartData.series[2].data
+      ]
+      var option = {
+        backgroundColor: '#ffffff',
         tooltip: {
           trigger: 'axis',
+          backgroundColor: 'rgba(240,240,240,0.8)',
+          textStyle: {
+            color: 'rgba(34,139,34)'
+          },
           axisPointer: {
             lineStyle: {
-              color: 'rgba(0, 255, 233,0)'
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                top: '40%',
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(255, 0, 0,0)'
+                }, {
+                  offset: 0.5,
+                  color: 'rgba(255, 0, 0,1)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(0, 255, 0,0)'
+                }],
+                global: false
+              }
             }
-          },
-          formatter: function (params, ticket, callback) {
-            var res = ''
-            if (data.xData[0] !== null && data.xData[0] !== '' && data.xData[0] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[0] + '">' + ' ● ' + '</span>' + ' 1：' + data.xData[0] + '<br>'
-            }
-            if (data.xData[1] !== null && data.xData[1] !== '' && data.xData[1] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[1] + '">' + ' ● ' + '</span>' + ' 2：' + data.xData[1] + '<br>'
-            }
-            if (data.xData[2] !== null && data.xData[2] !== '' && data.xData[2] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[2] + '">' + ' ● ' + '</span>' + ' 3：' + data.xData[2] + '<br>'
-            }
-            if (data.xData[3] !== null && data.xData[3] !== '' && data.xData[3] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[3] + '">' + ' ● ' + '</span>' + ' 4：' + data.xData[3] + '<br>'
-            }
-            if (data.xData[4] !== null && data.xData[4] !== '' && data.xData[4] !== undefined) {
-              res = res + '<span style="font-size:22px;color:' + data.color[4] + '">' + ' ● ' + '</span>' + ' 5：' + data.xData[4] + '<br>'
-            }
-            return res
           }
         },
-        grid: [
-          {
-            top: '30%',
-            bottom: 20,
-            left: 35,
-            right: 10
+        title: {
+          text: str,
+          textStyle: {
+            fontSize: 14,
+            fontWeight: 400
           },
-          {
-            height: 0,
-            bottom: 0
+          left: '12.5%',
+          top: '5%'
+        },
+        grid: {
+          left: '10%',
+          top: '15%',
+          right: '5%',
+          bottom: '10%'
+        },
+        legend: {
+          show: true,
+          icon: 'circle',
+          orient: 'horizontal',
+          top: '5%',
+          right: '3%',
+          itemWidth: 5.5,
+          itemHeight: 6,
+          itemGap: 5,
+          textStyle: {
+            color: '#C9C8CD'
           }
-        ],
+        },
         xAxis: [{
           type: 'category',
-          data: data.yData,
-          gridIndex: 0,
+          data: xData,
           axisLabel: {
-            color: '#3eb2e8'
+            show: true,
+            fontSize: 9,
+            textStyle: {
+              color: '#C9C8CD' // X轴文字颜色
+            },
+            formatter: function (value) {
+              var str = ''
+              str += value.substring(0, 4) + '\n'
+              str += value.substring(5, 10)
+              return str
+            }
           },
           axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
+            show: true // 不显示x轴
           },
           axisTick: {
+            show: false // 不显示刻度
+          },
+          // boundaryGap: false,
+          splitLine: {
+            show: false,
+            width: 0.08,
             lineStyle: {
-              color: '#3eb2e8'
+              type: 'solid',
+              color: '#03202E'
             }
           },
-          zlevel: 1,
-          show: true
-        }, {
-          type: 'category',
-          gridIndex: 1,
-          axisLine: {
-            show: false
-          },
-          zlevel: 1
+          axisPointer: { // 轴指示器
+            type: 'shadow',
+            z: 1,
+            shadowStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(0,127,229,0)' // 0% 处的颜色
+                }, {
+                  offset: 1,
+                  color: 'rgba(0,127,229,0.2)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              },
+              shadowColor: 'rgba(0, 0, 0, 0.2)',
+              shadowBlur: 5
+            }
+          }
         }],
         yAxis: [{
           type: 'value',
-          gridIndex: 0,
           axisLabel: {
-            color: '#3eb2e8',
-            formatter: '{value} '
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: '#3eb2e8'
-            }
-          },
-          splitLine: {
             show: true,
-            lineStyle: {
-              color: '#4784e8'
+            textStyle: {
+              fontSize: 9,
+              color: '#C9C8CD'
             }
-          }
-        }, {
-          type: 'value',
-          gridIndex: 1,
-          axisLabel: {
+          },
+          splitLine: {
+            show: true
+          },
+          axisTick: {
             show: false
           },
           axisLine: {
-            show: false
+            show: true
           },
-          splitLine: {
-            show: false
+          nameTextStyle: {
+            color: '#FFFFFF'
           },
-          axisTick: {
+          splitArea: {
             show: false
           }
         }],
-        series: namedata
-      })
-    },
-    getOperationRunInfoOne () {
-      const param = {
-        servername: '运行情况',
-        name: '优',
-        elementid: 'liquidFillrun',
-        footcolor: '#006600',
-        graphcolor: ['#CCFF99', '#CCFFCC', '#00FF00'],
-        borderColor: '#FFC931',
-        shape: 'path://M400,64c-5.3,0-10.6,0.4-15.8,1.1C354.3,24.4,307.2,0,256,0s-98.3,24.4-128.2,65.1c-5.2-0.8-10.5-1.1-15.8-1.1C50.2,64,0,114.2,0,176s50.2,112,112,112c13.7,0,27.1-2.5,39.7-7.3c12.3,10.7,26.2,19,40.9,25.4l24.9-24.9c-23.5-7.6-44.2-21.3-59.6-39.9c-13,9.2-28.8,14.7-45.9,14.7c-44.2,0-80-35.8-80-80s35.8-80,80-80c10.8,0,21.1,2.2,30.4,6.1C163.7,60.7,206.3,32,256,32s92.3,28.7,113.5,70.1c9.4-3.9,19.7-6.1,30.5-6.1c44.2,0,80,35.8,80,80s-35.8,80-80,80c-17.1,0-32.9-5.5-45.9-14.7c-10.4,12.5-23.3,22.7-37.6,30.6L303,312.2c20.9-6.6,40.5-16.9,57.3-31.6c12.6,4.8,26,7.3,39.7,7.3c61.8,0,112-50.2,112-112S461.8,64,400,64z'
-      }
-      this.liquidFill(param)
-    },
-    getOperationRunInfoTwo () {
-      const param = {
-        servername: '运行情况',
-        name: '良',
-        elementid: 'liquidFillrun',
-        footcolor: '#00BBFF',
-        graphcolor: ['#FFFFFF', '#FFFFFF', '#FFFFFF'],
-        borderColor: '#99FFFF',
-        shape: 'path://M731.428571 358.4c-5.12 0-9.508571 0-14.628571 0.731429C684.617143 272.822857 601.965714 212.114286 504.685714 212.114286c-125.074286 0-226.742857 101.668571-226.742857 226.742857 0 8.777143 0.731429 17.554286 1.462857 26.331428-12.434286-2.925714-24.868571-4.388571-38.034285-4.388571C144.091429 460.8 65.828571 539.062857 65.828571 636.342857s78.262857 175.542857 175.542858 175.542857h490.057142c125.074286 0 226.742857-101.668571 226.742858-226.742857s-101.668571-226.742857-226.742858-226.742857z'
-      }
-      this.liquidFill(param)
-    },
-    getOperationRunInfoThree () {
-      const param = {
-        servername: '运行情况',
-        name: '差',
-        elementid: 'liquidFillrun',
-        footcolor: '#330066',
-        graphcolor: ['#0000FF', '#0000CC', '#000066'],
-        borderColor: '#66CCFF',
-        shape: 'path://M731.428571 296.228571c-5.12 0-9.508571 0-14.628571 0.731429-32.182857-85.577143-114.834286-147.017143-212.114286-147.017143-125.074286 0-226.742857 101.668571-226.742857 226.742857 0 8.777143 0.731429 17.554286 1.462857 26.331429-12.434286-2.925714-24.868571-4.388571-38.034285-4.388572-97.28 0-175.542857 78.262857-175.542858 175.542858s78.262857 175.542857 175.542858 175.542857h490.057142c125.074286 0 226.742857-101.668571 226.742858-226.742857s-101.668571-226.742857-226.742858-226.742858zM482.742857 837.485714c0 20.48 13.165714 36.571429 29.257143 36.571429s29.257143-16.091429 29.257143-36.571429-29.257143-51.2-29.257143-51.2-29.257143 30.72-29.257143 51.2zM380.342857 837.485714c0 20.48 13.165714 36.571429 29.257143 36.571429s29.257143-16.091429 29.257143-36.571429-29.257143-51.2-29.257143-51.2-29.257143 30.72-29.257143 51.2zM277.942857 837.485714c0 20.48 13.165714 36.571429 29.257143 36.571429s29.257143-16.091429 29.257143-36.571429-29.257143-51.2-29.257143-51.2-29.257143 30.72-29.257143 51.2zM585.142857 837.485714c0 20.48 13.165714 36.571429 29.257143 36.571429s29.257143-16.091429 29.257143-36.571429-29.257143-51.2-29.257143-51.2-29.257143 30.72-29.257143 51.2zM687.542857 837.485714c0 20.48 13.165714 36.571429 29.257143 36.571429s29.257143-16.091429 29.257143-36.571429-29.257143-51.2-29.257143-51.2-29.257143 30.72-29.257143 51.2z'
-      }
-      this.liquidFill(param)
-    },
-    liquidFill (param) {
-      var liquid = this.$echarts.init(document.getElementById(param.elementid))
-      liquid.setOption({
-        series: [{
-          name: param.servername,
-          type: 'liquidFill', // 类型
-          data: [{
-            name: param.name,
-            value: 0.1
-          }, 0.5, 0.4], // 数据是个数组 数组的每一项的值是0-1
-          outline: {
-            show: true, // 是否显示轮廓 布尔值
-            borderDistance: 0, // 外部轮廓与图表的距离 数字
+        series: [
+          {
+            name: myChartData.legend[0],
+            type: 'bar',
+            barWidth: '15%',
             itemStyle: {
-              borderColor: 'rgba(255,0,0,0.09)', // 边框的颜色
-              borderWidth: 0, // 边框的宽度
-              shadowBlur: 5, // 外部轮廓的阴影范围 一旦设置了内外都有阴影
-              shadowColor: '#000' // 外部轮廓的阴影颜色
-            }
-          },
-          label: {
-            normal: { // 如果不加normal,则没有效果
-              formatter: function (params) {
-                // return param.seriesName + '\n' +
-                //   param.name + '\n' +
-                //   +param.value + '人'
-                return params.seriesName + '\n' + '\n' + params.name + '\n' + '\n' + '\n'
-              },
-              textStyle: {
-                color: param.footcolor, // 波浪上文本颜色
-                insideColor: param.footcolor, // 波浪内部字体颜色
-                fontSize: 14
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#00deff'
+                }, {
+                  offset: 1,
+                  color: '#3739f5'
+                }]),
+                barBorderRadius: 11
               }
-            }
+            },
+            data: lines[0]
           },
-          backgroundStyle: {
-            // color: '#00FF00', // 图表的背景颜色
-            color: param.borderColor,
-            borderWidth: '2', // 图表的边框宽度
-            borderColor: param.borderColor, // 图表的边框颜色
+          {
+            name: myChartData.legend[1],
+            type: 'bar',
+            barWidth: '15%',
             itemStyle: {
-              shadowBlur: 100, // 设置无用
-              shadowColor: '#ffffff', // 设置无用
-              opacity: 1 // 设置无用
-            }
-          },
-          itemStyle: {
-            opacity: 0.5, // 波浪的透明度
-            shadowBlur: 10, // 波浪的阴影范围
-            shadowColor: param.borderColor// 阴影颜色
-          },
-          emphasis: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#45e7da'
+                }, {
+                  offset: 1,
+                  color: '#00b06c'
+                }]),
+                barBorderRadius: 11
+              }
+            },
+            data: lines[1]
+          }, {
+            name: myChartData.legend[2],
+            type: 'bar',
+            barWidth: '15%',
             itemStyle: {
-              opacity: 0.2 // 鼠标经过波浪颜色的透明度
-            }
-          },
-          color: param.graphcolor, // 水波的颜色 对应的是data里面值
-          // shape: 'circle', // 水填充图的形状 circle默认圆形  rect圆角矩形  triangle三角形  diamond菱形  pin水滴状 arrow箭头状  还可以是svg的path
-          shape: param.shape,
-          center: ['40%', '50%'], // 图表相对于盒子的位置 第一个是水平的位置 第二个是垂直的值 默认是[50%,50%]是在水平和垂直方向居中 可以设置百分比 也可以设置具体值
-          radius: '70%', // 图表的大小 值是圆的直径 可以是百分比 也可以是具体值 100%则占满整个盒子 默认是40%; 百分比下是根据宽高最小的一个为参照依据
-          amplitude: 10, // 振幅 是波浪的震荡幅度 可以取具体的值 也可以是百分比 百分比下是按图标的直径来算
-          waveLength: '50%', // 波的长度 可以是百分比也可以是具体的像素值  百分比下是相对于直径的 取得越大波浪的起伏越小
-          phase: 0, // 波的相位弧度 默认情况下是自动
-          period: (value, index) => { // 控制波的移动速度 可以是函数 也可以是数字 两个参数  value 是data数据里面的值 index 是data值的索引
-            return index * 2000
-          },
-          direction: 'right', // 波移动的速度 两个参数  left 从右往左 right 从左往右
-          waveAnimation: true, // 控制波动画的开关  值是布尔值 false 是关闭动画 true 是开启动画 也是默认值
-          animationEasing: 'linear', //  初始动画
-          animationEasingUpdate: 'quarticInOut', //   数据更新的动画效果
-          animationDuration: 3000, //   初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更绚丽的初始动画效果
-          animationDurationUpdate: 300 //   数据更新动画的时长
-
-        }]
-        // backgroundColor: '#ddd' // 容器背景颜色
-      })
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#ffc13c'
+                }, {
+                  offset: 1,
+                  color: '#ff8400'
+                }]),
+                barBorderRadius: 12
+              }
+            },
+            data: lines[2]
+          }
+        ]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      this.timermakeData6_1 = setInterval(() => {
+        var dataLen = option.series[0].data.length
+        // 取消之前高亮的图形
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        app.currentIndex = (app.currentIndex + 1) % dataLen
+        // 高亮当前图形
+        myChart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        // 显示 tooltip
+        myChart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: app.currentIndex
+        })
+        if (this.timermakeData6_1) {
+          this.timermakeData6_1 = ''
+        }
+      }, 2000)
     },
     formattertype (severity) {
       var name = ''

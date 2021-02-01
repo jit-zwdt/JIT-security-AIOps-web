@@ -260,8 +260,7 @@ const api = {
   main: {
     // Index.vue
     getMonitorTypeUsedInfo: '/homePage/getMonitorTypeUsedInfo',
-    getTimeTop5ItemInfo: '/homePage/getTimeTop5ItemInfo/',
-    getTimeTop2ItemInfo: '/homePage/getTimeTop2ItemInfo/',
+    getTimeTopItemInfo: '/homePage/getTimeTopItemInfo',
     getUsers: '/user/getUsers',
     getAlertdata: '/problem/getAlertdata',
     getInformationStatistics: '/homePage/getInformationStatistics',
