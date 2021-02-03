@@ -316,14 +316,13 @@ export default {
     this.showInfo()
     // window.addEventListener('resize', this.getResize)
     // this.getResize()
-    // if (this.timer) {
-    //   clearInterval(this.timer)
-    // } else {
-    //   this.timer = setInterval(() => {
-    //     this.intervalFlag = '999'
-    //     this.showInfo()
-    //   }, 1000 * 60 * 5)
-    // }
+    if (this.timer) {
+      clearInterval(this.timer)
+    } else {
+      this.timer = setInterval(() => {
+        location.reload()
+      }, 1000 * 60 * 5)
+    }
     var beginNode = null
     var currentNode = null
     $(function () {
@@ -953,6 +952,7 @@ export default {
       var app = {
         currentIndex: -1
       }
+      clearInterval(this.timermakeData1)
       this.timermakeData1 = setInterval(() => {
         var dataLen = option.series[0].data.length
         // 取消之前高亮的图形
@@ -1240,6 +1240,7 @@ export default {
       var app = {
         currentIndex: -1
       }
+      clearInterval(this.timermakeData1_2)
       this.timermakeData1_2 = setInterval(() => {
         var dataLen = option.series[0].data.length
         // 取消之前高亮的图形
