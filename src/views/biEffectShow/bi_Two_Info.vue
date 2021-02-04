@@ -1280,7 +1280,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             xdata.push(
               { name: '信息', value: json.data.information },
               { name: '警告', value: json.data.warning },
@@ -1867,7 +1866,6 @@ export default {
       if (myChartData === null) {
         return
       }
-      console.log(myChartData.series)
       var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
       var numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
       var numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
@@ -2240,16 +2238,15 @@ export default {
       })
     },
     makeData5_info (myChartData, str) {
-      console.log(myChartData)
       var numOne = 0
       var numTwo = 0
       var numThree = 0
       var numFour = 0
       if (str === '1') {
-        numOne = myChartData.series[0].data[0]
-        numTwo = myChartData.series[1].data[0]
-        numThree = myChartData.series[2].data[0]
-        numFour = myChartData.series[3].data[0]
+        numOne = myChartData.series[0].data[1]
+        numTwo = myChartData.series[1].data[1]
+        numThree = myChartData.series[2].data[1]
+        numFour = myChartData.series[3].data[1]
       } else {
         numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
         numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
@@ -2808,6 +2805,10 @@ export default {
                 global: false
               }
             }
+          },
+          formatter: function (parms) {
+            parms = parms[1].name + ':' + parseFloat(parms[1].value).toFixed(1)
+            return parms
           }
         },
         title: {
@@ -2879,9 +2880,12 @@ export default {
             symbolMargin: 1,
             symbolPosition: 'start',
             z: 10,
+            textStyle: {
+              show: false
+            },
             data: [max, max, max, max]
           }, {
-            name: '数量',
+            name: '数值',
             type: 'pictorialBar',
             symbol: 'rect',
             barWidth: 23,
