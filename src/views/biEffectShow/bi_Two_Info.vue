@@ -983,6 +983,12 @@ export default {
         svgsky1.style = 'display: block'
       }
     },
+    check_data_info (str) {
+      if (str == null || str === undefined || str === 'undefined' || str === '') {
+        return true
+      }
+      return false
+    },
     makeData1 () {
       const xdata = []
       this.axios.post(this.$api.main.getInformationStatistics).then((resp) => {
@@ -1012,6 +1018,10 @@ export default {
     },
     makeData1_info (xdata, num, str) {
       const pieCharts = document.getElementById('ibox_content_echarts' + num)
+      if (this.check_data_info(xdata)) {
+        pieCharts.className = 'no_data'
+        return
+      }
       const myChart = this.$echarts.init(pieCharts)
       var colorList = [{
         type: 'linear',
@@ -1322,6 +1332,11 @@ export default {
       })
     },
     makeData1_2_info (makeData) {
+      var dom2 = document.getElementById('ibox_content_echarts2')
+      if (this.check_data_info(makeData)) {
+        dom2.className = 'no_data2'
+        return
+      }
       var dateTime = []
       for (var i = 0; i < 7; i++) {
         var tempDate = new Date() // 获取今天的日期
@@ -1330,7 +1345,6 @@ export default {
         dateTime.push(endDate)
       }
       dateTime = dateTime.reverse()
-      var dom2 = document.getElementById('ibox_content_echarts2')
       var myChart = this.$echarts.init(dom2)
       var option = {
         grid: {
@@ -1343,7 +1357,7 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(135,206,255,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.3)',
           textStyle: {
             color: 'rgba(255,250,205)'
           },
@@ -1640,7 +1654,9 @@ export default {
       })
     },
     makeData2_info (myChartData, num, str, color, bordercolor, flag) {
-      if (myChartData === null) {
+      var dom3 = document.getElementById('ibox_data_echarts' + num)
+      if (this.check_data_info(myChartData) || myChartData.legend.length < 2) {
+        dom3.className = 'no_data3'
         return
       }
       var returndataclocktime = []
@@ -1653,7 +1669,6 @@ export default {
           }
         })
       }
-      var dom3 = document.getElementById('ibox_data_echarts' + num)
       var myChart = this.$echarts.init(dom3)
       var fontColor = '#667ba7'
       var option = {
@@ -1677,7 +1692,7 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(135,206,255,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.3)',
           textStyle: {
             color: 'rgba(255,250,205)'
           },
@@ -1865,7 +1880,9 @@ export default {
       }
     },
     makeData2_1_info (myChartData, num, str, flag) {
-      if (myChartData === null) {
+      var domdata = document.getElementById('ibox_data_echarts' + num)
+      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+        domdata.className = 'no_data3'
         return
       }
       var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
@@ -1877,7 +1894,6 @@ export default {
       var numNameThree = myChartData.series[2].name
       var numNameFour = myChartData.series[3].name
       var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
-      var domdata = document.getElementById('ibox_data_echarts' + num)
       var echarts = this.$echarts
       var myChart = echarts.init(domdata)
       var option = {
@@ -1899,7 +1915,7 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(135,206,255,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.3)',
           textStyle: {
             color: 'rgba(255,250,205)'
           },
@@ -2240,6 +2256,11 @@ export default {
       })
     },
     makeData5_info (myChartData, str) {
+      var dom = document.getElementById('ibox_centre_echarts' + str)
+      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+        dom.className = 'no_data3'
+        return
+      }
       var numOne = 0
       var numTwo = 0
       var numThree = 0
@@ -2260,7 +2281,6 @@ export default {
       var numNameThree = myChartData.series[2].name
       var numNameFour = myChartData.series[3].name
       var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
-      var dom = document.getElementById('ibox_centre_echarts' + str)
       var echarts = this.$echarts
       var breakLine = echarts.init(dom)
       var placeHolderStyle = {
@@ -2465,7 +2485,9 @@ export default {
       breakLine.setOption(option, true)
     },
     makeData5_2_info (myChartData, str) {
-      if (myChartData === null) {
+      var dom = document.getElementById('ibox_content_echarts3')
+      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+        dom.className = 'no_data2'
         return
       }
       var returndataclocktime = []
@@ -2478,7 +2500,6 @@ export default {
           }
         })
       }
-      var dom = document.getElementById('ibox_content_echarts3')
       var myChart = this.$echarts.init(dom)
       var option = {
         grid: {
@@ -2500,7 +2521,7 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(135,206,255,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.3)',
           textStyle: {
             color: 'rgba(255,250,205)'
           },
@@ -2754,7 +2775,9 @@ export default {
       })
     },
     makeData6_1_info (myChartData, str, flag) {
-      if (myChartData === null) {
+      var dom = document.getElementById('ibox_jvm_echarts' + flag)
+      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+        dom.className = 'no_data3'
         return
       }
       var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
@@ -2775,13 +2798,12 @@ export default {
         return b > a ? b : a
       })
       max = max * 2
-      var dom = document.getElementById('ibox_jvm_echarts' + flag)
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var option = {
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(135,206,255,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.3)',
           textStyle: {
             color: 'rgba(255,250,205)'
           },
@@ -2979,7 +3001,9 @@ export default {
       }
     },
     makeData6_info (myChartData, str, flag) {
-      if (myChartData === null) {
+      var dom = document.getElementById('ibox_jvm_echarts' + flag)
+      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+        dom.className = 'no_data3'
         return
       }
       var returndataclocktime = []
@@ -2992,7 +3016,6 @@ export default {
           }
         })
       }
-      var dom = document.getElementById('ibox_jvm_echarts' + flag)
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var xData = returndataclocktime
@@ -3005,7 +3028,7 @@ export default {
         // backgroundColor: '#ffffff',
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(135,206,255,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.3)',
           textStyle: {
             color: 'rgba(255,250,205)'
           },
@@ -3461,5 +3484,20 @@ export default {
   background-size: 100% 100%;
   width: 80px;
   height: 25px;
+}
+.no_data {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 60% 60%;
+  opacity:0.8;
+}
+.no_data2 {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 30% 60%;
+  opacity:0.8;
+}
+.no_data3 {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 60% 80%;
+  opacity:0.8;
 }
 </style>
