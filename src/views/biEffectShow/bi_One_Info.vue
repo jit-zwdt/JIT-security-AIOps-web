@@ -1,5 +1,5 @@
 <template>
-  <div class="headerbackground">
+  <div :class="headerbackground">
     <div class="head_div">
       <span class="head_span2" @click="showBiInfo()">BI展示图01</span>
     </div>
@@ -337,7 +337,7 @@
   </div>
 </template>
 <script>
-// import 'echarts-liquidfill'
+import Storage from 'good-storage'
 import { formatTodate } from '@/utils/format.js'
 import jTopo from 'jtopo-in-node'
 import $ from 'jquery'
@@ -345,6 +345,7 @@ import { data } from '@/assets/topology/devices.js'
 export default {
   data () {
     return {
+      headerbackground: '',
       show: false,
       hideRow: false,
       errorCount: 0,
@@ -391,6 +392,17 @@ export default {
   created () {
     this.getTopologyOneInfo()
     window.showHostInfo = this.showHostInfo
+    var miniSidebar = Storage.get('MiniSidebar')
+    var hideSidebar = Storage.get('HideSidebar')
+    if (hideSidebar === 1 && miniSidebar === 1) {
+      this.headerbackground = 'headerbackground4'
+    } else if (hideSidebar === 1) {
+      this.headerbackground = 'headerbackground3'
+    } else if (miniSidebar === 1) {
+      this.headerbackground = 'headerbackground2'
+    } else {
+      this.headerbackground = 'headerbackground1'
+    }
   },
   mounted () {
     this.showInfo()
@@ -2043,11 +2055,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-.headerbackground {
-  // padding: 0px;
+.headerbackground1 {
   background: url('~@/assets/img/bg_body.jpg') no-repeat;
   background-size: 100% 100%;
-  // width: 1900px;
   margin-left: -230px;
   height: 67.5rem;
   z-index: 20;
@@ -2055,14 +2065,39 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-  // height: getHeight(335); //设计尺寸高度 335
-  // width: getWidth(820); //设计尺寸宽度  820
-
-  // box-sizing: border-box;
-  // display: flex;
-  // flex-direction: row;
-  // padding: getHeight(20) getWidth(30); //上下Padding 使用getHeight  左右使用getWidth
-  // font-size: getFontSize(14);
+}
+.headerbackground2 {
+  background: url('~@/assets/img/bg_body.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: -65px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+.headerbackground3 {
+  background: url('~@/assets/img/bg_body.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: 0px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+.headerbackground4 {
+  background: url('~@/assets/img/bg_body.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: 0px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
 }
 .header_index {
   margin-top: 20px;
@@ -2125,11 +2160,13 @@ export default {
   color: darkgrey;
   font-size: 12px;
   margin-left: 10px;
+  cursor:pointer;
 }
 .head_span2 {
   color: #fff;
   font-size: 12px;
   margin-left: 10px;
+  cursor:pointer;
 }
 .head_div {
   margin-top: 5px;
