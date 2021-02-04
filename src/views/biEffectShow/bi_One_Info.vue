@@ -1,7 +1,7 @@
 <template>
   <div class="headerbackground">
     <div class="head_div">
-      <span class="head_span" @click="showBiInfo()">BI展示图01</span>
+      <span class="head_span2" @click="showBiInfo()">BI展示图01</span>
     </div>
     <div class="head_div2">
       <span class="head_span">BI展示图02</span>
@@ -2122,6 +2122,11 @@ export default {
   margin-left: 9%;
 }
 .head_span {
+  color: darkgrey;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.head_span2 {
   color: #fff;
   font-size: 12px;
   margin-left: 10px;
@@ -2129,8 +2134,8 @@ export default {
 .head_div {
   margin-top: 5px;
   margin-left: 20px;
-  z-index:auto;
-  position:absolute;
+  z-index: auto;
+  position: absolute;
   background: url(~@/assets/img/btn_white.png) center no-repeat;
   background-size: 100% 100%;
   width: 80px;
@@ -2139,11 +2144,57 @@ export default {
 .head_div2 {
   margin-top: 5px;
   margin-left: 120px;
-  z-index:auto;
-  position:absolute;
+  z-index: auto;
+  position: absolute;
   background: url(~@/assets/img/btn_white.png) center no-repeat;
   background-size: 100% 100%;
   width: 80px;
   height: 25px;
+}
+
+@media (max-width: 1900px) {
+  .header_index {
+    font-size: 1.8rem;
+  }
+}
+@media (max-width: 1880px) {
+  .header_index {
+    font-size: 1.7rem;
+  }
+}
+@media (max-width: 1800px) {
+  .header_index {
+    font-size: 1.6rem;
+  }
+}
+@media (max-width: 1550px) {
+  .header_index {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 1540px) {
+  .header_index {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 1400px) {
+  .header_index {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 1320px) {
+  .header_index {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 1210px) {
+  .header_index {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 1100px) {
+  .header_index {
+    font-size: 1.1rem;
+  }
 }
 </style>
