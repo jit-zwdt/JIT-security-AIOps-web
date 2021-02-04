@@ -1,5 +1,7 @@
 <template>
   <div class="headerbackground">
+    <div class="head_div"><span class="head_span">BI展示图01</span></div>
+    <div class="head_div2"><span class="head_span" @click="showBiInfo()">BI展示图02</span></div>
     <h1 class="head_bg"><img src="../../assets/images/head_name.png" /></h1>
     <div class="main_box">
       <!--第一列-->
@@ -1280,7 +1282,6 @@ export default {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            console.log(json.data)
             xdata.push(
               { name: '信息', value: json.data.information },
               { name: '警告', value: json.data.warning },
@@ -1867,7 +1868,6 @@ export default {
       if (myChartData === null) {
         return
       }
-      console.log(myChartData.series)
       var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
       var numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
       var numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
@@ -2240,16 +2240,15 @@ export default {
       })
     },
     makeData5_info (myChartData, str) {
-      console.log(myChartData)
       var numOne = 0
       var numTwo = 0
       var numThree = 0
       var numFour = 0
       if (str === '1') {
-        numOne = myChartData.series[0].data[0]
-        numTwo = myChartData.series[1].data[0]
-        numThree = myChartData.series[2].data[0]
-        numFour = myChartData.series[3].data[0]
+        numOne = myChartData.series[0].data[1]
+        numTwo = myChartData.series[1].data[1]
+        numThree = myChartData.series[2].data[1]
+        numFour = myChartData.series[3].data[1]
       } else {
         numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
         numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
@@ -2808,6 +2807,10 @@ export default {
                 global: false
               }
             }
+          },
+          formatter: function (parms) {
+            parms = parms[1].name + ':' + parseFloat(parms[1].value).toFixed(1)
+            return parms
           }
         },
         title: {
@@ -2879,9 +2882,12 @@ export default {
             symbolMargin: 1,
             symbolPosition: 'start',
             z: 10,
+            textStyle: {
+              show: false
+            },
             data: [max, max, max, max]
           }, {
-            name: '数量',
+            name: '数值',
             type: 'pictorialBar',
             symbol: 'rect',
             barWidth: 23,
@@ -3330,6 +3336,9 @@ export default {
         return 'zebra_bg2'
       }
       return ''
+    },
+    showBiInfo () {
+      this.$router.push({ name: 'bi_One_Info' })
     }
   },
   computed: {
@@ -3427,5 +3436,30 @@ export default {
   .headerbackground {
     height: 97.5rem;
   }
+}
+.head_span {
+  color: #fff;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.head_div {
+  margin-top: 30px;
+  margin-left: 20px;
+  z-index:auto;
+  position:absolute;
+  background: url(~@/assets/img/btn_blue.png) center no-repeat;
+  background-size: 100% 100%;
+  width: 80px;
+  height: 25px;
+}
+.head_div2 {
+  margin-top: 30px;
+  margin-left: 120px;
+  z-index:auto;
+  position:absolute;
+  background: url(~@/assets/img/btn_blue.png) center no-repeat;
+  background-size: 100% 100%;
+  width: 80px;
+  height: 25px;
 }
 </style>

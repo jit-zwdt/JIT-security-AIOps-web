@@ -3,26 +3,38 @@
     <div class="body-top-btn" @click="hiddenSidebar">
       <i class="el-icon-menu"></i>
     </div>
-
     <div class="right">
+      <span @click="showBiInfo()" class="open_bi" title="BI效果图"></span>
       <ul class="prompt_icon">
         <a href="javascript:void(0)" @click="showAlertInfo(5)" title="灾难">
-          <li class="prompt_purple"><a href="javascript:void(0)">{{this.typeNum.disaster}}</a></li>
+          <li class="prompt_purple">
+            <a href="javascript:void(0)">{{ this.typeNum.disaster }}</a>
+          </li>
         </a>
         <a href="javascript:void(0)" title="严重">
-          <li class="prompt_red" @click="showAlertInfo(4)"><a href="javascript:void(0)">{{this.typeNum.high}}</a></li>
+          <li class="prompt_red" @click="showAlertInfo(4)">
+            <a href="javascript:void(0)">{{ this.typeNum.high }}</a>
+          </li>
         </a>
         <a href="javascript:void(0)" title="一般严重">
-          <li class="prompt_orange" @click="showAlertInfo(3)"><a href="javascript:void(0)">{{this.typeNum.average}}</a></li>
+          <li class="prompt_orange" @click="showAlertInfo(3)">
+            <a href="javascript:void(0)">{{ this.typeNum.average }}</a>
+          </li>
         </a>
         <a href="javascript:void(0)" title="警告">
-          <li class="prompt_yellow" @click="showAlertInfo(2)"><a href="javascript:void(0)">{{this.typeNum.warning}}</a></li>
+          <li class="prompt_yellow" @click="showAlertInfo(2)">
+            <a href="javascript:void(0)">{{ this.typeNum.warning }}</a>
+          </li>
         </a>
         <a href="javascript:void(0)" title="信息">
-          <li class="prompt_green" @click="showAlertInfo(1)"><a href="javascript:void(0)">{{this.typeNum.information}}</a></li>
+          <li class="prompt_green" @click="showAlertInfo(1)">
+            <a href="javascript:void(0)">{{ this.typeNum.information }}</a>
+          </li>
         </a>
         <a href="javascript:void(0)" title="未分类">
-          <li class="prompt_gray" @click="showAlertInfo(0)"><a href="javascript:void(0)">{{this.typeNum.notClassified}}</a></li>
+          <li class="prompt_gray" @click="showAlertInfo(0)">
+            <a href="javascript:void(0)">{{ this.typeNum.notClassified }}</a>
+          </li>
         </a>
       </ul>
       <span @click="screenFullToggle(1)" :class="fullToggleStyle1">
@@ -58,10 +70,10 @@
       </span> -->
       <span class="body-top-btn imageStyle">
         <el-avatar
-            v-if="imageurl"
-            shape="square"
-            :size="20"
-            :src="imageurl"
+          v-if="imageurl"
+          shape="square"
+          :size="20"
+          :src="imageurl"
         ></el-avatar>
       </span>
       <el-dropdown>
@@ -79,10 +91,10 @@
         </el-dropdown-menu>
       </el-dropdown>
       <UserMassage
-          :showUserMassage="showUserMassage"
-          :user="user"
-          @close="showUserMassage = false"
-          @success="showUserMassage = false"
+        :showUserMassage="showUserMassage"
+        :user="user"
+        @close="showUserMassage = false"
+        @success="showUserMassage = false"
       ></UserMassage>
     </div>
   </div>
@@ -224,6 +236,12 @@ export default {
           }
         }
       })
+    },
+    showBiInfo () {
+      const routeData = this.$router.resolve({
+        name: 'bi_Two_Info'
+      })
+      window.open(routeData.href, '_blank')
     }
   },
   computed: mapState(['system']),
@@ -233,226 +251,231 @@ export default {
 }
 </script>
 <style lang="scss">
-  @import '~@/assets/css/variables.scss';
+@import '~@/assets/css/variables.scss';
 
-  .body-top {
-    width: 100%;
-    display: flex;
-    height: 50px;
-    background-color: mix(#000, $--color-primary, 5%);
-    z-index: 10;
+.body-top {
+  width: 100%;
+  display: flex;
+  height: 50px;
+  background-color: mix(#000, $--color-primary, 5%);
+  z-index: 10;
 
-    .body-top-btn {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #fff;
+  .body-top-btn {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #fff;
 
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
       }
     }
 
-    .body-top-btn-disaster {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #800000;
-
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
-      }
-    }
-
-    .body-top-btn-high {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #ff2020;
-
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
-      }
-    }
-
-    .body-top-btn-average {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #ea7500;
-
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
-      }
-    }
-
-    .body-top-btn-warning {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #ffd306;
-
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
-      }
-    }
-
-    .body-top-btn-information {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #81c0c0;
-
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
-      }
-    }
-
-    .body-top-btn-notClassified {
-      overflow: hidden;
-      height: $--top-height;
-      display: inline-block;
-      text-align: center;
-      line-height: $--top-height;
-      cursor: pointer;
-      padding: 0 14px;
-      color: #8e8e8e;
-
-      .badge {
-        .el-badge__content {
-          margin-top: 10px;
-        }
-      }
-
-      &:hover {
-        background-color: mix(#000, $--color-primary, 10%);
-      }
-    }
-
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .imageStyle {
-      padding: 5px 0px 5px 20px;
-    }
-
-    .fullToggledisplay {
-      display: none;
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
     }
   }
+
+  .body-top-btn-disaster {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #800000;
+
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
+    }
+  }
+
+  .body-top-btn-high {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #ff2020;
+
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
+    }
+  }
+
+  .body-top-btn-average {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #ea7500;
+
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
+    }
+  }
+
+  .body-top-btn-warning {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #ffd306;
+
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
+    }
+  }
+
+  .body-top-btn-information {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #81c0c0;
+
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
+    }
+  }
+
+  .body-top-btn-notClassified {
+    overflow: hidden;
+    height: $--top-height;
+    display: inline-block;
+    text-align: center;
+    line-height: $--top-height;
+    cursor: pointer;
+    padding: 0 14px;
+    color: #8e8e8e;
+
+    .badge {
+      .el-badge__content {
+        margin-top: 10px;
+      }
+    }
+
+    &:hover {
+      background-color: mix(#000, $--color-primary, 10%);
+    }
+  }
+
+  .right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .imageStyle {
+    padding: 5px 0px 5px 20px;
+  }
+
+  .fullToggledisplay {
+    display: none;
+  }
+}
 </style>
 
 <style lang="css" scoped>
-  /deep/ .prompt_icon {
-    float: left;
-    width: 13%;
-    text-align: center
-  }
+.prompt_icon {
+  float: left;
+  width: 13%;
+  text-align: center;
+}
 
-  /deep/ .prompt_icon li {
-    display: inline-block;
-    width: 15%;
-    height: 22px;
-    margin-top: 14px;
-    position: relative;
-  }
+.prompt_icon li {
+  display: inline-block;
+  width: 15%;
+  height: 22px;
+  margin-top: 14px;
+  position: relative;
+}
 
-  /deep/ .prompt_icon li a {
-    display: inline-block;
-    position: absolute;
-    width: 22px;
-    height: 15px;
-    right: -6px;
-    top: -3px;
-    font-size: 12px;
-    text-align: left;
-    color: #fff
-  }
+.prompt_icon li a {
+  display: inline-block;
+  position: absolute;
+  width: 22px;
+  height: 15px;
+  right: -6px;
+  top: -3px;
+  font-size: 12px;
+  text-align: left;
+  color: #fff;
+}
 
-  /deep/ .prompt_purple {
-    background: url(~@/assets/img/icon_prompt_purple.png) center no-repeat
-  }
+.prompt_purple {
+  background: url(~@/assets/img/icon_prompt_purple.png) center no-repeat;
+}
 
-  /deep/ .prompt_red {
-    background: url(~@/assets/img/icon_prompt_red.png) center no-repeat
-  }
+.prompt_red {
+  background: url(~@/assets/img/icon_prompt_red.png) center no-repeat;
+}
 
-  /deep/ .prompt_orange {
-    background: url(~@/assets/img/icon_prompt_orange.png) center no-repeat
-  }
+.prompt_orange {
+  background: url(~@/assets/img/icon_prompt_orange.png) center no-repeat;
+}
 
-  /deep/ .prompt_yellow {
-    background: url(~@/assets/img/icon_prompt_yellow.png) center no-repeat
-  }
+.prompt_yellow {
+  background: url(~@/assets/img/icon_prompt_yellow.png) center no-repeat;
+}
 
-  /deep/ .prompt_green {
-    background: url(~@/assets/img/icon_prompt_green.png) center no-repeat
-  }
+.prompt_green {
+  background: url(~@/assets/img/icon_prompt_green.png) center no-repeat;
+}
 
-  /deep/ .prompt_gray {
-    background: url(~@/assets/img/icon_prompt_gray.png) center no-repeat
-  }
+.prompt_gray {
+  background: url(~@/assets/img/icon_prompt_gray.png) center no-repeat;
+}
+
+.open_bi {
+  width: 30px;
+  background: url(~@/assets/img/icon_open_bi.png) center no-repeat;
+}
 </style>

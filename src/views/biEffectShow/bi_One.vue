@@ -11,7 +11,6 @@ export default {
     const routeData = this.$router.resolve({
       name: 'bi_One_Info'
     })
-    console.log(routeData.href)
     window.open(routeData.href, '_blank')
   }
 }

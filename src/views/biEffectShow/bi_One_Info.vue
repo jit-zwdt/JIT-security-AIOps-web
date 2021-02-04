@@ -1,5 +1,11 @@
 <template>
   <div class="headerbackground">
+    <div class="head_div">
+      <span class="head_span" @click="showBiInfo()">BI展示图01</span>
+    </div>
+    <div class="head_div2">
+      <span class="head_span">BI展示图02</span>
+    </div>
     <header class="header_index">一体化智能运维管理平台</header>
     <div class="container-cus">
       <div class="row_index">
@@ -1997,6 +2003,9 @@ export default {
         }
       })
       return data
+    },
+    showBiInfo () {
+      this.$router.push({ name: 'bi_Two_Info' })
     }
   },
   computed: {
@@ -2111,5 +2120,30 @@ export default {
   border: 0px solid #ccc !important;
   padding: 0px !important;
   margin-left: 9%;
+}
+.head_span {
+  color: #fff;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.head_div {
+  margin-top: 5px;
+  margin-left: 20px;
+  z-index:auto;
+  position:absolute;
+  background: url(~@/assets/img/btn_white.png) center no-repeat;
+  background-size: 100% 100%;
+  width: 80px;
+  height: 25px;
+}
+.head_div2 {
+  margin-top: 5px;
+  margin-left: 120px;
+  z-index:auto;
+  position:absolute;
+  background: url(~@/assets/img/btn_white.png) center no-repeat;
+  background-size: 100% 100%;
+  width: 80px;
+  height: 25px;
 }
 </style>
