@@ -553,12 +553,12 @@ export default {
     window.showHostInfo = this.showHostInfo
     var miniSidebar = Storage.get('MiniSidebar')
     var hideSidebar = Storage.get('HideSidebar')
-    if (miniSidebar === 1) {
-      this.headerbackground = 'headerbackground2'
+    if (hideSidebar === 1 && miniSidebar === 1) {
+      this.headerbackground = 'headerbackground4'
     } else if (hideSidebar === 1) {
       this.headerbackground = 'headerbackground3'
-    } else if (hideSidebar === 1 && miniSidebar === 1) {
-      this.headerbackground = 'headerbackground4'
+    } else if (miniSidebar === 1) {
+      this.headerbackground = 'headerbackground2'
     } else {
       this.headerbackground = 'headerbackground1'
     }
@@ -3443,7 +3443,7 @@ export default {
 .headerbackground4 {
   background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
   background-size: 100% 100%;
-  margin-left: -30px;
+  margin-left: 0px;
   height: 67.5rem;
   z-index: 20;
   position: absolute;
@@ -3511,11 +3511,13 @@ export default {
   color: darkgrey;
   font-size: 12px;
   margin-left: 10px;
+  cursor:pointer;
 }
 .head_span2 {
   color: #fff;
   font-size: 12px;
   margin-left: 10px;
+  cursor:pointer;
 }
 .head_div {
   margin-top: 30px;
