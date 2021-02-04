@@ -1,7 +1,9 @@
 <template>
-  <div class="headerbackground">
+  <div :class="headerbackground">
     <div class="head_div"><span class="head_span">BI展示图01</span></div>
-    <div class="head_div2"><span class="head_span2" @click="showBiInfo()">BI展示图02</span></div>
+    <div class="head_div2">
+      <span class="head_span2" @click="showBiInfo()">BI展示图02</span>
+    </div>
     <h1 class="head_bg"><img src="../../assets/images/head_name.png" /></h1>
     <div class="main_box">
       <!--第一列-->
@@ -478,7 +480,7 @@
   </div>
 </template>
 <script>
-// import 'echarts-liquidfill'
+import Storage from 'good-storage'
 import { formatTodate } from '@/utils/format.js'
 import jTopo from 'jtopo-in-node'
 import $ from 'jquery'
@@ -488,6 +490,7 @@ import { timesMethod } from '@/utils/formatDate.js'
 export default {
   data () {
     return {
+      headerbackground: '',
       show: false,
       hideRow: false,
       errorCount: 0,
@@ -548,6 +551,17 @@ export default {
   created () {
     this.getTopologyOneInfo()
     window.showHostInfo = this.showHostInfo
+    var miniSidebar = Storage.get('MiniSidebar')
+    var hideSidebar = Storage.get('HideSidebar')
+    if (miniSidebar === 1) {
+      this.headerbackground = 'headerbackground2'
+    } else if (hideSidebar === 1) {
+      this.headerbackground = 'headerbackground3'
+    } else if (hideSidebar === 1 && miniSidebar === 1) {
+      this.headerbackground = 'headerbackground4'
+    } else {
+      this.headerbackground = 'headerbackground1'
+    }
   },
   mounted () {
     this.showInfo()
@@ -3393,10 +3407,43 @@ export default {
   padding: 0px !important;
   margin-left: 2%;
 }
-.headerbackground {
+.headerbackground1 {
   background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
   background-size: 100% 100%;
   margin-left: -230px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+.headerbackground2 {
+  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: -65px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+.headerbackground3 {
+  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: 0px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+.headerbackground4 {
+  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: -30px;
   height: 67.5rem;
   z-index: 20;
   position: absolute;
@@ -3473,8 +3520,8 @@ export default {
 .head_div {
   margin-top: 30px;
   margin-left: 20px;
-  z-index:auto;
-  position:absolute;
+  z-index: auto;
+  position: absolute;
   background: url(~@/assets/img/btn_blue.png) center no-repeat;
   background-size: 100% 100%;
   width: 80px;
@@ -3483,8 +3530,8 @@ export default {
 .head_div2 {
   margin-top: 30px;
   margin-left: 120px;
-  z-index:auto;
-  position:absolute;
+  z-index: auto;
+  position: absolute;
   background: url(~@/assets/img/btn_blue.png) center no-repeat;
   background-size: 100% 100%;
   width: 80px;
@@ -3493,16 +3540,16 @@ export default {
 .no_data {
   background: url(~@/assets/img/no_data.png) center no-repeat;
   background-size: 45% 45%;
-  opacity:0.8;
+  opacity: 0.8;
 }
 .no_data2 {
   background: url(~@/assets/img/no_data.png) center no-repeat;
   background-size: 25% 45%;
-  opacity:0.8;
+  opacity: 0.8;
 }
 .no_data3 {
   background: url(~@/assets/img/no_data.png) center no-repeat;
   background-size: 45% 60%;
-  opacity:0.8;
+  opacity: 0.8;
 }
 </style>
