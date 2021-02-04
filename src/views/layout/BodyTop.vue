@@ -477,5 +477,6 @@ export default {
 .open_bi {
   width: 30px;
   background: url(~@/assets/img/icon_open_bi.png) center no-repeat;
+  cursor:pointer;
 }
 </style>

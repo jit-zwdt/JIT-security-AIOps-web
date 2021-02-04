@@ -1,7 +1,7 @@
 <template>
   <div class="headerbackground">
     <div class="head_div"><span class="head_span">BI展示图01</span></div>
-    <div class="head_div2"><span class="head_span" @click="showBiInfo()">BI展示图02</span></div>
+    <div class="head_div2"><span class="head_span2" @click="showBiInfo()">BI展示图02</span></div>
     <h1 class="head_bg"><img src="../../assets/images/head_name.png" /></h1>
     <div class="main_box">
       <!--第一列-->
@@ -3461,6 +3461,11 @@ export default {
   }
 }
 .head_span {
+  color: darkgrey;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.head_span2 {
   color: #fff;
   font-size: 12px;
   margin-left: 10px;
