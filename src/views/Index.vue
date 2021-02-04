@@ -756,6 +756,10 @@ export default {
     },
     makeData1_info (xdata) {
       const pieCharts = document.getElementById('ibox_content_echarts1')
+      if (this.check_data_info(xdata)) {
+        pieCharts.className = 'no_data'
+        return
+      }
       const myChart = this.$echarts.init(pieCharts)
       var colorList = [{
         type: 'linear',
@@ -998,6 +1002,11 @@ export default {
       })
     },
     makeData1_2_info (makeData) {
+      var dom2 = document.getElementById('ibox_content_echarts2')
+      if (this.check_data_info(makeData)) {
+        dom2.className = 'no_data2'
+        return
+      }
       var dateTime = []
       for (var i = 0; i < 7; i++) {
         var tempDate = new Date() // 获取今天的日期
@@ -1006,7 +1015,6 @@ export default {
         dateTime.push(endDate)
       }
       dateTime = dateTime.reverse()
-      var dom2 = document.getElementById('ibox_content_echarts2')
       var myChart = this.$echarts.init(dom2)
       var option = {
         grid: {
@@ -1292,7 +1300,9 @@ export default {
       })
     },
     makeData2_info (myChartData, num, str, color, bordercolor, flag) {
-      if (myChartData === null) {
+      var dom3 = document.getElementById('ibox_content_echarts' + num)
+      if (this.check_data_info(myChartData) || myChartData.series.length < 2) {
+        dom3.className = 'no_data3'
         return
       }
       var returndataclocktime = []
@@ -1305,7 +1315,6 @@ export default {
           }
         })
       }
-      var dom3 = document.getElementById('ibox_content_echarts' + num)
       var myChart = this.$echarts.init(dom3)
       var fontColor = '#667ba7'
       var option = {
@@ -1655,6 +1664,11 @@ export default {
       })
     },
     makeData5_info (myChartData) {
+      var dom = document.getElementById('ibox_content_echarts8')
+      if (this.check_data_info(myChartData) || myChartData.series.length < 3) {
+        dom.className = 'no_data3'
+        return
+      }
       var data = []
       var series = myChartData.series
       if (series !== null) {
@@ -1666,7 +1680,6 @@ export default {
           })
         })
       }
-      var dom = document.getElementById('ibox_content_echarts8')
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var titleArr = []
@@ -1766,7 +1779,9 @@ export default {
       myChart.setOption(option, true)
     },
     makeData5_2_info (myChartData, str) {
-      if (myChartData === null) {
+      var dom = document.getElementById('ibox_content_echarts9')
+      if (this.check_data_info(myChartData) || myChartData.series.length < 3) {
+        dom.className = 'no_data3'
         return
       }
       var returndataclocktime = []
@@ -1779,7 +1794,6 @@ export default {
           }
         })
       }
-      var dom = document.getElementById('ibox_content_echarts9')
       var myChart = this.$echarts.init(dom)
       var option = {
         grid: {
@@ -2015,7 +2029,9 @@ export default {
       })
     },
     makeData6_info (myChartData, str) {
-      if (myChartData === null) {
+      var dom = document.getElementById('ibox_content_echarts10')
+      if (this.check_data_info(myChartData) || myChartData.series.length < 3) {
+        dom.className = 'no_data4'
         return
       }
       var returndataclocktime = []
@@ -2028,7 +2044,6 @@ export default {
           }
         })
       }
-      var dom = document.getElementById('ibox_content_echarts10')
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var xData = returndataclocktime
@@ -2343,6 +2358,12 @@ export default {
         return 'zebra_bg'
       }
       return ''
+    },
+    check_data_info (str) {
+      if (str == null || str === undefined || str === 'undefined' || str === '') {
+        return true
+      }
+      return false
     }
   },
   computed: {
@@ -2373,5 +2394,26 @@ export default {
   border: 0px solid #ccc !important;
   padding: 0px !important;
   margin-left: 2%;
+}
+.no_data {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 25% 40%;
+  opacity: 0.4;
+}
+.no_data2 {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 25% 40%;
+  opacity: 0.4;
+  margin-top: -60px;
+}
+.no_data3 {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 25% 60%;
+  opacity: 0.4;
+}
+.no_data4 {
+  background: url(~@/assets/img/no_data.png) center no-repeat;
+  background-size: 25% 35%;
+  opacity: 0.4;
 }
 </style>
