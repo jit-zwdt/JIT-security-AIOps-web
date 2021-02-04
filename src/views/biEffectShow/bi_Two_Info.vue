@@ -1,5 +1,7 @@
 <template>
   <div class="headerbackground">
+    <div class="head_div"><span class="head_span">BI展示图01</span></div>
+    <div class="head_div2"><span class="head_span" @click="showBiInfo()">BI展示图02</span></div>
     <h1 class="head_bg"><img src="../../assets/images/head_name.png" /></h1>
     <div class="main_box">
       <!--第一列-->
@@ -3334,6 +3336,9 @@ export default {
         return 'zebra_bg2'
       }
       return ''
+    },
+    showBiInfo () {
+      this.$router.push({ name: 'bi_One_Info' })
     }
   },
   computed: {
@@ -3431,5 +3436,30 @@ export default {
   .headerbackground {
     height: 97.5rem;
   }
+}
+.head_span {
+  color: #fff;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.head_div {
+  margin-top: 30px;
+  margin-left: 20px;
+  z-index:auto;
+  position:absolute;
+  background: url(~@/assets/img/btn_blue.png) center no-repeat;
+  background-size: 100% 100%;
+  width: 80px;
+  height: 25px;
+}
+.head_div2 {
+  margin-top: 30px;
+  margin-left: 120px;
+  z-index:auto;
+  position:absolute;
+  background: url(~@/assets/img/btn_blue.png) center no-repeat;
+  background-size: 100% 100%;
+  width: 80px;
+  height: 25px;
 }
 </style>
