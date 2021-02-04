@@ -3487,17 +3487,17 @@ export default {
 }
 .no_data {
   background: url(~@/assets/img/no_data.png) center no-repeat;
-  background-size: 60% 60%;
+  background-size: 45% 45%;
   opacity:0.8;
 }
 .no_data2 {
   background: url(~@/assets/img/no_data.png) center no-repeat;
-  background-size: 30% 60%;
+  background-size: 25% 45%;
   opacity:0.8;
 }
 .no_data3 {
   background: url(~@/assets/img/no_data.png) center no-repeat;
-  background-size: 60% 80%;
+  background-size: 45% 60%;
   opacity:0.8;
 }
 </style>
