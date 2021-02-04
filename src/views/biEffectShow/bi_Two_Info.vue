@@ -1,249 +1,478 @@
 <template>
   <div class="headerbackground">
-    <!--第一列-->
-    <div class="col_box30per">
-      <div class="white_box height1">
-        <h3 class="public_title">操作系统</h3>
-        <div class="e_box1-1">
-          <div
-            id="ibox_content_echarts1"
-            style="height: 100%; margin-top: -30px"
-          ></div>
-          <div id="ibox_content_echarts2" style="height: 100%"></div>
+    <h1 class="head_bg"><img src="../../assets/images/head_name.png" /></h1>
+    <div class="main_box">
+      <!--第一列-->
+      <div class="col_box30per">
+        <div class="bor_t_box">
+          <div class="bor_t_l">
+            <img src="../../assets/images/bor_t_l.png" />
+          </div>
+          <div class="bor_t_r">
+            <img src="../../assets/images/bor_t_r.png" />
+          </div>
+        </div>
+        <div class="bor_c_box height420">
+          <div class="bor_c_l"></div>
+          <div class="bor_c_r height1">
+            <h2 class="bg_title">操作系统</h2>
+            <div class="e_box1-1">
+              <div
+                id="ibox_content_echarts1"
+                style="height: 80%; width: 50%; float: left; margin-top: -30px"
+              ></div>
+              <div
+                id="ibox_content_echarts1_1"
+                style="height: 80%; width: 50%; float: left; margin-top: -30px"
+              ></div>
+              <div
+                id="ibox_content_echarts2"
+                style="height: 80%; width: 100%; float: left"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="bor_b_box">
+          <div class="bor_b_l">
+            <img src="../../assets/images/bor_b_l.png" />
+          </div>
+          <div class="bor_b_r">
+            <img src="../../assets/images/bor_b_r.png" />
+          </div>
+        </div>
+
+        <div class="bor_t_box mar_t20">
+          <div class="bor_t_l">
+            <img src="../../assets/images/bor_t_l.png" />
+          </div>
+          <div class="bor_t_r">
+            <img src="../../assets/images/bor_t_r.png" />
+          </div>
+        </div>
+        <div class="bor_c_box height420">
+          <div class="bor_c_l"></div>
+          <div class="bor_c_r">
+            <h2 class="bg_title">数据库</h2>
+            <div class="e_box1-2">
+              <div
+                id="ibox_data_echarts1"
+                style="height: 100%; width: 50%; float: left; margin-top: 10px"
+              ></div>
+              <div
+                id="ibox_data_echarts2"
+                style="height: 100%; width: 50%; float: left; margin-top: 10px"
+              ></div>
+              <div
+                id="ibox_data_echarts3"
+                style="
+                  height: 100%;
+                  width: 50%;
+                  clear: both;
+                  float: left;
+                  margin-top: 30px;
+                "
+              ></div>
+              <div
+                id="ibox_data_echarts4"
+                style="height: 100%; width: 50%; float: left; margin-top: 30px"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="bor_b_box">
+          <div class="bor_b_l">
+            <img src="../../assets/images/bor_b_l.png" />
+          </div>
+          <div class="bor_b_r">
+            <img src="../../assets/images/bor_b_r.png" />
+          </div>
         </div>
       </div>
-      <div class="white_box mar_t20 height2">
-        <h3 class="public_title">数据库</h3>
-        <div class="e_box1-2">
-          <div id="ibox_content_echarts3" style="height: 100%"></div>
-          <div id="ibox_content_echarts4" style="height: 100%"></div>
+      <!--第二列-->
+      <div class="col_box40per">
+        <div class="bor_t_box">
+          <div class="bor_t_l">
+            <img src="../../assets/images/bor_t_l.png" />
+          </div>
+          <div class="bor_t_r">
+            <img src="../../assets/images/bor_t_r.png" />
+          </div>
         </div>
-      </div>
-    </div>
-    <!--第一列结束-->
-    <!--第二列-->
-    <div class="col_box40per">
-      <div class="white_box height3">
-        <h3 class="public_title">运维指数</h3>
-        <div class="content_box">
-          <div class="ywzs_left_box">
-            <div :class="errorStyle">
-              <!-- <div
+        <div class="bor_c_box">
+          <div class="bor_c_l"></div>
+          <div class="bor_c_r height3">
+            <h2 class="bg_title">运维指数</h2>
+            <div class="content_box">
+              <div class="ywzs_left_box">
+                <div :class="errorStyle">
+                  <!-- <div
                   id="liquidFillrun"
                   style="width: 18rem; height: 18rem; margin-left:30%"
                 ></div> -->
-              <div class="svg-contain" id="svg_sky" style="display: none">
-                <svg
-                  version="1.1"
-                  class="clear-sky-svg"
-                  x="300px"
-                  y="300px"
-                  viewBox="0 0 72.3 52.6"
-                  style="enable-background: new 0 0 72.3 52.6"
-                  xml:space="preserve"
-                >
-                  <g>
-                    <path
-                      class="sun"
-                      d="M50.8,25.7c0,7.9-6.4,14.4-14.4,14.4s-14.4-6.4-14.4-14.4s6.4-14.4,14.4-14.4S50.8,17.8,50.8,25.7z"
-                    />
-                    <path class="line big-path line-1" d="M54.5,25.8h6" />
-                    <path class="line big-path line-2" d="M12.4,25.8h6" />
-                    <path class="line big-path line-3" d="M36.5,44.3v6" />
-                    <path class="line big-path line-4" d="M36.5,8.2v-6" />
-                    <path class="line big-path line-5" d="M23,38.8l-4.8,4.8" />
-                    <path class="line big-path line-6" d="M54.9,8.9L50,13.8" />
-                    <path class="line big-path line-7" d="M50,38.8l4.4,4.4" />
-                    <path class="line big-path line-8" d="M18.8,9.6l4.2,4.2" />
-                  </g>
-                </svg>
+                  <div class="svg-contain" id="svg_sky" style="display: none">
+                    <svg
+                      version="1.1"
+                      class="clear-sky-svg"
+                      x="300px"
+                      y="300px"
+                      viewBox="0 0 72.3 52.6"
+                      style="enable-background: new 0 0 72.3 52.6"
+                      xml:space="preserve"
+                    >
+                      <g>
+                        <path
+                          class="sun"
+                          d="M50.8,25.7c0,7.9-6.4,14.4-14.4,14.4s-14.4-6.4-14.4-14.4s6.4-14.4,14.4-14.4S50.8,17.8,50.8,25.7z"
+                        />
+                        <path class="line big-path line-1" d="M54.5,25.8h6" />
+                        <path class="line big-path line-2" d="M12.4,25.8h6" />
+                        <path class="line big-path line-3" d="M36.5,44.3v6" />
+                        <path class="line big-path line-4" d="M36.5,8.2v-6" />
+                        <path
+                          class="line big-path line-5"
+                          d="M23,38.8l-4.8,4.8"
+                        />
+                        <path
+                          class="line big-path line-6"
+                          d="M54.9,8.9L50,13.8"
+                        />
+                        <path
+                          class="line big-path line-7"
+                          d="M50,38.8l4.4,4.4"
+                        />
+                        <path
+                          class="line big-path line-8"
+                          d="M18.8,9.6l4.2,4.2"
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                  <div
+                    class="svg-contain"
+                    id="svg_clouds"
+                    style="display: none"
+                  >
+                    <svg
+                      class="overcast-clouds"
+                      version="1.1"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 82.6 52.3"
+                      style="enable-background: new 0 0 82.6 52.3"
+                      xml:space="preserve"
+                    >
+                      <g id="Layer_1">
+                        <path
+                          class="cloud-still"
+                          d="M21.8,24.2c0.1,0,0.3-1.1,0.4-1.2c0.5-1.2,1.1-2.4,1.8-3.4c3.9-5.7,12.6-7.1,18.2-3.1c0,0,3.7-6,11-5.9c0,0,5.6-0.6,10.3,4.9c0,0,2.8,3.3,2.9,7.4c0,0,3.2-0.5,5.4,1c0,0,6.2,2.6,5.9,10.8H56.3c0,0-2-3.5-7.3-3.6c0.2,0-0.5-2.2-0.6-2.4c-1.4-4.4-5.5-6.9-9.9-7.4c-3.4-0.4-6.6,0.8-9,3.2c-0.1,0.1-1.2,1.3-1.2,1.3S25.3,23.6,21.8,24.2z"
+                        />
+                        <path
+                          class="cloud-still"
+                          d="M57.6,40.7c0-4.8-3.9-8.6-8.6-8.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h12.9h0.7C57.6,41.8,57.6,41.4,57.6,40.7z"
+                        />
+                      </g>
+                      <g id="Layer_2"></g>
+                    </svg>
+                  </div>
+                  <div
+                    class="svg-contain"
+                    id="svg_hurricane"
+                    style="display: none"
+                  >
+                    <svg
+                      class="hurricane-svg"
+                      version="1.1"
+                      id="Layer_1"
+                      x="0px"
+                      y="0px"
+                      viewBox="-437 254.4 85 52.6"
+                      style="enable-background: new -437 254.4 85 52.6"
+                      xml:space="preserve"
+                    >
+                      <path
+                        class="cloud"
+                        d="M-361.9,280.5c1.4,0,2.6,0.7,3.4,1.7h1.1c0.4-8.2-5.9-10.8-5.9-10.8c-2.2-1.5-5.4-1-5.4-1c-0.1-4.1-2.9-7.4-2.9-7.4c-4.7-5.5-10.3-4.9-10.3-4.9c-7.4-0.2-11,5.9-11,5.9c-5.6-4-14.3-2.6-18.2,3.1c-0.7,1.1-1.3,2.2-1.8,3.4c0,0.1-0.3,1.2-0.4,1.2c3.5-0.6,6.6,1.6,6.6,1.6s1.1-1.1,1.2-1.3c2.4-2.4,5.6-3.6,9-3.2c4.4,0.5,8.5,3,9.9,7.4c0.1,0.2,0.8,2.4,0.6,2.4c5.3,0.1,7.3,3.6,7.3,3.6h13.4C-364.5,281.2-363.3,280.5-361.9,280.5z"
+                      />
+                      <path
+                        class="cloud"
+                        d="M-386,279.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h2.3l4.7-6.2c0.6-0.8,1.7-0.9,2.5-0.3s0.9,1.7,0.3,2.5l-3.1,4h0.5h5.6h0.7c0.1,0,0.2-0.4,0.2-1.1C-377.4,283.5-381.3,279.6-386,279.6z"
+                      />
+                      <polyline
+                        class="lightening"
+                        points="-382.8,284.2 -387.9,290.9 -380.6,291.2 -387.9,302 "
+                      />
+                      <path class="line" d="M-426.9,294.4l-5.1,7.3" />
+                      <path class="line" d="M-420.8,294.4l-5.1,7.3" />
+                      <path class="line" d="M-415.4,294.4l-5.1,7.3" />
+                      <path class="line" d="M-409.9,294.4l-5.1,7.3" />
+                      <path class="line" d="M-404.5,294.4l-5.1,7.3" />
+                      <path class="line" d="M-399.1,294.4l-5.1,7.3" />
+                      <path class="line" d="M-393.7,294.4l-5.1,7.3" />
+                      <path class="line" d="M-388.2,294.4l-5.1,7.3" />
+                      <g>
+                        <path
+                          class="little-path path-1"
+                          d="M-374.8,287.2h10.6"
+                        />
+                        <path
+                          class="little-path path-2"
+                          d="M-373.8,289.3h10.9"
+                        />
+                        <path
+                          class="big-path"
+                          d="M-376,288.3c0,0,14,0,14,0c1.7,0,3.1-1.4,3.3-3.1c0-0.5,0-1-0.3-1.4c-0.9-2.3-4.1-2.7-5.6-0.7c-0.4,0.6-0.7,1.3-0.7,1.9"
+                        />
+                        <path
+                          class="little-path path-3"
+                          d="M-364.1,285c0-1.2,1-2.2,2.2-2.2s2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2"
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                  <small :class="small_index">{{ this.operation }}</small>
+                </div>
               </div>
-              <div class="svg-contain" id="svg_clouds" style="display: none">
-                <svg
-                  class="overcast-clouds"
-                  version="1.1"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 82.6 52.3"
-                  style="enable-background: new 0 0 82.6 52.3"
-                  xml:space="preserve"
-                >
-                  <g id="Layer_1">
-                    <path
-                      class="cloud-still"
-                      d="M21.8,24.2c0.1,0,0.3-1.1,0.4-1.2c0.5-1.2,1.1-2.4,1.8-3.4c3.9-5.7,12.6-7.1,18.2-3.1c0,0,3.7-6,11-5.9c0,0,5.6-0.6,10.3,4.9c0,0,2.8,3.3,2.9,7.4c0,0,3.2-0.5,5.4,1c0,0,6.2,2.6,5.9,10.8H56.3c0,0-2-3.5-7.3-3.6c0.2,0-0.5-2.2-0.6-2.4c-1.4-4.4-5.5-6.9-9.9-7.4c-3.4-0.4-6.6,0.8-9,3.2c-0.1,0.1-1.2,1.3-1.2,1.3S25.3,23.6,21.8,24.2z"
-                    />
-                    <path
-                      class="cloud-still"
-                      d="M57.6,40.7c0-4.8-3.9-8.6-8.6-8.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h12.9h0.7C57.6,41.8,57.6,41.4,57.6,40.7z"
-                    />
-                  </g>
-                  <g id="Layer_2"></g>
-                </svg>
-              </div>
-              <div class="svg-contain" id="svg_hurricane" style="display: none">
-                <svg
-                  class="hurricane-svg"
-                  version="1.1"
-                  id="Layer_1"
-                  x="0px"
-                  y="0px"
-                  viewBox="-437 254.4 85 52.6"
-                  style="enable-background: new -437 254.4 85 52.6"
-                  xml:space="preserve"
-                >
-                  <path
-                    class="cloud"
-                    d="M-361.9,280.5c1.4,0,2.6,0.7,3.4,1.7h1.1c0.4-8.2-5.9-10.8-5.9-10.8c-2.2-1.5-5.4-1-5.4-1c-0.1-4.1-2.9-7.4-2.9-7.4c-4.7-5.5-10.3-4.9-10.3-4.9c-7.4-0.2-11,5.9-11,5.9c-5.6-4-14.3-2.6-18.2,3.1c-0.7,1.1-1.3,2.2-1.8,3.4c0,0.1-0.3,1.2-0.4,1.2c3.5-0.6,6.6,1.6,6.6,1.6s1.1-1.1,1.2-1.3c2.4-2.4,5.6-3.6,9-3.2c4.4,0.5,8.5,3,9.9,7.4c0.1,0.2,0.8,2.4,0.6,2.4c5.3,0.1,7.3,3.6,7.3,3.6h13.4C-364.5,281.2-363.3,280.5-361.9,280.5z"
-                  />
-                  <path
-                    class="cloud"
-                    d="M-386,279.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h2.3l4.7-6.2c0.6-0.8,1.7-0.9,2.5-0.3s0.9,1.7,0.3,2.5l-3.1,4h0.5h5.6h0.7c0.1,0,0.2-0.4,0.2-1.1C-377.4,283.5-381.3,279.6-386,279.6z"
-                  />
-                  <polyline
-                    class="lightening"
-                    points="-382.8,284.2 -387.9,290.9 -380.6,291.2 -387.9,302 "
-                  />
-                  <path class="line" d="M-426.9,294.4l-5.1,7.3" />
-                  <path class="line" d="M-420.8,294.4l-5.1,7.3" />
-                  <path class="line" d="M-415.4,294.4l-5.1,7.3" />
-                  <path class="line" d="M-409.9,294.4l-5.1,7.3" />
-                  <path class="line" d="M-404.5,294.4l-5.1,7.3" />
-                  <path class="line" d="M-399.1,294.4l-5.1,7.3" />
-                  <path class="line" d="M-393.7,294.4l-5.1,7.3" />
-                  <path class="line" d="M-388.2,294.4l-5.1,7.3" />
-                  <g>
-                    <path class="little-path path-1" d="M-374.8,287.2h10.6" />
-                    <path class="little-path path-2" d="M-373.8,289.3h10.9" />
-                    <path
-                      class="big-path"
-                      d="M-376,288.3c0,0,14,0,14,0c1.7,0,3.1-1.4,3.3-3.1c0-0.5,0-1-0.3-1.4c-0.9-2.3-4.1-2.7-5.6-0.7c-0.4,0.6-0.7,1.3-0.7,1.9"
-                    />
-                    <path
-                      class="little-path path-3"
-                      d="M-364.1,285c0-1.2,1-2.2,2.2-2.2s2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <small :class="small_index">{{ this.operation }}</small>
+              <ul class="ywzs_num">
+                <li>
+                  <h3 class="number">{{ this.hostOneCount }}</h3>
+                  <p>{{ this.hostOneType }}(台)</p>
+                </li>
+                <li>
+                  <h3 class="number">{{ this.hostTwoCount }}</h3>
+                  <p>{{ this.hostTwoType }}(台)</p>
+                </li>
+                <li>
+                  <h3 class="number">{{ this.hostThreeCount }}</h3>
+                  <p>{{ this.hostThreeType }}(台)</p>
+                </li>
+                <li>
+                  <h3 class="number">{{ this.hostFourCount }}</h3>
+                  <p>{{ this.hostFourType }}(台)</p>
+                </li>
+                <li>
+                  <h3 class="number">{{ this.hostFiveCount }}</h3>
+                  <p>{{ this.hostFiveType }}(台)</p>
+                </li>
+                <li>
+                  <div class="">
+                    <span>总设备：</span
+                    ><span class="yellow">{{ this.hostSumNum }}台</span>
+                  </div>
+                  <br />
+                  <div class="">
+                    <span>总磁盘：</span
+                    ><span class="yellow">{{ this.hostSumHardDisk }}G</span>
+                  </div>
+                  <br />
+                  <div class="">
+                    <span>总内存：</span
+                    ><span class="yellow">{{ this.hostSumMemory }}G</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
-          <ul class="ywzs_num">
-            <li>
-              <h3 class="number">{{ this.hostOneCount }}</h3>
-              <p>{{ this.hostOneType }}(台)</p>
-            </li>
-            <li>
-              <h3 class="number">{{ this.hostTwoCount }}</h3>
-              <p>{{ this.hostTwoType }}(台)</p>
-            </li>
-            <li>
-              <h3 class="number">{{ this.hostThreeCount }}</h3>
-              <p>{{ this.hostThreeType }}(台)</p>
-            </li>
-            <li>
-              <h3 class="number">{{ this.hostFourCount }}</h3>
-              <p>{{ this.hostFourType }}(台)</p>
-            </li>
-            <li>
-              <h3 class="number">{{ this.hostFiveCount }}</h3>
-              <p>{{ this.hostFiveType }}(台)</p>
-            </li>
-            <li>
-              <div class="">
-                <span>总设备：</span
-                ><span class="yellow">{{ this.hostSumNum }}台</span>
-              </div>
-              <br />
-              <div class="">
-                <span>总磁盘：</span
-                ><span class="yellow">{{ this.hostSumHardDisk }}G</span>
-              </div>
-              <br />
-              <div class="">
-                <span>总内存：</span
-                ><span class="yellow">{{ this.hostSumMemory }}G</span>
-              </div>
-            </li>
-          </ul>
         </div>
-      </div>
-      <div class="white_box mar_t20 height4">
-        <h3 class="public_title">网络拓扑</h3>
-        <div class="content_box">
-          <canvas width="600" height="300" id="target"></canvas>
-          <input
-            type="hidden"
-            id="infoData"
-            name="infoData"
-            v-model="infoData"
-          />
-          <input type="hidden" id="infoId" name="infoId" />
+        <div class="bor_b_box">
+          <div class="bor_b_l">
+            <img src="../../assets/images/bor_b_l.png" />
+          </div>
+          <div class="bor_b_r">
+            <img src="../../assets/images/bor_b_r.png" />
+          </div>
         </div>
-      </div>
-      <div class="white_box mar_t20 height5">
-        <h3 class="public_title">问题列表</h3>
-        <ul class="scroll_tit">
-          <li>
-            <span class="wid_20per blue_font">日期</span
-            ><span class="wid_70per blue_font">名称</span
-            ><span class="wid_10per blue_font">级别</span>
-          </li>
-        </ul>
-        <div class="myscroll">
-          <vue-seamless-scroll
-            :data="tableData"
-            class="seamless-warp"
-            :class-option="defaultOption"
-          >
-            <ul class="ul-scoll">
-              <li
-                v-for="(item, index) in tableData"
-                :key="index"
-                :class="rowClassName(index)"
-              >
-                <span class="scroll_span_30">{{
-                  formatterdata(item.zabbixProblemDTO.clock)
-                }}</span>
-                <span class="scroll_span_60">{{
-                  item.zabbixProblemDTO.name
-                }}</span>
-                <span class="scroll_span_10">
-                  <div
-                    v-html="formattertype(item.zabbixProblemDTO.severity)"
-                  ></div
-                ></span>
+
+        <div class="bor_t_box mar_t20">
+          <div class="bor_t_l">
+            <img src="../../assets/images/bor_t_l.png" />
+          </div>
+          <div class="bor_t_r">
+            <img src="../../assets/images/bor_t_r.png" />
+          </div>
+        </div>
+        <div class="bor_c_box height370">
+          <div class="bor_c_l"></div>
+          <div class="bor_c_r">
+            <h2 class="bg_title">网络拓扑</h2>
+            <div class="content_box">
+              <canvas width="600" height="300" id="target"></canvas>
+              <input
+                type="hidden"
+                id="infoData"
+                name="infoData"
+                v-model="infoData"
+              />
+              <input type="hidden" id="infoId" name="infoId" />
+            </div>
+          </div>
+        </div>
+        <div class="bor_b_box">
+          <div class="bor_b_l">
+            <img src="../../assets/images/bor_b_l.png" />
+          </div>
+          <div class="bor_b_r">
+            <img src="../../assets/images/bor_b_r.png" />
+          </div>
+        </div>
+
+        <div class="bor_t_box mar_t20">
+          <div class="bor_t_l">
+            <img src="../../assets/images/bor_t_l.png" />
+          </div>
+          <div class="bor_t_r">
+            <img src="../../assets/images/bor_t_r.png" />
+          </div>
+        </div>
+        <div class="bor_c_box">
+          <div class="bor_c_l"></div>
+          <div class="bor_c_r">
+            <h2 class="bg_title">问题列表</h2>
+            <ul class="scroll_tit">
+              <li>
+                <span class="wid_20per blue_font">日期</span
+                ><span class="wid_70per blue_font">名称</span
+                ><span class="wid_10per blue_font">级别</span>
               </li>
             </ul>
-          </vue-seamless-scroll>
+            <div class="myscroll">
+              <vue-seamless-scroll
+                :data="tableData"
+                class="seamless-warp"
+                :class-option="defaultOption"
+              >
+                <ul class="ul-scoll">
+                  <li
+                    v-for="(item, index) in tableData"
+                    :key="index"
+                    :class="rowClassName(index)"
+                    style="color: #fff"
+                  >
+                    <span class="scroll_span_30">{{
+                      formatterdata(item.zabbixProblemDTO.clock)
+                    }}</span>
+                    <span class="scroll_span_60">{{
+                      item.zabbixProblemDTO.name
+                    }}</span>
+                    <span class="scroll_span_10">
+                      <div
+                        v-html="formattertype(item.zabbixProblemDTO.severity)"
+                      ></div
+                    ></span>
+                  </li>
+                </ul>
+              </vue-seamless-scroll>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <!--第二列结束-->
-    <!--第三列-->
-    <div class="col_box30per col_box100per new_pad new_t20">
-      <div class="flo_screen">
-        <div class="white_box height1">
-          <h3 class="public_title">中间件</h3>
-          <div class="e_box1-3">
-            <div id="ibox_content_echarts8" style="height: 100%"></div>
-            <div id="ibox_content_echarts9" style="height: 100%"></div>
+        <div class="bor_b_box">
+          <div class="bor_b_l">
+            <img src="../../assets/images/bor_b_l.png" />
+          </div>
+          <div class="bor_b_r">
+            <img src="../../assets/images/bor_b_r.png" />
           </div>
         </div>
       </div>
-      <div class="flo_screen">
-        <div
-          class="white_box height2 flo_screen new_height mar_t20 mar_t0 mar_b20"
-        >
-          <h3 class="public_title">JVM</h3>
-          <div class="e_box1-4">
-            <div id="ibox_content_echarts10" style="height: 100%"></div>
+      <!--第三列-->
+      <div class="col_box30per col_box100per new_pad new_t20">
+        <div class="flo_screen">
+          <div class="bor_t_box">
+            <div class="bor_t_l">
+              <img src="../../assets/images/bor_t_l.png" />
+            </div>
+            <div class="bor_t_r">
+              <img src="../../assets/images/bor_t_r.png" />
+            </div>
+          </div>
+          <div class="bor_c_box height420">
+            <div class="bor_c_l"></div>
+            <div class="bor_c_r height1">
+              <h2 class="bg_title">中间件</h2>
+              <div class="e_box1-3">
+                <div
+                  id="ibox_centre_echarts1"
+                  style="
+                    width: 50%;
+                    height: 80%;
+                    float: left;
+                    box-sizing: border-box;
+                  "
+                ></div>
+                <div
+                  id="ibox_centre_echarts2"
+                  style="
+                    width: 50%;
+                    height: 80%;
+                    float: left;
+                    box-sizing: border-box;
+                  "
+                ></div>
+                <div
+                  id="ibox_content_echarts3"
+                  style="width: 100%; height: 120%; float: left"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="bor_b_box">
+            <div class="bor_b_l">
+              <img src="../../assets/images/bor_b_l.png" />
+            </div>
+            <div class="bor_b_r">
+              <img src="../../assets/images/bor_b_r.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flo_screen">
+          <div class="bor_t_box mar_t20 mar_t0">
+            <div class="bor_t_l">
+              <img src="../../assets/images/bor_t_l.png" />
+            </div>
+            <div class="bor_t_r">
+              <img src="../../assets/images/bor_t_r.png" />
+            </div>
+          </div>
+          <div class="bor_c_box height420">
+            <div class="bor_c_l"></div>
+            <div class="bor_c_r new_height">
+              <h2 class="bg_title">JVM</h2>
+              <div class="e_box1-4">
+                <div
+                  id="ibox_jvm_echarts1"
+                  style="height: 50%; width: 50%; float: left; margin-top: 10px"
+                ></div>
+                <div
+                  id="ibox_jvm_echarts2"
+                  style="height: 50%; width: 50%; float: left; margin-top: 10px"
+                ></div>
+                <div
+                  id="ibox_jvm_echarts3"
+                  style="
+                    height: 50%;
+                    width: 50%;
+                    clear: both;
+                    float: left;
+                    margin-top: 30px;
+                  "
+                ></div>
+                <div
+                  id="ibox_jvm_echarts4"
+                  style="height: 50%; width: 50%; float: left; margin-top: 30px"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="bor_b_box">
+            <div class="bor_b_l">
+              <img src="../../assets/images/bor_b_l.png" />
+            </div>
+            <div class="bor_b_r">
+              <img src="../../assets/images/bor_b_r.png" />
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!--第三列结束-->
   </div>
 </template>
 <script>
@@ -300,11 +529,17 @@ export default {
       timer: '',
       infoData: '',
       timermakeData1: '',
+      timermakeData1_1: '',
       timermakeData1_2: '',
       timermakeData2_1: '',
       timermakeData2_2: '',
+      timermakeData2_1_1: '',
+      timermakeData2_1_2: '',
       timermakeData5_2: '',
       timermakeData6_1: '',
+      timermakeData6_2: '',
+      timermakeData6_3: '',
+      timermakeData6_4: '',
       intervalFlag: ''
     }
   },
@@ -332,7 +567,7 @@ export default {
         stage.eagleEye.visible = false
         var scene = new jTopo.Scene(stage)
         showJTopoToobar(stage, canvas)
-        scene.background = require('../assets/topology/images/white_bg_small.jpg')
+        // scene.background = require('../../assets/topology/images/small_blue_bg_2.jpg')
         var tempNodeA = new jTopo.Node('tempA')
         tempNodeA.setSize(1, 1)
         var tempNodeZ = new jTopo.Node('tempZ')
@@ -669,6 +904,9 @@ export default {
     if (this.timermakeData1) {
       clearInterval(this.timermakeData1)
     }
+    if (this.timermakeData1_1) {
+      clearInterval(this.timermakeData1_1)
+    }
     if (this.timermakeData1_2) {
       clearInterval(this.timermakeData1_2)
     }
@@ -678,11 +916,26 @@ export default {
     if (this.timermakeData2_2) {
       clearInterval(this.timermakeData2_2)
     }
+    if (this.timermakeData2_1_1) {
+      clearInterval(this.timermakeData2_1_1)
+    }
+    if (this.timermakeData2_1_2) {
+      clearInterval(this.timermakeData2_1_2)
+    }
     if (this.timermakeData5_2) {
       clearInterval(this.timermakeData5_2)
     }
     if (this.timermakeData6_1) {
       clearInterval(this.timermakeData6_1)
+    }
+    if (this.timermakeData6_2) {
+      clearInterval(this.timermakeData6_2)
+    }
+    if (this.timermakeData6_3) {
+      clearInterval(this.timermakeData6_3)
+    }
+    if (this.timermakeData6_4) {
+      clearInterval(this.timermakeData6_4)
     }
   },
   methods: {
@@ -743,7 +996,7 @@ export default {
               { name: '灾难', value: json.data.disaster }
             )
             this.situation()
-            this.makeData1_info(xdata)
+            this.makeData1_info(xdata, '1', '全部')
           }
         } else {
           this.$message({
@@ -752,10 +1005,11 @@ export default {
           })
         }
       })
+      this.makeData1_1()
       this.makeData1_2()
     },
-    makeData1_info (xdata) {
-      const pieCharts = document.getElementById('ibox_content_echarts1')
+    makeData1_info (xdata, num, str) {
+      const pieCharts = document.getElementById('ibox_content_echarts' + num)
       const myChart = this.$echarts.init(pieCharts)
       var colorList = [{
         type: 'linear',
@@ -864,7 +1118,7 @@ export default {
         return result
       }
       var data = xdata
-      data.forEach((v, i) => {
+      xdata.forEach((v, i) => {
         v.labelLine = {
           lineStyle: {
             width: 1,
@@ -873,34 +1127,45 @@ export default {
         }
       })
       var option = {
-        title: {
-          text: '问题类别占比',
+        title: [{
+          text: str,
           x: 'center',
           y: 'center',
-          top: '55%',
-          left: '28.5%',
+          top: '48%',
+          left: '30%',
           textStyle: {
             color: '#AAAFC8',
             fontWeight: 'normal',
-            fontSize: 9
+            fontSize: 8
           }
-        },
+        }, {
+          text: '问题类别占比',
+          x: 'center',
+          y: 'center',
+          top: '53%',
+          left: '24%',
+          textStyle: {
+            color: '#AAAFC8',
+            fontWeight: 'normal',
+            fontSize: 8
+          }
+        }],
         legend: {
           data: ['信息', '警告', '一般严重', '严重', '灾难'],
           orient: 'vertical',
           right: '5%',
-          top: '20%',
+          top: '25%',
           itemWidth: 20,
           itemHeight: 10,
-          itemGap: 30,
+          itemGap: 15,
           textStyle: {
-            color: '#000',
+            color: '#fff',
             fontSize: 12
           }
         },
         series: [{
           type: 'pie',
-          radius: ['25%', '65%'],
+          radius: ['25%', '50%'],
           center: ['35%', '58%'],
           clockwise: true,
           avoidLabelOverlap: true,
@@ -929,12 +1194,11 @@ export default {
           labelLine: {
             normal: {
               show: false,
-              length: 10,
-              length2: 45,
+              length: 1,
+              length2: 1,
               smooth: true,
               lineStyle: {
-                width: 2
-
+                width: 1
               }
             },
             emphasis: {
@@ -949,31 +1213,90 @@ export default {
       var app = {
         currentIndex: -1
       }
-      this.timermakeData1 = setInterval(() => {
-        var dataLen = option.series[0].data.length
-        // 取消之前高亮的图形
-        myChart.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        app.currentIndex = (app.currentIndex + 1) % dataLen
-        // 高亮当前图形
-        myChart.dispatchAction({
-          type: 'highlight',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        // 显示 tooltip
-        myChart.dispatchAction({
-          type: 'showTip',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        if (this.timermakeData1) {
-          this.timermakeData1 = ''
+      if (str === '1') {
+        this.timermakeData1 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData1) {
+            this.timermakeData1 = ''
+          }
+        }, 2000)
+      } else {
+        this.timermakeData1_1 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData1_1) {
+            this.timermakeData1_1 = ''
+          }
+        }, 2000)
+      }
+    },
+    makeData1_1 () {
+      var xdata = []
+      var starttime = timesMethod.fun_date(0)
+      var timefrom = timesMethod.getDatestamp(starttime)
+      var endtime = timesMethod.fun_date(1)
+      var timetill = timesMethod.getDatestamp(endtime)
+      this.axios.post(this.$api.main.getInformationStatisticsWeek, qs.stringify({
+        timeFrom: timefrom,
+        timeTill: timetill
+      })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            console.log(json.data)
+            xdata.push(
+              { name: '信息', value: json.data.information },
+              { name: '警告', value: json.data.warning },
+              { name: '一般严重', value: json.data.average },
+              { name: '严重', value: json.data.high },
+              { name: '灾难', value: json.data.disaster }
+            )
+            this.makeData1_info(xdata, '1_1', '当日')
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
         }
-      }, 2000)
+      })
     },
     makeData1_2 () {
       var starttime = timesMethod.fun_date(-6)
@@ -1010,17 +1333,18 @@ export default {
       var myChart = this.$echarts.init(dom2)
       var option = {
         grid: {
-          left: '10%',
-          width: '83%',
-          height: '40%',
+          left: '5%',
+          top: '20%',
+          width: '90%',
+          height: '55%',
           x: 60,
           y: 20
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(240,240,240,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.8)',
           textStyle: {
-            color: 'rgba(34,139,34)'
+            color: 'rgba(255,250,205)'
           },
           axisPointer: {
             lineStyle: {
@@ -1263,6 +1587,10 @@ export default {
       }, 2000)
     },
     makeData2 () {
+      var param1 = 'bytes_received'
+      this.makeData2_1_Data(param1, '1', '接收字节数', 1)
+      var param2 = 'questions'
+      this.makeData2_1_Data(param2, '2', '每秒问题数', 2)
       var param3 = 'rates'
       var bordercolor3 = ['rgba(201,231,255,0.8)', 'rgba(255,233,194,0.8)']
       var color3 = ['#007fe5', '#ffb32a']
@@ -1291,6 +1619,25 @@ export default {
         }
       })
     },
+    async makeData2_1_Data (param, num, str, flag) {
+      await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
+        item: param,
+        num: 4
+      })).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.makeData2_1_info(json.data, num, str, flag)
+          } else {
+          }
+        } else {
+          this.$message({
+            message: '获取分组信息失败',
+            type: 'error'
+          })
+        }
+      })
+    },
     makeData2_info (myChartData, num, str, color, bordercolor, flag) {
       if (myChartData === null) {
         return
@@ -1305,32 +1652,33 @@ export default {
           }
         })
       }
-      var dom3 = document.getElementById('ibox_content_echarts' + num)
+      var dom3 = document.getElementById('ibox_data_echarts' + num)
       var myChart = this.$echarts.init(dom3)
       var fontColor = '#667ba7'
       var option = {
-        backgroundColor: '#ffffff',
+        // backgroundColor: '#ffffff',
         title: {
           text: str,
           textStyle: {
             fontSize: 14,
-            fontWeight: 400
+            fontWeight: 400,
+            color: '#fff'
           },
-          left: '10%',
-          top: '10%'
+          left: '35%',
+          top: '0%'
         },
         grid: {
-          left: '2%',
-          right: '5%',
-          top: '30%',
-          bottom: '15%',
+          left: '0%',
+          right: '10%',
+          top: '25%',
+          bottom: '10%',
           containLabel: true
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(240,240,240,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.8)',
           textStyle: {
-            color: 'rgba(34,139,34)'
+            color: 'rgba(255,250,205)'
           },
           axisPointer: {
             lineStyle: {
@@ -1356,20 +1704,20 @@ export default {
             }
           }
         },
-        legend: {
-          show: true,
-          right: '5%',
-          y: '10',
-          icon: 'circle',
-          itemWidth: 10,
-          itemHeight: 10,
-          itemGap: 10,
-          textStyle: {
-            fontSize: 10,
-            color: '#667ba7'
-          },
-          data: myChartData.legend
-        },
+        // legend: {
+        //   show: true,
+        //   right: '5%',
+        //   y: '10',
+        //   icon: 'circle',
+        //   itemWidth: 10,
+        //   itemHeight: 10,
+        //   itemGap: 10,
+        //   textStyle: {
+        //     fontSize: 10,
+        //     color: '#667ba7'
+        //   },
+        //   data: myChartData.legend
+        // },
         xAxis: [{
           type: 'category',
           boundaryGap: false,
@@ -1387,7 +1735,7 @@ export default {
             show: false
           },
           splitLine: {
-            show: true
+            show: false
           },
           data: returndataclocktime
         }],
@@ -1410,7 +1758,7 @@ export default {
             show: false
           },
           splitLine: {
-            show: true
+            show: false
           }
         }
         ],
@@ -1489,6 +1837,242 @@ export default {
         }, 2000)
       } else if (flag === 2) {
         this.timermakeData2_2 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData2_2) {
+            this.timermakeData2_2 = ''
+          }
+        }, 2000)
+      }
+    },
+    makeData2_1_info (myChartData, num, str, flag) {
+      if (myChartData === null) {
+        return
+      }
+      console.log(myChartData.series)
+      var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
+      var numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
+      var numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
+      var numFour = myChartData.series[3].data[myChartData.series[3].data.length - 1]
+      var numNameOne = myChartData.series[0].name
+      var numNameTwo = myChartData.series[1].name
+      var numNameThree = myChartData.series[2].name
+      var numNameFour = myChartData.series[3].name
+      var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
+      var domdata = document.getElementById('ibox_data_echarts' + num)
+      var echarts = this.$echarts
+      var myChart = echarts.init(domdata)
+      var option = {
+        title: {
+          text: str,
+          textStyle: {
+            fontSize: 14,
+            fontWeight: 400,
+            color: '#ffffff'
+          },
+          left: '35%',
+          top: '0%'
+        },
+        grid: {
+          left: '10%',
+          right: '10%',
+          bottom: '20%',
+          top: '25%'
+        },
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(135,206,255,0.8)',
+          textStyle: {
+            color: 'rgba(255,250,205)'
+          },
+          axisPointer: {
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                top: '40%',
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(255, 0, 0,0)'
+                }, {
+                  offset: 0.5,
+                  color: 'rgba(255, 0, 0,1)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(0, 255, 0,0)'
+                }],
+                global: false
+              }
+            }
+          }
+        },
+        xAxis: [{
+          type: 'value',
+          boundaryGap: false,
+          axisLabel: {
+            color: '#667ba7',
+            fontSize: 10
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#667ba7'
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          splitLine: {
+            show: false
+          }
+        }],
+        yAxis: [{
+          type: 'category',
+          axisLabel: {
+            textStyle: {
+              color: '#667ba7',
+              fontSize: '10'
+            },
+            show: false
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#667ba7'
+            }
+          },
+          data: namedata
+        }],
+        series: [{
+          name: '值',
+          type: 'bar',
+          zlevel: 1,
+          xAxisIndex: 0,
+          barWidth: 6,
+          data: [
+            {
+              value: numOne,
+              itemStyle: {
+                normal: {
+                  barBorderRadius: [0, 5, 5, 0],
+                  color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                    offset: 0,
+                    color: '#015eea'
+                  }, {
+                    offset: 1,
+                    color: '#00c0fa'
+                  }], false)
+                }
+              }
+            },
+            {
+              value: numTwo,
+              itemStyle: {
+                normal: {
+                  barBorderRadius: [0, 5, 5, 0],
+                  color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                    offset: 0,
+                    color: '#0cbf8b'
+                  }, {
+                    offset: 1,
+                    color: '#3fd8d1'
+                  }], false)
+                }
+              }
+            },
+            {
+              value: numThree,
+              itemStyle: {
+                normal: {
+                  barBorderRadius: [0, 5, 5, 0],
+                  color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                    offset: 0,
+                    color: '#ff8501'
+                  }, {
+                    offset: 1,
+                    color: '#ffbf3a'
+                  }], false)
+                }
+              }
+            },
+            {
+              value: numFour,
+              itemStyle: {
+                normal: {
+                  barBorderRadius: [0, 5, 5, 0],
+                  color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                    offset: 0,
+                    color: '#d8447c'
+                  }, {
+                    offset: 1,
+                    color: '#ff9e9e'
+                  }], false)
+                }
+              }
+            }
+          ]
+        }
+        ]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      if (flag === 1) {
+        this.timermakeData2_1_1 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData2_1) {
+            this.timermakeData2_1 = ''
+          }
+        }, 2000)
+      } else if (flag === 2) {
+        this.timermakeData2_1_2 = setInterval(() => {
           var dataLen = option.series[0].data.length
           // 取消之前高亮的图形
           myChart.dispatchAction({
@@ -1637,12 +2221,13 @@ export default {
     async makeData5_Data (param, str) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 3
+        num: 4
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData5_info(json.data)
+            this.makeData5_info(json.data, '1')
+            this.makeData5_info(json.data, '2')
             this.makeData5_2_info(json.data, str)
           } else {
           }
@@ -1654,116 +2239,231 @@ export default {
         }
       })
     },
-    makeData5_info (myChartData) {
-      var data = []
-      var series = myChartData.series
-      if (series !== null) {
-        series.forEach(element => {
-          var value = parseFloat(element.data[element.data.length - 1]).toFixed(1)
-          data.push({
-            name: element.name,
-            value: value
-          })
-        })
+    makeData5_info (myChartData, str) {
+      console.log(myChartData)
+      var numOne = 0
+      var numTwo = 0
+      var numThree = 0
+      var numFour = 0
+      if (str === '1') {
+        numOne = myChartData.series[0].data[0]
+        numTwo = myChartData.series[1].data[0]
+        numThree = myChartData.series[2].data[0]
+        numFour = myChartData.series[3].data[0]
+      } else {
+        numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
+        numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
+        numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
+        numFour = myChartData.series[3].data[myChartData.series[3].data.length - 1]
       }
-      var dom = document.getElementById('ibox_content_echarts8')
+      var numNameOne = myChartData.series[0].name
+      var numNameTwo = myChartData.series[1].name
+      var numNameThree = myChartData.series[2].name
+      var numNameFour = myChartData.series[3].name
+      var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
+      var dom = document.getElementById('ibox_centre_echarts' + str)
       var echarts = this.$echarts
-      var myChart = echarts.init(dom)
-      var titleArr = []
-      var seriesArr = []
-      var sCenter = {}
-      var TitleXy = {}
-      var colors = [['#00b06c', '#E7E7E7'], ['#ff8400', '#E7E7E7'], ['#cb1d5f', '#E7E7E7']]
-      data.forEach(function (item, index) {
-        sCenter = [(index) * 35 + 14 + '%', '40%']
-        TitleXy = {
-          left: (index) * 35 + 14 + '%',
-          top: '70%'
-        }
-        titleArr.push(
-          {
-            text: item.name,
-            left: TitleXy.left,
-            top: TitleXy.top,
-            textAlign: 'center',
-            textStyle: {
-              fontWeight: 'normal',
-              fontSize: '14',
-              color: '#848484',
-              textAlign: 'center'
-            }
+      var breakLine = echarts.init(dom)
+      var placeHolderStyle = {
+        normal: {
+          color: 'rgba(0,0,0,0)',
+          label: {
+            show: false
+          },
+          labelLine: {
+            show: false
           }
-        )
-        seriesArr.push(
+        },
+        emphasis: {
+          color: 'rgba(0,0,0,0)'
+        }
+      }
+      var option = {
+        // backgroundColor: '#0b214a',
+        color: ['#163ce3', '#3fd8d1', '#ffbf3a', '#fe9d9d'],
+        tooltip: {
+          show: true,
+          formatter: '{b} : {c}'
+        },
+        legend: {
+          data: namedata,
+          orient: 'vertical',
+          right: '1%',
+          top: '25%',
+          itemWidth: 15,
+          itemHeight: 10,
+          itemGap: 15,
+          textStyle: {
+            color: '#ffffff',
+            fontSize: 10
+          },
+          formatter: function (parms) {
+            if (parms !== null && parms.length > 4) {
+              parms = parms.substring(0, 4) + '...'
+            }
+            return parms
+          }
+        },
+        series: [
           {
-            name: item.name,
+            name: namedata[0],
             type: 'pie',
             clockWise: true,
-            radius: [30, 35],
+            hoverAnimation: false,
+            radius: ['50%', '55%'],
+            center: ['35%', '50%'],
             itemStyle: {
               normal: {
-                color: new echarts.graphic.LinearGradient(
-                  0, 1, 1, 0,
-                  [{
-                    offset: 0,
-                    color: colors[index][0]
-                  },
-                  {
-                    offset: 1,
-                    color: colors[index][1]
-                  }
-                  ]
-                ),
-                shadowBlur: 0,
                 label: {
                   show: false
                 },
                 labelLine: {
                   show: false
-                }
+                },
+                color: new echarts.graphic.LinearGradient(0, 1, 1, 0, [
+                  {
+                    offset: 0,
+                    color: '#00c0fa'
+                  },
+                  {
+                    offset: 1,
+                    color: '#015eea'
+                  }
+                ], false)
               }
             },
-            roundCap: true,
-            barGap: '-100%',
-            hoverAnimation: false,
-            center: sCenter,
             data: [{
-              value: item.value,
-              label: {
-                normal: {
-                  formatter: function (params) {
-                    return params.value + '%'
-                  },
-                  position: 'center',
-                  show: true,
-                  textStyle: {
-                    fontSize: '20',
-                    fontWeight: 'bold',
-                    color: colors[index][0]
-                  }
-                }
-              }
+              value: numOne,
+              name: '信息'
             }, {
-              value: 100 - item.value,
-              name: 'invisible',
-              itemStyle: {
-                normal: {
-                  color: colors[index][1]
+              value: 100,
+              name: '总数',
+              tooltip: {
+                show: false
+              },
+              itemStyle: placeHolderStyle
+            }
+            ]
+          }, {
+            name: namedata[1],
+            type: 'pie',
+            clockWise: true,
+            radius: ['40%', '45%'],
+            center: ['35%', '50%'],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
                 },
-                emphasis: {
-                  color: colors[index][1]
-                }
+                labelLine: {
+                  show: false
+                },
+                color: new echarts.graphic.LinearGradient(0, 1, 1, 0, [
+                  {
+                    offset: 0,
+                    color: '#3fd8d1'
+                  },
+                  {
+                    offset: 1,
+                    color: '#0cbf8b'
+                  }
+                ], false)
               }
+            },
+            hoverAnimation: false,
+            data: [{
+              value: numTwo,
+              name: '警告'
+            }, {
+              value: 100,
+              name: '总数',
+              tooltip: {
+                show: false
+              },
+              itemStyle: placeHolderStyle
             }]
+          }, {
+            name: namedata[2],
+            type: 'pie',
+            clockWise: true,
+            hoverAnimation: false,
+            radius: ['30%', '35%'],
+            center: ['35%', '50%'],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                },
+                color: new echarts.graphic.LinearGradient(0, 1, 1, 0, [
+                  {
+                    offset: 0,
+                    color: '#ffbf3a'
+                  },
+                  {
+                    offset: 1,
+                    color: '#ff8501'
+                  }
+                ], false)
+              }
+            },
+            data: [{
+              value: numThree,
+              name: '严重'
+            }, {
+              value: 100,
+              name: '总数',
+              tooltip: {
+                show: false
+              },
+              itemStyle: placeHolderStyle
+            }]
+          },
+          {
+            name: namedata[3],
+            type: 'pie',
+            clockWise: true,
+            radius: ['20%', '25%'],
+            center: ['35%', '50%'],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                },
+                color: new echarts.graphic.LinearGradient(0, 1, 1, 0, [
+                  {
+                    offset: 0,
+                    color: '#ff9e9e'
+                  },
+                  {
+                    offset: 1,
+                    color: '#d8447c'
+                  }
+                ], false)
+              }
+            },
+            hoverAnimation: false,
+            data: [{
+              value: numFour,
+              name: '一般'
+            }, {
+              value: 100,
+              name: '总数',
+              tooltip: {
+                show: false
+              },
+              itemStyle: placeHolderStyle
+            }
+            ]
           }
-        )
-      })
-      var option = {
-        backgroundColor: '#fff',
-        title: titleArr,
-        series: seriesArr
+        ]
       }
-      myChart.setOption(option, true)
+      breakLine.setOption(option, true)
     },
     makeData5_2_info (myChartData, str) {
       if (myChartData === null) {
@@ -1779,30 +2479,31 @@ export default {
           }
         })
       }
-      var dom = document.getElementById('ibox_content_echarts9')
+      var dom = document.getElementById('ibox_content_echarts3')
       var myChart = this.$echarts.init(dom)
       var option = {
         grid: {
           left: '2%',
           right: '5%',
-          top: '20%',
-          bottom: '5%',
+          top: '25%',
+          bottom: '10%',
           containLabel: true
         },
         title: {
           text: str,
           textStyle: {
             fontSize: 14,
-            fontWeight: 400
+            fontWeight: 400,
+            color: '#fff'
           },
           left: '42.5%',
           top: '5%'
         },
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(240,240,240,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.8)',
           textStyle: {
-            color: 'rgba(34,139,34)'
+            color: 'rgba(255,250,205)'
           },
           axisPointer: {
             lineStyle: {
@@ -1881,6 +2582,35 @@ export default {
           smooth: true,
           itemStyle: {
             normal: {
+              color: '#163ce3'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(22,60,227, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(22,60,227, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }, {
+          name: myChartData.legend[1],
+          data: myChartData.series[1].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
               color: '#00b06c'
             }
           },
@@ -1902,8 +2632,8 @@ export default {
             }
           }
         }, {
-          name: myChartData.legend[1],
-          data: myChartData.series[1].data,
+          name: myChartData.legend[2],
+          data: myChartData.series[2].data,
           type: 'line',
           symbol: 'circle',
           symbolSize: '0',
@@ -1931,8 +2661,8 @@ export default {
             }
           }
         }, {
-          name: myChartData.legend[2],
-          data: myChartData.series[2].data,
+          name: myChartData.legend[3],
+          data: myChartData.series[3].data,
           type: 'line',
           symbol: 'circle',
           symbolSize: '0',
@@ -1992,18 +2722,28 @@ export default {
       }, 2000)
     },
     makeData6 () {
-      var param = 'loadedClass'
-      this.makeData6_Data(param, '加载的类总数')
+      var param1 = 'heapMemoryUsage'
+      this.makeData6_Data(param1, '使用的堆内存', 1, '1')
+      var param2 = 'memoryPool'
+      this.makeData6_Data(param2, '使用代码缓存', 1, '2')
+      var param3 = 'loadedClass'
+      this.makeData6_Data(param3, '加载的类总数', 2, '3')
+      var param4 = 'unloadedClass'
+      this.makeData6_Data(param4, '卸载的类计数', 2, '4')
     },
-    async makeData6_Data (param, str) {
+    async makeData6_Data (param, str, flag, dataFlag) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 3
+        num: 4
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {
-            this.makeData6_info(json.data, str)
+            if (flag === 1) {
+              this.makeData6_1_info(json.data, str, dataFlag)
+            } else {
+              this.makeData6_info(json.data, str, dataFlag)
+            }
           } else {
           }
         } else {
@@ -2014,7 +2754,225 @@ export default {
         }
       })
     },
-    makeData6_info (myChartData, str) {
+    makeData6_1_info (myChartData, str, flag) {
+      if (myChartData === null) {
+        return
+      }
+      var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
+      var numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
+      var numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
+      var numFour = myChartData.series[3].data[myChartData.series[3].data.length - 1]
+      numOne = numOne / 1024 / 1024
+      numTwo = numTwo / 1024 / 1024
+      numThree = numThree / 1024 / 1024
+      numFour = numFour / 1024 / 1024
+      var numdata = [numOne, numTwo, numThree, numFour]
+      var numNameOne = myChartData.series[0].name
+      var numNameTwo = myChartData.series[1].name
+      var numNameThree = myChartData.series[2].name
+      var numNameFour = myChartData.series[3].name
+      var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
+      var max = numdata.reduce(function (a, b) {
+        return b > a ? b : a
+      })
+      max = max * 2
+      var dom = document.getElementById('ibox_jvm_echarts' + flag)
+      var echarts = this.$echarts
+      var myChart = echarts.init(dom)
+      var option = {
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(135,206,255,0.8)',
+          textStyle: {
+            color: 'rgba(255,250,205)'
+          },
+          axisPointer: {
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                top: '40%',
+                colorStops: [{
+                  offset: 0,
+                  color: 'rgba(255, 0, 0,0)'
+                }, {
+                  offset: 0.5,
+                  color: 'rgba(255, 0, 0,1)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(0, 255, 0,0)'
+                }],
+                global: false
+              }
+            }
+          }
+        },
+        title: {
+          text: str,
+          textStyle: {
+            fontSize: 15,
+            fontWeight: 400,
+            color: '#ffffff'
+          },
+          left: '35%',
+          top: '0%'
+        },
+        grid: {
+          left: '2%',
+          right: '4%',
+          bottom: '5%',
+          top: '20%',
+          containLabel: true
+        },
+        xAxis: [{
+          data: namedata,
+          axisLine: {
+            lineStyle: {
+              color: '#667ba7'
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            color: '#667ba7',
+            fontSize: 10,
+            interval: 0,
+            show: false
+          }
+        }
+        ],
+        yAxis: [{
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#667ba7'
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#667ba7',
+              fontSize: 10
+            }
+          }
+        }],
+        series: [
+          {
+            name: '',
+            type: 'pictorialBar',
+            symbol: 'rect',
+            itemStyle: {
+              color: 'rgb(20,29,119,0.7)'
+            },
+            symbolRepeat: true,
+            symbolSize: [24, 2],
+            // symbolBoundingData: 100,
+            symbolMargin: 1,
+            symbolPosition: 'start',
+            z: 10,
+            data: [max, max, max, max]
+          }, {
+            name: '数量',
+            type: 'pictorialBar',
+            symbol: 'rect',
+            barWidth: 23,
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  var colorList = [['#373af5', '#01dbff'], ['#00e4ff', '#a6f6ff'], ['#01b16d', '#43e6d8'], ['#ff8501', '#ffbf3a']]
+                  var index = params.dataIndex
+                  if (params.dataIndex >= colorList.length) {
+                    index = params.dataIndex - colorList.length
+                  }
+                  return new echarts.graphic.LinearGradient(0, 0, 0, 1,
+                    [
+                      { offset: 0, color: colorList[index][1] },
+                      { offset: 0.5, color: colorList[index][1] },
+                      { offset: 1, color: colorList[index][0] }
+                    ])
+                },
+                barBorderRadius: 5
+              }
+            },
+            z: -20,
+            data: numdata,
+            label: {
+              normal: {
+                show: false,
+                position: 'top',
+                verticalAlign: 'top'
+              }
+            }
+          }]
+      }
+      myChart.setOption(option, true)
+      var app = {
+        currentIndex: -1
+      }
+      if (flag === '1') {
+        this.timermakeData6_1 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData6_1) {
+            this.timermakeData6_1 = ''
+          }
+        }, 2000)
+      } else {
+        this.timermakeData6_2 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData6_1) {
+            this.timermakeData6_1 = ''
+          }
+        }, 2000)
+      }
+    },
+    makeData6_info (myChartData, str, flag) {
       if (myChartData === null) {
         return
       }
@@ -2028,7 +2986,7 @@ export default {
           }
         })
       }
-      var dom = document.getElementById('ibox_content_echarts10')
+      var dom = document.getElementById('ibox_jvm_echarts' + flag)
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var xData = returndataclocktime
@@ -2038,12 +2996,12 @@ export default {
         myChartData.series[2].data
       ]
       var option = {
-        backgroundColor: '#ffffff',
+        // backgroundColor: '#ffffff',
         tooltip: {
           trigger: 'axis',
-          backgroundColor: 'rgba(240,240,240,0.8)',
+          backgroundColor: 'rgba(135,206,255,0.8)',
           textStyle: {
-            color: 'rgba(34,139,34)'
+            color: 'rgba(255,250,205)'
           },
           axisPointer: {
             lineStyle: {
@@ -2073,30 +3031,31 @@ export default {
           text: str,
           textStyle: {
             fontSize: 14,
-            fontWeight: 400
+            fontWeight: 400,
+            color: '#fff'
           },
-          left: '12.5%',
-          top: '5%'
+          left: '35%',
+          top: '0%'
         },
         grid: {
-          left: '10%',
-          top: '15%',
+          left: '15%',
+          top: '20%',
           right: '5%',
-          bottom: '10%'
+          bottom: '15%'
         },
-        legend: {
-          show: true,
-          icon: 'circle',
-          orient: 'horizontal',
-          top: '5%',
-          right: '3%',
-          itemWidth: 5.5,
-          itemHeight: 6,
-          itemGap: 5,
-          textStyle: {
-            color: '#C9C8CD'
-          }
-        },
+        // legend: {
+        //   show: true,
+        //   icon: 'circle',
+        //   orient: 'horizontal',
+        //   top: '5%',
+        //   right: '3%',
+        //   itemWidth: 5.5,
+        //   itemHeight: 6,
+        //   itemGap: 5,
+        //   textStyle: {
+        //     color: '#C9C8CD'
+        //   }
+        // },
         xAxis: [{
           type: 'category',
           data: xData,
@@ -2162,7 +3121,7 @@ export default {
             }
           },
           splitLine: {
-            show: true
+            show: false
           },
           axisTick: {
             show: false
@@ -2237,31 +3196,59 @@ export default {
       var app = {
         currentIndex: -1
       }
-      this.timermakeData6_1 = setInterval(() => {
-        var dataLen = option.series[0].data.length
-        // 取消之前高亮的图形
-        myChart.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        app.currentIndex = (app.currentIndex + 1) % dataLen
-        // 高亮当前图形
-        myChart.dispatchAction({
-          type: 'highlight',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        // 显示 tooltip
-        myChart.dispatchAction({
-          type: 'showTip',
-          seriesIndex: 0,
-          dataIndex: app.currentIndex
-        })
-        if (this.timermakeData6_1) {
-          this.timermakeData6_1 = ''
-        }
-      }, 2000)
+      if (flag === '3') {
+        this.timermakeData6_3 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData6_1) {
+            this.timermakeData6_1 = ''
+          }
+        }, 2000)
+      } else {
+        this.timermakeData6_4 = setInterval(() => {
+          var dataLen = option.series[0].data.length
+          // 取消之前高亮的图形
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          app.currentIndex = (app.currentIndex + 1) % dataLen
+          // 高亮当前图形
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          // 显示 tooltip
+          myChart.dispatchAction({
+            type: 'showTip',
+            seriesIndex: 0,
+            dataIndex: app.currentIndex
+          })
+          if (this.timermakeData6_1) {
+            this.timermakeData6_1 = ''
+          }
+        }, 2000)
+      }
     },
     formattertype (severity) {
       var name = ''
@@ -2340,7 +3327,7 @@ export default {
     },
     rowClassName (index) {
       if (index % 2 !== 1) {
-        return 'zebra_bg'
+        return 'zebra_bg2'
       }
       return ''
     }
@@ -2366,12 +3353,79 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '~@/assets/css/index-main.css';
+@import '~@/assets/css/main_darkmode.css';
 #target {
   min-height: 260px;
   min-width: 700px;
   border: 0px solid #ccc !important;
   padding: 0px !important;
   margin-left: 2%;
+}
+.headerbackground {
+  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+  background-size: 100% 100%;
+  margin-left: -230px;
+  height: 67.5rem;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+.mar_t20 {
+  margin-top: 20px;
+}
+.ywzs_num li {
+  background: rgba(0, 86, 251, 0.2);
+  background: #060f53\0;
+  color: #fff;
+  min-height: 85px;
+}
+.ywzs_num li p {
+  margin-top: 20px;
+}
+.ywzs_num div {
+  height: 10px;
+}
+@media (max-width: 1880px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1750px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1650px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1540px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1400px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1320px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1210px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
+}
+@media (max-width: 1100px) {
+  .headerbackground {
+    height: 97.5rem;
+  }
 }
 </style>
