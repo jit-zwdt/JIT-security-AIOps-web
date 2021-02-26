@@ -3400,6 +3400,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~@/assets/css/main_darkmode.css';
+@import '~@/assets/css/index-main.css';
 #target {
   min-height: 260px;
   min-width: 700px;
