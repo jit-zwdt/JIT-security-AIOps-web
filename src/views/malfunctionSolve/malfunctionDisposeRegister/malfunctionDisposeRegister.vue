@@ -20,7 +20,7 @@
       </div>
     </ToolBar>
     <el-table
-            :data="(tableData || []).slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            :data="tableData"
             border
             v-loading="loading"
             style="width: 100%"
@@ -44,26 +44,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="block" style="margin-top:15px;">
-      <el-pagination
-              align="left"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-sizes="[15, 30, 50, 100]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="totalCount"
-      ></el-pagination>
-    </div>
+    <Pagination :currentTotal="currentTotal" @pageChange="pageChange" :currentPage="currentPage"></Pagination>
   </div>
 </template>
 <script>
-import qs from 'qs'
+import Pagination from '@/components/Pagination.vue'
 export default {
   data: function () {
     return {
-      totalCount: 0,
       titleType: '',
       showEditDialog: false,
       problemName: '',
@@ -87,9 +75,10 @@ export default {
         ns: '',
         claimTime: ''
       },
-      currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 15 // 每页的数据条数
+      currentPage: 1,
+      pageSize: 15,
+      currentTotal: 0,
+      tableDataclear: []
     }
   },
   created () {
@@ -122,20 +111,23 @@ export default {
     },
     showInfoTimeout () {
       this.axios
-        .post(this.$api.malfunctionSolve.getClaimByUsers, qs.stringify({
-          problemName: this.problemName,
-          resolveType: this.resolveType
-        })).then(resp => {
+        .post(this.$api.malfunctionSolve.getClaimByUsers, {
+          param: {
+            problemName: this.problemName,
+            resolveType: this.resolveType
+          },
+          page: this.currentPage,
+          size: this.pageSize
+        }).then(resp => {
           if (resp.status === 200) {
             var json = resp.data
             if (json.code === 1) {
-              // var now = new Date()
-              this.tableData = json.data
-              if (this.tableData) {
-                this.totalCount = this.tableData.length
+              this.tableData = json.data.dataList
+              if (this.tableData.length === 0 && this.currentPage !== 1) {
+                this.currentPage = this.currentPage - 1
+                this.showInfo()
               }
-              this.currentPage = 1
-              this.loading = false
+              this.currentTotal = json.data.totalRow
             }
           }
           this.loading = false
@@ -144,18 +136,17 @@ export default {
     claimTimeFormat (val) {
       return val.claimTime.replace('T', ' ')
     },
-    handleSizeChange (val) {
-      this.currentPage = 1
-      this.pageSize = val
-    },
-    handleCurrentChange (val) {
-      this.currentPage = val
+    pageChange (item) {
+      this.currentPage = item.page_currentPage
+      this.pageSize = item.page_pageSize
+      this.showInfo()
     },
     malfunctionDisposeRegister: function (index, row) {
       this.$router.push({ name: 'malfunctionDisposeRegisterAdd', query: { problemId: row.problemId, problemName: row.problemName, ns: row.ns, claimTime: row.claimTime, claimId: row.id } })
     }
   },
-  actions: {}
+  actions: {},
+  components: { Pagination }
 }
 </script>
 <style lang="scss" scoped>
