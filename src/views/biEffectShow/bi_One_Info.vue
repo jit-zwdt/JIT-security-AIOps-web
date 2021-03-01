@@ -2281,20 +2281,26 @@ export default {
       var numThree = 0
       var numFour = 0
       if (str === '1') {
-        titlename = '当日全部'
-        console.log(myChartData.series[0].data)
+        titlename = '当日最大值'
         myChartData.series[0].data.forEach(element => {
-          numOne = parseFloat(numOne) + parseFloat(element)
-          console.log(numOne)
+          if (parseFloat(numOne) < parseFloat(element)) {
+            numOne = parseFloat(element)
+          }
         })
         myChartData.series[1].data.forEach(element => {
-          numTwo = numTwo + element
+          if (parseFloat(numTwo) < parseFloat(element)) {
+            numTwo = parseFloat(element)
+          }
         })
         myChartData.series[2].data.forEach(element => {
-          numThree = numThree + element
+          if (parseFloat(numThree) < parseFloat(element)) {
+            numThree = parseFloat(element)
+          }
         })
         myChartData.series[3].data.forEach(element => {
-          numFour = numFour + element
+          if (parseFloat(numFour) < parseFloat(element)) {
+            numFour = parseFloat(element)
+          }
         })
       } else {
         titlename = '当前小时内'
@@ -2353,12 +2359,19 @@ export default {
             color: '#ffffff',
             fontSize: 10
           },
+          tooltip:{
+            show : true
+          },
           formatter: function (parms) {
             if (parms !== null && parms.length > 4) {
               parms = parms.substring(0, 4) + '...'
             }
             return parms
           }
+        },
+        tooltip: {
+          show: true,
+          formatter: '{b} : {c}'
         },
         series: [
           {
@@ -2390,7 +2403,7 @@ export default {
             },
             data: [{
               value: numOne,
-              name: '信息'
+              name: namedata[0]
             }, {
               value: 100,
               name: '总数',
@@ -2429,7 +2442,7 @@ export default {
             hoverAnimation: false,
             data: [{
               value: numTwo,
-              name: '警告'
+              name: namedata[1]
             }, {
               value: 100,
               name: '总数',
@@ -2467,7 +2480,7 @@ export default {
             },
             data: [{
               value: numThree,
-              name: '严重'
+              name: namedata[2]
             }, {
               value: 100,
               name: '总数',
@@ -2506,7 +2519,7 @@ export default {
             hoverAnimation: false,
             data: [{
               value: numFour,
-              name: '一般'
+              name: namedata[3]
             }, {
               value: 100,
               name: '总数',
