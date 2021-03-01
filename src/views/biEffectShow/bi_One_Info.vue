@@ -2284,7 +2284,8 @@ export default {
         titlename = '当日全部'
         console.log(myChartData.series[0].data)
         myChartData.series[0].data.forEach(element => {
-          numOne = numOne + element
+          numOne = parseFloat(numOne) + parseFloat(element)
+          console.log(numOne)
         })
         myChartData.series[1].data.forEach(element => {
           numTwo = numTwo + element
