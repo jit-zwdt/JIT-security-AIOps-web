@@ -2228,8 +2228,12 @@ export default {
                   } else {
                     length = proname.length
                   }
+                  var matl = 0
+                  if (mat.length !== null) {
+                    matl = mat.length
+                  }
                   if (length > 70) {
-                    hostName = element.zabbixProblemDTO.name.substring(0, 70 - (mat.length * 2))
+                    hostName = element.zabbixProblemDTO.name.substring(0, 70 - (matl * 2))
                     element.zabbixProblemDTO.name = hostName + '...'
                   }
                 }
