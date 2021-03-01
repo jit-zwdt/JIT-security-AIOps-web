@@ -299,7 +299,7 @@
           <div class="bor_c_r">
             <h2 class="bg_title">网络拓扑</h2>
             <div class="content_box">
-              <canvas width="600" height="300" id="target"></canvas>
+              <canvas width="580" height="280" id="target" style="margin-top:0px;margin-left:-20px"></canvas>
               <input
                 type="hidden"
                 id="infoData"
