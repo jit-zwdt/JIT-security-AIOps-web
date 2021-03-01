@@ -2359,19 +2359,15 @@ export default {
             color: '#ffffff',
             fontSize: 10
           },
-          tooltip:{
-            show : true
-          },
+          tooltip: {
+            show: true
+          },
           formatter: function (parms) {
             if (parms !== null && parms.length > 4) {
               parms = parms.substring(0, 4) + '...'
             }
             return parms
           }
-        },
-        tooltip: {
-          show: true,
-          formatter: '{b} : {c}'
         },
         series: [
           {
@@ -3548,13 +3544,13 @@ export default {
   color: darkgrey;
   font-size: 12px;
   margin-left: 10px;
-  cursor:pointer;
+  cursor: pointer;
 }
 .head_span2 {
   color: #fff;
   font-size: 12px;
   margin-left: 10px;
-  cursor:pointer;
+  cursor: pointer;
 }
 .head_div {
   margin-top: 30px;
