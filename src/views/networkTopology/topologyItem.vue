@@ -20,8 +20,18 @@
                   id="buildButton"
                   name="buildButton"
                   class="btn btn-secondary"
+                  title="打开"
                 >
                   <i class="fa fa-folder-open"></i>
+                </button>
+                <button
+                  id="refreshButton"
+                  name="refreshButton"
+                  class="btn btn-secondary"
+                  title="刷新"
+                  style="display: none; width: 2.8rem"
+                >
+                  <i class="fa fa-refresh"></i>
                 </button>
                 <label
                   style="width: 100px; margin-top: -100px; margin-left: 5px"
@@ -274,17 +284,22 @@ export default {
           }
           stage.centerAndZoom()
         }
+        $('#refreshButton').click(function () {
+          window.location.reload()
+        })
         $('#buildButton').click(function () {
           // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
           // gettopologydata(jsonData)
           if (clearInfoData()) {
-            window.showErrorMessageInfo('请刷新页面后再次选择！')
+            window.location.reload()
           } else {
             window.openTopologyItemList()
             var timer = setInterval(() => {
               var infoData = $('#infoData').val()
               if (infoData !== null && infoData !== '') {
                 gettopologydata(infoData)
+                document.getElementById('refreshButton').style.display = ''
+                document.getElementById('buildButton').style.display = 'none'
                 clearInterval(timer)
               }
             }, 1000)

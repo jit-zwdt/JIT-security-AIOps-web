@@ -62,7 +62,7 @@
             <div class="col-sm-8 new_wid_c result animated fadeInRight">
               <div id="test" class="btn-toolbar ibox whitebg" role="toolbar">
                 <div class="btn-group jtopo_toolbar" data-toggle="buttons">
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="移动">
                     <input
                       type="radio"
                       name="modeRadio"
@@ -71,7 +71,7 @@
                       checked="true"
                     /><i for="r3" class="fa fa-mouse-pointer1"></i>
                   </label>
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="选中">
                     <input
                       type="radio"
                       name="modeRadio"
@@ -79,7 +79,7 @@
                       id="r2"
                     /><i for="r2" class="fa fa-crop1"></i>
                   </label>
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="画线">
                     <input
                       type="radio"
                       name="modeRadio"
@@ -89,7 +89,7 @@
                   </label>
                 </div>
                 <div class="btn-group jtopo_toolbar" data-toggle="buttons">
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="直线">
                     <input
                       type="radio"
                       name="linestyle"
@@ -97,7 +97,7 @@
                       id="l1"
                     /><i for="l1" class="fa fa-arrows-v1"></i>
                   </label>
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="直角线">
                     <input
                       type="radio"
                       name="linestyle"
@@ -105,7 +105,7 @@
                       id="l2"
                     /><i for="l2" class="fa fa-level-up1"></i>
                   </label>
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="折线">
                     <input
                       type="radio"
                       name="linestyle"
@@ -113,7 +113,7 @@
                       id="l3"
                     /><i for="l3" class="fa fa-line-chart1"></i>
                   </label>
-                  <label class="btn btn-secondary">
+                  <label class="btn btn-secondary" title="曲线">
                     <input
                       type="radio"
                       name="linestyle"
@@ -127,10 +127,10 @@
                   data-toggle="buttons"
                   style="height: 100%"
                 >
-                  <button id="zoomOut" name="zoomOut" class="btn btn-secondary">
+                  <button id="zoomOut" name="zoomOut" class="btn btn-secondary" title="放大">
                     <i class="fa fa-arrows-alt1"></i>
                   </button>
-                  <button id="zoomIn" name="zoomIn" class="btn btn-secondary">
+                  <button id="zoomIn" name="zoomIn" class="btn btn-secondary" title="缩小">
                     <i class="fa fa-crosshairs1"></i>
                   </button>
                 </div>
@@ -143,6 +143,7 @@
                     id="exportButton"
                     name="exportButton"
                     class="btn btn-secondary"
+                    title="绘图"
                   >
                     <i class="fa fa-file-image-o1"></i>
                   </button>
@@ -150,6 +151,7 @@
                     id="printButton"
                     name="printButton"
                     class="btn btn-secondary"
+                    title="保存"
                   >
                     <i class="fa fa-floppy-o1"></i>
                   </button>
@@ -157,8 +159,18 @@
                     id="buildButton"
                     name="buildButton"
                     class="btn btn-secondary"
+                    title="打开"
                   >
                     <i class="fa fa-folder-open1"></i>
+                  </button>
+                  <button
+                    id="refreshButton"
+                    name="refreshButton"
+                    class="btn btn-secondary"
+                    title="刷新"
+                    style="display:none;width: 2.8rem;"
+                  >
+                    <i class="fa fa-refresh"></i>
                   </button>
                   <input
                     type="hidden"
@@ -371,7 +383,7 @@
                         id="subconfirm"
                         name="subconfirm"
                         class="btn btn-success"
-                        value="应用修改"
+                        value="属性修改"
                       />
                     </div>
                   </div>
@@ -382,7 +394,7 @@
                         id="redalert"
                         name="redalert"
                         class="btn btn-danger"
-                        value="出问题展示"
+                        value="问题效果展示"
                       />
                     </div>
                   </div>
@@ -748,17 +760,22 @@ export default {
           }
           stage.centerAndZoom()
         }
+        $('#refreshButton').click(function () {
+          window.location.reload()
+        })
         $('#buildButton').click(function () {
           // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
           // gettopologydata(jsonData)
           if (clearInfoData()) {
-            window.showErrorMessageInfo('请刷新页面后再次选择！')
+            window.location.reload()
           } else {
             window.openTopologyItemList()
             var timer = setInterval(() => {
               var infoData = $('#infoData').val()
               if (infoData !== null && infoData !== '') {
                 gettopologydata(infoData)
+                document.getElementById('refreshButton').style.display = ''
+                document.getElementById('buildButton').style.display = 'none'
                 clearInterval(timer)
               }
             }, 1000)
