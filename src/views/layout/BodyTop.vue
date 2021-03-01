@@ -241,7 +241,7 @@ export default {
       // this.$store.commit('MINI_SIDEBAR_TOGGLE')
       // this.screenFullToggle(0)
       const routeData = this.$router.resolve({
-        name: 'bi_Two_Info'
+        name: 'bi_One_Info'
       })
       window.open(routeData.href, '_blank')
     }
