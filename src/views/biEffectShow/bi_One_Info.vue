@@ -2282,6 +2282,7 @@ export default {
       var numFour = 0
       if (str === '1') {
         titlename = '当日全部'
+        console.log(myChartData.series[0].data)
         myChartData.series[0].data.forEach(element => {
           numOne = numOne + element
         })
