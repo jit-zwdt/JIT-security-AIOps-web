@@ -2000,7 +2000,7 @@ export default {
       const param = {
         id: indexid
       }
-      await this.axios.post(this.$api.networkTopology.getTopologyOneInfo, param).then((resp) => {
+      await this.axios.post(this.$api.networkTopology.getTopologyDefultInfo, param).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
           if (json.code === 1) {

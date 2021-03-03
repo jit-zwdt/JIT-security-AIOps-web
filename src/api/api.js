@@ -252,6 +252,7 @@ const api = {
   networkTopology: {
     addTopologyInfo: '/topology/addTopologyInfo',
     getTopologyOneInfo: '/topology/getTopologyOneInfo/',
+    getTopologyDefultInfo: '/topology/getTopologyDefultInfo/',
     getTopologyAllInfo: '/topology/getTopologyAllInfo',
     changeHomePageDisplay: '/topology/updateTopologyHomePageDisplay',
     getTopologyItemInfo: '/topology/getTopologyItemInfo',
