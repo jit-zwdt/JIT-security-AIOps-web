@@ -272,6 +272,7 @@ export default {
       function cleanScene () {
         $('#infoData').val('')
         $('#infoId').val('')
+        $('#infoName').text('')
         _this.infoData = ''
         scene.clear()
       }
