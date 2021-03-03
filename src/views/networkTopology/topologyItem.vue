@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul
-      id="contextmenu"
-      class="notice_box notice_color_default notice_box_margin"
-      style="display: none"
+            id="contextmenu"
+            class="notice_box notice_color_default notice_box_margin"
+            style="display: none"
     >
       <li style="padding: 10px">资产名称：<span id="assetsName"></span></li>
       <li style="padding: 10px">资产IP：<span id="assetsIp"></span></li>
@@ -16,38 +16,17 @@
           <div class="row">
             <div class="col-sm-8 new_wid_c result animated fadeInRight">
               <div style="float: left">
-                <button
-                  id="buildButton"
-                  name="buildButton"
-                  class="btn btn-secondary"
-                  title="打开"
-                >
+                <button id="buildButton" name="buildButton" class="btn btn-secondary" title="打开">
                   <i class="fa fa-folder-open"></i>
                 </button>
-                <button
-                  id="refreshButton"
-                  name="refreshButton"
-                  class="btn btn-secondary"
-                  title="刷新"
-                  style="display: none; width: 2.8rem"
-                >
-                  <i class="fa fa-refresh"></i>
-                </button>
-                <label
-                  style="width: 100px; margin-top: -100px; margin-left: 5px"
-                  >拓扑图名称：</label
-                >
+                <label style="width: 100px; margin-top: -100px; margin-left: 5px">拓扑图名称：</label>
                 <span id="infoName" name="infoName"></span>
               </div>
-              <div
-                class="btn-group jtopo_toolbar"
-                data-toggle="buttons"
-                style="height: 40px; margin-left: 200px; float: right"
-              >
-                <button id="zoomOut" name="zoomOut" class="btn btn-secondary">
+              <div class="btn-group jtopo_toolbar" data-toggle="buttons" style="height: 40px; margin-left: 200px; float: right">
+                <button id="zoomOut" name="zoomOut" class="btn btn-secondary" title="放大">
                   <i class="fa fa-arrows-alt"></i>
                 </button>
-                <button id="zoomIn" name="zoomIn" class="btn btn-secondary">
+                <button id="zoomIn" name="zoomIn" class="btn btn-secondary" title="缩小">
                   <i class="fa fa-crosshairs"></i>
                 </button>
               </div>
@@ -56,12 +35,7 @@
                   <canvas width="1600" height="670" id="target"></canvas>
                 </div>
               </div>
-              <input
-                type="hidden"
-                id="infoData"
-                name="infoData"
-                v-model="infoData"
-              />
+              <input type="hidden" id="infoData" name="infoData" v-model="infoData"/>
               <input type="hidden" id="infoId" name="infoId" />
             </div>
           </div>
@@ -70,10 +44,10 @@
       </div>
     </div>
     <TopologyItemList
-      :showEditDialog="showEditDialog"
-      @close="showEditDialog = false"
-      @success="changeReloadData"
-      @error="reloadData"
+            :showEditDialog="showEditDialog"
+            @close="showEditDialog = false"
+            @success="changeReloadData"
+            @error="reloadData"
     ></TopologyItemList>
   </div>
 </template>
@@ -90,7 +64,6 @@ export default {
     }
   },
   created () {
-    // this.getTopologyOneInfo()
     window.showHostInfo = this.showHostInfo
     window.showAssetsChange = this.showAssetsChange
     window.showErrorMessageInfo = this.showErrorMessageInfo
@@ -100,7 +73,6 @@ export default {
     async getTopologyOneInfo (id) {
       var data = ''
       const param = {
-        // id: '4028cb8177230464017723b53117000d'
         id: id
       }
       await this.axios.post(this.$api.networkTopology.getTopologyOneInfo, param).then((resp) => {
@@ -184,6 +156,7 @@ export default {
     }
   },
   mounted () {
+    var _this = this
     // initInfo()
     var beginNode = null
     var currentNode = null
@@ -284,27 +257,23 @@ export default {
           }
           stage.centerAndZoom()
         }
-        $('#refreshButton').click(function () {
-          window.location.reload()
-        })
         $('#buildButton').click(function () {
-          // var jsonData = window.getTopologyOneInfo('2c908ff6768e901801768ebcb6cb0006')
-          // gettopologydata(jsonData)
-          if (clearInfoData()) {
-            window.location.reload()
-          } else {
-            window.openTopologyItemList()
-            var timer = setInterval(() => {
-              var infoData = $('#infoData').val()
-              if (infoData !== null && infoData !== '') {
-                gettopologydata(infoData)
-                document.getElementById('refreshButton').style.display = ''
-                document.getElementById('buildButton').style.display = 'none'
-                clearInterval(timer)
-              }
-            }, 1000)
-          }
+          cleanScene()
+          window.openTopologyItemList()
+          var timer = setInterval(() => {
+            var infoData = $('#infoData').val()
+            if (infoData !== null && infoData !== '') {
+              gettopologydata(infoData)
+              clearInterval(timer)
+            }
+          }, 1000)
         })
+      }
+      function cleanScene () {
+        $('#infoData').val('')
+        $('#infoId').val('')
+        _this.infoData = ''
+        scene.clear()
       }
       function addNode (node) {
         var n = new jTopo.Node(node.name)
@@ -473,14 +442,6 @@ export default {
           $('#linemenu').hide()
         }
       })
-      function clearInfoData () {
-        var infoData = $('#infoData').val()
-        if (infoData !== null && infoData !== '') {
-          return true
-        } else {
-          return false
-        }
-      }
       $('#subconfirm').click(function (e) {
         if ($('#node_name').val() !== '') {
           currentNode.text = $('#node_name').val()
@@ -541,35 +502,35 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@media screen and (min-width: 1500px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl {
-    max-width: 1700px;
+  @media screen and (min-width: 1500px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+      max-width: 1700px;
+    }
   }
-}
-.btn-secondary {
-  background-color: #4d7be4 !important;
-  border-color: #4d7be4 !important;
-}
-.jtopo_toolbar .active {
-  background-color: #2b52d4 !important;
-  border-color: #2b52d4 !important;
-}
-.col-sm-8 {
-  width: 100% !important;
-  max-width: 100% !important;
-  flex: 0 0 0;
-}
-.col-sm-9 {
-  width: 100% !important;
-  max-width: 100% !important;
-  flex: 0 0 0;
-}
-.notice_box_margin {
-  margin-left: -180px !important;
-  width: 28rem !important;
-}
+  .btn-secondary {
+    background-color: #4d7be4 !important;
+    border-color: #4d7be4 !important;
+  }
+  .jtopo_toolbar .active {
+    background-color: #2b52d4 !important;
+    border-color: #2b52d4 !important;
+  }
+  .col-sm-8 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 0;
+  }
+  .col-sm-9 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 0;
+  }
+  .notice_box_margin {
+    margin-left: -180px !important;
+    width: 28rem !important;
+  }
 </style>
