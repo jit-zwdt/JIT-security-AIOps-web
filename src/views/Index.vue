@@ -15,8 +15,8 @@
       <div class="white_box mar_t20 height2">
         <h3 class="public_title">数据库</h3>
         <div class="e_box1-2">
-          <div id="ibox_content_echarts3" style="height: 100%"></div>
-          <div id="ibox_content_echarts4" style="height: 100%"></div>
+          <div id="ibox_content_echarts3" style="height: 100%"><span style="font-size: 14px;margin-left: 60px">每秒查询数</span><div ></div></div>
+          <div id="ibox_content_echarts4" style="height: 100%"><span style="font-size: 14px;margin-left: 60px">用户连接数</span></div>
         </div>
       </div>
     </div>
@@ -1301,7 +1301,7 @@ export default {
     },
     makeData2_info (myChartData, num, str, color, bordercolor, flag) {
       var dom3 = document.getElementById('ibox_content_echarts' + num)
-      if (this.check_data_info(myChartData) || myChartData.series.length < 2) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         dom3.className = 'no_data3'
         return
       }
@@ -1462,7 +1462,12 @@ export default {
             shadowOffsetY: 2,
             shadowOffsetX: 2
           },
-          data: myChartData.series[1].data
+          data: new function () {
+            if (myChartData.series.length > 1) {
+              return myChartData.series[1].data
+            }
+            return null
+          }()
         }
         ]
       }
