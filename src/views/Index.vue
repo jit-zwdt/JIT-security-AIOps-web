@@ -1624,7 +1624,7 @@ export default {
                     length = proname.length
                   }
                   if (length > 70) {
-                    hostName = element.zabbixProblemDTO.name.substring(0, 70 - (mat.length * 2))
+                    hostName = element.zabbixProblemDTO.name.substring(0, 70 - ((mat == null ? 0 : mat.length) * 2))
                     element.zabbixProblemDTO.name = hostName + '...'
                   }
                 }
