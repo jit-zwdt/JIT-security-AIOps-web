@@ -252,7 +252,9 @@ const api = {
   networkTopology: {
     addTopologyInfo: '/topology/addTopologyInfo',
     getTopologyOneInfo: '/topology/getTopologyOneInfo/',
+    getTopologyDefultInfo: '/topology/getTopologyDefultInfo/',
     getTopologyAllInfo: '/topology/getTopologyAllInfo',
+    changeHomePageDisplay: '/topology/updateTopologyHomePageDisplay',
     getTopologyItemInfo: '/topology/getTopologyItemInfo',
     deleteTopology: '/topology/deleteTopology/',
     indexId: '2c908ff67737a47b017738be6f17027e'

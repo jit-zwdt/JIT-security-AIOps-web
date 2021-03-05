@@ -52,7 +52,7 @@
           :resizable="false"
           v-if="show"
         ></el-table-column>
-        <el-table-column label="名称" prop="infoName" min-width="70%">
+        <el-table-column label="名称" prop="infoName" min-width="50%">
           <template slot-scope="scope">
             <el-link type="primary" @click="showTopologyInfo(scope.row.id)">{{
               scope.row.infoName
@@ -60,13 +60,30 @@
           </template></el-table-column
         >
         <el-table-column
+                label="首页展示"
+                prop="homePageDisplay"
+                :formatter="homePageDisplayFormatter"
+                min-width="15%"
+        ></el-table-column>
+        <el-table-column
           label="创建时间"
           prop="gmtCreate"
           :formatter="formatDate"
           min-width="30%"
         ></el-table-column>
-        <el-table-column align="center" label="操作" min-width="18">
+        <el-table-column align="center" label="操作" min-width="40">
           <template slot-scope="scope">
+            <el-popconfirm
+                    title="确定首页展示吗？"
+                    @onConfirm="homePageDisplay(scope.$index, scope.row)"
+            >
+            <el-button
+                    size="mini"
+                    type="primary"
+                    slot="reference"
+                    icon="el-icon-view"
+            >首页展示</el-button>
+            </el-popconfirm>
             <el-popconfirm
               title="确定删除吗？"
               @onConfirm="confirmdelete(scope.$index, scope.row)"
@@ -181,6 +198,34 @@ export default {
         this.loading = false
       })
     },
+    homePageDisplay (index, row) {
+      const param = {
+        id: row.id
+      }
+      this.axios.post(this.$api.networkTopology.changeHomePageDisplay, param).then((resp) => {
+        if (resp.status === 200) {
+          var json = resp.data
+          if (json.code === 1) {
+            this.$message({
+              message: '设置成功',
+              type: 'success'
+            })
+            this.showInfo()
+          } else {
+            this.$message({
+              message: json.msg,
+              type: 'error'
+            })
+          }
+        } else {
+          this.$message({
+            message: '设置失败',
+            type: 'error'
+          })
+          this.showInfo()
+        }
+      })
+    },
     confirmdelete (index, row) {
       this.axios.delete(this.$api.networkTopology.deleteTopology + row.id).then((resp) => {
         if (resp.status === 200) {
@@ -191,6 +236,11 @@ export default {
               type: 'success'
             })
             this.showInfo()
+          } else {
+            this.$message({
+              message: json.msg,
+              type: 'error'
+            })
           }
         } else {
           this.$message({
@@ -222,6 +272,14 @@ export default {
         return ''
       }
       return formatTodate(data, 'YYYY-MM-DD HH:mm:ss')
+    },
+    homePageDisplayFormatter (row, column) {
+      let data = ''
+      data = row[column.property]
+      if (data !== 1) {
+        return '否'
+      }
+      return '是'
     }
   },
   actions: {
