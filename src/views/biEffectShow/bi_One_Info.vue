@@ -1648,7 +1648,8 @@ export default {
     async makeData2_Data (param, num, str, color, bordercolor, flag) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 2
+        num: 2,
+        typeId: ''
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -1667,7 +1668,8 @@ export default {
     async makeData2_1_Data (param, num, str, flag) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 4
+        num: 4,
+        typeId: ''
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -2284,7 +2286,8 @@ export default {
     async makeData5_Data (param, str) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 4
+        num: 4,
+        typeId: '3'
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -2833,7 +2836,8 @@ export default {
     async makeData6_Data (param, str, flag, dataFlag) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 4
+        num: 4,
+        typeId: ''
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data

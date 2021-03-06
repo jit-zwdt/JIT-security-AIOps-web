@@ -15,8 +15,13 @@
       <div class="white_box mar_t20 height2">
         <h3 class="public_title">数据库</h3>
         <div class="e_box1-2">
-          <div id="ibox_content_echarts3" style="height: 100%"><span style="font-size: 14px;margin-left: 60px">每秒查询数</span><div ></div></div>
-          <div id="ibox_content_echarts4" style="height: 100%"><span style="font-size: 14px;margin-left: 60px">用户连接数</span></div>
+          <div id="ibox_content_echarts3" style="height: 100%">
+            <span style="font-size: 14px; margin-left: 60px">每秒查询数</span>
+            <div></div>
+          </div>
+          <div id="ibox_content_echarts4" style="height: 100%">
+            <span style="font-size: 14px; margin-left: 60px">用户连接数</span>
+          </div>
         </div>
       </div>
     </div>
@@ -238,7 +243,11 @@
         >
           <h3 class="public_title">JVM</h3>
           <div class="e_box1-4">
-            <div id="ibox_content_echarts10" style="height: 100%"><span style="font-size: 14px;margin-left: 60px">加载的类总数</span></div>
+            <div id="ibox_content_echarts10" style="height: 100%">
+              <span style="font-size: 14px; margin-left: 60px"
+                >加载的类总数</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -1283,7 +1292,8 @@ export default {
     async makeData2_Data (param, num, str, color, bordercolor, flag) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 2
+        num: 2,
+        typeId: ''
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -1651,7 +1661,8 @@ export default {
     async makeData5_Data (param, str) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 3
+        num: 3,
+        typeId: '3'
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
@@ -1670,7 +1681,7 @@ export default {
     },
     makeData5_info (myChartData) {
       var dom = document.getElementById('ibox_content_echarts8')
-      if (this.check_data_info(myChartData) || myChartData.series.length < 3) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         dom.className = 'no_data3'
         return
       }
@@ -1685,6 +1696,13 @@ export default {
           })
         })
       }
+      var serl = myChartData.series.length
+      var serlnum = 0
+      if (serl === 1) {
+        serlnum = 35
+      } else if (serl === 2) {
+        serlnum = 20
+      }
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var titleArr = []
@@ -1693,9 +1711,9 @@ export default {
       var TitleXy = {}
       var colors = [['#00b06c', '#E7E7E7'], ['#ff8400', '#E7E7E7'], ['#cb1d5f', '#E7E7E7']]
       data.forEach(function (item, index) {
-        sCenter = [(index) * 35 + 14 + '%', '40%']
+        sCenter = [(index) * 35 + 14 + serlnum + '%', '40%']
         TitleXy = {
-          left: (index) * 35 + 14 + '%',
+          left: (index) * 35 + 14 + serlnum + '%',
           top: '70%'
         }
         titleArr.push(
@@ -1785,7 +1803,7 @@ export default {
     },
     makeData5_2_info (myChartData, str) {
       var dom = document.getElementById('ibox_content_echarts9')
-      if (this.check_data_info(myChartData) || myChartData.series.length < 3) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         dom.className = 'no_data3'
         return
       }
@@ -1796,6 +1814,189 @@ export default {
             returndataclocktime.push('0时')
           } else {
             returndataclocktime.push(element + '时')
+          }
+        })
+      }
+      var series = []
+      var serl = myChartData.series.length
+      if (serl === 1) {
+        series.push({
+          name: myChartData.legend[0],
+          data: myChartData.series[0].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#00b06c'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(0,176,108, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,176,108, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        })
+      } else if (serl === 2) {
+        series.push({
+          name: myChartData.legend[0],
+          data: myChartData.series[0].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#00b06c'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(0,176,108, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,176,108, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }, {
+          name: myChartData.legend[1],
+          data: myChartData.series[1].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#ff8400'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(255,132,0, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(255,132,0, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        })
+      } else {
+        series.push({
+          name: myChartData.legend[0],
+          data: myChartData.series[0].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#00b06c'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(0,176,108, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,176,108, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }, {
+          name: myChartData.legend[1],
+          data: myChartData.series[1].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#ff8400'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(255,132,0, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(255,132,0, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
+          }
+        }, {
+          name: myChartData.legend[2],
+          data: myChartData.series[2].data,
+          type: 'line',
+          symbol: 'circle',
+          symbolSize: '0',
+          smooth: true,
+          itemStyle: {
+            normal: {
+              color: '#cb1d5f'
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(203,29,95, 0.3)' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(203,29,95, 0)' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            }
           }
         })
       }
@@ -1891,94 +2092,7 @@ export default {
             show: false
           }
         },
-        series: [{
-          name: myChartData.legend[0],
-          data: myChartData.series[0].data,
-          type: 'line',
-          symbol: 'circle',
-          symbolSize: '0',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              color: '#00b06c'
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: 'rgba(0,176,108, 0.3)' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(0,176,108, 0)' // 100% 处的颜色
-                }],
-                global: false // 缺省为 false
-              }
-            }
-          }
-        }, {
-          name: myChartData.legend[1],
-          data: myChartData.series[1].data,
-          type: 'line',
-          symbol: 'circle',
-          symbolSize: '0',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              color: '#ff8400'
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: 'rgba(255,132,0, 0.3)' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(255,132,0, 0)' // 100% 处的颜色
-                }],
-                global: false // 缺省为 false
-              }
-            }
-          }
-        }, {
-          name: myChartData.legend[2],
-          data: myChartData.series[2].data,
-          type: 'line',
-          symbol: 'circle',
-          symbolSize: '0',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              color: '#cb1d5f'
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: 'rgba(203,29,95, 0.3)' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(203,29,95, 0)' // 100% 处的颜色
-                }],
-                global: false // 缺省为 false
-              }
-            }
-          }
-        }]
+        series: series
       }
       myChart.setOption(option, true)
       var app = {
@@ -2017,7 +2131,8 @@ export default {
     async makeData6_Data (param, str) {
       await this.axios.post(this.$api.main.getTimeTopItemInfo, qs.stringify({
         item: param,
-        num: 3
+        num: 3,
+        typeId: ''
       })).then((resp) => {
         if (resp.status === 200) {
           var json = resp.data
