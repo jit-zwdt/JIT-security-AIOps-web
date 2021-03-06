@@ -233,7 +233,9 @@
           <h3 class="public_title">中间件</h3>
           <div class="e_box1-3">
             <div id="ibox_content_echarts8" style="height: 100%"></div>
-            <div id="ibox_content_echarts9" style="height: 100%"></div>
+            <div id="ibox_content_echarts9" style="height: 100%">
+              <span style="font-size: 14px; margin-left: 210px">内存使用率</span>
+            </div>
           </div>
         </div>
       </div>
