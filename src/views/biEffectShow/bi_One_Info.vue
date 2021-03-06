@@ -1,483 +1,484 @@
 <template>
-  <div :class="headerbackground">
-    <div class="head_div"><span class="head_span2">BI展示图01</span></div>
-    <div class="head_div2">
-      <span class="head_span" @click="showBiInfo()">BI展示图02</span>
-    </div>
-    <h1 class="head_bg"><img src="../../assets/images/head_name.png" /></h1>
-    <div class="main_box">
-      <!--第一列-->
-      <div class="col_box30per">
-        <div class="bor_t_box">
-          <div class="bor_t_l">
-            <img src="../../assets/images/bor_t_l.png" />
-          </div>
-          <div class="bor_t_r">
-            <img src="../../assets/images/bor_t_r.png" />
-          </div>
+    <div :class="headerbackground">
+        <div class="head_div"><span class="head_span2">BI展示图01</span></div>
+        <div class="head_div2">
+            <span class="head_span" @click="showBiInfo()">BI展示图02</span>
         </div>
-        <div class="bor_c_box height420">
-          <div class="bor_c_l"></div>
-          <div class="bor_c_r height1">
-            <h2 class="bg_title">操作系统</h2>
-            <div class="e_box1-1">
-              <div
-                id="ibox_content_echarts1"
-                style="height: 80%; width: 50%; float: left; margin-top: -30px"
-              ></div>
-              <div
-                id="ibox_content_echarts1_1"
-                style="height: 80%; width: 50%; float: left; margin-top: -30px"
-              ></div>
-              <div
-                id="ibox_content_echarts2"
-                style="height: 80%; width: 100%; float: left"
-              ></div>
-            </div>
-          </div>
-        </div>
-        <div class="bor_b_box">
-          <div class="bor_b_l">
-            <img src="../../assets/images/bor_b_l.png" />
-          </div>
-          <div class="bor_b_r">
-            <img src="../../assets/images/bor_b_r.png" />
-          </div>
-        </div>
+        <h1 class="head_bg"><img src="../../assets/images/head_name.png"/></h1>
+        <div class="main_box">
+            <!--第一列-->
+            <div class="col_box30per">
+                <div class="bor_t_box">
+                    <div class="bor_t_l">
+                        <img src="../../assets/images/bor_t_l.png"/>
+                    </div>
+                    <div class="bor_t_r">
+                        <img src="../../assets/images/bor_t_r.png"/>
+                    </div>
+                </div>
+                <div class="bor_c_box height420">
+                    <div class="bor_c_l"></div>
+                    <div class="bor_c_r height1">
+                        <h2 class="bg_title">操作系统</h2>
+                        <div class="e_box1-1">
+                            <div
+                                    id="ibox_content_echarts1"
+                                    style="height: 80%; width: 50%; float: left; margin-top: -30px"
+                            ></div>
+                            <div
+                                    id="ibox_content_echarts1_1"
+                                    style="height: 80%; width: 50%; float: left; margin-top: -30px"
+                            ></div>
+                            <div
+                                    id="ibox_content_echarts2"
+                                    style="height: 80%; width: 100%; float: left"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bor_b_box">
+                    <div class="bor_b_l">
+                        <img src="../../assets/images/bor_b_l.png"/>
+                    </div>
+                    <div class="bor_b_r">
+                        <img src="../../assets/images/bor_b_r.png"/>
+                    </div>
+                </div>
 
-        <div class="bor_t_box mar_t20">
-          <div class="bor_t_l">
-            <img src="../../assets/images/bor_t_l.png" />
-          </div>
-          <div class="bor_t_r">
-            <img src="../../assets/images/bor_t_r.png" />
-          </div>
-        </div>
-        <div class="bor_c_box height420">
-          <div class="bor_c_l"></div>
-          <div class="bor_c_r">
-            <h2 class="bg_title">数据库</h2>
-            <div class="e_box1-2">
-              <div
-                id="ibox_data_echarts1"
-                style="height: 100%; width: 50%; float: left; margin-top: 10px"
-              ></div>
-              <div
-                id="ibox_data_echarts2"
-                style="height: 100%; width: 50%; float: left; margin-top: 10px"
-              ></div>
-              <div
-                id="ibox_data_echarts3"
-                style="
+                <div class="bor_t_box mar_t20">
+                    <div class="bor_t_l">
+                        <img src="../../assets/images/bor_t_l.png"/>
+                    </div>
+                    <div class="bor_t_r">
+                        <img src="../../assets/images/bor_t_r.png"/>
+                    </div>
+                </div>
+                <div class="bor_c_box height420">
+                    <div class="bor_c_l"></div>
+                    <div class="bor_c_r">
+                        <h2 class="bg_title">数据库</h2>
+                        <div class="e_box1-2">
+                            <div
+                                    id="ibox_data_echarts1"
+                                    style="height: 100%; width: 50%; float: left; margin-top: 10px"
+                            ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">接收字节数</span></div>
+                            <div
+                                    id="ibox_data_echarts2"
+                                    style="height: 100%; width: 50%; float: left; margin-top: 10px"
+                            ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">每秒问题数</span></div>
+                            <div
+                                    id="ibox_data_echarts3"
+                                    style="
                   height: 100%;
                   width: 50%;
                   clear: both;
                   float: left;
                   margin-top: 30px;
                 "
-              ></div>
-              <div
-                id="ibox_data_echarts4"
-                style="height: 100%; width: 50%; float: left; margin-top: 30px"
-              ></div>
+                            ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">每秒查询数</span></div>
+                            <div
+                                    id="ibox_data_echarts4"
+                                    style="height: 100%; width: 50%; float: left; margin-top: 30px"
+                            ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">用户连接数</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bor_b_box">
+                    <div class="bor_b_l">
+                        <img src="../../assets/images/bor_b_l.png"/>
+                    </div>
+                    <div class="bor_b_r">
+                        <img src="../../assets/images/bor_b_r.png"/>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="bor_b_box">
-          <div class="bor_b_l">
-            <img src="../../assets/images/bor_b_l.png" />
-          </div>
-          <div class="bor_b_r">
-            <img src="../../assets/images/bor_b_r.png" />
-          </div>
-        </div>
-      </div>
-      <!--第二列-->
-      <div class="col_box40per">
-        <div class="bor_t_box">
-          <div class="bor_t_l">
-            <img src="../../assets/images/bor_t_l.png" />
-          </div>
-          <div class="bor_t_r">
-            <img src="../../assets/images/bor_t_r.png" />
-          </div>
-        </div>
-        <div class="bor_c_box">
-          <div class="bor_c_l"></div>
-          <div class="bor_c_r height3">
-            <h2 class="bg_title">运维指数</h2>
-            <div class="content_box">
-              <div class="ywzs_left_box">
-                <div :class="errorStyle">
-                  <!-- <div
+            <!--第二列-->
+            <div class="col_box40per">
+                <div class="bor_t_box">
+                    <div class="bor_t_l">
+                        <img src="../../assets/images/bor_t_l.png"/>
+                    </div>
+                    <div class="bor_t_r">
+                        <img src="../../assets/images/bor_t_r.png"/>
+                    </div>
+                </div>
+                <div class="bor_c_box">
+                    <div class="bor_c_l"></div>
+                    <div class="bor_c_r height3">
+                        <h2 class="bg_title">运维指数</h2>
+                        <div class="content_box">
+                            <div class="ywzs_left_box">
+                                <div :class="errorStyle">
+                                    <!-- <div
                   id="liquidFillrun"
                   style="width: 18rem; height: 18rem; margin-left:30%"
                 ></div> -->
-                  <div class="svg-contain" id="svg_sky" style="display: none">
-                    <svg
-                      version="1.1"
-                      class="clear-sky-svg"
-                      x="300px"
-                      y="300px"
-                      viewBox="0 0 72.3 52.6"
-                      style="enable-background: new 0 0 72.3 52.6"
-                      xml:space="preserve"
-                    >
+                                    <div class="svg-contain" id="svg_sky" style="display: none">
+                                        <svg
+                                                version="1.1"
+                                                class="clear-sky-svg"
+                                                x="300px"
+                                                y="300px"
+                                                viewBox="0 0 72.3 52.6"
+                                                style="enable-background: new 0 0 72.3 52.6"
+                                                xml:space="preserve"
+                                        >
                       <g>
                         <path
-                          class="sun"
-                          d="M50.8,25.7c0,7.9-6.4,14.4-14.4,14.4s-14.4-6.4-14.4-14.4s6.4-14.4,14.4-14.4S50.8,17.8,50.8,25.7z"
+                                class="sun"
+                                d="M50.8,25.7c0,7.9-6.4,14.4-14.4,14.4s-14.4-6.4-14.4-14.4s6.4-14.4,14.4-14.4S50.8,17.8,50.8,25.7z"
                         />
-                        <path class="line big-path line-1" d="M54.5,25.8h6" />
-                        <path class="line big-path line-2" d="M12.4,25.8h6" />
-                        <path class="line big-path line-3" d="M36.5,44.3v6" />
-                        <path class="line big-path line-4" d="M36.5,8.2v-6" />
-                        <path
-                          class="line big-path line-5"
-                          d="M23,38.8l-4.8,4.8"
-                        />
-                        <path
-                          class="line big-path line-6"
-                          d="M54.9,8.9L50,13.8"
-                        />
-                        <path
-                          class="line big-path line-7"
-                          d="M50,38.8l4.4,4.4"
-                        />
-                        <path
-                          class="line big-path line-8"
-                          d="M18.8,9.6l4.2,4.2"
-                        />
+                          <path class="line big-path line-1" d="M54.5,25.8h6"/>
+                          <path class="line big-path line-2" d="M12.4,25.8h6"/>
+                          <path class="line big-path line-3" d="M36.5,44.3v6"/>
+                          <path class="line big-path line-4" d="M36.5,8.2v-6"/>
+                          <path
+                                  class="line big-path line-5"
+                                  d="M23,38.8l-4.8,4.8"
+                          />
+                          <path
+                                  class="line big-path line-6"
+                                  d="M54.9,8.9L50,13.8"
+                          />
+                          <path
+                                  class="line big-path line-7"
+                                  d="M50,38.8l4.4,4.4"
+                          />
+                          <path
+                                  class="line big-path line-8"
+                                  d="M18.8,9.6l4.2,4.2"
+                          />
                       </g>
                     </svg>
-                  </div>
-                  <div
-                    class="svg-contain"
-                    id="svg_clouds"
-                    style="display: none"
-                  >
-                    <svg
-                      class="overcast-clouds"
-                      version="1.1"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 82.6 52.3"
-                      style="enable-background: new 0 0 82.6 52.3"
-                      xml:space="preserve"
-                    >
+                                    </div>
+                                    <div
+                                            class="svg-contain"
+                                            id="svg_clouds"
+                                            style="display: none"
+                                    >
+                                        <svg
+                                                class="overcast-clouds"
+                                                version="1.1"
+                                                x="0px"
+                                                y="0px"
+                                                viewBox="0 0 82.6 52.3"
+                                                style="enable-background: new 0 0 82.6 52.3"
+                                                xml:space="preserve"
+                                        >
                       <g id="Layer_1">
                         <path
-                          class="cloud-still"
-                          d="M21.8,24.2c0.1,0,0.3-1.1,0.4-1.2c0.5-1.2,1.1-2.4,1.8-3.4c3.9-5.7,12.6-7.1,18.2-3.1c0,0,3.7-6,11-5.9c0,0,5.6-0.6,10.3,4.9c0,0,2.8,3.3,2.9,7.4c0,0,3.2-0.5,5.4,1c0,0,6.2,2.6,5.9,10.8H56.3c0,0-2-3.5-7.3-3.6c0.2,0-0.5-2.2-0.6-2.4c-1.4-4.4-5.5-6.9-9.9-7.4c-3.4-0.4-6.6,0.8-9,3.2c-0.1,0.1-1.2,1.3-1.2,1.3S25.3,23.6,21.8,24.2z"
+                                class="cloud-still"
+                                d="M21.8,24.2c0.1,0,0.3-1.1,0.4-1.2c0.5-1.2,1.1-2.4,1.8-3.4c3.9-5.7,12.6-7.1,18.2-3.1c0,0,3.7-6,11-5.9c0,0,5.6-0.6,10.3,4.9c0,0,2.8,3.3,2.9,7.4c0,0,3.2-0.5,5.4,1c0,0,6.2,2.6,5.9,10.8H56.3c0,0-2-3.5-7.3-3.6c0.2,0-0.5-2.2-0.6-2.4c-1.4-4.4-5.5-6.9-9.9-7.4c-3.4-0.4-6.6,0.8-9,3.2c-0.1,0.1-1.2,1.3-1.2,1.3S25.3,23.6,21.8,24.2z"
                         />
-                        <path
-                          class="cloud-still"
-                          d="M57.6,40.7c0-4.8-3.9-8.6-8.6-8.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h12.9h0.7C57.6,41.8,57.6,41.4,57.6,40.7z"
-                        />
+                          <path
+                                  class="cloud-still"
+                                  d="M57.6,40.7c0-4.8-3.9-8.6-8.6-8.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h12.9h0.7C57.6,41.8,57.6,41.4,57.6,40.7z"
+                          />
                       </g>
-                      <g id="Layer_2"></g>
+                                            <g id="Layer_2"></g>
                     </svg>
-                  </div>
-                  <div
-                    class="svg-contain"
-                    id="svg_hurricane"
-                    style="display: none"
-                  >
-                    <svg
-                      class="hurricane-svg"
-                      version="1.1"
-                      id="Layer_1"
-                      x="0px"
-                      y="0px"
-                      viewBox="-437 254.4 85 52.6"
-                      style="enable-background: new -437 254.4 85 52.6"
-                      xml:space="preserve"
-                    >
+                                    </div>
+                                    <div
+                                            class="svg-contain"
+                                            id="svg_hurricane"
+                                            style="display: none"
+                                    >
+                                        <svg
+                                                class="hurricane-svg"
+                                                version="1.1"
+                                                id="Layer_1"
+                                                x="0px"
+                                                y="0px"
+                                                viewBox="-437 254.4 85 52.6"
+                                                style="enable-background: new -437 254.4 85 52.6"
+                                                xml:space="preserve"
+                                        >
                       <path
-                        class="cloud"
-                        d="M-361.9,280.5c1.4,0,2.6,0.7,3.4,1.7h1.1c0.4-8.2-5.9-10.8-5.9-10.8c-2.2-1.5-5.4-1-5.4-1c-0.1-4.1-2.9-7.4-2.9-7.4c-4.7-5.5-10.3-4.9-10.3-4.9c-7.4-0.2-11,5.9-11,5.9c-5.6-4-14.3-2.6-18.2,3.1c-0.7,1.1-1.3,2.2-1.8,3.4c0,0.1-0.3,1.2-0.4,1.2c3.5-0.6,6.6,1.6,6.6,1.6s1.1-1.1,1.2-1.3c2.4-2.4,5.6-3.6,9-3.2c4.4,0.5,8.5,3,9.9,7.4c0.1,0.2,0.8,2.4,0.6,2.4c5.3,0.1,7.3,3.6,7.3,3.6h13.4C-364.5,281.2-363.3,280.5-361.9,280.5z"
+                              class="cloud"
+                              d="M-361.9,280.5c1.4,0,2.6,0.7,3.4,1.7h1.1c0.4-8.2-5.9-10.8-5.9-10.8c-2.2-1.5-5.4-1-5.4-1c-0.1-4.1-2.9-7.4-2.9-7.4c-4.7-5.5-10.3-4.9-10.3-4.9c-7.4-0.2-11,5.9-11,5.9c-5.6-4-14.3-2.6-18.2,3.1c-0.7,1.1-1.3,2.2-1.8,3.4c0,0.1-0.3,1.2-0.4,1.2c3.5-0.6,6.6,1.6,6.6,1.6s1.1-1.1,1.2-1.3c2.4-2.4,5.6-3.6,9-3.2c4.4,0.5,8.5,3,9.9,7.4c0.1,0.2,0.8,2.4,0.6,2.4c5.3,0.1,7.3,3.6,7.3,3.6h13.4C-364.5,281.2-363.3,280.5-361.9,280.5z"
                       />
-                      <path
-                        class="cloud"
-                        d="M-386,279.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h2.3l4.7-6.2c0.6-0.8,1.7-0.9,2.5-0.3s0.9,1.7,0.3,2.5l-3.1,4h0.5h5.6h0.7c0.1,0,0.2-0.4,0.2-1.1C-377.4,283.5-381.3,279.6-386,279.6z"
-                      />
-                      <polyline
-                        class="lightening"
-                        points="-382.8,284.2 -387.9,290.9 -380.6,291.2 -387.9,302 "
-                      />
-                      <path class="line" d="M-426.9,294.4l-5.1,7.3" />
-                      <path class="line" d="M-420.8,294.4l-5.1,7.3" />
-                      <path class="line" d="M-415.4,294.4l-5.1,7.3" />
-                      <path class="line" d="M-409.9,294.4l-5.1,7.3" />
-                      <path class="line" d="M-404.5,294.4l-5.1,7.3" />
-                      <path class="line" d="M-399.1,294.4l-5.1,7.3" />
-                      <path class="line" d="M-393.7,294.4l-5.1,7.3" />
-                      <path class="line" d="M-388.2,294.4l-5.1,7.3" />
-                      <g>
+                                            <path
+                                                    class="cloud"
+                                                    d="M-386,279.6c-0.2,0-0.4,0-0.6,0.1c-0.1-0.8-0.2-1.7-0.4-2.4c-0.3-1-0.8-2-1.4-2.9c-2-2.9-5.3-4.8-9-4.8c-2.3,0-4.4,0.7-6.1,1.9c-0.6,0.4-1.1,0.8-1.6,1.3c-0.2,0.2-0.5,0.5-0.7,0.8c-0.2,0.3-0.4,0.5-0.6,0.8c-1.8-1.2-3.9-1.9-6.2-1.9c-5.5,0-10,4-10.8,9.3c-3.5,1-6.1,3.9-6.6,7.6h26.3h12.7h2.3l4.7-6.2c0.6-0.8,1.7-0.9,2.5-0.3s0.9,1.7,0.3,2.5l-3.1,4h0.5h5.6h0.7c0.1,0,0.2-0.4,0.2-1.1C-377.4,283.5-381.3,279.6-386,279.6z"
+                                            />
+                                            <polyline
+                                                    class="lightening"
+                                                    points="-382.8,284.2 -387.9,290.9 -380.6,291.2 -387.9,302 "
+                                            />
+                                            <path class="line" d="M-426.9,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-420.8,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-415.4,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-409.9,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-404.5,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-399.1,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-393.7,294.4l-5.1,7.3"/>
+                                            <path class="line" d="M-388.2,294.4l-5.1,7.3"/>
+                                            <g>
                         <path
-                          class="little-path path-1"
-                          d="M-374.8,287.2h10.6"
+                                class="little-path path-1"
+                                d="M-374.8,287.2h10.6"
                         />
-                        <path
-                          class="little-path path-2"
-                          d="M-373.8,289.3h10.9"
-                        />
-                        <path
-                          class="big-path"
-                          d="M-376,288.3c0,0,14,0,14,0c1.7,0,3.1-1.4,3.3-3.1c0-0.5,0-1-0.3-1.4c-0.9-2.3-4.1-2.7-5.6-0.7c-0.4,0.6-0.7,1.3-0.7,1.9"
-                        />
-                        <path
-                          class="little-path path-3"
-                          d="M-364.1,285c0-1.2,1-2.2,2.2-2.2s2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2"
-                        />
+                                                <path
+                                                        class="little-path path-2"
+                                                        d="M-373.8,289.3h10.9"
+                                                />
+                                                <path
+                                                        class="big-path"
+                                                        d="M-376,288.3c0,0,14,0,14,0c1.7,0,3.1-1.4,3.3-3.1c0-0.5,0-1-0.3-1.4c-0.9-2.3-4.1-2.7-5.6-0.7c-0.4,0.6-0.7,1.3-0.7,1.9"
+                                                />
+                                                <path
+                                                        class="little-path path-3"
+                                                        d="M-364.1,285c0-1.2,1-2.2,2.2-2.2s2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2"
+                                                />
                       </g>
                     </svg>
-                  </div>
-                  <small :class="small_index">{{ this.operation }}</small>
-                </div>
-              </div>
-              <ul class="ywzs_num">
-                <li>
-                  <h3 class="number">{{ this.hostOneCount }}</h3>
-                  <p>{{ this.hostOneType }}(台)</p>
-                </li>
-                <li>
-                  <h3 class="number">{{ this.hostTwoCount }}</h3>
-                  <p>{{ this.hostTwoType }}(台)</p>
-                </li>
-                <li>
-                  <h3 class="number">{{ this.hostThreeCount }}</h3>
-                  <p>{{ this.hostThreeType }}(台)</p>
-                </li>
-                <li>
-                  <h3 class="number">{{ this.hostFourCount }}</h3>
-                  <p>{{ this.hostFourType }}(台)</p>
-                </li>
-                <li>
-                  <h3 class="number">{{ this.hostFiveCount }}</h3>
-                  <p>{{ this.hostFiveType }}(台)</p>
-                </li>
-                <li>
-                  <div class="">
+                                    </div>
+                                    <small :class="small_index">{{ this.operation }}</small>
+                                </div>
+                            </div>
+                            <ul class="ywzs_num">
+                                <li>
+                                    <h3 class="number">{{ this.hostOneCount }}</h3>
+                                    <p>{{ this.hostOneType }}(台)</p>
+                                </li>
+                                <li>
+                                    <h3 class="number">{{ this.hostTwoCount }}</h3>
+                                    <p>{{ this.hostTwoType }}(台)</p>
+                                </li>
+                                <li>
+                                    <h3 class="number">{{ this.hostThreeCount }}</h3>
+                                    <p>{{ this.hostThreeType }}(台)</p>
+                                </li>
+                                <li>
+                                    <h3 class="number">{{ this.hostFourCount }}</h3>
+                                    <p>{{ this.hostFourType }}(台)</p>
+                                </li>
+                                <li>
+                                    <h3 class="number">{{ this.hostFiveCount }}</h3>
+                                    <p>{{ this.hostFiveType }}(台)</p>
+                                </li>
+                                <li>
+                                    <div class="">
                     <span>总设备：</span
                     ><span class="yellow">{{ this.hostSumNum }}台</span>
-                  </div>
-                  <br />
-                  <div class="">
+                                    </div>
+                                    <br/>
+                                    <div class="">
                     <span>总磁盘：</span
                     ><span class="yellow">{{ this.hostSumHardDisk }}G</span>
-                  </div>
-                  <br />
-                  <div class="">
+                                    </div>
+                                    <br/>
+                                    <div class="">
                     <span>总内存：</span
                     ><span class="yellow">{{ this.hostSumMemory }}G</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="bor_b_box">
-          <div class="bor_b_l">
-            <img src="../../assets/images/bor_b_l.png" />
-          </div>
-          <div class="bor_b_r">
-            <img src="../../assets/images/bor_b_r.png" />
-          </div>
-        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="bor_b_box">
+                    <div class="bor_b_l">
+                        <img src="../../assets/images/bor_b_l.png"/>
+                    </div>
+                    <div class="bor_b_r">
+                        <img src="../../assets/images/bor_b_r.png"/>
+                    </div>
+                </div>
 
-        <div class="bor_t_box mar_t20">
-          <div class="bor_t_l">
-            <img src="../../assets/images/bor_t_l.png" />
-          </div>
-          <div class="bor_t_r">
-            <img src="../../assets/images/bor_t_r.png" />
-          </div>
-        </div>
-        <div class="bor_c_box height370">
-          <div class="bor_c_l"></div>
-          <div class="bor_c_r">
-            <h2 class="bg_title">网络拓扑</h2>
-            <div class="content_box">
-              <canvas width="580" height="280" id="target" style="margin-top:0px;margin-left:-20px"></canvas>
-              <input
-                type="hidden"
-                id="infoData"
-                name="infoData"
-                v-model="infoData"
-              />
-              <input type="hidden" id="infoId" name="infoId" />
-            </div>
-          </div>
-        </div>
-        <div class="bor_b_box">
-          <div class="bor_b_l">
-            <img src="../../assets/images/bor_b_l.png" />
-          </div>
-          <div class="bor_b_r">
-            <img src="../../assets/images/bor_b_r.png" />
-          </div>
-        </div>
+                <div class="bor_t_box mar_t20">
+                    <div class="bor_t_l">
+                        <img src="../../assets/images/bor_t_l.png"/>
+                    </div>
+                    <div class="bor_t_r">
+                        <img src="../../assets/images/bor_t_r.png"/>
+                    </div>
+                </div>
+                <div class="bor_c_box height370">
+                    <div class="bor_c_l"></div>
+                    <div class="bor_c_r">
+                        <h2 class="bg_title">网络拓扑</h2>
+                        <div class="content_box">
+                            <canvas width="580" height="280" id="target"
+                                    style="margin-top:0px;margin-left:-20px"></canvas>
+                            <input
+                                    type="hidden"
+                                    id="infoData"
+                                    name="infoData"
+                                    v-model="infoData"
+                            />
+                            <input type="hidden" id="infoId" name="infoId"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="bor_b_box">
+                    <div class="bor_b_l">
+                        <img src="../../assets/images/bor_b_l.png"/>
+                    </div>
+                    <div class="bor_b_r">
+                        <img src="../../assets/images/bor_b_r.png"/>
+                    </div>
+                </div>
 
-        <div class="bor_t_box mar_t20">
-          <div class="bor_t_l">
-            <img src="../../assets/images/bor_t_l.png" />
-          </div>
-          <div class="bor_t_r">
-            <img src="../../assets/images/bor_t_r.png" />
-          </div>
-        </div>
-        <div class="bor_c_box">
-          <div class="bor_c_l"></div>
-          <div class="bor_c_r">
-            <h2 class="bg_title">问题列表</h2>
-            <ul class="scroll_tit">
-              <li>
+                <div class="bor_t_box mar_t20">
+                    <div class="bor_t_l">
+                        <img src="../../assets/images/bor_t_l.png"/>
+                    </div>
+                    <div class="bor_t_r">
+                        <img src="../../assets/images/bor_t_r.png"/>
+                    </div>
+                </div>
+                <div class="bor_c_box">
+                    <div class="bor_c_l"></div>
+                    <div class="bor_c_r">
+                        <h2 class="bg_title">问题列表</h2>
+                        <ul class="scroll_tit">
+                            <li>
                 <span class="wid_20per blue_font">日期</span
                 ><span class="wid_70per blue_font">名称</span
-                ><span class="wid_10per blue_font">级别</span>
-              </li>
-            </ul>
-            <div class="myscroll">
-              <vue-seamless-scroll
-                :data="tableData"
-                class="seamless-warp"
-                :class-option="defaultOption"
-              >
-                <ul class="ul-scoll">
-                  <li
-                    v-for="(item, index) in tableData"
-                    :key="index"
-                    :class="rowClassName(index)"
-                    style="color: #fff"
-                  >
+                            ><span class="wid_10per blue_font">级别</span>
+                            </li>
+                        </ul>
+                        <div class="myscroll">
+                            <vue-seamless-scroll
+                                    :data="tableData"
+                                    class="seamless-warp"
+                                    :class-option="defaultOption"
+                            >
+                                <ul class="ul-scoll">
+                                    <li
+                                            v-for="(item, index) in tableData"
+                                            :key="index"
+                                            :class="rowClassName(index)"
+                                            style="color: #fff"
+                                    >
                     <span class="scroll_span_30">{{
                       formatterdata(item.zabbixProblemDTO.clock)
                     }}</span>
-                    <span class="scroll_span_60">{{
+                                        <span class="scroll_span_60">{{
                       item.zabbixProblemDTO.name
                     }}</span>
-                    <span class="scroll_span_10">
+                                        <span class="scroll_span_10">
                       <div
-                        v-html="formattertype(item.zabbixProblemDTO.severity)"
+                              v-html="formattertype(item.zabbixProblemDTO.severity)"
                       ></div
-                    ></span>
-                  </li>
-                </ul>
-              </vue-seamless-scroll>
+                      ></span>
+                                    </li>
+                                </ul>
+                            </vue-seamless-scroll>
+                        </div>
+                    </div>
+                </div>
+                <div class="bor_b_box">
+                    <div class="bor_b_l">
+                        <img src="../../assets/images/bor_b_l.png"/>
+                    </div>
+                    <div class="bor_b_r">
+                        <img src="../../assets/images/bor_b_r.png"/>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="bor_b_box">
-          <div class="bor_b_l">
-            <img src="../../assets/images/bor_b_l.png" />
-          </div>
-          <div class="bor_b_r">
-            <img src="../../assets/images/bor_b_r.png" />
-          </div>
-        </div>
-      </div>
-      <!--第三列-->
-      <div class="col_box30per col_box100per new_pad new_t20">
-        <div class="flo_screen">
-          <div class="bor_t_box">
-            <div class="bor_t_l">
-              <img src="../../assets/images/bor_t_l.png" />
-            </div>
-            <div class="bor_t_r">
-              <img src="../../assets/images/bor_t_r.png" />
-            </div>
-          </div>
-          <div class="bor_c_box height420">
-            <div class="bor_c_l"></div>
-            <div class="bor_c_r height1">
-              <h2 class="bg_title">中间件</h2>
-              <div class="e_box1-3">
-                <div
-                  id="ibox_centre_echarts1"
-                  style="
+            <!--第三列-->
+            <div class="col_box30per col_box100per new_pad new_t20">
+                <div class="flo_screen">
+                    <div class="bor_t_box">
+                        <div class="bor_t_l">
+                            <img src="../../assets/images/bor_t_l.png"/>
+                        </div>
+                        <div class="bor_t_r">
+                            <img src="../../assets/images/bor_t_r.png"/>
+                        </div>
+                    </div>
+                    <div class="bor_c_box height420">
+                        <div class="bor_c_l"></div>
+                        <div class="bor_c_r height1">
+                            <h2 class="bg_title">中间件</h2>
+                            <div class="e_box1-3">
+                                <div
+                                        id="ibox_centre_echarts1"
+                                        style="
                     width: 50%;
                     height: 80%;
                     float: left;
                     box-sizing: border-box;
                   "
-                ></div>
-                <div
-                  id="ibox_centre_echarts2"
-                  style="
+                                ></div>
+                                <div
+                                        id="ibox_centre_echarts2"
+                                        style="
                     width: 50%;
                     height: 80%;
                     float: left;
                     box-sizing: border-box;
                   "
-                ></div>
-                <div
-                  id="ibox_content_echarts3"
-                  style="width: 100%; height: 120%; float: left"
-                ></div>
-              </div>
-            </div>
-          </div>
-          <div class="bor_b_box">
-            <div class="bor_b_l">
-              <img src="../../assets/images/bor_b_l.png" />
-            </div>
-            <div class="bor_b_r">
-              <img src="../../assets/images/bor_b_r.png" />
-            </div>
-          </div>
-        </div>
-        <div class="flo_screen">
-          <div class="bor_t_box mar_t20 mar_t0">
-            <div class="bor_t_l">
-              <img src="../../assets/images/bor_t_l.png" />
-            </div>
-            <div class="bor_t_r">
-              <img src="../../assets/images/bor_t_r.png" />
-            </div>
-          </div>
-          <div class="bor_c_box height420">
-            <div class="bor_c_l"></div>
-            <div class="bor_c_r new_height">
-              <h2 class="bg_title">JVM</h2>
-              <div class="e_box1-4">
-                <div
-                  id="ibox_jvm_echarts1"
-                  style="height: 50%; width: 50%; float: left; margin-top: 10px"
-                ></div>
-                <div
-                  id="ibox_jvm_echarts2"
-                  style="height: 50%; width: 50%; float: left; margin-top: 10px"
-                ></div>
-                <div
-                  id="ibox_jvm_echarts3"
-                  style="
+                                ></div>
+                                <div
+                                        id="ibox_content_echarts3"
+                                        style="width: 100%; height: 120%; float: left"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bor_b_box">
+                        <div class="bor_b_l">
+                            <img src="../../assets/images/bor_b_l.png"/>
+                        </div>
+                        <div class="bor_b_r">
+                            <img src="../../assets/images/bor_b_r.png"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="flo_screen">
+                    <div class="bor_t_box mar_t20 mar_t0">
+                        <div class="bor_t_l">
+                            <img src="../../assets/images/bor_t_l.png"/>
+                        </div>
+                        <div class="bor_t_r">
+                            <img src="../../assets/images/bor_t_r.png"/>
+                        </div>
+                    </div>
+                    <div class="bor_c_box height420">
+                        <div class="bor_c_l"></div>
+                        <div class="bor_c_r new_height">
+                            <h2 class="bg_title">JVM</h2>
+                            <div class="e_box1-4">
+                                <div
+                                        id="ibox_jvm_echarts1"
+                                        style="height: 50%; width: 50%; float: left; margin-top: 10px"
+                                ></div>
+                                <div
+                                        id="ibox_jvm_echarts2"
+                                        style="height: 50%; width: 50%; float: left; margin-top: 10px"
+                                ></div>
+                                <div
+                                        id="ibox_jvm_echarts3"
+                                        style="
                     height: 50%;
                     width: 50%;
                     clear: both;
                     float: left;
                     margin-top: 30px;
                   "
-                ></div>
-                <div
-                  id="ibox_jvm_echarts4"
-                  style="height: 50%; width: 50%; float: left; margin-top: 30px"
-                ></div>
-              </div>
+                                ></div>
+                                <div
+                                        id="ibox_jvm_echarts4"
+                                        style="height: 50%; width: 50%; float: left; margin-top: 30px"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bor_b_box">
+                        <div class="bor_b_l">
+                            <img src="../../assets/images/bor_b_l.png"/>
+                        </div>
+                        <div class="bor_b_r">
+                            <img src="../../assets/images/bor_b_r.png"/>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="bor_b_box">
-            <div class="bor_b_l">
-              <img src="../../assets/images/bor_b_l.png" />
-            </div>
-            <div class="bor_b_r">
-              <img src="../../assets/images/bor_b_r.png" />
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
 import Storage from 'good-storage'
@@ -487,6 +488,7 @@ import $ from 'jquery'
 import { data } from '@/assets/topology/devices.js'
 import qs from 'qs'
 import { timesMethod } from '@/utils/formatDate.js'
+
 export default {
   data () {
     return {
@@ -601,11 +603,13 @@ export default {
         stage.zoomIn()
         $('#zoomOut').parent('label').removeClass('active')
       })
+
       function showJTopoToobar (stage, canvas) {
         function evil (fn) {
           var Fn = Function
           return new Fn('return ' + fn)()
         }
+
         function gettopologydata (jsonData) {
           var infoData = evil(jsonData)
           var jsonObj = evil(infoData.jsonParam)
@@ -673,6 +677,7 @@ export default {
           }
           stage.centerAndZoom()
         }
+
         var timer = setInterval(() => {
           var infoData = $('#infoData').val()
           if (infoData !== null && infoData !== '') {
@@ -681,6 +686,7 @@ export default {
           }
         }, 1000)
       }
+
       function addNode (node) {
         var n = new jTopo.Node(node.name)
         var index = getArrayIndex(data.devices, node.type)
@@ -704,6 +710,7 @@ export default {
           }
         })
       }
+
       function getArrayIndex (arr, obj) {
         var i = arr.length
         while (i--) {
@@ -713,6 +720,7 @@ export default {
         }
         return -1
       }
+
       function newLink (nodeA, nodeZ, linestyle) {
         var l = null
         if (linestyle === 'defaultline') {
@@ -764,12 +772,14 @@ export default {
         }
         return l
       }
+
       function addLink (l) {
         scene.add(l)
         l.addEventListener('mouseup', function (e) {
           handlerLine(e)
         })
       }
+
       function handlerLine (e) {
         if (e.button === 2) { // 右键
           // 当前位置弹出菜单（div）
@@ -779,6 +789,7 @@ export default {
           }).show()
         }
       }
+
       function forEachStagesElement (stage, id) {
         for (var i = 0; i < stage.childs.length; i++) {
           var scene = stage.childs[i]
@@ -791,6 +802,7 @@ export default {
         }
         return null
       }
+
       function handler (e) {
         if (e.button === 2) { // 右键
           // 当前位置弹出菜单（div）
@@ -825,7 +837,8 @@ export default {
             } else {
               beginNode = null
             }
-          } if (e.target !== null && e.target instanceof jTopo.Node) {
+          }
+          if (e.target !== null && e.target instanceof jTopo.Node) {
             $('#node_id').val(e.target.id)
             $('#node_name').val(e.target.text)
             $('#node_type').val(e.target.nodetype)
@@ -839,6 +852,7 @@ export default {
           }
         }
       }
+
       stage.click(function (event) {
         if (scene.selectedElements.length === 0) {
           propReset()
@@ -900,6 +914,7 @@ export default {
           })
         }
       })
+
       function propReset () {
         $('#node_id').val('')
         $('#node_name').val('')
@@ -1143,6 +1158,7 @@ export default {
         })
         return result
       }
+
       var data = xdata
       xdata.forEach((v, i) => {
         v.labelLine = {
@@ -1669,7 +1685,7 @@ export default {
     },
     makeData2_info (myChartData, num, str, color, bordercolor, flag) {
       var dom3 = document.getElementById('ibox_data_echarts' + num)
-      if (this.check_data_info(myChartData) || myChartData.legend.length < 2) {
+      if (this.check_data_info(myChartData) || myChartData.legend.length < 1) {
         dom3.className = 'no_data3'
         return
       }
@@ -1831,7 +1847,12 @@ export default {
             shadowOffsetY: 2,
             shadowOffsetX: 2
           },
-          data: myChartData.series[1].data
+          data: new function () {
+            if (myChartData.series.length > 1) {
+              return myChartData.series[1].data
+            }
+            return null
+          }()
         }
         ]
       }
@@ -1893,21 +1914,29 @@ export default {
         }, 2000)
       }
     },
+    checkExist (obj) {
+      if (typeof (obj) !== 'undefined' && obj !== null) {
+        return true
+      } else {
+        return false
+      }
+    },
     makeData2_1_info (myChartData, num, str, flag) {
       var domdata = document.getElementById('ibox_data_echarts' + num)
-      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         domdata.className = 'no_data3'
         return
       }
-      var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
-      var numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
-      var numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
-      var numFour = myChartData.series[3].data[myChartData.series[3].data.length - 1]
-      var numNameOne = myChartData.series[0].name
-      var numNameTwo = myChartData.series[1].name
-      var numNameThree = myChartData.series[2].name
-      var numNameFour = myChartData.series[3].name
-      var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
+      var numOne = this.checkExist(myChartData.series[0]) ? myChartData.series[0].data[myChartData.series[0].data.length - 1] : null
+      var numTwo = this.checkExist(myChartData.series[1]) ? myChartData.series[1].data[myChartData.series[1].data.length - 1] : null
+      var numThree = this.checkExist(myChartData.series[2]) ? myChartData.series[2].data[myChartData.series[2].data.length - 1] : null
+      var numFour = this.checkExist(myChartData.series[3]) ? myChartData.series[3].data[myChartData.series[3].data.length - 1] : null
+      var namedata = []
+      for (var m = 0; m < 4; m++) {
+        if (this.checkExist(myChartData.series[m])) {
+          namedata.push(myChartData.series[m].name)
+        }
+      }
       var echarts = this.$echarts
       var myChart = echarts.init(domdata)
       var option = {
@@ -2229,11 +2258,9 @@ export default {
                     length = proname.length
                   }
                   var matl = 0
-                  console.log(mat)
                   if (mat !== null) {
                     matl = mat.length
                   }
-                  console.log(matl)
                   if (length > 70) {
                     hostName = element.zabbixProblemDTO.name.substring(0, 70 - (matl * 2))
                     element.zabbixProblemDTO.name = hostName + '...'
@@ -3431,166 +3458,189 @@ export default {
     }
 
   },
-  actions: {
-  },
+  actions: {},
   components: {}
 }
 </script>
 <style lang="scss" scoped>
-@import '~@/assets/css/main_darkmode.css';
-@import '~@/assets/css/index-main.css';
-#target {
-  min-height: 260px;
-  min-width: 700px;
-  border: 0px solid #ccc !important;
-  padding: 0px !important;
-  margin-left: 2%;
-}
-.headerbackground1 {
-  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
-  background-size: 100% 100%;
-  margin-left: -230px;
-  height: 67.5rem;
-  z-index: 20;
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-}
-.headerbackground2 {
-  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
-  background-size: 100% 100%;
-  margin-left: -65px;
-  height: 67.5rem;
-  z-index: 20;
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-}
-.headerbackground3 {
-  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
-  background-size: 100% 100%;
-  margin-left: 0px;
-  height: 67.5rem;
-  z-index: 20;
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-}
-.headerbackground4 {
-  background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
-  background-size: 100% 100%;
-  margin-left: 0px;
-  height: 67.5rem;
-  z-index: 20;
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-}
+    @import '~@/assets/css/main_darkmode.css';
+    @import '~@/assets/css/index-main.css';
 
-.mar_t20 {
-  margin-top: 20px;
-}
-.ywzs_num li {
-  background: rgba(0, 86, 251, 0.2);
-  background: #060f53\0;
-  color: #fff;
-  min-height: 85px;
-}
-.ywzs_num li p {
-  margin-top: 20px;
-}
-.ywzs_num div {
-  height: 10px;
-}
-@media (max-width: 1880px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1750px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1650px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1540px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1400px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1320px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1210px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-@media (max-width: 1100px) {
-  .headerbackground {
-    height: 97.5rem;
-  }
-}
-.head_span {
-  color: darkgrey;
-  font-size: 12px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-.head_span2 {
-  color: #fff;
-  font-size: 12px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-.head_div {
-  margin-top: 30px;
-  margin-left: 20px;
-  z-index: auto;
-  position: absolute;
-  background: url(~@/assets/img/btn_blue.png) center no-repeat;
-  background-size: 100% 100%;
-  width: 80px;
-  height: 25px;
-}
-.head_div2 {
-  margin-top: 30px;
-  margin-left: 120px;
-  z-index: auto;
-  position: absolute;
-  background: url(~@/assets/img/btn_blue.png) center no-repeat;
-  background-size: 100% 100%;
-  width: 80px;
-  height: 25px;
-}
-.no_data {
-  background: url(~@/assets/img/no_data.png) center no-repeat;
-  background-size: 45% 45%;
-  opacity: 0.8;
-}
-.no_data2 {
-  background: url(~@/assets/img/no_data.png) center no-repeat;
-  background-size: 25% 45%;
-  opacity: 0.8;
-}
-.no_data3 {
-  background: url(~@/assets/img/no_data.png) center no-repeat;
-  background-size: 45% 60%;
-  opacity: 0.8;
-}
+    #target {
+        min-height: 260px;
+        min-width: 700px;
+        border: 0px solid #ccc !important;
+        padding: 0px !important;
+        margin-left: 2%;
+    }
+
+    .headerbackground1 {
+        background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+        background-size: 100% 100%;
+        margin-left: -230px;
+        height: 67.5rem;
+        z-index: 20;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+    }
+
+    .headerbackground2 {
+        background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+        background-size: 100% 100%;
+        margin-left: -65px;
+        height: 67.5rem;
+        z-index: 20;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+    }
+
+    .headerbackground3 {
+        background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+        background-size: 100% 100%;
+        margin-left: 0px;
+        height: 67.5rem;
+        z-index: 20;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+    }
+
+    .headerbackground4 {
+        background: url('~@/assets/images/bg_grid_darkmode.jpg') no-repeat;
+        background-size: 100% 100%;
+        margin-left: 0px;
+        height: 67.5rem;
+        z-index: 20;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+    }
+
+    .mar_t20 {
+        margin-top: 20px;
+    }
+
+    .ywzs_num li {
+        background: rgba(0, 86, 251, 0.2);
+        background: #060f53 \0
+    ;
+        color: #fff;
+        min-height: 85px;
+    }
+
+    .ywzs_num li p {
+        margin-top: 20px;
+    }
+
+    .ywzs_num div {
+        height: 10px;
+    }
+
+    @media (max-width: 1880px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1750px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1650px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1540px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1400px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1320px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1210px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    @media (max-width: 1100px) {
+        .headerbackground {
+            height: 97.5rem;
+        }
+    }
+
+    .head_span {
+        color: darkgrey;
+        font-size: 12px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .head_span2 {
+        color: #fff;
+        font-size: 12px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .head_div {
+        margin-top: 30px;
+        margin-left: 20px;
+        z-index: auto;
+        position: absolute;
+        background: url(~@/assets/img/btn_blue.png) center no-repeat;
+        background-size: 100% 100%;
+        width: 80px;
+        height: 25px;
+    }
+
+    .head_div2 {
+        margin-top: 30px;
+        margin-left: 120px;
+        z-index: auto;
+        position: absolute;
+        background: url(~@/assets/img/btn_blue.png) center no-repeat;
+        background-size: 100% 100%;
+        width: 80px;
+        height: 25px;
+    }
+
+    .no_data {
+        background: url(~@/assets/img/no_data.png) center no-repeat;
+        background-size: 45% 45%;
+        opacity: 0.8;
+    }
+
+    .no_data2 {
+        background: url(~@/assets/img/no_data.png) center no-repeat;
+        background-size: 25% 45%;
+        opacity: 0.8;
+    }
+
+    .no_data3 {
+        background: url(~@/assets/img/no_data.png) center no-repeat;
+        background-size: 45% 60%;
+        opacity: 0.8;
+    }
 </style>
