@@ -238,7 +238,7 @@
         >
           <h3 class="public_title">JVM</h3>
           <div class="e_box1-4">
-            <div id="ibox_content_echarts10" style="height: 100%"></div>
+            <div id="ibox_content_echarts10" style="height: 100%"><span style="font-size: 14px;margin-left: 60px">加载的类总数</span></div>
           </div>
         </div>
       </div>
@@ -2035,7 +2035,7 @@ export default {
     },
     makeData6_info (myChartData, str) {
       var dom = document.getElementById('ibox_content_echarts10')
-      if (this.check_data_info(myChartData) || myChartData.series.length < 3) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         dom.className = 'no_data4'
         return
       }
@@ -2052,12 +2052,12 @@ export default {
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var xData = returndataclocktime
-      var lines = [
-        myChartData.series[0].data,
-        myChartData.series[1].data,
-        myChartData.series[2].data
-      ]
-      var option = {
+      const lines = []
+      for (let l = 0; l < myChartData.series.length; l++) {
+        lines.push(myChartData.series[l].data)
+      }
+
+      const option = {
         backgroundColor: '#ffffff',
         tooltip: {
           trigger: 'axis',
@@ -2233,7 +2233,8 @@ export default {
               }
             },
             data: lines[1]
-          }, {
+          },
+          {
             name: myChartData.legend[2],
             type: 'bar',
             barWidth: '15%',

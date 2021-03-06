@@ -2234,7 +2234,6 @@ export default {
                     matl = mat.length
                   }
                   console.log(matl)
-                  console.log(matl)
                   if (length > 70) {
                     hostName = element.zabbixProblemDTO.name.substring(0, 70 - (matl * 2))
                     element.zabbixProblemDTO.name = hostName + '...'
