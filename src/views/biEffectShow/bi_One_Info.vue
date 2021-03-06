@@ -442,28 +442,18 @@
                         <div class="bor_c_r new_height">
                             <h2 class="bg_title">JVM</h2>
                             <div class="e_box1-4">
-                                <div
-                                        id="ibox_jvm_echarts1"
+                                <div id="ibox_jvm_echarts1"
                                         style="height: 50%; width: 50%; float: left; margin-top: 10px"
-                                ></div>
-                                <div
-                                        id="ibox_jvm_echarts2"
+                                ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">使用的堆内存</span></div>
+                                <div id="ibox_jvm_echarts2"
                                         style="height: 50%; width: 50%; float: left; margin-top: 10px"
-                                ></div>
-                                <div
-                                        id="ibox_jvm_echarts3"
-                                        style="
-                    height: 50%;
-                    width: 50%;
-                    clear: both;
-                    float: left;
-                    margin-top: 30px;
-                  "
-                                ></div>
-                                <div
-                                        id="ibox_jvm_echarts4"
+                                ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">使用代码缓存</span></div>
+                                <div id="ibox_jvm_echarts3"
+                                        style="height: 50%;width: 50%;clear: both;float: left;margin-top: 30px;"
+                                ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">加载的类总数</span></div>
+                                <div id="ibox_jvm_echarts4"
                                         style="height: 50%; width: 50%; float: left; margin-top: 30px"
-                                ></div>
+                                ><span style="font-size: 14px;margin-left: 80px;color: #FFFFFF">卸载的类计数</span></div>
                             </div>
                         </div>
                     </div>
@@ -1750,20 +1740,6 @@ export default {
             }
           }
         },
-        // legend: {
-        //   show: true,
-        //   right: '5%',
-        //   y: '10',
-        //   icon: 'circle',
-        //   itemWidth: 10,
-        //   itemHeight: 10,
-        //   itemGap: 10,
-        //   textStyle: {
-        //     fontSize: 10,
-        //     color: '#667ba7'
-        //   },
-        //   data: myChartData.legend
-        // },
         xAxis: [{
           type: 'category',
           boundaryGap: false,
@@ -1927,12 +1903,12 @@ export default {
         domdata.className = 'no_data3'
         return
       }
-      var numOne = this.checkExist(myChartData.series[0]) ? myChartData.series[0].data[myChartData.series[0].data.length - 1] : null
-      var numTwo = this.checkExist(myChartData.series[1]) ? myChartData.series[1].data[myChartData.series[1].data.length - 1] : null
-      var numThree = this.checkExist(myChartData.series[2]) ? myChartData.series[2].data[myChartData.series[2].data.length - 1] : null
-      var numFour = this.checkExist(myChartData.series[3]) ? myChartData.series[3].data[myChartData.series[3].data.length - 1] : null
-      var namedata = []
-      for (var m = 0; m < 4; m++) {
+      const numOne = this.checkExist(myChartData.series[0]) ? myChartData.series[0].data[myChartData.series[0].data.length - 1] : 0
+      const numTwo = this.checkExist(myChartData.series[1]) ? myChartData.series[1].data[myChartData.series[1].data.length - 1] : 0
+      const numThree = this.checkExist(myChartData.series[2]) ? myChartData.series[2].data[myChartData.series[2].data.length - 1] : 0
+      const numFour = this.checkExist(myChartData.series[3]) ? myChartData.series[3].data[myChartData.series[3].data.length - 1] : 0
+      const namedata = []
+      for (let m = 0; m < 4; m++) {
         if (this.checkExist(myChartData.series[m])) {
           namedata.push(myChartData.series[m].name)
         }
@@ -2854,29 +2830,33 @@ export default {
       })
     },
     makeData6_1_info (myChartData, str, flag) {
+      debugger
       var dom = document.getElementById('ibox_jvm_echarts' + flag)
-      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         dom.className = 'no_data3'
         return
       }
-      var numOne = myChartData.series[0].data[myChartData.series[0].data.length - 1]
-      var numTwo = myChartData.series[1].data[myChartData.series[1].data.length - 1]
-      var numThree = myChartData.series[2].data[myChartData.series[2].data.length - 1]
-      var numFour = myChartData.series[3].data[myChartData.series[3].data.length - 1]
-      numOne = numOne / 1024 / 1024
-      numTwo = numTwo / 1024 / 1024
-      numThree = numThree / 1024 / 1024
-      numFour = numFour / 1024 / 1024
-      var numdata = [numOne, numTwo, numThree, numFour]
-      var numNameOne = myChartData.series[0].name
-      var numNameTwo = myChartData.series[1].name
-      var numNameThree = myChartData.series[2].name
-      var numNameFour = myChartData.series[3].name
-      var namedata = [numNameOne, numNameTwo, numNameThree, numNameFour]
+      const numdata = []
+      for (let n = 0; n < 4; n++) {
+        if (this.checkExist(myChartData.series[n])) {
+          numdata.push((myChartData.series[n].data[myChartData.series[n].data.length - 1]) / 1024 / 1024)
+        }
+      }
+      const namedata = []
+      for (let m = 0; m < 4; m++) {
+        if (this.checkExist(myChartData.series[m])) {
+          namedata.push(myChartData.series[m].name)
+        }
+      }
+
       var max = numdata.reduce(function (a, b) {
         return b > a ? b : a
       })
       max = max * 2
+      const maxL = []
+      for (let k = 0; k < namedata.length; k++) {
+        maxL.push(max)
+      }
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var option = {
@@ -2986,7 +2966,7 @@ export default {
             textStyle: {
               show: false
             },
-            data: [max, max, max, max]
+            data: maxL
           }, {
             name: '数值',
             type: 'pictorialBar',
@@ -3081,7 +3061,7 @@ export default {
     },
     makeData6_info (myChartData, str, flag) {
       var dom = document.getElementById('ibox_jvm_echarts' + flag)
-      if (this.check_data_info(myChartData) || myChartData.series.length < 4) {
+      if (this.check_data_info(myChartData) || myChartData.series.length < 1) {
         dom.className = 'no_data3'
         return
       }
@@ -3098,11 +3078,10 @@ export default {
       var echarts = this.$echarts
       var myChart = echarts.init(dom)
       var xData = returndataclocktime
-      var lines = [
-        myChartData.series[0].data,
-        myChartData.series[1].data,
-        myChartData.series[2].data
-      ]
+      const lines = []
+      for (let l = 0; l < myChartData.series.length; l++) {
+        lines.push(myChartData.series[l].data)
+      }
       var option = {
         // backgroundColor: '#ffffff',
         tooltip: {
@@ -3151,19 +3130,6 @@ export default {
           right: '5%',
           bottom: '15%'
         },
-        // legend: {
-        //   show: true,
-        //   icon: 'circle',
-        //   orient: 'horizontal',
-        //   top: '5%',
-        //   right: '3%',
-        //   itemWidth: 5.5,
-        //   itemHeight: 6,
-        //   itemGap: 5,
-        //   textStyle: {
-        //     color: '#C9C8CD'
-        //   }
-        // },
         xAxis: [{
           type: 'category',
           data: xData,
