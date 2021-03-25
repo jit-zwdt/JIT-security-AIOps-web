@@ -7,7 +7,7 @@
       <b>Version</b> {{ GlobalCfg.version }}
     </div>
     <strong>
-      Copyright © 2019
+      Copyright © 2020
       <a href="javascript:;"> {{ GlobalCfg.corporation }} </a>. </strong
     >All rights reserved.
   </div>

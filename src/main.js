@@ -12,20 +12,27 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/style.scss'
 import Config from '@/config/app'
 import ToolBar from '@/components/ToolBar.vue'
+import echarts from 'echarts'
+import api from '@/api/api'
+import './promission'// 这里进行路由后台获取的模拟
+import Print from 'vue-print-nb'
+import scroll from 'vue-seamless-scroll'
+Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
-// Vue.use(VueAxios, axios)
 Vue.prototype.axios = axios
+Vue.prototype.$api = api
 Vue.use(ElementUI)
 Vue.use(ToolBar)
 Vue.prototype.GlobalCfg = Config
 Vue.component('ToolBar', ToolBar)
+Vue.use(Print)
+Vue.use(scroll)
 router.beforeResolve((to, from, next) => {
   if (to.name) {
     NProgress.start()
   }
   next()
 })
-
 router.afterEach(() => {
   NProgress.done()
 })

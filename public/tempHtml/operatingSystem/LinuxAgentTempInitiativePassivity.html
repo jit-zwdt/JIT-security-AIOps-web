@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <script src="../../jquery/jquery.min.js"></script>
+  <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+  <link href="../../tempHtml/style.css" rel="stylesheet" type="text/css">
+  <title>JIT-security-AIOps</title>
+</head>
+<script language="javascript">
+  function changeToNetUrl() {
+    $('#roleNetUrl').addClass("activetab");
+    $('#roleNetUrl').removeClass("nactivetab");
+    $('#roleText').removeClass("activetab");
+    $('#roleText').addClass("nactivetab");
+  }
+  function changeToText() {
+    $("#roleText").removeClass("nactivetab");
+    $("#roleText").addClass("activetab");
+    $('#roleNetUrl').removeClass("activetab");
+    $('#roleNetUrl').addClass('nactivetab');
+
+  }
+  $().ready(function () {
+    //得到父页面的iframe框架的对象
+    var obj = parent.document.getElementById("mainFrame");
+    //把当前页面内容的高度动态赋给iframe框架的高
+    obj.height = "500px";
+  });
+</script>
+
+<body>
+  <div>
+    <ul class="nav nav-tabs">
+      <li class=""><a id="roleNetUrl" href="#Configuration" data-toggle="tab" class="activetab" onclick="changeToNetUrl();">配置</a></li>
+      <li><a id="roleText" href="#Metrics" data-toggle="tab" class="nactivetab" onclick="changeToText();">指标</a></li>
+    </ul>
+    <div class="tab-content p-a-0 p-t-sm dark-deep-background dark-white-color">
+      <div id="Metrics" class="tab-pane fade">
+        <table class="table-bordered table table-hover  ">
+          <thead>
+            <tr>
+              <th class="dark-main-border">
+                指标名
+              </th>
+              <th class="dark-main-border">
+                单位
+              </th>
+              <th class="dark-main-border">
+                描述
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Agent 运行的 Hostname</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Agent 代理状态</td>
+              <td></td>
+              <td>The agent always returns 1 for this item. It could be used in combination with nodata() for
+                availability check.</td>
+            </tr>
+            <tr>
+              <td>Agent 版本</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>cpu{#DISK_NAME}  iowait等待时间的百分比</td><td>%</td><td></td></tr><tr><td>CPU_IOWAIT 百分比</td><td></td><td>sar -P ALL  1 1</td></tr><tr><td>{#DISK_NAME} 磁盘平均消耗时间</td><td>ms</td><td></td></tr><tr><td>{#DISK_NAME} 磁盘请求队列的平均长度</td><td></td><td></td></tr><tr><td>{#DISK_NAME}  I/O请求占CPU的百分比</td><td></td><td></td></tr><tr><td>ICMP ping状态</td><td></td><td>ICMP ping</td></tr><tr><td>磁盘</td><td></td><td>sar -d -p 1 1</td></tr><tr><td>{#NAME} 磁盘请求队列的平均长度(仅支持7系统)</td><td></td><td></td></tr><tr><td>{#NAME} 磁盘请求队列的平均长度(不支持7系统)</td><td></td><td></td></tr><tr><td>{#NAME} I/O请求的平均时间(不支持7系统)</td><td>ms</td><td></td></tr><tr><td>IOSTAT</td><td></td><td>iostat -xk 1 2
+备注：取第二个值</td></tr><tr><td>{#NAME} 读请求的平均时间(仅支持7系统)</td><td>ms</td><td></td></tr><tr><td>{#NAME} 每秒完成的读次数</td><td>iops</td><td></td></tr><tr><td>{#NAME} 每秒读数据量</td><td>B/s</td><td></td></tr><tr><td>{#NAME} 每秒读请求被合并次数</td><td></td><td></td></tr><tr><td>{#NAME} IO队列非空的时间比率</td><td></td><td></td></tr><tr><td>{#NAME} 写请求的平均时间(仅支持7系统)</td><td>ms</td><td></td></tr><tr><td>{#NAME} 每秒完成的写次数</td><td>iops</td><td></td></tr><tr><td>{#NAME} 每秒写数据量</td><td>B/s</td><td></td></tr><tr><td>{#NAME} 每秒写请求被合并次数</td><td></td><td></td></tr><tr><td>系统打开文件的数量</td><td></td><td>It could be increased by using sysctrl utility or modifying file /etc/sysctl.conf.</td></tr><tr><td>进程的最大数量</td><td></td><td>It could be increased by using sysctrl utility or modifying file /etc/sysctl.conf.</td></tr><tr><td>系统、服务错误</td><td></td><td></td></tr><tr><td>登陆尝试</td><td></td><td>Login attempt</td></tr><tr><td>活跃内存大小</td><td>B</td><td></td></tr><tr><td>不活跃内存大小</td><td>B</td><td></td></tr><tr><td>不溢出的内存大小</td><td>B</td><td></td></tr><tr><td>系统每秒换入的交换页面数量</td><td></td><td></td></tr><tr><td>系统每秒换出的交换页面数量</td><td></td><td></td></tr><tr><td>自动发现网络接口</td><td></td><td>Discovery of network interfaces as defined in global regular expression "Network interfaces for discovery".</td></tr><tr><td>{#IFNAME} 网卡每秒接收丢包率</td><td>%</td><td>Incoming Packet loss rate on</td></tr><tr><td>{#IFNAME} 网卡每秒接收丢包数</td><td></td><td>Incoming Number of packet loss on</td></tr><tr><td>{#IFNAME} 网卡每秒接收错误包数</td><td></td><td>Incoming  Receive errors on</td></tr><tr><td>{#IFNAME} 网卡每秒接收包数</td><td></td><td>Incoming Receive packets on</td></tr><tr><td>{#IFNAME} 网卡每秒接收速率</td><td>B/s</td><td>Incoming network traffic on</td></tr><tr><td>{#IFNAME} 网卡每秒发送丢包率</td><td>%</td><td>Outgoing Packet loss rate on</td></tr><tr><td>{#IFNAME} 网卡每秒发送丢包数</td><td></td><td>Outgoing  Number of packet loss on</td></tr><tr><td>{#IFNAME} 网卡每秒发送错误包数</td><td></td><td>Outgoing  Receive errors on</td></tr><tr><td>{#IFNAME} 网卡每秒发送包数</td><td></td><td>Outgoing  Receive packets on</td></tr><tr><td>{#IFNAME} 网卡每秒发送速率</td><td>B/s</td><td>Outgoing network traffic on</td></tr><tr><td>进程数量</td><td></td><td>Total number of processes in any state.</td></tr><tr><td>进程队列数</td><td></td><td></td></tr><tr><td>交换分区</td><td></td><td>swapon -s</td></tr><tr><td>$1  (交换分区总空间)</td><td>B</td><td></td></tr><tr><td>$1  (交换分区使用大小)</td><td>B</td><td></td></tr><tr><td>系统启动时间</td><td>unixtime</td><td>Host boot time</td></tr><tr><td>CPU每秒中断数</td><td>ips</td><td>Interrupts per second</td></tr><tr><td>处理器负载(平均15分钟)</td><td></td><td>Processor load (15 min average)</td></tr><tr><td>处理器负载(平均1分钟)</td><td></td><td>Processor load (1 min average)</td></tr><tr><td>处理器负载(平均5分钟)</td><td></td><td>Processor load (5 min average)</td></tr><tr><td>处理器数量</td><td></td><td>Processor number</td></tr><tr><td>CPU空闲率</td><td>%</td><td>The time the CPU has spent doing nothing.</td></tr><tr><td>CPU中断时间</td><td>%</td><td>The amount of time the CPU has been servicing hardware interrupts.</td></tr><tr><td>CPU iowait</td><td>%</td><td>Amount of time the CPU has been waiting for I/O to complete.</td></tr><tr><td>用户空间内改变过优先级的进程占用CPU百分比</td><td>%</td><td>CPU nice time</td></tr><tr><td>CPU软中断时间</td><td>%</td><td>The amount of time the CPU has been servicing software interrupts.</td></tr><tr><td>强制等待虚拟CPU的时间</td><td>%</td><td>The amount of CPU 'stolen' from this virtual machine by the hypervisor for other tasks (such as running another virtual machine).</td></tr><tr><td>内核态使用CPU百分比</td><td>%</td><td>CPU内核态使用率（百分比）</td></tr><tr><td>用户空间占用CPU百分比</td><td>%</td><td>The time the CPU has spent running users' processes that are not niced.</td></tr><tr><td>CPU总使用率</td><td>%</td><td>CPU Usage</td></tr><tr><td>系统主机名</td><td></td><td>System host name.</td></tr><tr><td>CPU信息</td><td></td><td>system.hw.cpu</td></tr><tr><td>系统本地时间</td><td>unixtime</td><td>Host local time</td></tr><tr><td>system.run(系统发行版本)</td><td></td><td></td></tr><tr><td>系统进程列表</td><td></td><td>system.Processes</td></tr><tr><td>磁盘交换到内存数量</td><td></td><td>system.swap.in_count</td></tr><tr><td>磁盘交换到内存页数</td><td>page</td><td>system.swap.in_pages</td></tr><tr><td>磁盘交换到内存扇区数</td><td>sectors</td><td>system.swap.in_sectors</td></tr><tr><td>内存交换到磁盘数量</td><td></td><td>system.swap.out_count</td></tr><tr><td>内存交换到磁盘页数</td><td>page</td><td>system.swap.out_pages</td></tr><tr><td>内存交换到磁盘扇区数</td><td>sectors</td><td>system.swap.out_sectors</td></tr><tr><td>交换分区的剩余空间</td><td>B</td><td>Free swap space</td></tr><tr><td>交换分区剩余空间百分比</td><td>%</td><td>Free swap space in %</td></tr><tr><td>交换分区大小</td><td>B</td><td>Total swap space</td></tr><tr><td>交换分区使用大小</td><td>B</td><td>Total swap space</td></tr><tr><td>系统信息</td><td></td><td>The information as normally returned by 'uname -a'.</td></tr><tr><td>系统正常运行时间</td><td>uptime</td><td>System uptime</td></tr><tr><td>登陆用户数量</td><td></td><td>Number of users who are currently logged in.</td></tr><tr><td>tcp会话数量</td><td></td><td></td></tr><tr><td>线程数</td><td></td><td></td></tr><tr><td>不可中断睡眠进程数</td><td></td><td></td></tr><tr><td>磁盘每秒总读操作数</td><td>ops</td><td></td></tr><tr><td>磁盘每秒总读字节数</td><td>B/s</td><td></td></tr><tr><td>磁盘每秒总读写操作数</td><td>ops</td><td></td></tr><tr><td>磁盘每秒总写操作数</td><td>ops</td><td></td></tr><tr><td>磁盘每秒总写字节数</td><td>B/s</td><td></td></tr><tr><td>文件校验</td><td></td><td>Checksum of $1</td></tr><tr><td>/etc/passwd文件大小</td><td></td><td>vfs.file.size</td></tr><tr><td>自动发现挂载文件系统</td><td></td><td>Discovery of file systems of different types as defined in global regular expression "File systems for discovery".</td></tr><tr><td>{#FSNAME} 磁盘剩余inode数量</td><td></td><td>磁盘剩余inode数量</td></tr><tr><td>{#FSNAME} 磁盘剩余inode百分比</td><td>%</td><td></td></tr><tr><td>{#FSNAME} 磁盘inode使用率</td><td>%</td><td></td></tr><tr><td>{#FSNAME} 磁盘总inode数量</td><td></td><td>磁盘总inode</td></tr><tr><td>{#FSNAME} 磁盘已使用inode数量</td><td></td><td>磁盘已经使用inode数量</td></tr><tr><td>{#FSNAME} 剩余磁盘空间</td><td>B</td><td>Free disk space on</td></tr><tr><td>{#FSNAME}  剩余磁盘空间百分比</td><td>%</td><td>Free disk space on</td></tr><tr><td>{#FSNAME}  使用磁盘空间使用率</td><td>%</td><td>Used disk space on</td></tr><tr><td>{#FSNAME} 总磁盘空间</td><td>B</td><td>Total disk space on</td></tr><tr><td>{#FSNAME} 使用磁盘空间</td><td>B</td><td>Used disk space on</td></tr><tr><td>物理内存使用率</td><td>%</td><td>Memory Used</td></tr><tr><td>活跃的内存</td><td>B</td><td>Active memory</td></tr><tr><td>可用内存</td><td>B</td><td>Available memory</td></tr><tr><td>缓冲内存</td><td>B</td><td>Buffers memory</td></tr><tr><td>高速缓存</td><td>B</td><td>Cached memory</td></tr><tr><td>内存剩余大小</td><td>B</td><td>Memory Free</td></tr><tr><td>可使用内存百分比</td><td>%</td><td>Memory Used IN pavailable</td></tr><tr><td>内存总使用率</td><td>%</td><td></td></tr><tr><td>内存总大小</td><td>B</td><td>Memory Total</td></tr><tr><td>内存使用大小</td><td>B</td><td>Memory Used</td></tr></tbody></table></div> <div id="OverView" class="tab-pane  fade  "><p classs="p-a-5"></p></div> <div id="Configuration" class="tab-pane fade active show"><p>
+<em>注：为了避免冲突，安装前请先检查主机是否已经安装zabbix_agent,若没有，则继续进行安装；若已经安装，请跳过。</em></p>
+
+
+<ol>
+<li>通过SSH登录到需要监控的Linux服务器上<br>
+</li>
+<li>切换到root用户<br><code># su - root</code><br>
+</li>
+<li> 将linux_agent.zip文件上传到/root/目录下，然后解压文件<br><code># unzip linux_agentd.zip</code>
+</li>
+<li>运行自动安装脚本<br><code># ./zabbix_agentd.sh</code></li>
+<li>检查agent是否正常运行 <br><code># service zabbix_agentd status</code><br>
+<span style="height:1.452cm;width:14.646cm; padding:0; " class="fr6" id="图片_18"><img style="height:1.452cm;width:14.646cm;" alt="" src="data:image/*;base64,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"></span>
+</li>
+
+
+
+</ol>
+
+<em>如需无Agent监控方式，请选择SNMP类模板。</em></div></div></div>
+  </body>
+</html>

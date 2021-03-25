@@ -25,6 +25,9 @@ export function setToken (token, refreshToken) {
 export function clearToken () {
   sessionStorage.removeItem('token')
   sessionStorage.removeItem('refreshToken')
+  sessionStorage.removeItem('referrer')
+  var storage = window.localStorage
+  storage.clear()
 }
 
 export function getToken () {

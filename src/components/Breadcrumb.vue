@@ -6,8 +6,8 @@
           v-for="item in $route.matched"
           v-show="item.meta && item.meta.title"
           :key="item.path"
-          :to="{ path: item.path }"
         >
+          <!-- :to="{ path: item.path }" -->
           {{ item.meta.title }}
         </el-breadcrumb-item>
       </el-breadcrumb>
