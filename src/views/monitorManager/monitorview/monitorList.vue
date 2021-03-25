@@ -646,6 +646,8 @@ export default {
         this.$router.push({ name: 'monitorOracleInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '2' && row.subtypeId === '11') {
         this.$router.push({ name: 'monitorMysqlInfo', query: { hostId: row.hostid, hostName: row.objectName } })
+      } else if (row.typeId === '2' && row.subtypeId === '31') {
+        this.$router.push({ name: 'monitorKingbaseInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '2' && row.subtypeId === '30') {
         this.$router.push({ name: 'monitorRedisInfo', query: { hostId: row.hostid, hostName: row.objectName } })
       } else if (row.typeId === '1') {

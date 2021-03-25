@@ -145,6 +145,59 @@
                 </el-input>
               </div>
             </el-form-item>
+            <el-form-item label="主机宏" v-if="kingbaseShow" required>
+              <div>
+                <el-form-item prop="kingbaseMacroIp">
+                <el-input v-model="serverListForm.kingbaseMacroIp" clearable>
+                  <template slot="prepend">IP地址</template>
+                </el-input>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item prop="kingbaseMacroPort">
+                <el-input v-model="serverListForm.kingbaseMacroPort" clearable>
+                  <template slot="prepend">端口</template>
+                </el-input>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item prop="kingbaseMacroDbname">
+                <el-input v-model="serverListForm.kingbaseMacroDbname" clearable>
+                  <template slot="prepend">数据库名</template>
+                </el-input>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item prop="kingbaseMacroUsername">
+                <el-input v-model="serverListForm.kingbaseMacroUsername" clearable>
+                  <template slot="prepend">用户名</template>
+                </el-input>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item prop="kingbaseMacroPassword">
+                <el-input
+                        v-model="serverListForm.kingbaseMacroPassword"
+                        clearable
+                        show-password
+                >
+                  <template slot="prepend">密码</template>
+                </el-input>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item prop="kingbaseMacroType">
+                <el-select v-model="serverListForm.kingbaseMacroType" placeholder="数据库版本">
+                  <el-option v-for="item in kingbaseTypeOptions"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+                </el-form-item>
+              </div>
+            </el-form-item>
             <el-form-item
               label="JMX选用类型"
               prop="jmxType"
@@ -401,6 +454,7 @@ export default {
         }
       })
     }
+
     return {
       direction: 'rtl',
       show: false,
@@ -411,6 +465,7 @@ export default {
       agentShow: true,
       vmShow: false,
       ipmiShow: false,
+      kingbaseShow: false,
       serverListForm: {
         objectName: '',
         businessName: '',
@@ -437,6 +492,12 @@ export default {
         oracleMacroDbname: '',
         oracleMacroPassword: '',
         oracleMacroUsername: '',
+        kingbaseMacroIp: '',
+        kingbaseMacroPort: '',
+        kingbaseMacroDbname: '',
+        kingbaseMacroPassword: '',
+        kingbaseMacroUsername: '',
+        kingbaseMacroType: '',
         jmxType: '',
         jmxIp: '',
         jmxDnsName: '',
@@ -473,6 +534,16 @@ export default {
         {
           id: '',
           type: ''
+        }
+      ],
+      kingbaseTypeOptions: [
+        {
+          value: 'kingbase8',
+          label: '人大金仓V8'
+        },
+        {
+          value: 'kingbase7',
+          label: '人大金仓V7'
         }
       ],
       groupIdData: [
@@ -581,6 +652,36 @@ export default {
         ipmiPort: [{
           required: true,
           message: '请输入端口',
+          trigger: 'blur'
+        }],
+        kingbaseMacroIp: [{
+          required: true,
+          message: '请输入IP地址',
+          trigger: 'blur'
+        }],
+        kingbaseMacroPort: [{
+          required: true,
+          message: '请输入IP端口',
+          trigger: 'blur'
+        }],
+        kingbaseMacroDbname: [{
+          required: true,
+          message: '请输入数据库名',
+          trigger: 'blur'
+        }],
+        kingbaseMacroUsername: [{
+          required: true,
+          message: '请输入用户名',
+          trigger: 'blur'
+        }],
+        kingbaseMacroPassword: [{
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur'
+        }],
+        kingbaseMacroType: [{
+          required: true,
+          message: '请选择数据库类型',
           trigger: 'blur'
         }]
       }
@@ -857,7 +958,13 @@ export default {
         vmMacroSdkLink: this.serverListForm.vmMacroSdkLink,
         vmMacroUsername: this.serverListForm.vmMacroUsername,
         assetsId: assetsId,
-        hostId: this.serverListForm.hostId
+        hostId: this.serverListForm.hostId,
+        kingbaseMacroIp: this.serverListForm.kingbaseMacroIp,
+        kingbaseMacroPort: this.serverListForm.kingbaseMacroPort,
+        kingbaseMacroDbname: this.serverListForm.kingbaseMacroDbname,
+        kingbaseMacroUsername: this.serverListForm.kingbaseMacroUsername,
+        kingbaseMacroPassword: this.serverListForm.kingbaseMacroPassword,
+        kingbaseMacroType: this.serverListForm.kingbaseMacroType
       }
       return region
     },
@@ -870,6 +977,7 @@ export default {
       this.agentShow = true
       this.vmShow = false
       this.ipmiShow = false
+      this.kingbaseShow = false
       this.$refs.serverListForm.resetFields()
       this.oldObjectName = ''
       this.oldBusinessName = ''
@@ -910,6 +1018,8 @@ export default {
       } else if (templateSubTypeId === '12') {
         this.oracleShow = true
         this.serverListForm.oracleMacroDbname = 'orcl'
+      } else if (templateSubTypeId === '31') {
+        this.kingbaseShow = true
       } else if (templateSubTypeId === '13') {
         this.serverListForm.jmxMacro = 'path'
         this.jmxShow = true
